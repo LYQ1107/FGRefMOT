@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "phase": 18,
+  "audit_date": "2026-10-19",
+  "status": "BAIDU_ROUTE_REVALIDATED_EXTERNAL_ASSETS_PENDING",
+  "gpu_jobs_started": false,
+  "workspace": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019",
+  "branch": "research/sports-rmot-strong-baselines-20261019",
+  "route": {
+    "share": "https://pan.baidu.com/s/1L-43y9SFDKmgl3dJNRlvNA?pwd=d3qj",
+    "selected_probe_file": "/FlexHook/pretrained/roberta-base/config.json",
+    "selected_probe_size_bytes": 481,
+    "probe_script": "/tmp/baidu_alt_probe.py",
+    "fresh_wxlist": {
+      "errno": 0,
+      "server_time": 1792355994,
+      "shareid": "48200137171",
+      "uk": "1714442791",
+      "seckey_received": true
+    },
+    "fresh_tplconfig": {
+      "errno": 0,
+      "timestamp": 1792355995,
+      "sign_received": true
+    },
+    "sharedownload": {
+      "clienttype_5": {
+        "errno": 9019,
+        "message": "need verify"
+      },
+      "clienttype_0": {
+        "errno": 0,
+        "dlink_returned": true,
+        "dlink_dstime": 1792352394,
+        "dlink_stale_seconds_against_tpl_timestamp": 3601
+      }
+    },
+    "direct_dlink_get": {
+      "http_status": 403,
+      "error": "expire time out / error code 31360"
+    },
+    "locatedownload_probe": {
+      "http_status": 403,
+      "error": "error code 31045 user not exists"
+    },
+    "interpretation": "The anonymous API returned a signed-looking dlink whose expiry timestamp was about one hour older than the fresh tplconfig timestamp. The direct download rejected it as expired. The alternate locatedownload path also rejected the anonymous request. The probe did not alter signed fields, bypass verification, or use credentials/cookies."
+  },
+  "anonymous_transfer": {
+    "client": "BaiduPCS-Go-v4.0.2-linux-amd64",
+    "result": "failed",
+    "error": "分享链接转存到网盘失败: 获取分享项元数据错误",
+    "logged_in_session": false
+  },
+  "bytes_and_storage": {
+    "workspace_bytes_written": 0,
+    "nas_project_root": "/home/A100/FGREF_RMOT_SPORTS_20261019",
+    "nas_target_directories_checked": [
+      "assets/pretrained/flexhook",
+      "assets/pretrained/yestrack",
+      "assets/pretrained/physical_tracker",
+      "assets/source_checkpoints",
+      "checkpoints/flexhook",
+      "checkpoints/yestrack",
+      "experiments/common_tracker"
+    ],
+    "nas_target_directories_empty": true,
+    "partial_files_cleaned": true
+  },
+  "preflight": {
+    "command": "scripts/preflight_baseline_assets.py --hash-files",
+    "invocation": "/data3/liuyeqiang/.venvs/fgrefmot-rmot-sports-20261019/bin/python scripts/preflight_baseline_assets.py --hash-files",
+    "exit_code": 2,
+    "report": "runs/baseline_asset_preflight_20261019/report.json",
+    "overall_status": "PENDING",
+    "pending_checks": [
+      "roberta_base",
+      "rope_swin_tiny",
+      "flexhook_task_checkpoint",
+      "yestrack_lora_checkpoint",
+      "yestrack_base_model",
+      "common_sports_tracker"
+    ],
+    "gpu_launch_allowed": false
+  },
+  "next_action": "Acquire the official share bytes through an authenticated route on a machine where the share download completes, transfer them with scripts/nas_sync.sh to the declared NAS paths, record SHA-256 values, and rerun the strict preflight before any GPU job."
+}
