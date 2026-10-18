@@ -1,0 +1,22 @@
+__pycache__/
+*.py[cod]
+*.so
+*.egg-info/
+build/
+dist/
+.idea/
+.vscode/
+
+# Datasets, checkpoints, experiment outputs, and logs
+data/
+exps/
+log/
+default/
+*.log
+*.pth
+*.pt
+*.ckpt
+
+# Generated visualisation and analysis outputs
+tam_vis_output*/
+keshihua/
