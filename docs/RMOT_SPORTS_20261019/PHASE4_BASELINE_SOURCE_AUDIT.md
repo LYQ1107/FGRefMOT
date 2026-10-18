@@ -28,9 +28,13 @@ were not fetched or guessed.
 
 The server's default `python3` is Python 3.12.3.  In that interpreter the
 following core packages are absent: `torch`, `torchvision`, `transformers`,
-`yacs`, `opencv-python`, and `numpy`.  PyYAML is present.  No existing virtual
-environment was modified.  This environment cannot run either baseline until
-an isolated, pinned environment is provisioned and import-checked.
+`yacs`, `opencv-python`, and `numpy`.  PyYAML is present.  A read-only probe of
+existing environments found `trackocd-a100` with Torch 2.6.0+cu118 but without
+Transformers or YACS, and `agristl` with Torch 2.1.1+cu121 but without
+Transformers or FairScale.  These environments belong to other projects and
+were not modified or selected for training.  Neither one satisfies the full
+FlexHook/YesTrack dependency contract, so an isolated, pinned environment still
+has to be provisioned and import-checked.
 
 ## Status and guardrails
 
