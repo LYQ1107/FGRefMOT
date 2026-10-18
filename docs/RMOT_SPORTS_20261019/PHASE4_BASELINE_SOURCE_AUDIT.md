@@ -62,13 +62,18 @@ route were installed from pinned local checkouts:
 | yacs | `0.1.8`, `rbgirshick/yacs` commit `32d5e4ac300e…` | import succeeds |
 | wordninja | `keredson/wordninja` commit `0421d148cd3d…` | import and split smoke test succeed |
 | transformers | tag `v5.2.0`, commit `7d9754a05193…` | package imports; model/tokenizer imports still require tokenizers |
+| accelerate | tag `v1.10.1`, commit `623cc0ba588d…` | `PartialState` import succeeds |
+| peft | tag `v0.18.1`, commit `e3398fc05c55…` | package installs; model helpers wait on Transformers/tokenizers |
 | scikit-image | `0.25.2` copied into the dedicated environment from the existing agristl package | import succeeds |
 
-The dedicated environment still lacks `tokenizers`, `typer-slim`,
-Accelerate, PEFT, bitsandbytes, and SentencePiece.  `from transformers import
-RobertaTokenizerFast` and `RobertaModel` therefore fail at the missing
-`tokenizers` extension.  No package was installed into another project's
-environment, and this environment remains **not ready for training**.
+The dedicated environment still lacks `tokenizers` and `typer-slim`, and the
+YesTrack requirement set's `bitsandbytes` and SentencePiece are not installed.
+`from transformers import RobertaTokenizerFast` and `RobertaModel`, the
+FlexHook data/model imports, and PEFT model helpers therefore fail at the
+missing `tokenizers` extension.  The YesTrack `ReferKittiMOT` data loader and
+Accelerate import succeed when loaded without the umbrella package side
+effects.  No package was installed into another project's environment, and
+this environment remains **not ready for training**.
 
 ## Status and guardrails
 
