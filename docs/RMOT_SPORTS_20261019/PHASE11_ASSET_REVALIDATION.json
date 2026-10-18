@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "phase": 11,
+  "audit_date": "2026-10-19",
+  "status": "PENDING_EXTERNAL_ASSETS",
+  "gpu_jobs_started": false,
+  "evidence": {
+    "nas_target_directories": {
+      "assets/pretrained/flexhook": "EMPTY",
+      "assets/pretrained/yestrack": "EMPTY",
+      "assets/pretrained/physical_tracker": "EMPTY",
+      "assets/source_checkpoints": "EMPTY",
+      "checkpoints/flexhook": "EMPTY",
+      "checkpoints/yestrack": "EMPTY",
+      "experiments/common_tracker": "EMPTY"
+    },
+    "local_configured_target_files": 0,
+    "matching_tracker_manifests": 0,
+    "unrelated_cache_asset": {
+      "model_family": "timm_vit_base_patch32_clip_224.openai",
+      "size_bytes": 605221285,
+      "accepted_as_baseline_asset": false
+    },
+    "network_probes": {
+      "github": "HTTP 200 through existing Codex proxy",
+      "huggingface": "TLS SSL_ERROR_SYSCALL before bytes",
+      "hf_mirror": "TLS SSL_ERROR_SYSCALL before bytes",
+      "modelscope": "TLS SSL_ERROR_SYSCALL before bytes"
+    },
+    "gpu_policy": {
+      "unrelated_habitat_llm_jobs_present": true,
+      "rmot_job_started": false,
+      "other_jobs_modified": false
+    }
+  },
+  "required_external_assets": [
+    "FlexHook RoBERTa directory",
+    "FlexHook ROPE-Swin directory",
+    "FlexHook task checkpoint",
+    "YesTrack LoRA/task checkpoint",
+    "YesTrack Qwen3-VL-2B-Instruct base-model directory",
+    "Common SportsMOT detector-output tracker with tracker_manifest.json"
+  ],
+  "next_action": "Place the official assets in the NAS project paths, record SHA256 values, rerun Phase 7 preflight, replace Phase 10 protocol placeholders, and pass the strict run contract before any GPU launch."
+}
