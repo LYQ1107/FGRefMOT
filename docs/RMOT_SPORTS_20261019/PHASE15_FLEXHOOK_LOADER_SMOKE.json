@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "phase": 15,
+  "audit_date": "2026-10-19",
+  "status": "DATA_LOADER_SMOKE_OK_EXTERNAL_ASSETS_PENDING",
+  "gpu_jobs_started": false,
+  "command": "scripts/flexhook_sportsmot_smoke.py --layout-root runs/flexhook_sports_layout_20261019_v2 --tokenizer stub --json",
+  "tokenizer_mode": "stub",
+  "policy": "DATA_LOADER_ONLY; NO_MODEL; NO_GT_AS_TRACKER_INPUT",
+  "train": {
+    "sample_count": 5491,
+    "first_item_shapes": [[4, 3, 224, 672], [4, 2, 16, 48], [4, 4], [8], [8, 25], [8, 25]],
+    "first_key": "v_-6Os86HzwCs_c001#229#0"
+  },
+  "val": {
+    "sample_count": 1195,
+    "first_item_shapes": [[4, 3, 224, 672], [4, 2, 16, 48], [4, 4], [8], [8, 25], [8, 25]],
+    "first_key": "v_-6Os86HzwCs_c007#312#0#basketball players wearing blue number 6 jerseys+basketball players wearing blue number 6 jerseys+basketball players wearing blue number 6 jerseys+basketball players wearing yellow number 10 jerseys+basketball players with yellow uniforms+basketball players who are holding the ball+basketball players with blue uniforms+basketball players"
+  },
+  "interpretation": {
+    "loader_boundary_verified": true,
+    "model_weights_loaded": false,
+    "official_tokenizer_verified": false,
+    "tracker_outputs_created": false,
+    "training_claim": false
+  },
+  "next_action": "Repeat this smoke with the verified local RoBERTa directory, then build the selected variant contract and run the model-level smoke test after all required assets pass Phase 7."
+}
