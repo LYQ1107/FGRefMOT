@@ -17,6 +17,9 @@ class ManifestInvariantTest(unittest.TestCase):
         self.assertEqual(self.manifest["summary"]["video_count"], 41)
         self.assertEqual(self.manifest["summary"]["expression_count"], 323)
         self.assertEqual(
+            self.manifest["summary"]["id_namespace"], "SPORTSMOT_LABELS_WITH_IDS_GLOBAL"
+        )
+        self.assertEqual(
             self.manifest["summary"]["video_count_by_split"], {"train": 22, "test": 19}
         )
 

@@ -155,20 +155,23 @@ def contiguous_ranges(frames: Iterable[int]) -> list[list[int]]:
     return result
 
 
-def gt_ids(images_root: Path, video_id: str) -> set[int]:
-    for split in ("train", "val", "test"):
-        path = images_root / split / video_id / "gt" / "gt.txt"
-        if path.is_file():
-            ids: set[int] = set()
-            for raw in path.read_text(encoding="utf-8", errors="replace").splitlines():
-                fields = raw.split(",")
-                if len(fields) >= 2:
-                    try:
-                        ids.add(int(fields[1]))
-                    except ValueError:
-                        pass
-            return ids
-    return set()
+def labels_with_ids_ids(labels_root: Path, video_id: str) -> set[int]:
+    """Return global SportsMOT IDs used by the expression annotations."""
+
+    video_dir = labels_root / video_id
+    ids: set[int] = set()
+    if not video_dir.is_dir():
+        return ids
+    for path in video_dir.glob("*.txt"):
+        for raw in path.read_text(encoding="utf-8", errors="replace").splitlines():
+            fields = raw.split()
+            if len(fields) < 2:
+                continue
+            try:
+                ids.add(int(float(fields[1])))
+            except ValueError:
+                continue
+    return ids
 
 
 def make_record(
@@ -179,7 +182,7 @@ def make_record(
     train_videos: set[str],
     test_videos: set[str],
     frame_cache: dict[str, list[Path]],
-    gt_cache: dict[str, set[int]],
+    labels_cache: dict[str, set[int]],
 ) -> dict[str, Any]:
     relative = info.filename
     video_id = str(data.get("video_name") or relative.split("/")[1])
@@ -214,7 +217,10 @@ def make_record(
     width = height = None
     if images:
         width, height = image_size(images[0])
-    gt = gt_cache.get(video_id, set())
+    # Expression IDs are the global IDs in SportsMOT labels_with_ids.  The
+    # ordinary gt/gt.txt files reset IDs per video, so they are not the correct
+    # namespace for this overlap check.
+    gt = labels_cache.get(video_id, set())
     target_ids = sorted(by_track)
     split = "train" if video_id in train_videos else "test" if video_id in test_videos else "UNKNOWN"
     raw_bytes = zipfile.ZipFile(zip_path).read(info.filename)
@@ -250,7 +256,8 @@ def make_record(
         "ignore_frame_count": len(ignore),
         "gt_id_overlap": sorted(set(target_ids) & gt) if gt else None,
         "target_ids_missing_from_gt": sorted(set(target_ids) - gt) if gt else None,
-        "id_mapping_status": "MATCHED_BY_SEQUENCE_DIRECTORY" if images else "UNVERIFIED",
+        "gt_id_namespace": "SPORTSMOT_LABELS_WITH_IDS_GLOBAL" if gt else "UNKNOWN",
+        "id_mapping_status": "MATCHED_BY_LABELS_WITH_IDS_GLOBAL_ID" if images and gt else "UNVERIFIED",
         "source_archive": str(zip_path),
         "source_member": relative,
         "source_file_size": len(raw_bytes),
@@ -265,6 +272,7 @@ def main() -> int:
     parser.add_argument("--train-list", type=Path, required=True)
     parser.add_argument("--test-list", type=Path, required=True)
     parser.add_argument("--images-root", type=Path, required=True)
+    parser.add_argument("--labels-root", type=Path, required=True, help="SportsMOT labels_with_ids directory")
     parser.add_argument("--out-json", type=Path, required=True)
     parser.add_argument("--out-csv", type=Path, required=True)
     args = parser.parse_args()
@@ -281,7 +289,7 @@ def main() -> int:
                 continue
             expression_videos.add(info.filename.split("/")[1])
     frame_cache = {video: frame_files(args.images_root, video) for video in sorted(expression_videos)}
-    gt_cache = {video: gt_ids(args.images_root, video) for video in sorted(expression_videos)}
+    labels_cache = {video: labels_with_ids_ids(args.labels_root, video) for video in sorted(expression_videos)}
     with zipfile.ZipFile(args.expression_zip) as archive:
         for info in archive.infolist():
             if info.is_dir() or not info.filename.endswith(".json"):
@@ -296,7 +304,7 @@ def main() -> int:
                     train_videos,
                     test_videos,
                     frame_cache,
-                    gt_cache,
+                    labels_cache,
                 )
             )
     records.sort(key=lambda item: item["expression_id"])
@@ -345,6 +353,7 @@ def main() -> int:
             "test_list": str(args.test_list.resolve()),
             "test_list_sha256": text_hash(args.test_list),
             "images_root": str(args.images_root.resolve()),
+            "labels_root": str(args.labels_root.resolve()),
         },
         "split_audit": {
             "train_video_count": len(train_videos),
@@ -365,6 +374,7 @@ def main() -> int:
             "sport_type_counts": dict(Counter(record["sport_type"] for record in records)),
             "total_unique_image_frames": sum(len(frame_cache.get(video, [])) for video in observed_videos),
             "fps_status": "UNKNOWN_NO_VIDEO_METADATA_IN_ARCHIVE",
+            "id_namespace": "SPORTSMOT_LABELS_WITH_IDS_GLOBAL",
         },
         "warnings": warnings,
         "records": records,
