@@ -1,0 +1,81 @@
+# Declarative manifest for QIM-v2 replacing the legacy row-wise QIM hook.
+schema_version: 1
+experiment:
+  name: qim_v2_ema
+  phase: phase6
+  status: CANDIDATE_NOT_RUN
+  purpose: reliability_aware_id_keyed_temporal_memory
+provenance:
+  repository: https://github.com/LYQ1107/FGRefMOT
+  source_commit: d651fec18d4eda54bd141d90cd934b520343b789
+  working_directory: /data1/liuyeqiang/FGRefMOT_v2_research
+  baseline_archive: /data1/liuyeqiang/nas/A100/codex_archive_20261014/TempMam
+runtime:
+  launcher: torchrun
+  nproc_per_node: 1
+  device: cuda
+  seed: 17
+model:
+  meta_arch: temp_rmot
+  dataset_file: e2e_rmot
+  hidden_dim: 256
+  dim_feedforward: 1024
+  num_queries: 300
+  num_feature_levels: 4
+  enc_layers: 6
+  dec_layers: 6
+  nheads: 8
+  dec_n_points: 4
+  enc_n_points: 4
+  with_box_refine: true
+  two_stage: false
+  aux_loss: true
+  fgref_v2_tam: false
+  fgref_v2_qim: true
+  fgref_v2_qim_memory_dim: 128
+  fgref_v2_qim_history_length: 8
+  fgref_v2_qim_temporal_mode: ema
+  fgref_v2_qim_update_query_pos: false
+  use_checkpoint: false
+training:
+  epochs: 180
+  batch_size: 1
+  lr: 0.0001
+  lr_backbone: 0.00001
+  lr_drop: 40
+  weight_decay: 0.0001
+  dropout: 0.0
+  merger_dropout: 0.0
+  refer_loss_coef: 2.0
+  sampler_steps: [60, 80, 90]
+  sampler_lengths: [4, 4, 4, 4]
+  sample_mode: random_interval
+  sample_interval: 1
+  random_drop: 0.0
+  fp_ratio: 0.0
+  hist_len: 4
+data:
+  rmot_path: /data1/liuyeqiang/nas/A100/codex_archive_20261014/TempMam/data/Dataset/refer-kitti
+  train_split: /data1/liuyeqiang/nas/A100/codex_archive_20261014/TempMam/data/Dataset/refer-kitti/KITTI/training/refer-kitti.train
+  protocol_status: SMOKE_CERTIFIED_FULL_AUDIT_PENDING
+output:
+  directory: /data1/liuyeqiang/FGRefMOT_v2_research/outputs/fgref_v2/qim_v2_ema_seed17
+evaluation:
+  report_as: NEW_EXPERIMENT
+  temporal_controls: [original_streasoner, ema, gru, attention, mamba]
+  metrics: [HOTA, DetA, AssA, IDF1, IDSW, FPS, ReferringF1]
+launch:
+  command: >-
+    torchrun --nproc_per_node=1 --master_port=29520 main.py
+    --meta_arch temp_rmot --dataset_file e2e_rmot --epochs 180
+    --with_box_refine --lr_drop 40 --lr 1e-4 --lr_backbone 1e-5
+    --output_dir /data1/liuyeqiang/FGRefMOT_v2_research/outputs/fgref_v2/qim_v2_ema_seed17
+    --save_dir /data1/liuyeqiang/FGRefMOT_v2_research/outputs/fgref_v2/qim_v2_ema_seed17
+    --batch_size 1 --sample_mode random_interval --sample_interval 1
+    --sampler_steps 60 80 90 --sampler_lengths 4 4 4 4 --merger_dropout 0
+    --dropout 0 --random_drop 0 --fp_ratio 0 --query_interaction_layer QIM
+    --data_txt_path_train /data1/liuyeqiang/nas/A100/codex_archive_20261014/TempMam/data/Dataset/refer-kitti/KITTI/training/refer-kitti.train
+    --rmot_path /data1/liuyeqiang/nas/A100/codex_archive_20261014/TempMam/data/Dataset/refer-kitti
+    --hist_len 4 --refer_loss_coef 2 --seed 17 --fgref_v2_qim
+    --fgref_v2_qim_memory_dim 128 --fgref_v2_qim_history_length 8
+    --fgref_v2_qim_temporal_mode ema

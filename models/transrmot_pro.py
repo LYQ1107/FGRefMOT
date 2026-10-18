@@ -45,6 +45,13 @@ from .segmentation import sigmoid_focal_loss
 from .position_encoding import PositionEmbeddingSine1D
 from torch.cuda.amp import autocast as autocast
 from .spatial_temporal_reason import SpatialTemporalReasoner
+from .fgref_v2 import (
+    ReferringPairHead,
+    ReliabilityAwareQueryInteraction,
+    TextEvidenceEncoder,
+    TrackCentricTAMV2,
+    TrackEvidenceSampler,
+)
 os.environ["TOKENIZERS_PARALLELISM"] = "false"  # this disables a huggingface tokenizer warning (printed every epoch)
 
 class ClipMatcher(SetCriterion):
@@ -369,6 +376,19 @@ class ClipMatcher(SetCriterion):
             self.losses_dict.update(
                 {'frame_{}_temporal_{}'.format(frame_id, key): value for key, value in new_track_loss.items()})
         return
+
+    def add_zero_temporal_losses(self, frame_id, reference):
+        """Keep the legacy training/logging contract when QIM-v2 owns time.
+
+        QIM-v2 replaces the legacy STReasoner path in its opt-in mode, so the
+        old temporal-refinement losses are not silently reused.  The training
+        loop still expects these keys for logging; explicit zeros make the
+        changed supervision boundary visible and keep the baseline path
+        untouched.
+        """
+        zero = reference.sum() * 0.0
+        for name in ('ce', 'bbox', 'giou', 'refer'):
+            self.losses_dict[f'frame_{frame_id}_temporal_loss_{name}'] = zero
     
     def calc_iou(self,track_instances:Instances):
         frame_id = self._current_frame_idx-1
@@ -464,7 +484,12 @@ def _get_clones(module, N):
 
 class TransRMOT(nn.Module):
     def __init__(self, backbone, transformer, num_classes, num_queries, num_feature_levels, criterion, track_embed,
-                 aux_loss=True, with_box_refine=False, two_stage=False, memory_bank=None, use_checkpoint=False,tracking=False,hist_len=4):
+                 aux_loss=True, with_box_refine=False, two_stage=False, memory_bank=None, use_checkpoint=False,tracking=False,hist_len=4,
+                 fgref_v2_tam=False, fgref_v2_tam_local_points=4, fgref_v2_tam_context_points=8,
+                 fgref_v2_tam_conditional=False, fgref_v2_tam_heads=8,
+                 fgref_v2_qim=False, fgref_v2_qim_memory_dim=128,
+                 fgref_v2_qim_history_length=8, fgref_v2_qim_temporal_mode='ema',
+                 fgref_v2_qim_update_query_pos=False):
         """ Initializes the model.
         Parameters:
             backbone: torch module of the backbone to be used. See backbone.py
@@ -488,6 +513,10 @@ class TransRMOT(nn.Module):
         self.refer_embed = nn.Linear(hidden_dim, 1) # this is referring branch
         self.num_feature_levels = num_feature_levels
         self.use_checkpoint = use_checkpoint
+        self.fgref_v2_tam = None
+        self.fgref_v2_qim = bool(fgref_v2_qim)
+        self.fgref_v2_qim_memory_dim = int(fgref_v2_qim_memory_dim)
+        self.fgref_v2_qim_history_length = int(fgref_v2_qim_history_length)
         
         # Temporal Enhancement Module
         self.STReasoner = SpatialTemporalReasoner(hist_len=hist_len)
@@ -551,6 +580,35 @@ class TransRMOT(nn.Module):
         self.fusion_module = VisionLanguageFusionModule(d_model=hidden_dim, nhead=8)
         self.deepfuse = Triple_Alignment(num_layers=4, embed_dim=hidden_dim, num_heads=8) #gai
         self.text_pos = PositionEmbeddingSine1D(hidden_dim, normalize=True)
+
+        if fgref_v2_tam:
+            if use_checkpoint:
+                raise ValueError(
+                    "fgref_v2_tam currently requires --use_checkpoint to be disabled; "
+                    "its named visual/text evidence outputs are not part of the legacy "
+                    "checkpoint tuple yet."
+                )
+            tam_encoder = TextEvidenceEncoder(tokenizer=self.tokenizer)
+            tam_sampler = TrackEvidenceSampler(
+                [hidden_dim] * num_feature_levels,
+                hidden_dim,
+                num_local=fgref_v2_tam_local_points,
+                num_context=fgref_v2_tam_context_points,
+                conditional_offsets=fgref_v2_tam_conditional,
+            )
+            tam_head = ReferringPairHead(
+                hidden_dim,
+                hidden_dim,
+                text_dim=hidden_dim,
+                evidence_dim=hidden_dim,
+                history_dim=hidden_dim,
+                num_heads=fgref_v2_tam_heads,
+            )
+            self.fgref_v2_tam = TrackCentricTAMV2(
+                tam_encoder,
+                tam_sampler,
+                tam_head,
+            )
 
         prior_prob = 0.01 # positive prior probability
         bias_value = -math.log((1 - prior_prob) / prior_prob)
@@ -634,6 +692,23 @@ class TransRMOT(nn.Module):
         track_instances.mem_padding_mask = torch.ones((len(track_instances), mem_bank_len), dtype=torch.bool, device=device)
         track_instances.save_period = torch.zeros((len(track_instances), ), dtype=torch.float32, device=device)
 
+        if self.fgref_v2_qim:
+            memory_dim = self.fgref_v2_qim_memory_dim
+            history_length = self.fgref_v2_qim_history_length
+            track_instances.fgref_v2_identity_memory = torch.zeros(
+                (len(track_instances), memory_dim), dtype=torch.float32, device=device)
+            track_instances.fgref_v2_identity_memory_valid = torch.zeros(
+                (len(track_instances),), dtype=torch.bool, device=device)
+            track_instances.fgref_v2_dynamic_history = torch.zeros(
+                (len(track_instances), history_length, memory_dim),
+                dtype=torch.float32, device=device)
+            track_instances.fgref_v2_dynamic_history_mask = torch.zeros(
+                (len(track_instances), history_length), dtype=torch.bool, device=device)
+            track_instances.fgref_v2_observation_quality = torch.zeros(
+                (len(track_instances),), dtype=torch.float32, device=device)
+            track_instances.fgref_v2_memory_age = torch.zeros(
+                (len(track_instances),), dtype=torch.long, device=device)
+
         return track_instances.to(self.query_embed.weight.device)
 
     def clear(self):
@@ -657,10 +732,22 @@ class TransRMOT(nn.Module):
         text_features = self.txt_proj(text_features)
         return text_features, text_pad_mask, text_features
 
-    def forward_text(self, text_queries, device):
-        tokenized_queries = self.tokenizer.batch_encode_plus(text_queries, padding="longest", return_tensors='pt').to(device)
+    def forward_text(self, text_queries, device, return_tokens=False):
+        tokenized_queries = self.tokenizer.batch_encode_plus(
+            text_queries,
+            padding="longest",
+            return_offsets_mapping=return_tokens,
+            return_tensors='pt',
+        ).to(device)
         # with torch.inference_mode(mode=self.freeze_text_encoder):
-        encoded_text = self.text_encoder(**tokenized_queries)
+        # Fast-tokenizer offsets are evidence-routing metadata, not a valid
+        # RobertaModel.forward keyword. Keep them in the return value while
+        # passing only model-supported inputs to the text encoder.
+        encoder_inputs = {
+            key: value for key, value in tokenized_queries.items()
+            if key != 'offset_mapping'
+        }
+        encoded_text = self.text_encoder(**encoder_inputs)
         # Transpose memory because pytorch's attention expects sequence first
         text_features = encoded_text.last_hidden_state.clone()
         text_features = self.txt_proj(text_features)  # change text embeddings dim to model dim
@@ -668,6 +755,14 @@ class TransRMOT(nn.Module):
         text_pad_mask = tokenized_queries.attention_mask.ne(1).bool()  # [B, S]
 
         text_sentence_features = text_features
+        if return_tokens:
+            return (
+                text_features,
+                text_pad_mask,
+                text_sentence_features,
+                tokenized_queries.input_ids,
+                tokenized_queries.get('offset_mapping'),
+            )
         return text_features, text_pad_mask, text_sentence_features
 
     def _forward_single_image(self, samples, track_instances: Instances, sentences):
@@ -676,7 +771,23 @@ class TransRMOT(nn.Module):
         assert mask is not None
 
         # Extract linguistic features
-        text_word_features, text_word_mask, text_sentence_features = self.forward_text(sentences, src.device)
+        text_result = self.forward_text(
+            sentences,
+            src.device,
+            return_tokens=self.fgref_v2_tam is not None,
+        )
+        if self.fgref_v2_tam is not None:
+            (
+                text_word_features,
+                text_word_mask,
+                text_sentence_features,
+                tam_input_ids,
+                tam_offset_mapping,
+            ) = text_result
+            tam_text_embeddings = text_sentence_features
+        else:
+            text_word_features, text_word_mask, text_sentence_features = text_result
+            tam_input_ids = tam_offset_mapping = tam_text_embeddings = None
         text_word_features = text_word_features.flatten(0, 1).unsqueeze(0)
         text_word_mask = text_word_mask.flatten(0, 1).unsqueeze(0)
         text_pos = self.text_pos(NestedTensor(text_word_features, text_word_mask)).permute(2, 0, 1)
@@ -691,10 +802,16 @@ class TransRMOT(nn.Module):
 
         srcs = []
         masks = []
+        tam_visual_pyramid = []
+        tam_feature_masks = []
         for l, feat in enumerate(features):
             src, mask = feat.decompose()
             src_proj_l = self.input_proj[l](src) # 
             n, c, h, w = src_proj_l.shape
+
+            if self.fgref_v2_tam is not None:
+                tam_visual_pyramid.append(src_proj_l)
+                tam_feature_masks.append(mask)
 
             # gai----------------------------------------------
             mask_l = mask.view(1, -1)
@@ -747,6 +864,10 @@ class TransRMOT(nn.Module):
                 mask = F.interpolate(m[None].float(), size=src.shape[-2:]).to(torch.bool)[0]
                 pos_l = self.backbone[1](NestedTensor(src, mask)).to(src.dtype)
                 n, c, h, w = src.shape
+
+                if self.fgref_v2_tam is not None:
+                    tam_visual_pyramid.append(src)
+                    tam_feature_masks.append(mask)
 
                 src = rearrange(src, 'b c h w -> (h w) b c')
                 # gai----------------------------------------------
@@ -833,11 +954,56 @@ class TransRMOT(nn.Module):
         out['text_word_mask'] = text_word_mask 
         out['text_pos'] = text_pos 
         out['text_word_features'] = text_word_features 
+        if self.fgref_v2_tam is not None:
+            out['fgref_v2_visual_pyramid'] = tam_visual_pyramid
+            out['fgref_v2_feature_masks'] = tam_feature_masks
+            out['fgref_v2_input_ids'] = tam_input_ids
+            out['fgref_v2_offset_mapping'] = tam_offset_mapping
+            out['fgref_v2_text_embeddings'] = tam_text_embeddings
         return out
 
 
+    def _apply_fgref_v2_tam(self, frame_res, track_instances):
+        """Run the optional track-centric referring head after decoding.
+
+        The original decoder score is retained under
+        ``pred_refers_baseline`` for an explicit comparison.  The new score is
+        copied into the cache after the legacy cache load and is restored after
+        STReasoner so the old ``track_ref`` head cannot silently overwrite it.
+        """
+        if self.fgref_v2_tam is None:
+            return frame_res
+        visual_pyramid = frame_res.pop('fgref_v2_visual_pyramid')
+        feature_masks = frame_res.pop('fgref_v2_feature_masks')
+        input_ids = frame_res.pop('fgref_v2_input_ids')
+        offset_mapping = frame_res.pop('fgref_v2_offset_mapping')
+        text_embeddings = frame_res.pop('fgref_v2_text_embeddings')
+        query = track_instances.output_embedding
+        if query.ndim == 2:
+            query = query.unsqueeze(0)
+        boxes = frame_res['pred_boxes']
+        if boxes.ndim == 2:
+            boxes = boxes.unsqueeze(0)
+        frame_res['pred_refers_baseline'] = frame_res['pred_refers']
+        tam_output = self.fgref_v2_tam(
+            input_ids=input_ids,
+            attention_mask=(~frame_res['text_word_mask'].to(dtype=torch.bool)),
+            offset_mapping=offset_mapping,
+            text_embeddings=text_embeddings,
+            visual_pyramid=visual_pyramid,
+            predicted_boxes=boxes,
+            queries=query,
+            feature_masks=feature_masks,
+        )
+        frame_res['pred_refers'] = tam_output.refer_logits
+        frame_res['fgref_v2_valid_sample_mask'] = tam_output.valid_sample_mask
+        track_instances.cache_pred_refers = tam_output.refer_logits[0]
+        return frame_res
+
     def _post_process_single_image(self, frame_res, track_instances, is_last):
         frame_res['track_instances'] = track_instances
+        if self.fgref_v2_tam is not None:
+            frame_res = self._apply_fgref_v2_tam(frame_res, track_instances)
         text_result = {
             'text_word_mask':frame_res.pop('text_word_mask'),
             'text_pos':frame_res.pop('text_pos'),
@@ -854,8 +1020,29 @@ class TransRMOT(nn.Module):
                 self.criterion.calc_loss_for_track_scores(track_instances)
         
            
-        if self.training:
+        tam_refers = track_instances.cache_pred_refers.clone() if self.fgref_v2_tam is not None else None
+        if self.fgref_v2_qim:
+            # QIM-v2 owns temporal evidence and query writing in this opt-in
+            # path.  Do not stack the legacy STReasoner on top of it.  The
+            # current detection/referring losses remain active; explicit zero
+            # temporal-loss keys preserve engine.py's logging contract.
+            if self.training:
+                track_instances = self.criterion.calc_iou(track_instances)
+                self.criterion.add_zero_temporal_losses(
+                    self.criterion._current_frame_idx - 1,
+                    track_instances.cache_pred_logits,
+                )
+                track_instances = self.frame_summarization(track_instances, tracking=False)
+                frame_res['pred_logits'] = track_instances.pred_logits
+                frame_res['pred_boxes'] = track_instances.pred_boxes
+                frame_res['pred_refers'] = track_instances.pred_refers
+            else:
+                track_instances = self.frame_summarization(track_instances, tracking=True)
+                self.track_base.update(track_instances)
+        elif self.training:
             track_instances = self.STReasoner(track_instances,text_result,training=True)
+            if tam_refers is not None:
+                track_instances.cache_pred_refers = tam_refers
             track_instances = self.criterion.calc_iou(track_instances)
             self.criterion.loss_hist_reasoning(track_instances)
             track_instances = self.frame_summarization(track_instances, tracking=False)
@@ -864,6 +1051,8 @@ class TransRMOT(nn.Module):
             frame_res['pred_refers'] = track_instances.pred_refers
         else:
             track_instances = self.STReasoner(track_instances,text_result,training=False)
+            if tam_refers is not None:
+                track_instances.cache_pred_refers = tam_refers
             track_instances = self.frame_summarization(track_instances,tracking=True)
             self.track_base.update(track_instances)
         
@@ -1024,12 +1213,30 @@ def build(args):
     num_classes = dataset_to_num_classes[args.dataset_file]
     device = torch.device(args.device)
 
+    if getattr(args, 'fgref_v2_tam', False) and getattr(args, 'use_checkpoint', False):
+        raise ValueError(
+            'fgref_v2_tam is incompatible with the legacy activation-checkpoint '
+            'tuple; disable --use_checkpoint for the TAM-only experiment.'
+        )
+
     backbone = build_backbone(args)
 
     transformer = build_deforamble_transformer(args)
     d_model = transformer.d_model
     hidden_dim = args.dim_feedforward 
-    query_interaction_layer = build_query_interaction_layer(args, args.query_interaction_layer, d_model, hidden_dim, d_model*2)
+    if getattr(args, 'fgref_v2_qim', False):
+        query_interaction_layer = ReliabilityAwareQueryInteraction(
+            observation_dim=d_model,
+            query_dim=d_model,
+            memory_dim=getattr(args, 'fgref_v2_qim_memory_dim', 128),
+            history_length=getattr(args, 'fgref_v2_qim_history_length', 8),
+            temporal_mode=getattr(args, 'fgref_v2_qim_temporal_mode', 'ema'),
+            update_query_pos=getattr(args, 'fgref_v2_qim_update_query_pos', False),
+        )
+    else:
+        query_interaction_layer = build_query_interaction_layer(
+            args, args.query_interaction_layer, d_model, hidden_dim, d_model * 2
+        )
 
     img_matcher = build_matcher(args)
     print(args)
@@ -1079,6 +1286,16 @@ def build(args):
         memory_bank=memory_bank,
         use_checkpoint=args.use_checkpoint,
         tracking = args.tracking,
-        hist_len = args.hist_len
+        hist_len = args.hist_len,
+        fgref_v2_tam=getattr(args, 'fgref_v2_tam', False),
+        fgref_v2_tam_local_points=getattr(args, 'fgref_v2_tam_local_points', 4),
+        fgref_v2_tam_context_points=getattr(args, 'fgref_v2_tam_context_points', 8),
+        fgref_v2_tam_conditional=getattr(args, 'fgref_v2_tam_conditional', False),
+        fgref_v2_tam_heads=getattr(args, 'fgref_v2_tam_heads', 8),
+        fgref_v2_qim=getattr(args, 'fgref_v2_qim', False),
+        fgref_v2_qim_memory_dim=getattr(args, 'fgref_v2_qim_memory_dim', 128),
+        fgref_v2_qim_history_length=getattr(args, 'fgref_v2_qim_history_length', 8),
+        fgref_v2_qim_temporal_mode=getattr(args, 'fgref_v2_qim_temporal_mode', 'ema'),
+        fgref_v2_qim_update_query_pos=getattr(args, 'fgref_v2_qim_update_query_pos', False),
     )
     return model, criterion, postprocessors

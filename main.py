@@ -184,6 +184,22 @@ def get_args_parser():
     parser.add_argument('--use_checkpoint', action='store_true', default=False)
     parser.add_argument('--visualization', action='store_true', default=False)
 
+    # Optional FGRefMOT-v2 components. The baseline remains unchanged unless
+    # these flags are explicitly enabled.
+    parser.add_argument('--fgref_v2_tam', action='store_true', default=False,
+                        help='enable the prediction-box, track-centric TAM-v2 referring head')
+    parser.add_argument('--fgref_v2_tam_local_points', type=int, default=4)
+    parser.add_argument('--fgref_v2_tam_context_points', type=int, default=8)
+    parser.add_argument('--fgref_v2_tam_conditional', action='store_true', default=False)
+    parser.add_argument('--fgref_v2_tam_heads', type=int, default=8)
+    parser.add_argument('--fgref_v2_qim', action='store_true', default=False,
+                        help='replace the legacy row-wise QIM hook with reliability-aware ID-keyed QIM-v2')
+    parser.add_argument('--fgref_v2_qim_memory_dim', type=int, default=128)
+    parser.add_argument('--fgref_v2_qim_history_length', type=int, default=8)
+    parser.add_argument('--fgref_v2_qim_temporal_mode', type=str, default='ema',
+                        choices=('ema', 'gru', 'attention', 'mamba'))
+    parser.add_argument('--fgref_v2_qim_update_query_pos', action='store_true', default=False)
+
     # code by zyn
     parser.add_argument('--fp16',action='store_true',default=False)
     parser.add_argument('--zyn4tan',action='store_true',default=False)
