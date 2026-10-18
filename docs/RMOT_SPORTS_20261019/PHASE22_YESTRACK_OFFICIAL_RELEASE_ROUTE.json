@@ -1,0 +1,79 @@
+{
+  "phase": 22,
+  "phase_id": "PHASE22_YESTRACK_OFFICIAL_RELEASE_ROUTE",
+  "generated_at": "2026-10-18T21:21:04.914419+00:00",
+  "status": "BLOCKED_AT_SIGNED_DOWNLOAD",
+  "scope": "NAS-side acquisition probe for the official YesTrack public release archive",
+  "source": {
+    "share_url": "https://pan.baidu.com/s/1nwhcEIQshWk9TnNjhiYMrQ",
+    "public_extraction_code": "z5kt",
+    "expected_member": "/Yestrack/yestrack.zip",
+    "expected_size_bytes": 178142422,
+    "public_listing": {
+      "root_http_status": 200,
+      "root_errno": 0,
+      "member_http_status": 200,
+      "member_errno": 0,
+      "server_filename": "yestrack.zip",
+      "fs_id": "981448710771451",
+      "size_bytes": 178142422
+    }
+  },
+  "source_checkout_verification": {
+    "FlexHook": {
+      "path": "third_party/FlexHook",
+      "commit": "bd1acc38634b28525d54dc6e0fcb38335f0029f9",
+      "expected_commit": "bd1acc38634b28525d54dc6e0fcb38335f0029f9",
+      "match": true
+    },
+    "YesTrack": {
+      "path": "third_party/YesTrack",
+      "commit": "ed42b8315b28c94dc595d83b0d49bf57002bb281",
+      "expected_commit": "ed42b8315b28c94dc595d83b0d49bf57002bb281",
+      "match": true
+    }
+  },
+  "execution": {
+    "executor": "NAS-side Python process reached through the existing reverse SSH tunnel",
+    "nas_endpoint": "127.0.0.1:24557",
+    "proxy_used": false,
+    "cookie_value_recorded": false,
+    "signed_url_recorded": false,
+    "api_variants_tested": [
+      {
+        "channel": "chunlei",
+        "clienttype": 0,
+        "api_http_status": 200,
+        "api_errno": 0,
+        "dlink_host": "www.baidupcs.com",
+        "download_probe_status": 403
+      },
+      {
+        "channel": "weixin",
+        "clienttype": 0,
+        "api_http_status": 200,
+        "api_errno": 0,
+        "dlink_host": "www.baidupcs.com",
+        "download_probe_status": 403
+      }
+    ]
+  },
+  "download_probe": {
+    "request": "GET signed dlink with Range bytes=0-1023 from the same NAS-side process",
+    "http_status": 403,
+    "response_bytes": 91,
+    "error_code": 31064,
+    "error_message": "file is not authorized",
+    "zip_magic_observed": false,
+    "partial_archive_published": false
+  },
+  "decision": {
+    "archive_acquired": false,
+    "lora_checkpoint_ready": false,
+    "tracker_results_acquired": false,
+    "gt_used_as_tracker_input": false,
+    "gpu_job_started": false,
+    "reason": "The public directory listing works, but every NAS-side signed-link probe is rejected by the download service with 31064; no archive bytes are accepted as a checkpoint asset.",
+    "next_action": "Use an authenticated browser/client download or another authorized release endpoint, then verify the 178142422-byte archive and member hashes before extracting any LoRA or tracker result."
+  }
+}
