@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "phase": 16,
+  "audit_date": "2026-10-19",
+  "status": "SAMPLE_INTERFACE_SMOKE_OK_EXTERNAL_ASSETS_PENDING",
+  "gpu_jobs_started": false,
+  "command": "scripts/yestrack_sportsmot_smoke.py --layout-root runs/yestrack_sports_layout_20261019_v1 --sequence-limit 1 --json",
+  "policy": "SUPERVISED_SAMPLE_ONLY; NO_QWEN; NO_LORA; NO_TRACKER; NO_GT_AS_TRACKER_INPUT",
+  "sequence_limit": 1,
+  "splits": {
+    "train": {
+      "sequence_names": ["v_-6Os86HzwCs_c001"],
+      "single_sample_count": 48444,
+      "video_sample_count": 48444,
+      "single_first": {
+        "frame_count": 1,
+        "image_sizes": [[384, 384]],
+        "label": 0,
+        "text_chars": 104,
+        "text_prefix": "The target at <0.099 0.675> matches: basketball players wearing blue number 3 jerseys. Answer Yes or No."
+      },
+      "video_first": {
+        "frame_count": 1,
+        "image_sizes": [[384, 384]],
+        "label": 0,
+        "text_chars": 94,
+        "text_prefix": "Clip target <0.099 0.675>: basketball players wearing blue number 3 jerseys. Answer Yes or No."
+      }
+    },
+    "val": {
+      "sequence_names": ["v_-6Os86HzwCs_c007"],
+      "single_sample_count": 31362,
+      "video_sample_count": 31362,
+      "single_first": {
+        "frame_count": 1,
+        "image_sizes": [[384, 384]],
+        "label": 0,
+        "text_chars": 104,
+        "text_prefix": "The target at <0.257 0.556> matches: basketball players wearing blue number 6 jerseys. Answer Yes or No."
+      },
+      "video_first": {
+        "frame_count": 1,
+        "image_sizes": [[384, 384]],
+        "label": 0,
+        "text_chars": 94,
+        "text_prefix": "Clip target <0.257 0.556>: basketball players wearing blue number 6 jerseys. Answer Yes or No."
+      }
+    }
+  },
+  "interpretation": {
+    "single_frame_interface_verified": true,
+    "video_interface_verified": true,
+    "first_video_item_has_one_frame_because_it_is_at_sequence_start": true,
+    "qwen_loaded": false,
+    "lora_loaded": false,
+    "tracker_outputs_created": false,
+    "training_claim": false
+  },
+  "next_action": "Repeat the sample smoke after the verified Qwen base model arrives, then run the selected Y1/Y2/Y3 contract only after the common tracker gate is ready."
+}
