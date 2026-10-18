@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "phase": 23,
+  "audit_date": "2026-10-19",
+  "status": "CANDIDATE_ACQUIRED_TRACKER_READY_OVERALL_BASELINE_PENDING",
+  "gpu_jobs_started": false,
+  "workspace": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019",
+  "branch": "research/sports-rmot-strong-baselines-20261019",
+  "asset": {
+    "tracker_name": "SambaMOTR-DAB-D-DETR",
+    "tracker_architecture": "SambaMOTR with integrated DAB-D-DETR detector",
+    "detector_mode": "integrated_end_to_end_model",
+    "dataset": "SportsMOT",
+    "split": "test",
+    "nas_path": "/home/Valadmin/A100/FGREF_RMOT_SPORTS_20261019/assets/pretrained/common_tracker/sambamotr_sportsmot_dab",
+    "mounted_path": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/assets/pretrained/common_tracker/sambamotr_sportsmot_dab",
+    "source_repository": "https://github.com/mattiasegu/sambamotr",
+    "source_repository_commit": "f1c139a653c00a55c0873a64d7c59a67d7dbad44",
+    "source_huggingface_repository": "mattiasegu/sambamotr",
+    "source_huggingface_revision": "8c29646b16715761861a2db4cee1e877d8c63c87",
+    "source_variant": "sambamotr_pretrained/sportsmot/dab_detr",
+    "source_manifest_path": "source/DOWNLOAD_MANIFEST.json",
+    "source_manifest_sha256": "8d96bfa38ff6feef0886785b50ce4d1cadc9b5f1844ae309a6d766cd0e4384b4",
+    "source_tree_path": "source/SOURCE_TREE.json",
+    "source_tree_sha256": "d556d922757ecac28ac51d3a2e1977ee8fd979a33c23cceb2595ac85bdf22be3",
+    "detector_checkpoint_path": "sambamotr_dab_sportsmot.pth",
+    "detector_checkpoint_size_bytes": 591484713,
+    "detector_checkpoint_sha256": "55ee27ac975311dbb2abffe016010404a843e9404105773672be41545f1f6b5c",
+    "tracker_config_path": "source/sambamotr_dab_sportsmot.yaml",
+    "tracker_config_sha256": "e1bb9d34c6b56d44db6b378bea723e0de59423b981b935ec5165be8c83cf96fe",
+    "tracker_manifest_path": "tracker_manifest.json",
+    "tracker_manifest_sha256": "a7df4f4004eb02910c5fe1b9010bd889e6be28044ed105fdcb359d2984c95018"
+  },
+  "outputs": {
+    "relative_root": "tracker_outputs",
+    "count": 150,
+    "total_bytes": 88592457,
+    "source_output_subtree": "sambamotr_pretrained/sportsmot/dab_detr/test/tracker",
+    "all_local_sportsmot_test_sequence_names_match": true,
+    "row_count": 998952,
+    "columns_per_row": 10,
+    "malformed_row_count": 0,
+    "frame_min": 1,
+    "frame_max": 3676,
+    "track_id_min": 0,
+    "track_id_max": 73,
+    "used_ground_truth": false,
+    "generated_from_frames_without_ground_truth": true,
+    "per_file_sha256_and_source_oid_recorded_in": "tracker_manifest.json"
+  },
+  "refer_sports_mapping": {
+    "expression_manifest_test_video_count": 19,
+    "expression_manifest_test_expression_count": 142,
+    "mapping": "Refer-Sports evaluation videos are a filename-matching subset of the 150 SportsMOT test outputs.",
+    "offline_gt_used_for_mapping": false
+  },
+  "preflight": {
+    "command": "python3 scripts/preflight_baseline_assets.py --flexhook-layout runs/flexhook_sports_layout_20261019_v2 --yestrack-layout runs/yestrack_sports_layout_20261019_v1 --tracker-root /data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/assets/pretrained/common_tracker/sambamotr_sportsmot_dab --hash-files --json --output runs/baseline_asset_preflight_20261019/phase23_tracker_preflight.json",
+    "common_sports_tracker": {
+      "status": "READY",
+      "declared_output_count": 150,
+      "verified_output_count": 150,
+      "reasons": []
+    },
+    "overall_status": "PENDING",
+    "pending_checks_in_this_invocation": [
+      "roberta_base",
+      "rope_swin_tiny",
+      "flexhook_task_checkpoint",
+      "yestrack_lora_checkpoint",
+      "yestrack_base_model"
+    ],
+    "policy": {
+      "gpu_jobs_started": false,
+      "gt_or_labels_as_tracker_input": "REJECTED",
+      "unverified_external_asset_substitution": "REJECTED"
+    },
+    "report_local_copy": "runs/baseline_asset_preflight_20261019/phase23_tracker_preflight.json"
+  },
+  "protocol": {
+    "activation_status": "CANDIDATE_ACQUIRED_NOT_YET_USED",
+    "compatibility_input_type": "detector_outputs",
+    "compatibility_note": "The current gate uses detector_outputs; this candidate is explicitly recorded as an integrated end-to-end detector-plus-tracker release and is not claimed to be an external-detector-plus-ByteTrack run.",
+    "activation_requirement": "After protocol review, keep this exact fixed output root for every referring method and record any gate/schema revision before evaluation."
+  },
+  "next_action": "Rerun full preflight with the acquired pretrained paths, resolve the missing official task/LoRA checkpoints, and decide whether the integrated tracker candidate satisfies the common-tracker protocol before any GPU launch."
+}
