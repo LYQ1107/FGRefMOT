@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "phase": 28,
+  "audit_date": "2026-10-19",
+  "status": "F1_SECOND_ATTEMPT_TOKENIZER_API_BLOCKED_COMPATIBILITY_RETRY_READY",
+  "gpu_jobs_started": false,
+  "workspace": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019",
+  "branch": "research/sports-rmot-strong-baselines-20261019",
+  "second_attempt": {
+    "run_id": "flexhook_f1_sports_trained_seed42",
+    "status": "BLOCKED_IN_FIRST_DATA_BATCH",
+    "log_path": "runs/gpu/flexhook_f1_sports_trained_seed42.log",
+    "model_parameter_count": 248218728,
+    "startup_checkpoint": "ckpt_epoch_-1.pth",
+    "startup_checkpoint_is_result": false,
+    "epoch_started": false,
+    "metrics_produced": false,
+    "error_class": "AttributeError",
+    "error": "RobertaTokenizerFast has no attribute batch_encode_plus",
+    "root_cause": "compatibility shim was installed by smoke entrypoint but not by the training launcher",
+    "post_failure_gpu1": {
+      "utilization_gpu_percent": 0,
+      "memory_used_mib": 17,
+      "compute_processes": []
+    }
+  },
+  "correction": {
+    "launcher": "scripts/launch_flexhook.py",
+    "launcher_sha256": "4b58ff965e597c19cf92289a514b09745c3d7bba961f6c36104bd3771aab1776",
+    "behavior": "run FlexHook main.py in-process after install_legacy_tokenizer_alias; retain execvp for other commands",
+    "probe": "temporary FlexHook/main.py reported batch_encode_plus True",
+    "vendored_checkout_modified": false
+  },
+  "contract": {
+    "path": "runs/contracts_20261019/flexhook_f1_sports_trained_seed42.json",
+    "sha256": "ea5384746c416514352946d60cf7250754de6fc97bbc0dfc4ce6099cdef99c93",
+    "check": "contract: READY — hashes and policy verified",
+    "launcher_recorded_as_source_file": true
+  },
+  "logging_policy": {
+    "previous_pipeline": "tee_without_pipefail; visible traceback but masked shell exit status",
+    "retry_pipeline": "set -o pipefail; tee -a",
+    "log_preserves_prior_attempts": true
+  },
+  "next_action": "Update and resync the retry manifest, then run the corrected F1 command with pipefail on physical GPU 1."
+}

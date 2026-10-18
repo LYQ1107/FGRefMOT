@@ -24,7 +24,7 @@
     "command": "CUDA_VISIBLE_DEVICES='' python scripts/launch_flexhook.py --runtime-root runs/flexhook_runtime_20261019 -- python /data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/third_party/FlexHook/main.py --help",
     "status": "PASS_AFTER_DEPENDENCY_REPAIR",
     "policy": "IMPORT_ONLY; NO_GPU; NO_PREDICTION_OUTPUT",
-    "launcher_sha256": "7930c8f72a9f7b8b018d3941bc9f1e32940daf443c1188fbfe012bb019b7fd9b",
+    "launcher_sha256": "4b58ff965e597c19cf92289a514b09745c3d7bba961f6c36104bd3771aab1776",
     "upstream_files": [
       {
         "path": "third_party/FlexHook/main.py",
