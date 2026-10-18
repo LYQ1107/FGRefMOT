@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "phase": 10,
+  "status": "PENDING_EXTERNAL_ASSETS",
+  "gpu_jobs_started": false,
+  "policy": {
+    "gt_or_labels_as_tracker_input": "REJECTED",
+    "placeholder_protocol_values": "REJECTED",
+    "unverified_external_asset_substitution": "REJECTED"
+  },
+  "protocol_defaults": {
+    "seed": 42,
+    "train_split": "train",
+    "evaluation_split": "val",
+    "tracker_policy": "common_physical_tracker_detector_outputs"
+  },
+  "contracts": [
+    {
+      "method": "flexhook",
+      "path": "docs/RMOT_SPORTS_20261019/FLEXHOOK_BASELINE_RUN_CONTRACT.json",
+      "sha256": "1d2e308cc4ee69f9ea86cc2ef2af854b2ba4229a2de97d52eef06776725ac376",
+      "status": "PENDING",
+      "ready_to_launch": false
+    },
+    {
+      "method": "yestrack",
+      "path": "docs/RMOT_SPORTS_20261019/YESTRACK_BASELINE_RUN_CONTRACT.json",
+      "sha256": "f689d56753098863d65f2e39a532fea60ee09bd9c7b044e4e25f0c75b7291a1f",
+      "status": "PENDING",
+      "ready_to_launch": false
+    }
+  ],
+  "next_action": "Acquire and hash the official method assets and common SportsMOT tracker; replace protocol placeholders; rebuild and pass the run contract before any GPU launch."
+}

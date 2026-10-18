@@ -1,0 +1,162 @@
+{
+  "blocking_reasons": [
+    "preflight_pending:roberta_base",
+    "preflight_pending:rope_swin_tiny",
+    "preflight_pending:flexhook_task_checkpoint",
+    "preflight_pending:yestrack_lora_checkpoint",
+    "preflight_pending:yestrack_base_model",
+    "preflight_pending:common_sports_tracker",
+    "asset_check_not_ready:roberta_base",
+    "asset_check_not_ready:rope_swin_tiny",
+    "asset_check_not_ready:flexhook_task_checkpoint",
+    "asset_check_not_ready:common_sports_tracker",
+    "protocol_thresholds_missing",
+    "protocol_hyperparameters_missing_or_not_object",
+    "protocol_launch_command_missing_or_invalid"
+  ],
+  "code": {
+    "git": {
+      "branch": "research/sports-rmot-strong-baselines-20261019",
+      "clean": false,
+      "head": "8d004ba35dd377d448ec955a65561f7e34ecd97d",
+      "status": "?? docs/RMOT_SPORTS_20261019/PHASE10_RUN_CONTRACT.json\n?? docs/RMOT_SPORTS_20261019/PHASE10_RUN_CONTRACT.md\n?? scripts/run_contract.py\n?? tests/test_run_contract.py",
+      "workspace": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019"
+    },
+    "official_source_commits": {
+      "FLEXHOOK_COMMIT": "bd1acc38634b28525d54dc6e0fcb38335f0029f9",
+      "YESTRACK_COMMIT": "ed42b8315b28c94dc595d83b0d49bf57002bb281"
+    },
+    "source_files": {
+      "configs/official_sources.env.example": {
+        "path": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/configs/official_sources.env.example",
+        "sha256": "5fed05ac82cb21cfcba8bffa4d76db153d15f0377b453b61335074e2d22b48a4",
+        "size_bytes": 627
+      },
+      "scripts/preflight_baseline_assets.py": {
+        "path": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/scripts/preflight_baseline_assets.py",
+        "sha256": "e98c17c8f82c17017dd15987ab90978b1430c5d313e4264b194c09f0a85449ea",
+        "size_bytes": 18262
+      },
+      "scripts/run_contract.py": {
+        "path": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/scripts/run_contract.py",
+        "sha256": "d4cb34a293691731fdf3dcbc210723421b9db6f47905d414c0bf7c58f381d837",
+        "size_bytes": 18195
+      }
+    }
+  },
+  "contract_id": "flexhook_baseline_seed42",
+  "environment": {
+    "cuda_visible_devices": "",
+    "nvidia_visible_devices": "",
+    "platform": "Linux-7.0.0-38-generic-x86_64-with-glibc2.39",
+    "python_executable": "/usr/bin/python3",
+    "python_version": "3.12.3"
+  },
+  "generated_at": "2026-10-18T20:02:50.705414+00:00",
+  "inputs": {
+    "assets": {
+      "common_sports_tracker": {
+        "kind": "physical_tracker_outputs",
+        "name": "common_sports_tracker",
+        "path": "<not provided>",
+        "reasons": [
+          "path_not_provided"
+        ],
+        "required_for_training": true,
+        "status": "MISSING"
+      },
+      "flexhook_task_checkpoint": {
+        "kind": "checkpoint",
+        "name": "flexhook_task_checkpoint",
+        "path": "<not provided>",
+        "reasons": [
+          "path_not_provided"
+        ],
+        "required_for_training": true,
+        "status": "MISSING"
+      },
+      "roberta_base": {
+        "files": [],
+        "kind": "directory",
+        "name": "roberta_base",
+        "path": "<not provided>",
+        "reasons": [
+          "path_not_provided"
+        ],
+        "required_for_training": true,
+        "status": "MISSING"
+      },
+      "rope_swin_tiny": {
+        "files": [],
+        "kind": "directory",
+        "name": "rope_swin_tiny",
+        "path": "<not provided>",
+        "reasons": [
+          "path_not_provided"
+        ],
+        "required_for_training": true,
+        "status": "MISSING"
+      }
+    },
+    "dataset_manifest": {
+      "path": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/data/refer_sports_manifest.json",
+      "sha256": "88e0ba5cfcf522887237af7fd4be075b7d0ad4cbac373ab56fbcd8fda21e25a3",
+      "size_bytes": 1006229
+    },
+    "layout": {
+      "check_name": "flexhook_layout",
+      "record": {
+        "path": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/runs/flexhook_sports_layout_20261019_v2/manifest.json",
+        "sha256": "2c96136fb70f64ae006dd34db61379c8c27f57806a10d9bd3b067783bc38d54c",
+        "size_bytes": 18825
+      }
+    },
+    "preflight": {
+      "overall_status": "PENDING",
+      "pending_checks": [
+        "roberta_base",
+        "rope_swin_tiny",
+        "flexhook_task_checkpoint",
+        "yestrack_lora_checkpoint",
+        "yestrack_base_model",
+        "common_sports_tracker"
+      ],
+      "record": {
+        "path": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/docs/RMOT_SPORTS_20261019/PHASE7_BASELINE_ASSET_PREFLIGHT.json",
+        "sha256": "b1a84789efa8f05b0aef0aa4a79f9a474ff6ef7e9401a279fe1a4dc3bc4828fa",
+        "size_bytes": 2927
+      }
+    }
+  },
+  "method": "flexhook",
+  "policy": {
+    "external_asset_substitution": "REJECTED",
+    "gpu_job_started_by_contract_builder": false,
+    "gt_or_labels_as_tracker_input": "REJECTED",
+    "tracker_outputs_must_be_common_across_methods": true
+  },
+  "protocol": {
+    "evaluation_split": "val",
+    "hyperparameters": {
+      "source": "PENDING_OFFICIAL_RUN_CONFIG"
+    },
+    "launch_command": [
+      "PENDING_OFFICIAL_RUN_COMMAND"
+    ],
+    "seed": 42,
+    "thresholds": {
+      "association": "PENDING_UPSTREAM_CONFIG",
+      "detector_score": "PENDING_UPSTREAM_CONFIG"
+    },
+    "tracker_policy": "common_physical_tracker_detector_outputs",
+    "train_split": "train"
+  },
+  "ready_to_launch": false,
+  "schema_version": 1,
+  "status": "PENDING",
+  "validation": {
+    "layout_policy_checked": true,
+    "preflight_reused_without_mutation": true,
+    "protocol_complete": false
+  }
+}
