@@ -26,7 +26,7 @@ checkpoint from another dataset or an unverified public file.
 
 FlexHook F1 is recorded at
 `runs/contracts_20261019/flexhook_f1_sports_trained_seed42.json` (SHA-256
-`f383fa4fb63b45e5503c1c4e94e90e44085c210909902783dd66389f5b3c4aec`). Its
+`c09a700ff83175c3af1c56c87c31f9705a47585d40a32b75cab6c720f09d7a91`). Its
 `run_contract.py --check --require-ready` gate passed. It trains from the
 public NAS RoBERTa and RoPE-Swin-Tiny assets with the SportsMOT training split,
 the common fixed SambaMOTR-DAB-D-DETR tracker output root, and the exact

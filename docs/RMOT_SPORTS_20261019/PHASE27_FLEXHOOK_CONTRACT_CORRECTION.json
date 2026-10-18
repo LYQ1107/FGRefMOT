@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "phase": 27,
+  "audit_date": "2026-10-19",
+  "status": "F1_FIRST_LAUNCH_BLOCKED_TYPE_ERROR_CONTRACT_CORRECTED",
+  "gpu_jobs_started": false,
+  "workspace": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019",
+  "branch": "research/sports-rmot-strong-baselines-20261019",
+  "first_attempt": {
+    "run_id": "flexhook_f1_sports_trained_seed42",
+    "status": "BLOCKED_BEFORE_MODEL_INIT",
+    "log_path": "runs/gpu/flexhook_f1_sports_trained_seed42.log",
+    "error_class": "yacs.ValueError",
+    "error": "Type mismatch (<class 'list'> vs. <class 'str'>) for config key DATA.TRAIN",
+    "model_initialized": false,
+    "training_loop_started": false,
+    "checkpoint_written": false,
+    "gpu_process_left_running": false,
+    "post_failure_gpu1": {
+      "utilization_gpu_percent": 0,
+      "memory_used_mib": 17,
+      "compute_processes": []
+    }
+  },
+  "corrected_contract": {
+    "path": "runs/contracts_20261019/flexhook_f1_sports_trained_seed42.json",
+    "sha256": "c09a700ff83175c3af1c56c87c31f9705a47585d40a32b75cab6c720f09d7a91",
+    "check": "contract: READY — hashes and policy verified",
+    "overrides": {
+      "DATA.DATASET": "mix",
+      "DATA.TRAIN": ["SportsMOT"],
+      "DATA.TEST": ["SportsMOT"],
+      "sample_frame_stride": [30],
+      "val_sample_frame_stride": [24],
+      "val_set_scale": [5],
+      "SEED": 42
+    },
+    "parser_smoke": "config.parse_option produced the expected list-valued fields without GPU allocation"
+  },
+  "policy": {
+    "third_party_modified": false,
+    "gt_or_labels_as_tracker_input": "REJECTED",
+    "other_gpu_jobs_modified": false
+  },
+  "next_action": "Update and resync the F1 run manifest, recheck GPU 1, then retry the exact corrected command."
+}

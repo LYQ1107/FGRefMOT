@@ -56,7 +56,7 @@
       "method": "FlexHook",
       "variant": "F1",
       "path": "runs/contracts_20261019/flexhook_f1_sports_trained_seed42.json",
-      "sha256": "f383fa4fb63b45e5503c1c4e94e90e44085c210909902783dd66389f5b3c4aec",
+      "sha256": "c09a700ff83175c3af1c56c87c31f9705a47585d40a32b75cab6c720f09d7a91",
       "status": "READY",
       "final_check": "contract: READY — hashes and policy verified",
       "seed": 42,
