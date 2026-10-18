@@ -144,6 +144,77 @@ def check_checkpoint(
     return result
 
 
+def check_model_directory(
+    name: str,
+    path_value: str | Path | None,
+    required_files: Iterable[str],
+    *,
+    hash_files: bool = False,
+) -> dict[str, Any]:
+    """Check a local multimodal base-model directory and its weight shards.
+
+    YesTrack's LoRA adapter is not loadable by itself: the matching Qwen base
+    model, processor, tokenizer, and weight shards are required first.  The
+    finite root-level shard list is recorded and hashed when requested; no
+    recursive cache traversal is performed.
+    """
+
+    path_text = _display_path(path_value)
+    result: dict[str, Any] = {
+        "name": name,
+        "kind": "base_model_directory",
+        "path": path_text,
+        "required_for_training": True,
+        "status": MISSING,
+        "files": [],
+        "weight_files": [],
+        "reasons": [],
+    }
+    if path_text == "<not provided>":
+        result["reasons"].append("path_not_provided")
+        return result
+
+    path = Path(path_text)
+    if not path.exists():
+        result["reasons"].append("path_does_not_exist")
+        return result
+    if not path.is_dir():
+        result["status"] = INVALID
+        result["reasons"].append("path_is_not_a_directory")
+        return result
+
+    missing = [relative for relative in required_files if not (path / relative).is_file()]
+    if missing:
+        result["reasons"].append("missing_files:" + ",".join(missing))
+    for relative in required_files:
+        candidate = path / relative
+        if candidate.is_file() and candidate.stat().st_size > 0:
+            result["files"].append(_file_info(candidate, hash_files))
+
+    weight_files = sorted(
+        {
+            candidate
+            for pattern in ("*.safetensors", "*.bin", "*.pt", "*.pth")
+            for candidate in path.glob(pattern)
+            if candidate.is_file() and candidate.stat().st_size > 0
+        }
+    )
+    if not weight_files:
+        result["reasons"].append("no_root_level_model_weight_files")
+    else:
+        result["weight_files"] = [_file_info(candidate, hash_files) for candidate in weight_files]
+
+    if result["reasons"]:
+        result["status"] = INVALID if path.exists() else MISSING
+        return result
+    if not hash_files:
+        result["status"] = UNVERIFIED
+        result["reasons"].append("run_with_hash_files_to_record_base_model_hashes")
+        return result
+    result["status"] = READY
+    return result
+
+
 def _safe_relative_path(value: str) -> bool:
     candidate = Path(value)
     return not candidate.is_absolute() and ".." not in candidate.parts
@@ -351,6 +422,12 @@ def build_report(args: argparse.Namespace) -> dict[str, Any]:
         ),
         check_checkpoint("flexhook_task_checkpoint", args.flexhook_checkpoint, hash_files=args.hash_files),
         check_checkpoint("yestrack_lora_checkpoint", args.yestrack_lora, hash_files=args.hash_files),
+        check_model_directory(
+            "yestrack_base_model",
+            args.yestrack_base_model,
+            ("config.json", "preprocessor_config.json", "tokenizer_config.json"),
+            hash_files=args.hash_files,
+        ),
         check_tracker_root("common_sports_tracker", args.tracker_root, hash_files=args.hash_files),
     ]
     pending = [item["name"] for item in checks if item["status"] != READY]
@@ -386,6 +463,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--swin-dir", default=os.environ.get("FLEXHOOK_SWIN_DIR", ""))
     parser.add_argument("--flexhook-checkpoint", default=os.environ.get("FLEXHOOK_TASK_CHECKPOINT", ""))
     parser.add_argument("--yestrack-lora", default=os.environ.get("YESTRACK_LORA_CHECKPOINT", ""))
+    parser.add_argument("--yestrack-base-model", default=os.environ.get("YESTRACK_BASE_MODEL_DIR", ""))
     parser.add_argument("--tracker-root", default=os.environ.get("COMMON_TRACKER_ROOT", ""))
     parser.add_argument("--output", default=_default_path("runs/baseline_asset_preflight_20261019/report.json"))
     parser.add_argument("--hash-files", action="store_true", help="hash finite listed files; required for output hash verification")

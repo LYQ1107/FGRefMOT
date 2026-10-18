@@ -8,6 +8,7 @@ from scripts.preflight_baseline_assets import (
     INVALID,
     READY,
     check_directory,
+    check_model_directory,
     check_tracker_root,
 )
 
@@ -39,6 +40,21 @@ class BaselineAssetPreflightTest(unittest.TestCase):
             result = check_tracker_root("common_sports_tracker", root)
             self.assertEqual(result["status"], INVALID)
             self.assertTrue(any("used_ground_truth" in reason for reason in result["reasons"]))
+
+    def test_yestrack_base_model_requires_processor_and_weight_shard(self):
+        with tempfile.TemporaryDirectory() as raw:
+            root = Path(raw)
+            for name in ("config.json", "preprocessor_config.json", "tokenizer_config.json"):
+                (root / name).write_text("{}", encoding="utf-8")
+            (root / "model-00001-of-00001.safetensors").write_bytes(b"weights")
+            result = check_model_directory(
+                "yestrack_base_model",
+                root,
+                ("config.json", "preprocessor_config.json", "tokenizer_config.json"),
+                hash_files=True,
+            )
+            self.assertEqual(result["status"], READY)
+            self.assertEqual(len(result["weight_files"]), 1)
 
     def test_tracker_manifest_checks_output_hash(self):
         with tempfile.TemporaryDirectory() as raw:

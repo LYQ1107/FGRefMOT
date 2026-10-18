@@ -30,6 +30,7 @@ The two generated data layouts are ready and carry their no-GT policy markers:
 | FlexHook ROPE-Swin directory | MISSING — no verified local files supplied |
 | FlexHook task checkpoint | MISSING — no verified local file supplied |
 | YesTrack LoRA/task checkpoint | MISSING — no verified local file supplied |
+| YesTrack Qwen base-model directory | MISSING — no verified local model/processor/weight files supplied |
 | Common SportsMOT physical-tracker output | MISSING — no provenance-complete output supplied |
 
 The overall status is **PENDING**.  The missing entries are intentionally not
@@ -48,3 +49,8 @@ checkpoints under the archived TempMam/TempRMOT projects, but their code and
 README identify them as TempRMOT/Refer-KITTI artifacts.  They have no
 FlexHook/YesTrack provenance or SportsMOT detector-output tracker manifest and
 are therefore explicitly rejected as substitutes.
+
+The external acquisition probe is recorded in
+`PHASE9_EXTERNAL_ASSET_ACQUISITION_AUDIT.md`.  The strict gate also requires
+the local Qwen base-model directory used by `llm_train.py`; a YesTrack LoRA
+adapter without its matching base model is not a trainable asset.
