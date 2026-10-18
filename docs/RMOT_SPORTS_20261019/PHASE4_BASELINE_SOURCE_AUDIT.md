@@ -102,10 +102,14 @@ timestamp edit invalidated the signature.  Therefore these listings are an
 inventory only; no local weight, checkpoint, or tracker result is marked
 verified from them.
 
-The YesTrack README's official share is recorded as a second acquisition
-source for its Refer-KITTI V1/V2 LoRA weights and pure-tracker candidate
-results.  Those materials are not a SportsMOT adapter, and no bytes from that
-share are marked present in this workspace.
+The YesTrack README's official share is
+`https://pan.baidu.com/s/1nwhcEIQshWk9TnNjhiYMrQ` (extraction code `z5kt`).
+Its public metadata currently exposes `/Yestrack/yestrack.zip` with size
+178,142,422 bytes.  This is an inventory observation only: the archive was
+not downloaded, unpacked, or treated as a local checkpoint, and its contents
+are described by the upstream README as Refer-KITTI V1/V2 LoRA weights,
+Refer-KITTI evaluation GT, and TempRMOT* candidate tracks.  Those materials
+are not a verified SportsMOT adapter or common tracker for this study.
 
 The executable guard and the point-in-time result are in
 `PHASE7_BASELINE_ASSET_PREFLIGHT.md` and
