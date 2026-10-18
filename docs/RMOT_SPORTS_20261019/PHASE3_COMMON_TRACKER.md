@@ -31,6 +31,10 @@ checkpoint hash can be reconstructed.
   **UNVERIFIED** and are not used.
 * The NAS `refer-kitti-v2` assets are Refer-KITTI materials, not a valid
   substitute for the Refer-Sports physical-tracker input.
+* The audited `labels_with_ids` files are annotation-derived global-ID boxes.
+  They were used to construct evaluation-only GT for 142 test expressions
+  (346,247 rows) and were not passed to a detector, tracker, or referring
+  model.
 
 ## Decision
 
