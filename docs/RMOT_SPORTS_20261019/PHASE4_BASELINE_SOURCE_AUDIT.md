@@ -49,15 +49,26 @@ the only parse failures.  The isolated environment also lacks `skimage` in
 addition to the language-model packages, so TrackEval imports have not been
 claimed as ready.
 
-An isolated environment skeleton now exists at
+An isolated environment now exists at
 `/data3/liuyeqiang/.venvs/fgrefmot-rmot-sports-20261019`.  It uses a read-only
 `.pth` entry for the existing Torch 2.6.0+cu118/vision stack and has its own
-site-packages directory.  A dry-run install of the missing `yacs`, `wordninja`,
-Transformers, Accelerate, PEFT, bitsandbytes, and SentencePiece packages could
-not reach PyPI through the current proxy (`SSLEOFError` while fetching
-`https://pypi.org/simple/yacs/`).  No packages were installed and this
-environment is **not ready for training**; the pre-existing project
-environments were left untouched.
+site-packages directory.  PyPI remains unreachable through the current proxy
+(`SSLEOFError` while fetching `https://pypi.org/simple/yacs/`), so the pure
+Python pieces that were independently obtainable through the repaired GitHub
+route were installed from pinned local checkouts:
+
+| package | source / version | verification |
+|---|---|---|
+| yacs | `0.1.8`, `rbgirshick/yacs` commit `32d5e4ac300e…` | import succeeds |
+| wordninja | `keredson/wordninja` commit `0421d148cd3d…` | import and split smoke test succeed |
+| transformers | tag `v5.2.0`, commit `7d9754a05193…` | package imports; model/tokenizer imports still require tokenizers |
+| scikit-image | `0.25.2` copied into the dedicated environment from the existing agristl package | import succeeds |
+
+The dedicated environment still lacks `tokenizers`, `typer-slim`,
+Accelerate, PEFT, bitsandbytes, and SentencePiece.  `from transformers import
+RobertaTokenizerFast` and `RobertaModel` therefore fail at the missing
+`tokenizers` extension.  No package was installed into another project's
+environment, and this environment remains **not ready for training**.
 
 ## Status and guardrails
 
