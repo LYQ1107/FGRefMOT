@@ -46,8 +46,22 @@ that environment lacks `setuptools`; this is an environment gap, not a layout
 failure.  The target loader itself has no such failure when loaded directly.
 
 The upstream training CLI currently accepts only `v1`, `v2`, and `dancetrack`
-dataset modes and its default split override assumes numeric sequence IDs.  It
-must be called through a small SportsMOT wrapper that selects these explicit
-layout roots and sequence names; the unmodified CLI must not be treated as a
-completed SportsMOT baseline.  No YesTrack checkpoint, LoRA adapter, common
-tracker output, training run, or metric is claimed by this phase.
+dataset modes and its default split override assumes numeric sequence IDs.
+`scripts/yestrack_sportsmot_adapter.py` now supplies the explicit train/val
+roots and non-numeric sequence names without editing `third_party/YesTrack`.
+Its `--dry-run` path builds both supervised loaders and reports bounded counts;
+the training path forwards the remaining options to the unchanged upstream
+CLI.  The dedicated environment dry-run passed with the following command:
+
+```bash
+/data3/liuyeqiang/.venvs/fgrefmot-rmot-sports-20261019/bin/python \
+  scripts/yestrack_sportsmot_adapter.py \
+  --layout-root runs/yestrack_sports_layout_20261019_v1 \
+  --dry-run --json
+```
+
+The machine-readable result is
+`PHASE6_YESTRACK_ADAPTER_PREFLIGHT.json` (22 train sequences / 14,750 frames /
+160,489 boxes / 181 expressions and 19 validation sequences / 11,900 frames /
+130,152 boxes / 142 expressions).  No YesTrack checkpoint, LoRA adapter,
+common tracker output, training run, or metric is claimed by this phase.

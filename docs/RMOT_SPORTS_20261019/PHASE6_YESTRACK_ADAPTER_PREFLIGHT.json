@@ -1,0 +1,17 @@
+{
+  "policy": "SUPERVISED_LABELS_ONLY; NO_GT_AS_TRACKER_INPUT",
+  "train": {
+    "box_count": 160489,
+    "expression_count": 181,
+    "frame_count": 14750,
+    "root": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/runs/yestrack_sports_layout_20261019_v1/train",
+    "sequence_count": 22
+  },
+  "val": {
+    "box_count": 130152,
+    "expression_count": 142,
+    "frame_count": 11900,
+    "root": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/runs/yestrack_sports_layout_20261019_v1/val",
+    "sequence_count": 19
+  }
+}
