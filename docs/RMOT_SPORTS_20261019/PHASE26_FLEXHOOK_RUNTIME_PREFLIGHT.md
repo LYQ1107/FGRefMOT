@@ -24,7 +24,7 @@ The launch manifest
 `runs/gpu/flexhook_f1_sports_trained_seed42/RUN_MANIFEST.json` records the
 resolved environment versions, physical GPU selection, contract hash, complete
 command, and output/log paths. Its SHA-256 is
-`2e7596ec48beb5fd2a54b2fb44f3d67b766b18096f3b8e68e89f5a020d264ec4`.
+`2028e6cb3bf7f5d22ca3ebe0932b14992d00402eeffe8c01a0c2337d9e00a2f9`.
 The manifest was published to the NAS run directory before launch.
 
 The vendored source remains unchanged. The pinned entrypoint hashes are:

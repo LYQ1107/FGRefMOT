@@ -38,7 +38,7 @@
   },
   "run_manifest": {
     "path": "runs/gpu/flexhook_f1_sports_trained_seed42/RUN_MANIFEST.json",
-    "sha256": "2e7596ec48beb5fd2a54b2fb44f3d67b766b18096f3b8e68e89f5a020d264ec4",
+    "sha256": "2028e6cb3bf7f5d22ca3ebe0932b14992d00402eeffe8c01a0c2337d9e00a2f9",
     "published_to_nas_before_launch": true
   },
   "policy": {
