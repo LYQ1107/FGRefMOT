@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "phase": 19,
+  "audit_date": "2026-10-19",
+  "status": "BAIDU_EGRESS_COMPARISON_COMPLETE_EXTERNAL_ASSETS_PENDING",
+  "gpu_jobs_started": false,
+  "workspace": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019",
+  "branch": "research/sports-rmot-strong-baselines-20261019",
+  "probe": {
+    "share": "https://pan.baidu.com/s/1L-43y9SFDKmgl3dJNRlvNA?pwd=d3qj",
+    "file": "/FlexHook/pretrained/roberta-base/config.json",
+    "size_bytes": 481,
+    "probe_script": "/tmp/baidu_direct_probe.py",
+    "policy": "No signed query field was modified; no captcha was bypassed; no credentials or cookies were used."
+  },
+  "egress_results": [
+    {
+      "route": "direct_https",
+      "requests_trust_env": false,
+      "wxlist_errno": 0,
+      "server_time": 1792356172,
+      "tplconfig_timestamp": 1792356173,
+      "sharedownload_errno": -20,
+      "sharedownload_message": "验证码输入错误，请重试",
+      "bytes_written": 0
+    },
+    {
+      "route": "configured_proxy",
+      "requests_trust_env": true,
+      "wxlist_errno": 0,
+      "server_time": 1792356173,
+      "tplconfig_timestamp": 1792356177,
+      "sharedownload_errno": 0,
+      "dlink_dstime": 1792352576,
+      "dlink_stale_seconds_against_tplconfig": 3601,
+      "direct_dlink_get_http_status": 403,
+      "direct_dlink_get_error": "expire time out / error code 31360",
+      "bytes_written": 0
+    },
+    {
+      "route": "official_yun_baidu_host",
+      "requests_trust_env": true,
+      "server_time": 1792356309,
+      "tplconfig_timestamp": 1792356310,
+      "sharedownload_errno": 0,
+      "dlink_dstime": 1792352709,
+      "dlink_stale_seconds_against_tplconfig": 3601,
+      "direct_dlink_get_http_status": 403,
+      "direct_dlink_get_error": "expire time out / error code 31360",
+      "bytes_written": 0
+    }
+  ],
+  "interpretation": "The captcha response is specific to the direct egress, while both official hosts on the configured egress return the same one-hour-stale dlink pattern. The failure is therefore not resolved by switching between the available official hosts or by selecting the direct egress. A browser or authenticated route that can complete provider verification remains required.",
+  "storage": {
+    "workspace_bytes_written": 0,
+    "nas_project_root": "/home/A100/FGREF_RMOT_SPORTS_20261019",
+    "nas_asset_directories_empty": true,
+    "partial_files_present": false
+  },
+  "preflight": {
+    "command": "/data3/liuyeqiang/.venvs/fgrefmot-rmot-sports-20261019/bin/python scripts/preflight_baseline_assets.py --hash-files",
+    "overall_status": "PENDING",
+    "exit_code": 2,
+    "pending_checks": [
+      "roberta_base",
+      "rope_swin_tiny",
+      "flexhook_task_checkpoint",
+      "yestrack_lora_checkpoint",
+      "yestrack_base_model",
+      "common_sports_tracker"
+    ],
+    "gpu_launch_allowed": false
+  },
+  "next_action": "Use a browser or authenticated official-share route on a machine where Baidu verification succeeds, transfer the resulting bytes to the declared NAS paths with scripts/nas_sync.sh, hash them, and rerun the strict preflight."
+}
