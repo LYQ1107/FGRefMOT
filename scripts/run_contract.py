@@ -205,6 +205,7 @@ def build_contract(
     layout_path: Path,
     protocol: dict[str, Any],
     variant: str = "default",
+    runtime_manifest_path: Path | None = None,
 ) -> dict[str, Any]:
     if method not in METHOD_LAYOUT:
         raise ValueError(f"unsupported method: {method}")
@@ -278,6 +279,12 @@ def build_contract(
     for path in source_files:
         if path.is_file():
             files[path.relative_to(workspace_root).as_posix()] = _path_record(path)
+    if runtime_manifest_path is not None:
+        runtime_manifest_path = runtime_manifest_path.resolve()
+        if not runtime_manifest_path.is_file():
+            blocking.append("runtime_manifest_missing")
+        else:
+            files["flexhook_runtime_manifest"] = _path_record(runtime_manifest_path)
 
     contract: dict[str, Any] = {
         "schema_version": SCHEMA_VERSION,
@@ -437,6 +444,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--thresholds-json", type=lambda value: _parse_json_object(value, "--thresholds-json"), default={})
     parser.add_argument("--hyperparameters-json", type=lambda value: _parse_json_object(value, "--hyperparameters-json"), default={})
     parser.add_argument("--launch-command-json", type=lambda value: json.loads(value), default=[])
+    parser.add_argument("--runtime-manifest", help="optional symlink-only runtime manifest to hash into the contract")
     parser.add_argument("--require-ready", action="store_true", help="exit 2 if the contract cannot launch")
     return parser.parse_args(argv)
 
@@ -479,6 +487,7 @@ def main(argv: list[str] | None = None) -> int:
         layout_path=resolve_path(args.layout, workspace_root),
         protocol=protocol,
         variant=args.variant,
+        runtime_manifest_path=resolve_path(args.runtime_manifest, workspace_root) if args.runtime_manifest else None,
     )
     output = resolve_path(args.output, workspace_root)
     output.parent.mkdir(parents=True, exist_ok=True)
