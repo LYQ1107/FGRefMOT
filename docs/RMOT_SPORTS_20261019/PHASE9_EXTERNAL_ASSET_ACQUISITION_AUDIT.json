@@ -1,0 +1,26 @@
+{
+  "audit_date": "2026-10-19",
+  "phase": "PHASE9_EXTERNAL_ASSET_ACQUISITION_AUDIT",
+  "status": "PENDING_EXTERNAL_DOWNLOAD",
+  "bytes_written_to_workspace": false,
+  "baidu_flexhook_probe": {
+    "file": "/FlexHook/pretrained/roberta-base/config.json",
+    "file_size_bytes": 481,
+    "server_time": 1792353448,
+    "dlink_dstime": 1792349847,
+    "dlink_expires": "1h",
+    "delta_seconds": 3601,
+    "download_http_status": 403,
+    "download_error_code": 31360,
+    "download_error": "expire time out error",
+    "alternate_locatedownload_error_code": 31045,
+    "alternate_locatedownload_error": "user not exists"
+  },
+  "huggingface_rope_probe": {
+    "model": "naver-ai/swin_rope_mixed_tiny_patch4_window7_224",
+    "url": "https://huggingface.co/naver-ai/swin_rope_mixed_tiny_patch4_window7_224",
+    "direct_tls_result": "SSL_ERROR_SYSCALL",
+    "bytes_received": false
+  },
+  "policy": "No unverified external asset substitution; rerun strict preflight after authenticated download and SHA-256 hashing."
+}
