@@ -36,10 +36,19 @@ direct TLS probes to both `huggingface.co` and `hf-mirror.com` failed with
 `SSL_ERROR_SYSCALL` before any bytes were received.  It has not been treated
 as a local asset or substituted into the FlexHook gate.
 
+## YesTrack Qwen base model
+
+`third_party/YesTrack/refer_llm/llm_train.py` defaults to
+`Qwen/Qwen3-VL-2B-Instruct` and loads the processor and model before the first
+training batch.  No matching Qwen model cache exists on this server.  Direct
+TLS probes to the Hugging Face and ModelScope model endpoints both failed with
+`SSL_ERROR_SYSCALL`, so the base model has not been written to the study
+workspace.
+
 ## Decision
 
 The Phase 7 preflight remains **PENDING**.  The missing official RoBERTa and
 ROPE-Swin directories, FlexHook task checkpoint, YesTrack LoRA/task
-checkpoint, and provenance-complete SportsMOT tracker output must still be
+checkpoint, YesTrack Qwen base model, and provenance-complete SportsMOT tracker output must still be
 downloaded through a working authenticated/public route, hashed, and passed
 through the strict preflight before training or evaluation.

@@ -22,5 +22,15 @@
     "direct_tls_result": "SSL_ERROR_SYSCALL",
     "bytes_received": false
   },
+  "yestrack_qwen_base_probe": {
+    "model": "Qwen/Qwen3-VL-2B-Instruct",
+    "cache_present": false,
+    "direct_endpoints": [
+      "https://huggingface.co/Qwen/Qwen3-VL-2B-Instruct",
+      "https://www.modelscope.cn/models/Qwen/Qwen3-VL-2B-Instruct"
+    ],
+    "direct_tls_result": "SSL_ERROR_SYSCALL",
+    "bytes_received": false
+  },
   "policy": "No unverified external asset substitution; rerun strict preflight after authenticated download and SHA-256 hashing."
 }
