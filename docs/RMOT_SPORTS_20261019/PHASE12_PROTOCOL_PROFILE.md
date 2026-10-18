@@ -22,8 +22,16 @@ and the two-stage refinement interval.  The `--model_name` value must resolve
 to the verified local Qwen3-VL-2B-Instruct directory; an online model fallback
 is disallowed.
 
-Both profiles use the same 22/19 train/validation video partition, seed, seven
-evaluation thresholds, and one common detector-output tracker.  The command
-arrays contain `<...>` path slots and are templates only; neither command was
-executed.  The Phase 7 preflight and Phase 10 contracts remain the final
-activation gates, so this phase claims no training, evaluation, or metric.
+Both methods use the same 22/19 train/validation video partition, seed, seven
+evaluation thresholds, and one common detector-output tracker.  The profile
+now separates the registered variants from the start: FlexHook F0/F2 and
+YesTrack Y0 require their optional public task adapters, while Sports-only F1
+and Y1/Y2/Y3 do not.  A missing optional checkpoint therefore cannot block a
+different, independently registered baseline.
+
+The command arrays contain `<...>` path slots and are templates only; neither
+command was executed.  Each concrete variant must still pass a contract built
+with its `variant` value and the Phase 7 preflight checks for its own required
+assets.  The Phase 7 preflight and variant-aware Phase 10 contracts remain the
+final activation gates, so this phase claims no training, evaluation, or
+metric.

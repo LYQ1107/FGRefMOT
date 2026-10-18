@@ -42,6 +42,28 @@ METHOD_ASSETS = {
 }
 COMMON_ASSET = "common_sports_tracker"
 
+# The study has several intentionally separate initialization protocols.  A
+# task checkpoint is required for the zero-shot/fine-tuned variants that use
+# it, but it must not block the Sports-only variants that start from the
+# public language/visual base models.  Keep the old method-level mapping as
+# the ``default`` for backwards-compatible contracts created before the
+# matrix was recorded.
+METHOD_VARIANTS = {
+    "flexhook": {
+        "default": METHOD_ASSETS["flexhook"],
+        "f0_zero_shot": METHOD_ASSETS["flexhook"],
+        "f1_sports_trained": ("roberta_base", "rope_swin_tiny"),
+        "f2_sports_finetuned": METHOD_ASSETS["flexhook"],
+    },
+    "yestrack": {
+        "default": METHOD_ASSETS["yestrack"],
+        "y0_zero_shot": METHOD_ASSETS["yestrack"],
+        "y1_sports_lora": ("yestrack_base_model",),
+        "y2_tcp_trp": ("yestrack_base_model",),
+        "y3_video_training": ("yestrack_base_model",),
+    },
+}
+
 
 def sha256_file(path: Path) -> str:
     digest = hashlib.sha256()
@@ -182,9 +204,13 @@ def build_contract(
     dataset_manifest_path: Path,
     layout_path: Path,
     protocol: dict[str, Any],
+    variant: str = "default",
 ) -> dict[str, Any]:
     if method not in METHOD_LAYOUT:
         raise ValueError(f"unsupported method: {method}")
+    variants = METHOD_VARIANTS[method]
+    if variant not in variants:
+        raise ValueError(f"unsupported {method} variant: {variant}")
 
     preflight = read_json(preflight_path)
     checks = _check_map(preflight)
@@ -192,11 +218,16 @@ def build_contract(
 
     if preflight.get("schema_version") != 1:
         blocking.append("preflight_schema_version_must_equal_1")
+    required_asset_names = (*variants[variant], COMMON_ASSET)
+    # The aggregate Phase 7 report contains every method's assets.  A pending
+    # optional variant must not block a different variant whose own required
+    # checks are ready, so only required checks are promoted to blockers here.
     if preflight.get("overall_status") != READY:
         pending = preflight.get("pending_checks")
-        if isinstance(pending, list) and pending:
-            blocking.extend(f"preflight_pending:{name}" for name in pending)
-        else:
+        pending_names = set(pending) if isinstance(pending, list) else set()
+        required_pending = [name for name in required_asset_names if name in pending_names]
+        blocking.extend(f"preflight_pending:{name}" for name in required_pending)
+        if not pending_names and required_pending:
             blocking.append("preflight_overall_status_not_ready")
 
     expected_layout_name = METHOD_LAYOUT[method]
@@ -220,7 +251,7 @@ def build_contract(
     if not dataset_manifest_path.is_file():
         blocking.append("dataset_manifest_missing")
 
-    required_assets = (*METHOD_ASSETS[method], COMMON_ASSET)
+    required_assets = required_asset_names
     assets: dict[str, Any] = {}
     for name in required_assets:
         check = checks.get(name)
@@ -253,6 +284,7 @@ def build_contract(
         "contract_id": run_id,
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "method": method,
+        "variant": variant,
         "status": READY if not blocking else PENDING,
         "ready_to_launch": not blocking,
         "blocking_reasons": blocking,
@@ -264,6 +296,7 @@ def build_contract(
         },
         "protocol": protocol,
         "inputs": {
+            "required_assets": list(required_assets),
             "preflight": {
                 "record": files["preflight"],
                 "overall_status": preflight.get("overall_status"),
@@ -391,6 +424,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     mode.add_argument("--check", metavar="CONTRACT", help="verify an existing contract's hashes")
     parser.add_argument("--workspace-root", default=str(Path(__file__).resolve().parents[1]))
     parser.add_argument("--method", choices=sorted(METHOD_LAYOUT), help="required with --write")
+    parser.add_argument("--variant", default="default", help="initialization/training variant, e.g. f1_sports_trained")
     parser.add_argument("--run-id", help="stable run identifier, e.g. flexhook_baseline_seed42")
     parser.add_argument("--preflight", help="Phase 7 JSON report")
     parser.add_argument("--dataset-manifest", help="data/refer_sports_manifest.json")
@@ -444,6 +478,7 @@ def main(argv: list[str] | None = None) -> int:
         dataset_manifest_path=resolve_path(args.dataset_manifest, workspace_root),
         layout_path=resolve_path(args.layout, workspace_root),
         protocol=protocol,
+        variant=args.variant,
     )
     output = resolve_path(args.output, workspace_root)
     output.parent.mkdir(parents=True, exist_ok=True)

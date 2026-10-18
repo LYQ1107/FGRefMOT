@@ -118,6 +118,41 @@ class RunContractTest(unittest.TestCase):
             self.assertFalse(contract["ready_to_launch"])
             self.assertIn("protocol_thresholds_missing", contract["blocking_reasons"])
 
+    def test_sports_only_variant_ignores_optional_task_checkpoint(self):
+        with tempfile.TemporaryDirectory() as raw:
+            root = Path(raw)
+            preflight, dataset, layout = self._workspace(root, ready=False)
+            report = json.loads(preflight.read_text(encoding="utf-8"))
+            for item in report["checks"]:
+                if item["name"] in {"roberta_base", "rope_swin_tiny", "common_sports_tracker"}:
+                    item["status"] = "READY"
+            report["pending_checks"] = [
+                name for name in report["pending_checks"]
+                if name not in {"roberta_base", "rope_swin_tiny", "common_sports_tracker"}
+            ]
+            preflight.write_text(json.dumps(report), encoding="utf-8")
+            contract = build_contract(
+                workspace_root=root,
+                method="flexhook",
+                variant="f1_sports_trained",
+                run_id="f1",
+                preflight_path=preflight,
+                dataset_manifest_path=dataset,
+                layout_path=layout,
+                protocol={
+                    "seed": 42,
+                    "train_split": "train",
+                    "evaluation_split": "val",
+                    "tracker_policy": "common",
+                    "thresholds": {"score": 0.5},
+                    "hyperparameters": {"epochs": 1},
+                    "launch_command": ["echo", "future"],
+                },
+            )
+            self.assertTrue(contract["ready_to_launch"])
+            self.assertEqual(contract["variant"], "f1_sports_trained")
+            self.assertNotIn("flexhook_task_checkpoint", contract["inputs"]["required_assets"])
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -108,6 +108,58 @@
     ],
     "checkpoint_policy": "the task LoRA checkpoint is evaluated only with its matching verified Qwen base model"
   },
+  "baseline_matrix": {
+    "selection_rule": "Select checkpoints and thresholds on SPORTS_VAL only; the historical 19-video test split remains untouched until the matrix is frozen.",
+    "flexhook": {
+      "f0_zero_shot": {
+        "training": false,
+        "required_assets": ["roberta_base", "rope_swin_tiny", "flexhook_task_checkpoint", "common_sports_tracker"],
+        "initialization": "official public RMOT task checkpoint; source-overlap eligibility must be recorded",
+        "variant_contract": "f0_zero_shot"
+      },
+      "f1_sports_trained": {
+        "training": true,
+        "required_assets": ["roberta_base", "rope_swin_tiny", "common_sports_tracker"],
+        "initialization": "RoPE-Swin-T and RoBERTa public pretraining only; --pretrained src",
+        "variant_contract": "f1_sports_trained"
+      },
+      "f2_sports_finetuned": {
+        "training": true,
+        "required_assets": ["roberta_base", "rope_swin_tiny", "flexhook_task_checkpoint", "common_sports_tracker"],
+        "initialization": "official public RMOT task checkpoint followed by Sports TRAIN_CORE fine-tuning",
+        "variant_contract": "f2_sports_finetuned",
+        "eligibility": "Run only after the checkpoint's pretraining source and Refer-Sports overlap are documented; unresolved overlap is reported, never hidden."
+      }
+    },
+    "yestrack": {
+      "y0_zero_shot": {
+        "training": false,
+        "required_assets": ["yestrack_base_model", "yestrack_lora_checkpoint", "common_sports_tracker"],
+        "initialization": "official public LoRA adapter with its matching local Qwen base model",
+        "variant_contract": "y0_zero_shot"
+      },
+      "y1_sports_lora": {
+        "training": true,
+        "required_assets": ["yestrack_base_model", "common_sports_tracker"],
+        "initialization": "matching local Qwen base model with a fresh LoRA adapter trained on Sports TRAIN_CORE",
+        "variant_contract": "y1_sports_lora"
+      },
+      "y2_tcp_trp": {
+        "training": false,
+        "required_assets": ["yestrack_base_model", "common_sports_tracker"],
+        "initialization": "the frozen Y1 adapter plus official TCP/TRP inference",
+        "variant_contract": "y2_tcp_trp",
+        "prerequisite_variant": "y1_sports_lora",
+        "prerequisite_policy": "the verified Y1 adapter and its run manifest must exist before Y2 is launched"
+      },
+      "y3_video_training": {
+        "training": true,
+        "required_assets": ["yestrack_base_model", "common_sports_tracker"],
+        "initialization": "matching local Qwen base model with the official video-training flags",
+        "variant_contract": "y3_video_training"
+      }
+    }
+  },
   "activation_gate": {
     "preflight": "scripts/preflight_baseline_assets.py --hash-files",
     "contract": "scripts/run_contract.py --check <CONTRACT> --require-ready",

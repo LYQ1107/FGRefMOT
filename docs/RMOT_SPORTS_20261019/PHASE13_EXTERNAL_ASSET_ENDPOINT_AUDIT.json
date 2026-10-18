@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "phase": 13,
+  "audit_date": "2026-10-19",
+  "status": "PARTIAL_METADATA_DOWNLOAD_BLOCKED_BY_SIGNED_URL_EXPIRY",
+  "gpu_jobs_started": false,
+  "bytes_written_to_workspace_or_nas": false,
+  "official_sources": {
+    "flexhook_share": "https://pan.baidu.com/s/1L-43y9SFDKmgl3dJNRlvNA?pwd=d3qj",
+    "yestrack_share": "https://pan.baidu.com/s/1nwhcEIQshWk9TnNjhiYMrQ?pwd=z5kt"
+  },
+  "metadata_inventory": {
+    "flexhook_roberta_model_bytes": 501200538,
+    "flexhook_roberta_config_bytes": 481,
+    "flexhook_roberta_tokenizer_bytes": 1355863,
+    "flexhook_roberta_tokenizer_config_bytes": 25,
+    "flexhook_roberta_vocab_bytes": 898823,
+    "flexhook_rope_swin_model_bytes": 114039533,
+    "flexhook_refer_kitti_best_bytes": 995771714,
+    "flexhook_refer_kitti_v2_best_bytes": 995768450,
+    "flexhook_mcbyte_sportsmot_text_file_count": 45,
+    "yestrack_zip_bytes": 178142422
+  },
+  "acquisition_evidence": {
+    "share_listing_reachable": true,
+    "share_password_verification": true,
+    "signed_download_ticket_returned": true,
+    "signed_ticket_expiry_delta_seconds_approx": -3600,
+    "immediate_download_http_status": 403,
+    "immediate_download_error": "expire time out / error code 31360",
+    "later_rate_limit_or_captcha": "errno=-20",
+    "captcha_bypassed": false,
+    "signed_url_modified": false,
+    "downloaded_file_count": 0
+  },
+  "tracker_provenance": {
+    "listed_output_directory": "FlexHook/tracker_outputs/McByte-SportsMOT",
+    "provenance_manifest_present_in_listing": false,
+    "accepted_as_common_sports_tracker": false
+  },
+  "variant_contract_update": {
+    "flexhook_f1_sports_trained": ["roberta_base", "rope_swin_tiny", "common_sports_tracker"],
+    "flexhook_f0_zero_shot": ["roberta_base", "rope_swin_tiny", "flexhook_task_checkpoint", "common_sports_tracker"],
+    "flexhook_f2_sports_finetuned": ["roberta_base", "rope_swin_tiny", "flexhook_task_checkpoint", "common_sports_tracker"],
+    "yestrack_y0_zero_shot": ["yestrack_base_model", "yestrack_lora_checkpoint", "common_sports_tracker"],
+    "yestrack_y1_sports_lora": ["yestrack_base_model", "common_sports_tracker"],
+    "yestrack_y2_tcp_trp": ["yestrack_base_model", "common_sports_tracker"],
+    "yestrack_y3_video_training": ["yestrack_base_model", "common_sports_tracker"]
+  },
+  "run_dependencies": {
+    "yestrack_y2_tcp_trp": "verified y1_sports_lora adapter and run manifest",
+    "yestrack_y3_video_training": "none beyond listed assets"
+  },
+  "next_action": "Acquire the official bytes through an authenticated route, transfer them to the NAS asset directories, hash them, and rerun the Phase 7 preflight before any GPU launch."
+}

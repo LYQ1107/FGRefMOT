@@ -3,8 +3,6 @@
     "preflight_pending:roberta_base",
     "preflight_pending:rope_swin_tiny",
     "preflight_pending:flexhook_task_checkpoint",
-    "preflight_pending:yestrack_lora_checkpoint",
-    "preflight_pending:yestrack_base_model",
     "preflight_pending:common_sports_tracker",
     "asset_check_not_ready:roberta_base",
     "asset_check_not_ready:rope_swin_tiny",
@@ -18,8 +16,8 @@
     "git": {
       "branch": "research/sports-rmot-strong-baselines-20261019",
       "clean": false,
-      "head": "b638555ab273306d7966e682f598f6d811a587ea",
-      "status": "M docs/RMOT_SPORTS_20261019/PHASE10_RUN_CONTRACT.md\n M scripts/run_contract.py",
+      "head": "5bb395f320d3cd8138e804fbabb91c8cbb030f09",
+      "status": "M configs/rmot_sports_baseline_protocol.json\n M docs/RMOT_SPORTS_20261019/FLEXHOOK_BASELINE_RUN_CONTRACT.json\n M docs/RMOT_SPORTS_20261019/PHASE10_RUN_CONTRACT.md\n M docs/RMOT_SPORTS_20261019/PHASE12_PROTOCOL_PROFILE.md\n M docs/RMOT_SPORTS_20261019/YESTRACK_BASELINE_RUN_CONTRACT.json\n M scripts/run_contract.py\n M tests/test_run_contract.py\n?? docs/RMOT_SPORTS_20261019/PHASE13_EXTERNAL_ASSET_ENDPOINT_AUDIT.json\n?? docs/RMOT_SPORTS_20261019/PHASE13_EXTERNAL_ASSET_ENDPOINT_AUDIT.md",
       "workspace": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019"
     },
     "official_source_commits": {
@@ -39,8 +37,8 @@
       },
       "scripts/run_contract.py": {
         "path": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/scripts/run_contract.py",
-        "sha256": "74b79cd75fc7c6f1f8136e0c4d491244d14ca6b36c8919ad501e71d8699d4530",
-        "size_bytes": 18510
+        "sha256": "9cea6a0e595e7a2f8ae8246d665cddb671b5a24ef5211a13e032eb6f027aaced",
+        "size_bytes": 20293
       }
     }
   },
@@ -49,10 +47,10 @@
     "cuda_visible_devices": "",
     "nvidia_visible_devices": "",
     "platform": "Linux-7.0.0-38-generic-x86_64-with-glibc2.39",
-    "python_executable": "/usr/bin/python3",
-    "python_version": "3.12.3"
+    "python_executable": "/data3/liuyeqiang/.venvs/fgrefmot-rmot-sports-20261019/bin/python",
+    "python_version": "3.10.21"
   },
-  "generated_at": "2026-10-18T20:04:56.388821+00:00",
+  "generated_at": "2026-10-18T20:25:45.986235+00:00",
   "inputs": {
     "assets": {
       "common_sports_tracker": {
@@ -126,7 +124,13 @@
         "sha256": "b1a84789efa8f05b0aef0aa4a79f9a474ff6ef7e9401a279fe1a4dc3bc4828fa",
         "size_bytes": 2927
       }
-    }
+    },
+    "required_assets": [
+      "roberta_base",
+      "rope_swin_tiny",
+      "flexhook_task_checkpoint",
+      "common_sports_tracker"
+    ]
   },
   "method": "flexhook",
   "policy": {
@@ -158,5 +162,6 @@
     "layout_policy_checked": true,
     "preflight_reused_without_mutation": true,
     "protocol_complete": false
-  }
+  },
+  "variant": "default"
 }
