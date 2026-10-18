@@ -1,0 +1,146 @@
+{
+  "schema_version": 1,
+  "phase": 21,
+  "audit_date": "2026-10-19",
+  "status": "YESTRACK_BASE_MODEL_READY_EXTERNAL_CHECKPOINTS_PENDING",
+  "gpu_jobs_started": false,
+  "workspace": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019",
+  "branch": "research/sports-rmot-strong-baselines-20261019",
+  "acquisition": {
+    "execution_host": "NAS through the existing reverse SSH tunnel",
+    "mirror_route": "https://hf-mirror.com",
+    "model_id": "Qwen/Qwen3-VL-2B-Instruct",
+    "revision": "89644892e4d85e24eaac8bacfd4f463576704203",
+    "source": "Qwen/Qwen3-VL-2B-Instruct via hf-mirror",
+    "source_manifest_path_on_nas": "/home/Valadmin/A100/FGREF_RMOT_SPORTS_20261019/assets/pretrained/yestrack/Qwen3-VL-2B-Instruct/SOURCE_MANIFEST.json",
+    "source_manifest_sha256": "62fb4ebfb3ecf58e3dee27326f7c4eccd2f1f93a5f6d4fea917cc5509373c16b",
+    "download_policy": "Downloaded the finite runtime file list from the pinned HuggingFace revision into a temporary NAS directory, hashed each file, then atomically published the final directory; README was intentionally omitted because it is not required for loading."
+  },
+  "assets": {
+    "yestrack_base_model": {
+      "nas_path": "/home/Valadmin/A100/FGREF_RMOT_SPORTS_20261019/assets/pretrained/yestrack/Qwen3-VL-2B-Instruct",
+      "mounted_path": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/assets/pretrained/yestrack/Qwen3-VL-2B-Instruct",
+      "revision": "89644892e4d85e24eaac8bacfd4f463576704203",
+      "files": [
+        {
+          "file": ".gitattributes",
+          "sha256": "11ad7efa24975ee4b0c3c3a38ed18737f0658a5f75a0a96787b576a78a023361",
+          "size_bytes": 1519,
+          "source_url": "https://hf-mirror.com/Qwen/Qwen3-VL-2B-Instruct/resolve/main/.gitattributes"
+        },
+        {
+          "file": "chat_template.json",
+          "sha256": "6f8a6a55027e3da5160105556cda5dd69f6423f1c32645f6730d32de7773d0c4",
+          "size_bytes": 5502,
+          "source_url": "https://hf-mirror.com/Qwen/Qwen3-VL-2B-Instruct/resolve/main/chat_template.json"
+        },
+        {
+          "file": "config.json",
+          "sha256": "bec4b3d446efa05807365c9e1cec03ac590836879d02f3a6da879971154bdd3b",
+          "size_bytes": 1505,
+          "source_url": "https://hf-mirror.com/Qwen/Qwen3-VL-2B-Instruct/resolve/main/config.json"
+        },
+        {
+          "file": "generation_config.json",
+          "sha256": "1e241830b48b397cb0900101421df5450baddc7adf01e5fc86b5615865f3bae4",
+          "size_bytes": 269,
+          "source_url": "https://hf-mirror.com/Qwen/Qwen3-VL-2B-Instruct/resolve/main/generation_config.json"
+        },
+        {
+          "file": "merges.txt",
+          "sha256": "599bab54075088774b1733fde865d5bd747cbcc7a547c5bc12610e874e26f5e3",
+          "size_bytes": 1671839,
+          "source_url": "https://hf-mirror.com/Qwen/Qwen3-VL-2B-Instruct/resolve/main/merges.txt"
+        },
+        {
+          "file": "model.safetensors",
+          "sha256": "7de1838c87a5349b016c26a1c3f7d2bc400a3d485f95ef39a7059ffd734977a0",
+          "size_bytes": 4255140312,
+          "source_url": "https://hf-mirror.com/Qwen/Qwen3-VL-2B-Instruct/resolve/main/model.safetensors"
+        },
+        {
+          "file": "preprocessor_config.json",
+          "sha256": "27225450ac9c6529872ee1924fcb0962ff5634834f817040f444118116f4e516",
+          "size_bytes": 390,
+          "source_url": "https://hf-mirror.com/Qwen/Qwen3-VL-2B-Instruct/resolve/main/preprocessor_config.json"
+        },
+        {
+          "file": "tokenizer.json",
+          "sha256": "a5d85b6dcc535e6b93115a9ef287e6132fdbf30270da6218194ba742261173c7",
+          "size_bytes": 7032403,
+          "source_url": "https://hf-mirror.com/Qwen/Qwen3-VL-2B-Instruct/resolve/main/tokenizer.json"
+        },
+        {
+          "file": "tokenizer_config.json",
+          "sha256": "c2da771801886ad9ae98181793ffd3dfb7f1af30f6f7c6a4e15d7dbba52e2399",
+          "size_bytes": 10868,
+          "source_url": "https://hf-mirror.com/Qwen/Qwen3-VL-2B-Instruct/resolve/main/tokenizer_config.json"
+        },
+        {
+          "file": "video_preprocessor_config.json",
+          "sha256": "7768af27c1fafa9cc9011c1dc20067e03f8915e03b63504550e11d5066986d13",
+          "size_bytes": 385,
+          "source_url": "https://hf-mirror.com/Qwen/Qwen3-VL-2B-Instruct/resolve/main/video_preprocessor_config.json"
+        },
+        {
+          "file": "vocab.json",
+          "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910",
+          "size_bytes": 2776833,
+          "source_url": "https://hf-mirror.com/Qwen/Qwen3-VL-2B-Instruct/resolve/main/vocab.json"
+        }
+      ],
+      "total_bytes": 4266641825
+    }
+  },
+  "nas_preflight": {
+    "command": "python3 scripts/preflight_baseline_assets.py --flexhook-layout /tmp/fgref_phase21_preflight_20261019/flexhook --yestrack-layout /tmp/fgref_phase21_preflight_20261019/yestrack --roberta-dir /home/Valadmin/A100/FGREF_RMOT_SPORTS_20261019/assets/pretrained/flexhook/roberta-base --swin-dir /home/Valadmin/A100/FGREF_RMOT_SPORTS_20261019/assets/pretrained/flexhook/swin_rope_mixed_tiny_patch4_window7_224 --yestrack-base-model /home/Valadmin/A100/FGREF_RMOT_SPORTS_20261019/assets/pretrained/yestrack/Qwen3-VL-2B-Instruct --hash-files",
+    "report_local_copy": "runs/baseline_asset_preflight_20261019/phase21_nas_preflight.json",
+    "exit_code": 2,
+    "overall_status": "PENDING",
+    "ready_checks": [
+      "flexhook_layout",
+      "yestrack_layout",
+      "roberta_base",
+      "rope_swin_tiny",
+      "yestrack_base_model"
+    ],
+    "pending_checks": [
+      "flexhook_task_checkpoint",
+      "yestrack_lora_checkpoint",
+      "common_sports_tracker"
+    ],
+    "policy": {
+      "gpu_jobs_started": false,
+      "gt_or_labels_as_tracker_input": "REJECTED",
+      "unverified_external_asset_substitution": "REJECTED"
+    },
+    "note": "The two layout manifests were copied to NAS /tmp only for this metadata preflight; the dataset was not walked and labels/GT were not used as tracker input."
+  },
+  "processor_smoke": {
+    "command": "/data3/liuyeqiang/.venvs/fgrefmot-rmot-sports-20261019/bin/python -c \"AutoProcessor.from_pretrained(<mounted Qwen3-VL-2B-Instruct>, trust_remote_code=True, local_files_only=True)\"",
+    "exit_code": 0,
+    "transformers_version": "5.2.0",
+    "processor_type": "Qwen3VLProcessor",
+    "tokenizer_type": "Qwen2Tokenizer",
+    "image_processor_type": "Qwen2VLImageProcessorFast",
+    "chat_template": "passed; add_generation_prompt=True returned a 69-character string",
+    "weights_loaded": false,
+    "gpu_used": false
+  },
+  "gates": {
+    "ready": [
+      "flexhook_layout",
+      "yestrack_layout",
+      "roberta_base",
+      "rope_swin_tiny",
+      "yestrack_base_model"
+    ],
+    "pending": [
+      "flexhook_task_checkpoint",
+      "yestrack_lora_checkpoint",
+      "common_sports_tracker"
+    ],
+    "gpu_launch_allowed": false
+  },
+  "next_action": "Acquire and hash the official FlexHook task checkpoint and matching YesTrack LoRA checkpoint, and produce a provenance-complete detector-output SportsMOT tracker; then rerun strict preflight and run contracts before any GPU launch."
+}
