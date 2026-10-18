@@ -1,0 +1,117 @@
+{
+  "schema_version": 1,
+  "template_only": true,
+  "study": "Refer-Sports RMOT baselines",
+  "common_protocol": {
+    "seed": 42,
+    "train_split": "train",
+    "evaluation_split": "val",
+    "train_video_count": 22,
+    "evaluation_video_count": 19,
+    "tracker_policy": "one provenance-complete detector-output tracker shared by both methods",
+    "gt_or_labels_as_tracker_input": "REJECTED",
+    "evaluation_thresholds": [0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8]
+  },
+  "flexhook": {
+    "upstream_source": "third_party/FlexHook",
+    "loader": "data.mydataloader_mix.RMOT_Dataset_mix",
+    "config_base": "third_party/FlexHook/configs/train/train-mix.yaml",
+    "dataset_overrides": {
+      "DATA.DATASET": "SportsMOT",
+      "DATA.TRAIN": "SportsMOT",
+      "DATA.TEST": "SportsMOT",
+      "SEED": 42,
+      "data_root": "<FLEXHOOK_LAYOUT_ROOT>",
+      "val_data_root": "<FLEXHOOK_LAYOUT_ROOT>",
+      "track_root": "<COMMON_TRACKER_ROOT>"
+    },
+    "training_arguments": {
+      "batch_size": 10,
+      "val_batch_size": 40,
+      "visual": "rope-swin-tiny",
+      "text": "roberta",
+      "pretrained_mode": "src",
+      "epochs": 25,
+      "base_lr": 1e-05,
+      "weight_decay": 0.0001,
+      "sample_frame_len": 8,
+      "sample_frame_num": 4,
+      "sample_frame_stride": 30,
+      "val_sample_frame_stride": 24,
+      "sample_expression_num": 8,
+      "val_sample_expression_num": 8,
+      "val_set_scale": 5,
+      "noise1": true,
+      "noise2": true,
+      "noise3": true,
+      "gauss_sample": false,
+      "posw": 0.7,
+      "text_len": 25
+    },
+    "required_local_components": [
+      "<FLEXHOOK_ROBERTA_DIR>",
+      "<FLEXHOOK_SWIN_DIR>/pytorch_model.bin",
+      "<FLEXHOOK_TASK_CHECKPOINT>",
+      "<COMMON_TRACKER_ROOT>"
+    ],
+    "train_command_template": [
+      "python", "-m", "torch.distributed.run", "--nproc_per_node=<ALLOCATED_GPU_COUNT>",
+      "third_party/FlexHook/main.py", "--cfg", "third_party/FlexHook/configs/train/train-mix.yaml",
+      "--output", "<FLEXHOOK_OUTPUT>", "--batch-size", "10", "--val-batch-size", "40",
+      "--visual", "rope-swin-tiny", "--text", "roberta", "--pretrained", "src",
+      "--opts", "DATA.DATASET", "SportsMOT", "DATA.TRAIN", "SportsMOT", "DATA.TEST", "SportsMOT",
+      "SEED", "42", "data_root", "<FLEXHOOK_LAYOUT_ROOT>", "val_data_root", "<FLEXHOOK_LAYOUT_ROOT>",
+      "track_root", "<COMMON_TRACKER_ROOT>"
+    ],
+    "evaluation_config": "third_party/FlexHook/configs/infer/mcbyte-sports-infer-tiny.yaml"
+  },
+  "yestrack": {
+    "upstream_source": "third_party/YesTrack",
+    "adapter": "scripts/yestrack_sportsmot_adapter.py",
+    "model_name": "Qwen/Qwen3-VL-2B-Instruct",
+    "model_name_policy": "must be a local verified directory; no online fallback",
+    "training_arguments": {
+      "batch_size": 2,
+      "epochs": 1,
+      "lr": 5e-06,
+      "seed": 42,
+      "every_steps": 10000,
+      "image_size": 384,
+      "margin_ratio": 0.2,
+      "min_side": 8,
+      "max_text_len": 100,
+      "negative_downsample": 0.5,
+      "coord_mode": "xy",
+      "coord_decimals": 3,
+      "lora_r": 8,
+      "lora_alpha": 16,
+      "lora_dropout": 0.0,
+      "fp16": false,
+      "eval_threshold": [0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8],
+      "eval_sequence": "all",
+      "eval_batch_size": 2,
+      "re_refer_lower": 0.2,
+      "re_refer_thresh": 0.8,
+      "eval_infer_every_n_frames": 5
+    },
+    "required_local_components": [
+      "<YESTRACK_BASE_MODEL_DIR>",
+      "<YESTRACK_LORA_CHECKPOINT>",
+      "<COMMON_TRACKER_ROOT>"
+    ],
+    "train_command_template": [
+      "python", "scripts/yestrack_sportsmot_adapter.py", "--layout-root",
+      "<YESTRACK_LAYOUT_ROOT>", "--model_name", "<YESTRACK_BASE_MODEL_DIR>",
+      "--batch_size", "2", "--epochs", "1", "--lr", "5e-6", "--seed", "42",
+      "--eval_threshold", "0.2", "0.3", "0.4", "0.5", "0.6", "0.7", "0.8",
+      "--eval_sequence", "all", "--re_refer_lower", "0.2", "--re_refer_thresh", "0.8"
+    ],
+    "checkpoint_policy": "the task LoRA checkpoint is evaluated only with its matching verified Qwen base model"
+  },
+  "activation_gate": {
+    "preflight": "scripts/preflight_baseline_assets.py --hash-files",
+    "contract": "scripts/run_contract.py --check <CONTRACT> --require-ready",
+    "gpu_job_policy": "do not start until both commands are READY",
+    "metrics_policy": "do not report metrics until evaluator output and run manifest are stored"
+  }
+}
