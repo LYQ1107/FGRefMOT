@@ -41,3 +41,10 @@ the same preflight.
 The report is a point-in-time audit.  After any asset acquisition, rerun it
 with explicit paths (or the variables in `configs/paths.env.example`) and
 commit the resulting report before starting a run.
+
+The follow-up NAS candidate audit is recorded in
+`PHASE8_NAS_CANDIDATE_AUDIT.md` and its JSON companion.  It found large
+checkpoints under the archived TempMam/TempRMOT projects, but their code and
+README identify them as TempRMOT/Refer-KITTI artifacts.  They have no
+FlexHook/YesTrack provenance or SportsMOT detector-output tracker manifest and
+are therefore explicitly rejected as substitutes.

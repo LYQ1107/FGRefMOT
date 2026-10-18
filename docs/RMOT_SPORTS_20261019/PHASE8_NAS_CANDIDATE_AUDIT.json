@@ -1,0 +1,36 @@
+{
+  "audit_date": "2026-10-19",
+  "phase": "PHASE8_NAS_CANDIDATE_AUDIT",
+  "status": "EVIDENCE_ONLY_TARGET_ASSETS_MISSING",
+  "mount_path_observed": "/data3/liuyeqiang/nas/A100",
+  "nas_login_path": "/home/Valadmin/A100",
+  "mutation_performed": false,
+  "candidate_groups": [
+    {
+      "root": "codex_archive_20261014/TempMam/exps/official_checkpoint",
+      "file_count": 1,
+      "total_bytes": 1096317848,
+      "representative": "checkpoint_0060.pth",
+      "target_eligibility": "REJECTED_NON_TARGET",
+      "reason": "README and code identify TempRMOT/Refer-KITTI; no FlexHook or YesTrack provenance"
+    },
+    {
+      "root": "codex_archive_20261014/TempMam/exps/default_debug_rk",
+      "file_count": 18,
+      "total_bytes": 21333086502,
+      "representative": "checkpoint0179.pth",
+      "representative_bytes": 1185173763,
+      "target_eligibility": "REJECTED_NON_TARGET",
+      "reason": "scripts use --meta_arch temp_rmot and Refer-KITTI paths"
+    },
+    {
+      "root": "codex_archive_20261014/TempRMOT/exps",
+      "representative": "encoder_mamba_4/checkpoint0060.pth",
+      "representative_bytes": 1218413411,
+      "target_eligibility": "REJECTED_NON_TARGET",
+      "reason": "TempRMOT experiment tree without target checkpoint or tracker manifest"
+    }
+  ],
+  "tracker_manifest_found": false,
+  "policy": "Do not use non-target checkpoints, labels, GT, or unproven result directories as baseline inputs."
+}
