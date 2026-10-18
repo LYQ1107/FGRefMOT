@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "phase": 14,
+  "audit_date": "2026-10-19",
+  "status": "LAYOUT_SMOKE_OK_EXTERNAL_ASSETS_PENDING",
+  "gpu_jobs_started": false,
+  "adapter_dry_run": {
+    "command": "scripts/yestrack_sportsmot_adapter.py --layout-root runs/yestrack_sports_layout_20261019_v1 --dry-run --json",
+    "exit_code": 0,
+    "policy": "SUPERVISED_LABELS_ONLY; NO_GT_AS_TRACKER_INPUT",
+    "train": {
+      "sequence_count": 22,
+      "frame_count": 14750,
+      "box_count": 160489,
+      "expression_count": 181
+    },
+    "val": {
+      "sequence_count": 19,
+      "frame_count": 11900,
+      "box_count": 130152,
+      "expression_count": 142
+    }
+  },
+  "preflight": {
+    "command": "scripts/preflight_baseline_assets.py --hash-files --output runs/baseline_asset_preflight_20261019/current_report.json",
+    "exit_code": 2,
+    "overall_status": "PENDING",
+    "ready_checks": ["flexhook_layout", "yestrack_layout"],
+    "missing_checks": [
+      "roberta_base",
+      "rope_swin_tiny",
+      "flexhook_task_checkpoint",
+      "yestrack_lora_checkpoint",
+      "yestrack_base_model",
+      "common_sports_tracker"
+    ],
+    "report_sha256": "1f2e99e41d2f790de7c42a55146e51aecc8b8f1f0a93ab09a1bee2a38f47d1a0"
+  },
+  "layout_manifest_sha256": {
+    "flexhook": "2c96136fb70f64ae006dd34db61379c8c27f57806a10d9bd3b067783bc38d54c",
+    "yestrack": "3ccf91f155155401c61e8afbc56bfe784f997783f2653a8007d7668109da3846",
+    "dataset": "88e0ba5cfcf522887237af7fd4be075b7d0ad4cbac373ab56fbcd8fda21e25a3"
+  },
+  "activation_policy": {
+    "test_gt_as_tracker_input": "REJECTED",
+    "unverified_external_substitution": "REJECTED",
+    "gpu_launch": "BLOCKED_UNTIL_SELECTED_VARIANT_CONTRACT_READY"
+  },
+  "next_action": "Acquire official base/checkpoint bytes and a provenance-complete common SportsMOT tracker, rerun the hash preflight, then build the selected variant contract."
+}
