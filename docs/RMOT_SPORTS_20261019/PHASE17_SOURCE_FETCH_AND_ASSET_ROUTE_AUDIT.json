@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "phase": 17,
+  "audit_date": "2026-10-19",
+  "status": "SOURCE_FETCH_VERIFIED_EXTERNAL_ASSETS_PENDING",
+  "gpu_jobs_started": false,
+  "workspace": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019",
+  "branch": "research/sports-rmot-strong-baselines-20261019",
+  "source_fetch": {
+    "script": "scripts/fetch_official_repos.sh",
+    "git_lfs_smudge": "disabled",
+    "weights_fetched": false,
+    "datasets_fetched": false,
+    "repositories": [
+      {
+        "name": "FlexHook",
+        "repository": "https://github.com/buptLwz/FlexHook",
+        "pinned_commit": "bd1acc38634b28525d54dc6e0fcb38335f0029f9",
+        "local_head": "bd1acc38634b28525d54dc6e0fcb38335f0029f9",
+        "worktree_clean": true,
+        "official_github_releases": 0,
+        "weight_tree_observation": "SOTA_ckpts/CKPTS.md only; no binary checkpoint in GitHub tree",
+        "tracker_tree_observation": "tracker_outputs/TRACKERS.md only; no binary tracker output in GitHub tree"
+      },
+      {
+        "name": "YesTrack",
+        "repository": "https://github.com/ggbondrighthere24/YesTrack",
+        "pinned_commit": "ed42b8315b28c94dc595d83b0d49bf57002bb281",
+        "local_head": "ed42b8315b28c94dc595d83b0d49bf57002bb281",
+        "worktree_clean": true,
+        "official_github_releases": 0,
+        "weight_tree_observation": "No model or LoRA binary is present in the pinned source tree"
+      }
+    ]
+  },
+  "asset_routes": {
+    "flexhook_official_share": "https://pan.baidu.com/s/1L-43y9SFDKmgl3dJNRlvNA?pwd=d3qj",
+    "yestrack_official_share": "https://pan.baidu.com/s/1nwhcEIQshWk9TnNjhiYMrQ?pwd=z5kt",
+    "phase13_baidu_evidence": {
+      "listing_metadata_reachable": true,
+      "signed_ticket_returned": true,
+      "immediate_download_http_status": 403,
+      "immediate_download_error": "expire time out / error code 31360",
+      "later_rate_limit_or_captcha": "errno=-20",
+      "downloaded_bytes": 0
+    },
+    "network_revalidation": {
+      "github_raw_via_existing_codex_proxy": "HTTP 200",
+      "huggingface_direct": "TLS SSL_ERROR_SYSCALL before model bytes",
+      "hf_mirror_direct": "TLS SSL_ERROR_SYSCALL before model bytes",
+      "modelscope_direct": "TLS SSL_ERROR_SYSCALL before model bytes"
+    }
+  },
+  "nas_revalidation": {
+    "project_root": "/home/A100/FGREF_RMOT_SPORTS_20261019",
+    "target_directories_checked": [
+      "assets/pretrained/flexhook",
+      "assets/pretrained/yestrack",
+      "assets/pretrained/physical_tracker",
+      "assets/source_checkpoints",
+      "checkpoints/flexhook",
+      "checkpoints/yestrack",
+      "experiments/common_tracker"
+    ],
+    "all_target_directories_empty": true,
+    "transfer_protocol": "scripts/nas_sync.sh over the existing reverse SSH tunnel"
+  },
+  "preflight": {
+    "command": "scripts/preflight_baseline_assets.py --hash-files",
+    "overall_status": "PENDING",
+    "pending_checks": [
+      "roberta_base",
+      "rope_swin_tiny",
+      "flexhook_task_checkpoint",
+      "yestrack_lora_checkpoint",
+      "yestrack_base_model",
+      "common_sports_tracker"
+    ],
+    "gpu_launch_allowed": false,
+    "gt_or_labels_as_tracker_input": "REJECTED",
+    "unverified_external_asset_substitution": "REJECTED"
+  },
+  "next_action": "Use an authenticated route on a machine that can complete the official Baidu downloads, transfer the resulting bytes to the listed NAS asset directories, record source names and SHA256 hashes, then rerun the strict preflight before any GPU job."
+}
