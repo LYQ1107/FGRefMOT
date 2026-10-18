@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "phase": 25,
+  "audit_date": "2026-10-19",
+  "status": "REAL_DATA_SMOKE_READY_GPU1_CANDIDATE_NO_GPU_JOB_STARTED",
+  "gpu_jobs_started": false,
+  "workspace": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019",
+  "branch": "research/sports-rmot-strong-baselines-20261019",
+  "environment": {
+    "python": "/data3/liuyeqiang/.venvs/fgrefmot-rmot-sports-20261019/bin/python",
+    "python_version": "3.10.21",
+    "torch": "2.6.0+cu118",
+    "transformers": "5.2.0"
+  },
+  "smoke": {
+    "flexhook": {
+      "command": "python scripts/flexhook_sportsmot_smoke.py --layout-root runs/flexhook_sports_layout_20261019_v2 --tokenizer local --roberta-dir /data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/assets/pretrained/flexhook/roberta-base --json",
+      "status": "PASS",
+      "policy": "DATA_LOADER_ONLY; NO_MODEL; NO_GT_AS_TRACKER_INPUT",
+      "script_sha256": "e353c85e1f507e3f7da2fd3dcc339b89a752f27157ef2ecab9c0bb2d9f412283",
+      "layout_manifest": {
+        "path": "runs/flexhook_sports_layout_20261019_v2/manifest.json",
+        "sha256": "2c96136fb70f64ae006dd34db61379c8c27f57806a10d9bd3b067783bc38d54c"
+      },
+      "tokenizer_mode": "local",
+      "transformers_legacy_tokenizer_alias": true,
+      "train": {
+        "sample_count": 5491,
+        "first_item_shapes": [[4, 3, 224, 672], [4, 2, 16, 48], [4, 4], [8], [8, 25], [8, 25]]
+      },
+      "val": {
+        "sample_count": 1195,
+        "first_item_shapes": [[4, 3, 224, 672], [4, 2, 16, 48], [4, 4], [8], [8, 25], [8, 25]]
+      }
+    },
+    "yestrack": {
+      "command": "python scripts/yestrack_sportsmot_smoke.py --layout-root runs/yestrack_sports_layout_20261019_v1 --sequence-limit 1 --json",
+      "status": "PASS",
+      "policy": "SUPERVISED_SAMPLE_ONLY; NO_QWEN; NO_LORA; NO_TRACKER; NO_GT_AS_TRACKER_INPUT",
+      "script_sha256": "e0b48886a9f433bad454aa515a0db195eca1987fec7446731be5a146c844f725",
+      "layout_manifest": {
+        "path": "runs/yestrack_sports_layout_20261019_v1/manifest.json",
+        "sha256": "3ccf91f155155401c61e8afbc56bfe784f997783f2653a8007d7668109da3846"
+      },
+      "sequence_limit": 1,
+      "train": {
+        "sequence": "v_-6Os86HzwCs_c001",
+        "sample_count": 48444,
+        "frame_count_first_sample": 1,
+        "image_size_first_sample": [384, 384],
+        "label_first_sample": 0
+      },
+      "val": {
+        "sequence": "v_-6Os86HzwCs_c007",
+        "sample_count": 31362,
+        "frame_count_first_sample": 1,
+        "image_size_first_sample": [384, 384],
+        "label_first_sample": 0
+      }
+    }
+  },
+  "gpu_audit": {
+    "command": "nvidia-smi --query-gpu=index,name,uuid,utilization.gpu,memory.used,memory.total,power.draw --format=csv,noheader",
+    "device_count": 10,
+    "idle_candidate": {
+      "index": 1,
+      "name": "NVIDIA A100-SXM4-40GB",
+      "utilization_gpu_percent": 0,
+      "memory_used_mib": 17,
+      "memory_total_mib": 40960,
+      "compute_processes": []
+    },
+    "occupied_indices_left_untouched": [0, 2, 3, 4, 5, 6, 7, 8, 9],
+    "occupied_process_pattern": "/data2/yejiatong/miniconda3/envs/habitat-llm/bin/python",
+    "policy": "recheck immediately before each launch; never terminate or alter other project processes"
+  },
+  "next_action": "Recheck GPU 1 and run the READY F1 contract gate before launching the first single-GPU training job; run Y1 sequentially after its own gate and manifest review."
+}
