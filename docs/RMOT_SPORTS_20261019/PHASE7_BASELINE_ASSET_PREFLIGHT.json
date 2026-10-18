@@ -1,0 +1,97 @@
+{
+  "checks": [
+    {
+      "kind": "dataset_layout",
+      "manifest": {
+        "inference_data_policy": "LAYOUT_METADATA_ONLY; NO_GT_AS_TRACKER_INPUT",
+        "path": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/runs/flexhook_sports_layout_20261019_v2/manifest.json"
+      },
+      "name": "flexhook_layout",
+      "path": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/runs/flexhook_sports_layout_20261019_v2",
+      "reasons": [],
+      "required_for_training": true,
+      "status": "READY"
+    },
+    {
+      "kind": "dataset_layout",
+      "manifest": {
+        "inference_data_policy": "ANNOTATIONS_FOR_YESTRACK_DATASET_ONLY; NO_GT_AS_TRACKER_INPUT",
+        "path": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/runs/yestrack_sports_layout_20261019_v1/manifest.json"
+      },
+      "name": "yestrack_layout",
+      "path": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/runs/yestrack_sports_layout_20261019_v1",
+      "reasons": [],
+      "required_for_training": true,
+      "status": "READY"
+    },
+    {
+      "files": [],
+      "kind": "directory",
+      "name": "roberta_base",
+      "path": "<not provided>",
+      "reasons": [
+        "path_not_provided"
+      ],
+      "required_for_training": true,
+      "status": "MISSING"
+    },
+    {
+      "files": [],
+      "kind": "directory",
+      "name": "rope_swin_tiny",
+      "path": "<not provided>",
+      "reasons": [
+        "path_not_provided"
+      ],
+      "required_for_training": true,
+      "status": "MISSING"
+    },
+    {
+      "kind": "checkpoint",
+      "name": "flexhook_task_checkpoint",
+      "path": "<not provided>",
+      "reasons": [
+        "path_not_provided"
+      ],
+      "required_for_training": true,
+      "status": "MISSING"
+    },
+    {
+      "kind": "checkpoint",
+      "name": "yestrack_lora_checkpoint",
+      "path": "<not provided>",
+      "reasons": [
+        "path_not_provided"
+      ],
+      "required_for_training": true,
+      "status": "MISSING"
+    },
+    {
+      "kind": "physical_tracker_outputs",
+      "name": "common_sports_tracker",
+      "path": "<not provided>",
+      "reasons": [
+        "path_not_provided"
+      ],
+      "required_for_training": true,
+      "status": "MISSING"
+    }
+  ],
+  "generated_at": "2026-10-18T19:45:38.884208+00:00",
+  "next_action": "Acquire and hash every missing official asset, then rerun this preflight.",
+  "overall_status": "PENDING",
+  "pending_checks": [
+    "roberta_base",
+    "rope_swin_tiny",
+    "flexhook_task_checkpoint",
+    "yestrack_lora_checkpoint",
+    "common_sports_tracker"
+  ],
+  "policy": {
+    "gpu_jobs_started": false,
+    "gt_or_labels_as_tracker_input": "REJECTED",
+    "unverified_external_asset_substitution": "REJECTED"
+  },
+  "schema_version": 1,
+  "workspace": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019"
+}

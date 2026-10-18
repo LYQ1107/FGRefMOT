@@ -79,6 +79,40 @@ FlexHook fused-window and Tutel extensions remain absent and are reported by
 the upstream code as optional warnings.  No package was installed into
 another project's environment.
 
+## Official external-asset inventory (metadata only)
+
+The pinned FlexHook README's official Baidu share was queried without claiming
+any downloaded bytes:
+
+* `/FlexHook/pretrained/roberta-base` lists `config.json`,
+  `pytorch_model.bin`, `tokenizer.json`, `tokenizer_config.json`, and
+  `vocab.json`.
+* `/FlexHook/pretrained/swin` lists `config.json` and `pytorch_model.bin`.
+* `/FlexHook/SOTA_ckpts` lists the published Refer-KITTI, Refer-KITTI-v2,
+  Refer-Dance, and LaMOT checkpoints.
+* `/FlexHook/tracker_outputs/McByte-SportsMOT` lists tracker-result text
+  files, but its detector/tracker provenance has not been independently
+  established for this study.
+
+The Baidu metadata endpoint required its challenge response.  Although a
+challenge response returned a signed download URL, the URL was rejected by
+the file endpoint with `403 error_code=31360 (expire time out error)` because
+its `dstime` was already about one hour behind the current server time.  A
+timestamp edit invalidated the signature.  Therefore these listings are an
+inventory only; no local weight, checkpoint, or tracker result is marked
+verified from them.
+
+The YesTrack README's official share is recorded as a second acquisition
+source for its Refer-KITTI V1/V2 LoRA weights and pure-tracker candidate
+results.  Those materials are not a SportsMOT adapter, and no bytes from that
+share are marked present in this workspace.
+
+The executable guard and the point-in-time result are in
+`PHASE7_BASELINE_ASSET_PREFLIGHT.md` and
+`PHASE7_BASELINE_ASSET_PREFLIGHT.json`.  It requires the two generated layouts
+plus verified local language/visual assets, task checkpoints, and a
+provenance-complete common SportsMOT tracker before a GPU job can be started.
+
 This resolves the Python dependency gate, but it does not make a baseline
 training run reproducible by itself.  The required language/visual pretrained
 directories, FlexHook/YesTrack task checkpoints, and a verified common SportsMOT
