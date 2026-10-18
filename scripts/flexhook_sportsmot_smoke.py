@@ -21,6 +21,11 @@ from typing import Any
 
 import torch
 
+try:
+    from scripts.transformers_compat import install_legacy_tokenizer_alias
+except ModuleNotFoundError:  # direct ``python scripts/...`` invocation
+    from transformers_compat import install_legacy_tokenizer_alias
+
 
 def resolve_layout_root(value: str | Path) -> Path:
     root = Path(value).expanduser().resolve()
@@ -100,6 +105,8 @@ def run_smoke(layout_root: Path, tokenizer_mode: str, roberta_dir: str | None) -
     if str(upstream_root) not in sys.path:
         sys.path.insert(0, str(upstream_root))
 
+    compat_alias_installed = install_legacy_tokenizer_alias()
+
     import data.mydataloader_mix as mix  # imported after the path is installed
 
     options = build_options(layout_root)
@@ -119,6 +126,7 @@ def run_smoke(layout_root: Path, tokenizer_mode: str, roberta_dir: str | None) -
         "policy": "DATA_LOADER_ONLY; NO_MODEL; NO_GT_AS_TRACKER_INPUT",
         "tokenizer_mode": tokenizer_mode,
         "layout_root": str(layout_root),
+        "transformers_legacy_tokenizer_alias": compat_alias_installed,
     }
     for mode in ("train", "val"):
         dataset = mix.RMOT_Dataset_mix(mode=mode, opt=options)
@@ -160,4 +168,3 @@ def main(argv: list[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

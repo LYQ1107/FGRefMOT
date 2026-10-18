@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "phase": 20,
+  "audit_date": "2026-10-19",
+  "status": "FLEXHOOK_PRETRAINED_BASE_ASSETS_READY_EXTERNAL_CHECKPOINTS_PENDING",
+  "gpu_jobs_started": false,
+  "workspace": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019",
+  "branch": "research/sports-rmot-strong-baselines-20261019",
+  "acquisition": {
+    "execution_host": "NAS through the existing reverse SSH tunnel",
+    "mirror_route": "https://hf-mirror.com",
+    "official_flexhook_listing": "https://pan.baidu.com/s/1L-43y9SFDKmgl3dJNRlvNA?pwd=d3qj",
+    "source_policy": "FlexHook's pinned PRETRAIN.md permits the corresponding HuggingFace RoBERTa and NAVER AI RoPE-ViT models; source URLs, model revision, sizes, and hashes are recorded on NAS."
+  },
+  "assets": {
+    "roberta_base": {
+      "path": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/assets/pretrained/flexhook/roberta-base",
+      "source": "HuggingFace roberta-base via hf-mirror",
+      "files": [
+        {"file": "config.json", "size_bytes": 481, "sha256": "ef0185e2aae6e06c5f105a285006952c340e20c7dbf43c86ec82601b13fc45e9"},
+        {"file": "pytorch_model.bin", "size_bytes": 501200538, "sha256": "278b7a95739c4392fae9b818bb5343dde20be1b89318f37a6d939e1e1b9e461b"},
+        {"file": "tokenizer.json", "size_bytes": 1355863, "sha256": "847bbeab6174d66a88898f729d52fa8d355fafe1bea101cf960dd404581df70e"},
+        {"file": "tokenizer_config.json", "size_bytes": 25, "sha256": "994f46754c5bf4014f1aa92d34b1374319c3a6b3f702105cd5b742beaecd18ce"},
+        {"file": "vocab.json", "size_bytes": 898823, "sha256": "9e7f63c2d15d666b52e21d250d2e513b87c9b713cfa6987a82ed89e5e6e50655"}
+      ]
+    },
+    "rope_swin_tiny": {
+      "path": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/assets/pretrained/flexhook/swin_rope_mixed_tiny_patch4_window7_224",
+      "source": "NAVER AI RoPE-ViT model naver-ai/swin_rope_mixed_tiny_patch4_window7_224 via hf-mirror",
+      "model_revision": "3c078815db16ad2bdf3a83d9f8eae38aa5e2c546",
+      "files": [
+        {"file": "config.json", "size_bytes": 2, "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"},
+        {"file": "pytorch_model.bin", "size_bytes": 114039533, "sha256": "bcff3c549ef03926b7a795eca16a5781c6f5102ff6421bb8024f319cae962388"}
+      ]
+    }
+  },
+  "preflight": {
+    "command": "/data3/liuyeqiang/.venvs/fgrefmot-rmot-sports-20261019/bin/python scripts/preflight_baseline_assets.py --hash-files --roberta-dir /data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/assets/pretrained/flexhook/roberta-base --swin-dir /data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/assets/pretrained/flexhook/swin_rope_mixed_tiny_patch4_window7_224",
+    "exit_code": 2,
+    "report": "runs/baseline_asset_preflight_20261019/report.json",
+    "ready_checks": ["flexhook_layout", "yestrack_layout", "roberta_base", "rope_swin_tiny"],
+    "pending_checks": ["flexhook_task_checkpoint", "yestrack_lora_checkpoint", "yestrack_base_model", "common_sports_tracker"],
+    "overall_status": "PENDING",
+    "gpu_launch_allowed": false
+  },
+  "loader_smoke": {
+    "command": "/data3/liuyeqiang/.venvs/fgrefmot-rmot-sports-20261019/bin/python scripts/flexhook_sportsmot_smoke.py --layout-root runs/flexhook_sports_layout_20261019_v2 --tokenizer local --roberta-dir /data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/assets/pretrained/flexhook/roberta-base --json",
+    "exit_code": 0,
+    "policy": "DATA_LOADER_ONLY; NO_MODEL; NO_GT_AS_TRACKER_INPUT",
+    "transformers_version": "5.2.0",
+    "compatibility_shim": "scripts/transformers_compat.py restores batch_encode_plus through __call__ and preserves max_length truncation; third_party/FlexHook is unchanged",
+    "train_sample_count": 5491,
+    "val_sample_count": 1195,
+    "train_first_item_shapes": [[4, 3, 224, 672], [4, 2, 16, 48], [4, 4], [8], [8, 25], [8, 25]],
+    "val_first_item_shapes": [[4, 3, 224, 672], [4, 2, 16, 48], [4, 4], [8], [8, 25], [8, 25]],
+    "legacy_tokenizer_alias_installed": true
+  },
+  "storage": {
+    "nas_project_root_permissions": "0755 directories / 0644 files for this project root only",
+    "nas_project_root": "/home/A100/FGREF_RMOT_SPORTS_20261019"
+  },
+  "next_action": "Acquire and hash the FlexHook task checkpoint, the matching YesTrack base/LoRA assets, and a provenance-complete SportsMOT detector-output tracker; then rerun the strict preflight and run contracts before any GPU launch."
+}
