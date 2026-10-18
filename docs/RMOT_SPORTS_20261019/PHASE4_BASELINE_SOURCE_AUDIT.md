@@ -1,7 +1,7 @@
 # Phase 4 — baseline source and dependency audit
 
 Audit date: 2026-10-19  
-Status: **SOURCE AUDITED / TRAINING NOT_RUN**
+Status: **SOURCE CLONED AND AUDITED / TRAINING NOT_RUN**
 
 ## Fixed upstream revisions
 
@@ -22,32 +22,53 @@ the revisions in `third_party/SOURCES.md`:
 
 The public README and source files are evidence of interfaces and requirements,
 not evidence that external Baidu resources were downloaded.  Those resources
-were not fetched or guessed.
+were not fetched or guessed.  The two source checkouts now exist locally under
+`third_party/` and their detached HEADs, repository URLs, and clean worktrees
+were checked against `third_party/SOURCES.md`.
 
 ## Local dependency check
 
 The server's default `python3` is Python 3.12.3.  In that interpreter the
 following core packages are absent: `torch`, `torchvision`, `transformers`,
 `yacs`, `opencv-python`, and `numpy`.  PyYAML is present.  A read-only probe of
-existing environments found `trackocd-a100` with Torch 2.6.0+cu118 but without
-Transformers or YACS, and `agristl` with Torch 2.1.1+cu121 but without
-Transformers or FairScale.  These environments belong to other projects and
-were not modified or selected for training.  Neither one satisfies the full
-FlexHook/YesTrack dependency contract, so an isolated, pinned environment still
-has to be provisioned and import-checked.
+existing environments found `trackocd-a100` with Torch 2.6.0+cu118,
+`torchvision` 0.21.0, OpenCV, SciPy, timm and TrackEval dependencies, but
+without Transformers, YACS, or wordninja.  `agristl` has Torch 2.1.1+cu121 and
+YACS, but lacks the language-model stack.  These environments belong to other
+projects and were not modified or selected for training.  Neither one satisfies
+the full FlexHook/YesTrack dependency contract, so an isolated, pinned
+environment still has to be provisioned and import-checked.
+
+The pinned FlexHook checkout also contains two unused upstream helper modules
+that fail Python parsing because their `try` blocks have no handler:
+`deit/main.py` and `SwinTransformer/utils.py`.  The main RMOT path does not
+import those helpers, but this remains an upstream source caveat; the checkout
+was not edited.
+
+An isolated environment skeleton now exists at
+`/data3/liuyeqiang/.venvs/fgrefmot-rmot-sports-20261019`.  It uses a read-only
+`.pth` entry for the existing Torch 2.6.0+cu118/vision stack and has its own
+site-packages directory.  A dry-run install of the missing `yacs`, `wordninja`,
+Transformers, Accelerate, PEFT, bitsandbytes, and SentencePiece packages could
+not reach PyPI through the current proxy (`SSLEOFError` while fetching
+`https://pypi.org/simple/yacs/`).  No packages were installed and this
+environment is **not ready for training**; the pre-existing project
+environments were left untouched.
 
 ## Status and guardrails
 
-* `FLEXHOOK_SOURCE`: NOT_CLONED_NETWORK_BLOCKED.
-* `YESTRACK_SOURCE`: NOT_CLONED_NETWORK_BLOCKED.
+* `FLEXHOOK_SOURCE`: CLONED_PINNED_VERIFIED.
+* `YESTRACK_SOURCE`: CLONED_PINNED_VERIFIED.
 * `FLEXHOOK_WEIGHTS`: NOT_VERIFIED.
 * `YESTRACK_WEIGHTS`: NOT_VERIFIED.
 * `T_COMMON_SPORTS`: NOT_RUN (see Phase 3).
 * FlexHook training/evaluation: NOT_RUN.
 * YesTrack training/evaluation: NOT_RUN.
 
-The server's repeated `git ls-remote` probe still fails at the configured HTTPS
-proxy with `gnutls_handshake() failed: The TLS connection was non-properly
-terminated`.  The fixed-commit fetch script remains the only approved source
-acquisition path.  No baseline number is reported from the upstream README,
-and no result is inferred from another dataset or from an unverified tracker.
+The HTTPS route used by the fixed-commit fetch script was repaired through the
+existing Codex tunnel, with TLS verification left enabled.  Both repositories
+were fetched with Git LFS smudge disabled and now match their pinned commits.
+No baseline number is reported from the upstream README, and no result is
+inferred from another dataset or from an unverified tracker.  The generated
+FlexHook-compatible SportsMOT metadata layout and its limitations are recorded
+in `PHASE5_FLEXHOOK_DATA_LAYOUT.md`.
