@@ -43,7 +43,11 @@ The pinned FlexHook checkout also contains two unused upstream helper modules
 that fail Python parsing because their `try` blocks have no handler:
 `deit/main.py` and `SwinTransformer/utils.py`.  The main RMOT path does not
 import those helpers, but this remains an upstream source caveat; the checkout
-was not edited.
+was not edited.  A bounded compile audit found 127 other FlexHook Python files
+and all 92 YesTrack Python files parse successfully; the two files above are
+the only parse failures.  The isolated environment also lacks `skimage` in
+addition to the language-model packages, so TrackEval imports have not been
+claimed as ready.
 
 An isolated environment skeleton now exists at
 `/data3/liuyeqiang/.venvs/fgrefmot-rmot-sports-20261019`.  It uses a read-only
