@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "phase": 26,
+  "audit_date": "2026-10-19",
+  "status": "FLEXHOOK_ENTRYPOINT_IMPORT_READY_F1_GPU_JOB_NOT_STARTED",
+  "gpu_jobs_started": false,
+  "workspace": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019",
+  "branch": "research/sports-rmot-strong-baselines-20261019",
+  "environment": {
+    "python": "/data3/liuyeqiang/.venvs/fgrefmot-rmot-sports-20261019/bin/python",
+    "pip_check": "passed",
+    "installed_packages": {
+      "tensorboardX": "2.6.2.2",
+      "protobuf": "5.29.3",
+      "info-nce-pytorch": "0.1.4"
+    },
+    "imported_modules": {
+      "tensorboardX": "2.6.2.2",
+      "info_nce": "imported; package_version_not_exposed",
+      "google.protobuf": "5.29.3"
+    }
+  },
+  "entrypoint_smoke": {
+    "command": "CUDA_VISIBLE_DEVICES='' python scripts/launch_flexhook.py --runtime-root runs/flexhook_runtime_20261019 -- python /data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/third_party/FlexHook/main.py --help",
+    "status": "PASS_AFTER_DEPENDENCY_REPAIR",
+    "policy": "IMPORT_ONLY; NO_GPU; NO_PREDICTION_OUTPUT",
+    "launcher_sha256": "7930c8f72a9f7b8b018d3941bc9f1e32940daf443c1188fbfe012bb019b7fd9b",
+    "upstream_files": [
+      {
+        "path": "third_party/FlexHook/main.py",
+        "sha256": "9ab23f7cb3e253828d9afbd10697b5cec9bb68f46d70c0d9ed3d130d77c55089"
+      },
+      {
+        "path": "third_party/FlexHook/loss.py",
+        "sha256": "de196cb23842f66cc2fd95a45267bd5b75eb257d4478f3ced0fe09840192fa83"
+      }
+    ]
+  },
+  "run_manifest": {
+    "path": "runs/gpu/flexhook_f1_sports_trained_seed42/RUN_MANIFEST.json",
+    "sha256": "2e7596ec48beb5fd2a54b2fb44f3d67b766b18096f3b8e68e89f5a020d264ec4",
+    "published_to_nas_before_launch": true
+  },
+  "policy": {
+    "vendored_checkout_modified": false,
+    "other_gpu_processes_modified": false,
+    "next_gpu": 1
+  }
+}
