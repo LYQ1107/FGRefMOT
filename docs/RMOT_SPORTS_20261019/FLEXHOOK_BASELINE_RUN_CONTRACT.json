@@ -18,8 +18,8 @@
     "git": {
       "branch": "research/sports-rmot-strong-baselines-20261019",
       "clean": false,
-      "head": "8d004ba35dd377d448ec955a65561f7e34ecd97d",
-      "status": "?? docs/RMOT_SPORTS_20261019/PHASE10_RUN_CONTRACT.json\n?? docs/RMOT_SPORTS_20261019/PHASE10_RUN_CONTRACT.md\n?? scripts/run_contract.py\n?? tests/test_run_contract.py",
+      "head": "b638555ab273306d7966e682f598f6d811a587ea",
+      "status": "M docs/RMOT_SPORTS_20261019/PHASE10_RUN_CONTRACT.md\n M scripts/run_contract.py",
       "workspace": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019"
     },
     "official_source_commits": {
@@ -39,8 +39,8 @@
       },
       "scripts/run_contract.py": {
         "path": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/scripts/run_contract.py",
-        "sha256": "d4cb34a293691731fdf3dcbc210723421b9db6f47905d414c0bf7c58f381d837",
-        "size_bytes": 18195
+        "sha256": "74b79cd75fc7c6f1f8136e0c4d491244d14ca6b36c8919ad501e71d8699d4530",
+        "size_bytes": 18510
       }
     }
   },
@@ -52,7 +52,7 @@
     "python_executable": "/usr/bin/python3",
     "python_version": "3.12.3"
   },
-  "generated_at": "2026-10-18T20:02:50.705414+00:00",
+  "generated_at": "2026-10-18T20:04:56.388821+00:00",
   "inputs": {
     "assets": {
       "common_sports_tracker": {

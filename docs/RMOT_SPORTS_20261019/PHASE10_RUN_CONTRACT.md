@@ -24,7 +24,7 @@ the official run command and all thresholds/hyperparameters must be written
 into a new contract.  A future launch must first pass both checks:
 
 ```bash
-python3 scripts/run_contract.py --check docs/RMOT_SPORTS_20261019/<contract>.json
+python3 scripts/run_contract.py --check docs/RMOT_SPORTS_20261019/<contract>.json --require-ready
 python3 scripts/run_contract.py --write ... --require-ready
 ```
 

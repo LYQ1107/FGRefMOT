@@ -415,6 +415,11 @@ def main(argv: list[str] | None = None) -> int:
             for error in errors:
                 print(f"contract: INVALID — {error}")
             return 2
+        if args.require_ready and not contract.get("ready_to_launch", False):
+            print(f"contract: {contract.get('status', PENDING)} — hashes and policy verified, launch blocked")
+            for reason in contract.get("blocking_reasons", []):
+                print(f"  - {reason}")
+            return 2
         print(f"contract: {contract.get('status', INVALID)} — hashes and policy verified")
         return 0
 
