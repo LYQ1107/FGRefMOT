@@ -1,7 +1,7 @@
 # Phase 3 — common physical tracker and asset audit
 
 Audit date: 2026-10-19  
-Status: **INCOMPLETE / BLOCKED**
+Status: **INCOMPLETE / NO ELIGIBLE TRACKER ASSET**
 
 ## Scope and rule
 
@@ -31,6 +31,15 @@ checkpoint hash can be reconstructed.
   **UNVERIFIED** and are not used.
 * The NAS `refer-kitti-v2` assets are Refer-KITTI materials, not a valid
   substitute for the Refer-Sports physical-tracker input.
+* A bounded audit also found four existing MeMOTR SportsMOT output folders
+  under the local research references.  Each contains only a training
+  `config.yaml` at the inspected depth and no MOT result files or checkpoint;
+  the copies are not provenance-complete tracker assets and were not reused.
+  The inspected roots were:
+  `/data3/liuyeqiang/research_references/N72R20/MeMOTR/outputs/memotr_sportsmot`,
+  `/data3/liuyeqiang/research_references/N72R20/MeMOTR/outputs/memotr_d_detr_sportsmot`,
+  `/data3/liuyeqiang/research_refs/memory_tracking/MeMOTR/outputs/memotr_sportsmot`,
+  and `/data3/liuyeqiang/CFP-FishMOT_references/phase7/MeMOTR/outputs/memotr_sportsmot`.
 * The audited `labels_with_ids` files are annotation-derived global-ID boxes.
   They were used to construct evaluation-only GT for 142 test expressions
   (346,247 rows) and were not passed to a detector, tracker, or referring
@@ -44,8 +53,9 @@ and no evaluation was started.  FlexHook and YesTrack training/evaluation are
 also **NOT_RUN** pending official source acquisition, dependency verification,
 and an eligible detector/tracker asset.
 
-The next executable step is to repair the server's HTTPS Git access and run
-`scripts/fetch_official_repos.sh`, then audit the resulting detector/tracker
-requirements and locate or train a provenance-complete SportsMOT detector.  Any
-future tracker run must record the detector hash, tracker configuration, input
-manifest, output hash, and the same output directory for all compared methods.
+The official source checkouts are now available and the FlexHook data layout is
+prepared.  The next executable step is to provision an isolated compatible
+environment and locate or train a provenance-complete SportsMOT detector and
+tracker.  Any future tracker run must record the detector hash, tracker
+configuration, input manifest, output hash, and the same output directory for
+all compared methods.
