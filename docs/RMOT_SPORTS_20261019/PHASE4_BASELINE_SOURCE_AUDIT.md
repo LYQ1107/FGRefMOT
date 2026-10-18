@@ -52,28 +52,38 @@ claimed as ready.
 An isolated environment now exists at
 `/data3/liuyeqiang/.venvs/fgrefmot-rmot-sports-20261019`.  It uses a read-only
 `.pth` entry for the existing Torch 2.6.0+cu118/vision stack and has its own
-site-packages directory.  PyPI remains unreachable through the current proxy
-(`SSLEOFError` while fetching `https://pypi.org/simple/yacs/`), so the pure
-Python pieces that were independently obtainable through the repaired GitHub
-route were installed from pinned local checkouts:
+site-packages directory.  The canonical PyPI endpoint remains unreachable
+through the current proxy (`SSLEOFError` while fetching
+`https://pypi.org/simple/yacs/`).  The repaired GitHub route supplied pinned
+source checkouts for the pure-Python packages; the binary wheels below were
+installed from the reachable Tsinghua PyPI mirror with exact versions:
 
 | package | source / version | verification |
 |---|---|---|
 | yacs | `0.1.8`, `rbgirshick/yacs` commit `32d5e4ac300e…` | import succeeds |
 | wordninja | `keredson/wordninja` commit `0421d148cd3d…` | import and split smoke test succeed |
-| transformers | tag `v5.2.0`, commit `7d9754a05193…` | package imports; model/tokenizer imports still require tokenizers |
+| transformers | tag `v5.2.0`, commit `7d9754a05193…` | package and model/tokenizer imports succeed after the pinned `tokenizers` wheel was installed |
 | accelerate | tag `v1.10.1`, commit `623cc0ba588d…` | `PartialState` import succeeds |
-| peft | tag `v0.18.1`, commit `e3398fc05c55…` | package installs; model helpers wait on Transformers/tokenizers |
+| peft | tag `v0.18.1`, commit `e3398fc05c55…` | `LoraConfig`/`PeftModel` imports succeed |
 | scikit-image | `0.25.2` copied into the dedicated environment from the existing agristl package | import succeeds |
+| tokenizers | `0.22.1` manylinux wheel from the Tsinghua PyPI mirror | Rust extension import succeeds |
+| typer-slim | `0.24.0` wheel from the Tsinghua PyPI mirror | `pip check` requirement satisfied |
+| bitsandbytes | `0.47.0` wheel from the Tsinghua PyPI mirror | package import succeeds with the read-only Torch 2.6.0+cu118 stack |
+| sentencepiece | `0.2.1` wheel from the Tsinghua PyPI mirror | package import succeeds |
 
-The dedicated environment still lacks `tokenizers` and `typer-slim`, and the
-YesTrack requirement set's `bitsandbytes` and SentencePiece are not installed.
-`from transformers import RobertaTokenizerFast` and `RobertaModel`, the
-FlexHook data/model imports, and PEFT model helpers therefore fail at the
-missing `tokenizers` extension.  The YesTrack `ReferKittiMOT` data loader and
-Accelerate import succeed when loaded without the umbrella package side
-effects.  No package was installed into another project's environment, and
-this environment remains **not ready for training**.
+The dedicated environment now passes `pip check`.  The following import
+preflight succeeds: `RobertaTokenizerFast`, `RobertaModel`, FlexHook config,
+FlexHook data/model modules, YesTrack `ReferKittiMOT`, Accelerate,
+`LoraConfig`/`PeftModel`, bitsandbytes, and SentencePiece.  The optional
+FlexHook fused-window and Tutel extensions remain absent and are reported by
+the upstream code as optional warnings.  No package was installed into
+another project's environment.
+
+This resolves the Python dependency gate, but it does not make a baseline
+training run reproducible by itself.  The required language/visual pretrained
+directories, FlexHook/YesTrack task checkpoints, and a verified common SportsMOT
+tracker output are still absent; the training and evaluation guards below
+therefore remain active.
 
 ## Status and guardrails
 
@@ -82,8 +92,9 @@ this environment remains **not ready for training**.
 * `FLEXHOOK_WEIGHTS`: NOT_VERIFIED.
 * `YESTRACK_WEIGHTS`: NOT_VERIFIED.
 * `T_COMMON_SPORTS`: NOT_RUN (see Phase 3).
-* FlexHook training/evaluation: NOT_RUN.
-* YesTrack training/evaluation: NOT_RUN.
+* `RESEARCH_ENV_IMPORTS`: PASS (dedicated environment; `pip check` clean).
+* FlexHook training/evaluation: NOT_RUN (weights and tracker input not verified).
+* YesTrack training/evaluation: NOT_RUN (weights, tracker input, and SportsMOT wrapper not verified).
 
 The HTTPS route used by the fixed-commit fetch script was repaired through the
 existing Codex tunnel, with TLS verification left enabled.  Both repositories
