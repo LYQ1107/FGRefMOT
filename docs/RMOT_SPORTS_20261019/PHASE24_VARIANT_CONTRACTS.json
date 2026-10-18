@@ -1,0 +1,163 @@
+{
+  "schema_version": 1,
+  "phase": 24,
+  "audit_date": "2026-10-19",
+  "status": "F1_Y1_CONTRACTS_READY_F0_F2_Y0_CHECKPOINTS_PENDING",
+  "gpu_jobs_started": false,
+  "workspace": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019",
+  "branch": "research/sports-rmot-strong-baselines-20261019",
+  "aggregate_preflight": {
+    "path": "runs/baseline_asset_preflight_20261019/phase24_variant_preflight.json",
+    "sha256": "272860e6009615b2321be425f38ded0671812e87e68592cd9721f9097a33a33d",
+    "overall_status": "PENDING",
+    "ready_checks": [
+      "flexhook_layout",
+      "yestrack_layout",
+      "roberta_base",
+      "rope_swin_tiny",
+      "yestrack_base_model",
+      "common_sports_tracker"
+    ],
+    "pending_checks": [
+      "flexhook_task_checkpoint",
+      "yestrack_lora_checkpoint"
+    ],
+    "source_reports": [
+      {
+        "path": "runs/baseline_asset_preflight_20261019/phase21_nas_preflight.json",
+        "sha256": "ac5fa7f0affc1ec16acf3464af92b0db1d943c84055db1ac57def51f50762b7e"
+      },
+      {
+        "path": "runs/baseline_asset_preflight_20261019/phase23_tracker_preflight.json",
+        "sha256": "00b2bfaae8b2b1a52b1bd962ad5c8fe6953774574f9fbb4d0fe79d5f25681c0a"
+      }
+    ],
+    "path_translation": {
+      "nas_login_shell_prefix": "/home/Valadmin/A100",
+      "server_mount_prefix": "/data3/liuyeqiang/nas/A100",
+      "policy": "reuse hash-bearing source reports; run_contract check rehashes current finite files before launch"
+    },
+    "script": {
+      "path": "scripts/merge_variant_preflight.py",
+      "sha256": "52226ad5f5958fcfe0dc4a9adb88cabc7810c189b12bbda7df413ace9763088e"
+    }
+  },
+  "runtime_staging": {
+    "path": "runs/flexhook_runtime_20261019",
+    "manifest": "runs/flexhook_runtime_20261019/RUNTIME_MANIFEST.json",
+    "manifest_sha256": "0edb0bcd89280ee8a396525453aa1e6818372bdc58bbabcf0bf099a9546b2bd0",
+    "policy": "symlink-only runtime staging; no vendored third_party checkout edits",
+    "prepare_script_sha256": "9cc08cc8d5179e7033580f5ad51163e4e4848061254c09fbd0d2629ebeb8a455",
+    "launch_script_sha256": "7930c8f72a9f7b8b018d3941bc9f1e32940daf443c1188fbfe012bb019b7fd9b"
+  },
+  "contracts": [
+    {
+      "id": "flexhook_f1_sports_trained_seed42",
+      "method": "FlexHook",
+      "variant": "F1",
+      "path": "runs/contracts_20261019/flexhook_f1_sports_trained_seed42.json",
+      "sha256": "f383fa4fb63b45e5503c1c4e94e90e44085c210909902783dd66389f5b3c4aec",
+      "status": "READY",
+      "final_check": "contract: READY — hashes and policy verified",
+      "seed": 42,
+      "train_split": "train",
+      "evaluation_split": "val",
+      "tracker_policy": "common_fixed_sambamotr_dab_detr_outputs",
+      "hyperparameters": {
+        "batch_size": 10,
+        "val_batch_size": 40,
+        "epochs": 25,
+        "base_lr": 1e-5,
+        "weight_decay": 1e-4,
+        "visual": "rope-swin-tiny",
+        "text": "roberta",
+        "pretrained_mode": "src",
+        "text_len": 25,
+        "sample_expression_num": 8,
+        "sample_frame_len": 8,
+        "sample_frame_num": 4,
+        "sample_frame_stride": 30,
+        "val_sample_expression_num": 8,
+        "val_sample_frame_stride": 24,
+        "val_set_scale": 5,
+        "gauss_sample": false,
+        "noise1": true,
+        "noise2": true,
+        "noise3": true,
+        "posw": 0.7,
+        "expression_score_thresholds": [0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8]
+      },
+      "required_assets": ["roberta_base", "rope_swin_tiny", "common_sports_tracker"]
+    },
+    {
+      "id": "yestrack_y1_sports_lora_seed42",
+      "method": "YesTrack",
+      "variant": "Y1",
+      "path": "runs/contracts_20261019/yestrack_y1_sports_lora_seed42.json",
+      "sha256": "cf60bbaded5e37c333c6c0f34f22aad8cb813985faace1cc8be7a1384afa523b",
+      "status": "READY",
+      "final_check": "contract: READY — hashes and policy verified",
+      "seed": 42,
+      "train_split": "train",
+      "evaluation_split": "val",
+      "tracker_policy": "common_fixed_sambamotr_dab_detr_outputs",
+      "hyperparameters": {
+        "batch_size": 2,
+        "epochs": 1,
+        "lr": 5e-6,
+        "image_size": 384,
+        "margin_ratio": 0.2,
+        "min_side": 8,
+        "max_text_len": 100,
+        "negative_downsample": 0.5,
+        "coord_mode": "xy",
+        "coord_decimals": 3,
+        "lora_r": 8,
+        "lora_alpha": 16,
+        "lora_dropout": 0.0,
+        "eval_thresholds": [0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8],
+        "eval_sequence": "all",
+        "eval_infer_every_n_frames": 5,
+        "re_refer_lower": 0.2,
+        "re_refer_thresh": 0.8
+      },
+      "required_assets": ["yestrack_base_model", "common_sports_tracker"],
+      "evaluation_adapter": {
+        "script": "third_party/YesTrack/refer_llm/llm_eval_from_mot.py",
+        "mot_input_type": "bytetrack",
+        "tracker_root": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/assets/pretrained/common_tracker/sambamotr_sportsmot_dab/tracker_outputs",
+        "image_frame_start_one": 1,
+        "mot_frame_start_one": 1,
+        "tracker_ground_truth_input": false,
+        "status": "planned_after_Y1_training; not executed"
+      }
+    }
+  ],
+  "common_tracker_policy": {
+    "name": "SambaMOTR-DAB-D-DETR",
+    "mode": "integrated_end_to_end_detector_plus_tracker",
+    "output_root": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/assets/pretrained/common_tracker/sambamotr_sportsmot_dab/tracker_outputs",
+    "output_count": 150,
+    "used_ground_truth": false,
+    "source_phase": 23
+  },
+  "external_checkpoint_gates": {
+    "flexhook_task_checkpoint": {
+      "status": "MISSING",
+      "reason": "public inventory has LaMOT/Refer-Dance/Refer-KITTI task files but no SportsMOT-named checkpoint; anonymous route stale_or_403"
+    },
+    "yestrack_lora_checkpoint": {
+      "status": "MISSING",
+      "reason": "public V1/V2 LoRA release listing exists but signed download returned HTTP 403 / Baidu 31064"
+    },
+    "substitution_policy": "no cross-task or unverified checkpoint substitution"
+  },
+  "next_gate": {
+    "required_before_gpu": [
+      "rerun run_contract.py --check --require-ready for selected variant",
+      "inspect nvidia-smi and select an idle device not used by another project",
+      "write device, environment, command, and output paths to a run manifest"
+    ],
+    "gpu_jobs_started": false
+  }
+}
