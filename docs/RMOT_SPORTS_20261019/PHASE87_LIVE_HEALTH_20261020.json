@@ -3,15 +3,15 @@
   "phase": 87,
   "title": "Live health after timed tracker completion",
   "status": "FORMAL_EVAL_AND_MULTI_SEED_TRAINING_HEALTHY",
-  "observed_at": "2026-10-20T07:08:00+08:00",
+  "observed_at": "2026-10-20T07:55:41+08:00",
   "formal_test": {
     "run_id": "yestrack_y1_common_eval_20261019_v3",
     "gpu": 1,
     "manifest": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/yestrack_y1_common_eval_20261019_v3/YESTRACK_EVAL_MANIFEST.json",
     "manifest_status": "ABSENT",
-    "completed_prediction_files": 60,
+    "completed_prediction_files": 65,
     "expected_expression_count": 142,
-    "latest_prediction_mtime": "2026-10-20T07:05:22+08:00",
+    "latest_prediction_mtime": "2026-10-20T07:52:20+08:00",
     "process_alive": true,
     "claim_boundary": "Partial prediction files are progress evidence only; no historical-test metric is claimed."
   },
@@ -22,7 +22,7 @@
       "run_id": "yestrack_y1_sports_lora_seed43_v2",
       "manifest": "runs/gpu/yestrack_y1_sports_lora_seed43_v2/RUN_MANIFEST.json",
       "status": "RUNNING",
-      "optimizer_steps_observed": 9048,
+      "optimizer_steps_observed": 17268,
       "planned_steps": 90523,
       "process_alive": true
     },
@@ -32,7 +32,7 @@
       "run_id": "yestrack_y1_sports_lora_seed44_v2",
       "manifest": "runs/gpu/yestrack_y1_sports_lora_seed44_v2/RUN_MANIFEST.json",
       "status": "RUNNING",
-      "optimizer_steps_observed": 8875,
+      "optimizer_steps_observed": 16798,
       "planned_steps": 90528,
       "process_alive": true
     }
