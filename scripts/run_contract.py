@@ -271,6 +271,11 @@ def build_contract(
         workspace_root / "scripts" / "preflight_baseline_assets.py",
         workspace_root / "scripts" / "run_contract.py",
     ]
+    if method == "yestrack":
+        # The SportsMOT adapter owns the split and UNKNOWN-label policy.  Keep
+        # its exact bytes in every YesTrack contract so a later launch cannot
+        # silently reuse a contract made with a different loader.
+        source_files.append(workspace_root / "scripts" / "yestrack_sportsmot_adapter.py")
     files: dict[str, Any] = {
         "preflight": _path_record(preflight_path),
         "dataset_manifest": _path_record(dataset_manifest_path),

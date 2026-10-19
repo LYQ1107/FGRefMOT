@@ -70,12 +70,15 @@
     "adapter": "scripts/yestrack_sportsmot_adapter.py",
     "model_name": "Qwen/Qwen3-VL-2B-Instruct",
     "model_name_policy": "must be a local verified directory; no online fallback",
+    "label_policy": "EXPLICIT_FRAME_KEYS_ONLY; MISSING_KEYS_UNKNOWN",
+    "unknown_frame_policy": "skip samples whose expression JSON has no key for the frame",
+    "negative_sampling_policy": "sample negatives only from explicit frame keys; an explicit empty list is annotated and may yield negatives",
     "training_arguments": {
-      "batch_size": 2,
+      "batch_size": 8,
       "epochs": 1,
       "lr": 5e-06,
       "seed": 42,
-      "every_steps": 10000,
+      "every_steps": 0,
       "image_size": 384,
       "margin_ratio": 0.2,
       "min_side": 8,
@@ -102,7 +105,8 @@
     "train_command_template": [
       "python", "scripts/yestrack_sportsmot_adapter.py", "--layout-root",
       "<YESTRACK_LAYOUT_ROOT>", "--model_name", "<YESTRACK_BASE_MODEL_DIR>",
-      "--batch_size", "2", "--epochs", "1", "--lr", "5e-6", "--seed", "42",
+      "--batch_size", "8", "--epochs", "1", "--every_steps", "0", "--lr", "5e-6", "--seed", "42",
+      "--negative_downsample", "0.5",
       "--eval_threshold", "0.2", "0.3", "0.4", "0.5", "0.6", "0.7", "0.8",
       "--eval_sequence", "all", "--re_refer_lower", "0.2", "--re_refer_thresh", "0.8"
     ],

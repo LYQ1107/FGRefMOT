@@ -1,0 +1,41 @@
+{
+  "phase": 48,
+  "title": "YesTrack unknown-frame label protocol fix",
+  "status": "CORRECTED_RUN_READY",
+  "invalidated_attempt": {
+    "run_id": "yestrack_y1_sports_lora_seed42",
+    "status": "INTERRUPTED_PROTOCOL_INVALID",
+    "steps_completed_at_interrupt": 10392,
+    "protocol_valid": false,
+    "reason": "Missing Refer-Sports expression-frame keys are UNKNOWN, but the upstream loader treated them as No.",
+    "valid_checkpoint": false
+  },
+  "corrected_policy": {
+    "label_policy": "EXPLICIT_FRAME_KEYS_ONLY; MISSING_KEYS_UNKNOWN",
+    "unknown_frame_policy": "skip samples whose expression JSON has no key for the frame",
+    "negative_sampling_policy": "explicit frame keys only; explicit empty lists are annotated frames"
+  },
+  "corrected_loader_smoke": {
+    "train_expressions": 181,
+    "train_videos": 22,
+    "samples": 723877,
+    "explicit_negative_samples_added": 303818,
+    "unknown_samples_skipped": 214833,
+    "batch_size": 8,
+    "epochs": 1,
+    "optimizer_steps": 90485
+  },
+  "runtime_estimate": {
+    "measured_steps_per_second": "2.4-2.7",
+    "training_hours": "9.5-10.5",
+    "end_to_end_hours": "10-12",
+    "basis": "interrupted A100 run; corrected run is authoritative"
+  },
+  "validation": {
+    "layout_dry_run": "PASS",
+    "dataset_construction_smoke": "PASS",
+    "pytest": "24 passed",
+    "other_gpu_jobs_modified": false,
+    "nas_run_symlink": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs"
+  }
+}

@@ -140,6 +140,93 @@ def install_sportsmot_adapter(llm_train_module: Any, train_root: Path, val_root:
     return loader_cls
 
 
+def _append_explicit_frame_negatives(dataset: Any, negative_downsample: float) -> tuple[int, int]:
+    """Add negatives only where the expression archive has an explicit frame key.
+
+    Refer-Sports stores positive target IDs sparsely.  A missing frame key is
+    UNKNOWN and must not become a ``No`` sample.  The upstream YesTrack
+    datasets can still be reused by first constructing only positives (with a
+    zero negative rate), then adding negatives for explicit keys here.
+    """
+
+    import torch
+
+    ratio = float(negative_downsample)
+    if ratio < 0.0 or ratio > 1.0:
+        raise ValueError(f"negative_downsample must be in [0, 1], got {ratio}")
+    existing = set(dataset.samples)
+    added = 0
+    skipped_unknown = 0
+    for sequence in dataset.ds.sequence_names:
+        expressions = dataset.ds._load_expressions_for_sequence(sequence)
+        for frame_idx, annotation in enumerate(dataset.ds.annotations[sequence]):
+            object_count = int(annotation["bbox"].shape[0])
+            if object_count == 0:
+                continue
+            for sentence_idx, expression in enumerate(expressions):
+                label_map = expression.get("label", {})
+                key = str(frame_idx)
+                if key not in label_map:
+                    skipped_unknown += object_count
+                    continue
+                ids = label_map.get(key) or []
+                pos_ids = {int(value) for value in ids}
+                for ann_idx in range(object_count):
+                    obj_id = int(annotation["id"][ann_idx].item())
+                    if obj_id in pos_ids:
+                        continue
+                    if ratio <= 0.0 or (ratio < 1.0 and torch.rand(1).item() > ratio):
+                        continue
+                    sample = (sequence, frame_idx, ann_idx, sentence_idx)
+                    if sample not in existing:
+                        dataset.samples.append(sample)
+                        existing.add(sample)
+                        added += 1
+    return added, skipped_unknown
+
+
+class _ExplicitFrameLabelMixin:
+    """Preserve UNKNOWN expression frames while reusing upstream sample code."""
+
+    def __init__(self, refer_dataset: Any, *args: Any, negative_downsample: float = 1.0, **kwargs: Any):
+        # The upstream constructor uses ``get(frame, [])`` and would create
+        # UNKNOWN negatives.  Build positives only, then add explicit-key
+        # negatives with the requested sampling rate.
+        oversample_seq = kwargs.pop("oversample_seq", None)
+        oversample_factor = int(kwargs.pop("oversample_factor", 1) or 1)
+        super().__init__(
+            refer_dataset=refer_dataset,
+            *args,
+            negative_downsample=0.0,
+            oversample_seq=None,
+            oversample_factor=1,
+            **kwargs,
+        )
+        added, skipped_unknown = _append_explicit_frame_negatives(self, negative_downsample)
+        self.sports_label_policy = "EXPLICIT_FRAME_KEYS_ONLY; MISSING_KEYS_UNKNOWN"
+        self.explicit_negative_samples_added = added
+        self.unknown_samples_skipped = skipped_unknown
+        if oversample_seq and oversample_factor > 1:
+            repeated = [sample for sample in self.samples if sample[0] == str(oversample_seq)]
+            for _ in range(oversample_factor - 1):
+                self.samples.extend(repeated)
+
+
+def install_sportsmot_label_policy(llm_train_module: Any) -> None:
+    """Replace only the upstream training dataset classes in-process."""
+
+    from refer_llm.data.datasets import QwenReferVideoYesNoDataset, QwenReferYesNoDataset
+
+    class SportsQwenReferYesNoDataset(_ExplicitFrameLabelMixin, QwenReferYesNoDataset):
+        pass
+
+    class SportsQwenReferVideoYesNoDataset(_ExplicitFrameLabelMixin, QwenReferVideoYesNoDataset):
+        pass
+
+    llm_train_module.QwenReferYesNoDataset = SportsQwenReferYesNoDataset
+    llm_train_module.QwenReferVideoYesNoDataset = SportsQwenReferVideoYesNoDataset
+
+
 def audit_layout(train_root: Path, val_root: Path) -> dict[str, Any]:
     """Build both supervised loaders and report finite structural counts."""
 
@@ -203,6 +290,7 @@ def main(argv: list[str] | None = None) -> int:
     from refer_llm import llm_train
 
     install_sportsmot_adapter(llm_train, train_root, val_root)
+    install_sportsmot_label_policy(llm_train)
     args = llm_train.parse_args(upstream_argv)
     # The appended arguments are authoritative, but set these explicitly as a
     # second defense against config-file defaults.
