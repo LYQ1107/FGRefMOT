@@ -61,3 +61,10 @@ terminal manifest. Because these runs save the LoRA adapter at epoch end, the
 internal watchers continue to wait for a terminal training manifest and
 `lora_epoch_0`; no partial checkpoint or partial historical output is used as a
 metric.
+
+Phase 82 records the 06:40 observation: seed43 and seed44 had reached 4,547
+and 4,653 steps, the formal evaluator had produced 58/142 partial prediction
+files, and no terminal formal manifest existed. It also records the separate
+GPU0 timed tracker run, which uses an image-only staging view and is intended to
+supply the missing tracker wall-time/FPS evidence; none of these partial states
+is treated as a metric.

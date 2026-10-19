@@ -1,6 +1,6 @@
 {
   "schema_version": "rmot-sports-gate-audit-0.1",
-  "observed_at": "2026-10-20T06:24:21+08:00",
+  "observed_at": "2026-10-20T06:40:13+08:00",
   "status": "IN_PROGRESS",
   "workspace": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019",
   "branch": "research/sports-rmot-strong-baselines-20261019",
@@ -49,7 +49,8 @@
         "docs/RMOT_SPORTS_20261019/PHASE56_INTERNAL_YESTRACK_RUNNING.json",
         "docs/RMOT_SPORTS_20261019/PHASE80_LIVE_PROGRESS_20261020.json",
         "docs/RMOT_SPORTS_20261019/PHASE81_LIVE_PROGRESS_20261020.json",
-        "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/yestrack_y1_internal_eval_20261019_v5/YESTRACK_EVAL_MANIFEST.json"
+        "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/yestrack_y1_internal_eval_20261019_v5/YESTRACK_EVAL_MANIFEST.json",
+        "docs/RMOT_SPORTS_20261019/PHASE82_LIVE_PROGRESS_20261020.json"
       ],
       "claim_boundary": "The full 22-video training manifest succeeded and its formal historical evaluation is running. The 17-video internal training and fixed five-video validation evaluation also succeeded; threshold 0.8 was selected on internal HOTA. The internal metric is selection evidence, while no full historical-test result is claimed until the formal manifest succeeds."
     },
@@ -85,7 +86,8 @@
         "docs/RMOT_SPORTS_20261019/PHASE77_YESTRACK_MULTI_SEED_TRAINING.json",
         "docs/RMOT_SPORTS_20261019/PHASE79_YESTRACK_MULTI_SEED_ISOLATION.json",
         "docs/RMOT_SPORTS_20261019/PHASE80_LIVE_PROGRESS_20261020.json",
-        "docs/RMOT_SPORTS_20261019/PHASE81_LIVE_PROGRESS_20261020.json"
+        "docs/RMOT_SPORTS_20261019/PHASE81_LIVE_PROGRESS_20261020.json",
+        "docs/RMOT_SPORTS_20261019/PHASE82_LIVE_PROGRESS_20261020.json"
       ],
       "claim_boundary": "The isolated v2 seed43 and seed44 YesTrack trainings are in the optimizer loop; the v1 timestamp-collision attempts are invalidated with no accepted checkpoint. No multi-seed metric or stability claim is made until both v2 internal validation manifests succeed."
     },
@@ -97,7 +99,8 @@
         "docs/RMOT_SPORTS_20261019/PHASE1_CHECKPOINT_ARCHIVE_SMOKE.json",
         "docs/RMOT_SPORTS_20261019/PHASE70_FLEXHOOK_INTERNAL_CORE_TRAINING.json",
         "docs/RMOT_SPORTS_20261019/PHASE74_EFFICIENCY_PROTOCOL.json",
-        "docs/RMOT_SPORTS_20261019/PHASE75_FLEXHOOK_RESUME_STATE.json"
+        "docs/RMOT_SPORTS_20261019/PHASE75_FLEXHOOK_RESUME_STATE.json",
+        "docs/RMOT_SPORTS_20261019/PHASE82_LIVE_PROGRESS_20261020.json"
       ],
       "claim_boundary": "NAS-direct artifact storage, synthetic archive checks, read-only measurement tooling, and a real patched one-GPU FlexHook smoke resume are recorded. Final online FPS, complete peak-memory comparison, and multi-GPU recovery remain outstanding; the completed strict core job was launched before the resume patch."
     },
@@ -132,6 +135,12 @@
       "status": "TRAINING_IN_PROGRESS",
       "manifest": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/runs/gpu/yestrack_y1_sports_lora_seed44_v2/RUN_MANIFEST.json",
       "log": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/runs/gpu/yestrack_y1_sports_lora_seed44_v2/yestrack_y1_sports_lora_seed44_v2.log"
+    },
+    {
+      "run_id": "common_tracker_refersports_timed_20261020",
+      "status": "TRACKER_TIMING_IN_PROGRESS",
+      "manifest": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/common_tracker_refersports_timed_20261020/TRACKER_RUN_MANIFEST.json",
+      "gpu": 0
     }
   ],
   "next_gates": [
