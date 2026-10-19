@@ -1,0 +1,40 @@
+{
+  "schema_version": "rmot-sports-phase-42-0.1",
+  "phase": 42,
+  "status": "RUNNING_HEALTHY",
+  "observed_at": "2026-10-19T17:02:28+08:00",
+  "run_id": "yestrack_y1_sports_lora_seed42",
+  "progress_sample": {
+    "before_steps": 4719,
+    "after_steps": 4771,
+    "total_steps": 103988,
+    "interval_seconds": 20,
+    "observed_steps_per_second": 2.6
+  },
+  "gpu": {
+    "physical_index": 1,
+    "memory_used_mib": 28393,
+    "memory_total_mib": 40960,
+    "utilization_percent": 85,
+    "temperature_celsius": 70,
+    "other_compute_process_present": true
+  },
+  "nas": {
+    "mount": "/data3/liuyeqiang/nas/A100",
+    "total": "11T",
+    "available": "3.7T",
+    "use_percent": 66
+  },
+  "manifests": {
+    "training": "RUNNING_GPU1",
+    "tracker": "PREPARED_NO_GPU_RUN",
+    "lora_checkpoint": "NOT_YET_PUBLISHED",
+    "tracker_outputs": "NOT_YET_PUBLISHED",
+    "formal_evaluation": "PENDING"
+  },
+  "safety": {
+    "training_restarted": false,
+    "other_gpu_jobs_modified": false,
+    "post_training_watchers_live": true
+  }
+}
