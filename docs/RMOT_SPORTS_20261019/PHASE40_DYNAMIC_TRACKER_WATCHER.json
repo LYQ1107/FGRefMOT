@@ -1,0 +1,25 @@
+{
+  "schema_version": "rmot-sports-phase-40-0.1",
+  "phase": 40,
+  "status": "PREPARED_TRAINING_IN_PROGRESS",
+  "branch": "research/sports-rmot-strong-baselines-20261019",
+  "watcher": "scripts/post_training_tracker_watch.py",
+  "training_fragment": "scripts/yestrack_sportsmot_adapter.py",
+  "selection_policy": {
+    "compute_apps": "NONE",
+    "max_memory_mib": 1000,
+    "gpu_assignment": "DYNAMIC_PHYSICAL_GPU"
+  },
+  "output_policy": "DIRECT_NAS_OUTPUT_ROOT",
+  "training_exit_marker": "__YESTRACK_EXIT__=0",
+  "validation": {
+    "py_compile": "PASS",
+    "cli_help": "PASS",
+    "scoped_project_tests": "23_PASS",
+    "tracker_run": "PENDING_YESTRACK_COMPLETION"
+  },
+  "safety": {
+    "other_gpu_processes_modified": false,
+    "existing_gpu1_watcher_replaced": true
+  }
+}
