@@ -1,0 +1,128 @@
+{
+  "schema_version": "rmot-sports-gate-audit-0.1",
+  "observed_at": "2026-10-20T00:18:15+08:00",
+  "status": "IN_PROGRESS",
+  "workspace": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019",
+  "branch": "research/sports-rmot-strong-baselines-20261019",
+  "protocol": {
+    "full_train": "22 videos / 181 expressions",
+    "internal_selection": "17 train-core videos / 136 expressions plus 5 internal-val videos / 45 expressions",
+    "historical_test": "19 videos / 142 expressions",
+    "test_policy": "offline TrackEval only after selection; test GT is never model input, tracker input, checkpoint selector or threshold tuner"
+  },
+  "gates": [
+    {
+      "id": "A_DATA",
+      "status": "COMPLETE",
+      "evidence": [
+        "docs/RMOT_SPORTS_20261019/PHASE2_SPORTS_DATA_AUDIT.md",
+        "docs/RMOT_SPORTS_20261019/PHASE53_INTERNAL_SELECTION_SPLIT.json",
+        "docs/RMOT_SPORTS_20261019/PHASE54_EVALUATION_SPLIT_LABELS.json"
+      ],
+      "claim_boundary": "The registered Refer-Sports layout and video-disjoint internal split are audited; no new generalization claim is made."
+    },
+    {
+      "id": "B_COMMON_TRACKER",
+      "status": "COMPLETE_FOR_REGISTERED_RUN",
+      "evidence": [
+        "docs/RMOT_SPORTS_20261019/PHASE49_COMMON_TRACKER_COMPLETION.json",
+        "docs/RMOT_SPORTS_20261019/PHASE55_INTERNAL_TRACKER_READY.json"
+      ],
+      "claim_boundary": "The fixed SambaMOTR tracker output manifests are registered for the baseline runs; referring-model comparisons remain incomplete until YesTrack and proposed runs finish."
+    },
+    {
+      "id": "C_FLEXHOOK_NATIVE_BASELINE",
+      "status": "F1_COMPLETE_INTERNAL_CORE_IN_PROGRESS",
+      "evidence": [
+        "docs/RMOT_SPORTS_20261019/PHASE60_FLEXHOOK_F1_COMPLETION.json",
+        "docs/RMOT_SPORTS_20261019/PHASE70_FLEXHOOK_INTERNAL_CORE_TRAINING.json",
+        "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/runs/gpu/flexhook_f1_internal_core_seed42/RUN_MANIFEST.json"
+      ],
+      "claim_boundary": "F1 has a completed formal result; the strict core training and final internal checkpoint selection are still running. F0/F2 are not claimed."
+    },
+    {
+      "id": "D_YESTRACK_NATIVE_BASELINE",
+      "status": "TRAINING_IN_PROGRESS",
+      "evidence": [
+        "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/runs/gpu/yestrack_y1_sports_lora_seed42_v2/RUN_MANIFEST.json",
+        "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/runs/gpu/yestrack_y1_sports_core_lora_seed42/RUN_MANIFEST.json"
+      ],
+      "claim_boundary": "No YesTrack validation or historical-test metric is claimed while either training manifest is RUNNING."
+    },
+    {
+      "id": "E_LEARNED_IMPROVEMENT_AND_ABLATIONS",
+      "status": "NOT_RUN_LEARNED_METHOD",
+      "evidence": [
+        "docs/RMOT_SPORTS_20261019/PHASE67_FLEXHOOK_SCORE_ABLATIONS.json",
+        "docs/RMOT_SPORTS_20261019/PHASE71_FLEXHOOK_FEATURE_ARCHIVE_TOOLING.json",
+        "docs/RMOT_SPORTS_20261019/PHASE72_FLEXHOOK_TEMPORAL_TRAINING_TOOLING.json",
+        "docs/RMOT_SPORTS_20261019/PHASE73_FLEXHOOK_TEMPORAL_EVAL_TOOLING.json"
+      ],
+      "claim_boundary": "Frozen-score H0-H8 diagnostics are evidence only; no learned temporal checkpoint or proposed-method metric exists yet."
+    },
+    {
+      "id": "F_COMPLETE_ONLINE_GAIN",
+      "status": "NOT_RUN",
+      "evidence": [
+        "docs/RMOT_SPORTS_20261019/MASTER_PLAN.md"
+      ],
+      "claim_boundary": "No complete proposed-system HOTA gain is claimed."
+    },
+    {
+      "id": "G_MULTI_SEED_STABILITY",
+      "status": "NOT_RUN",
+      "evidence": [
+        "configs/experiment_matrix_20261019.json",
+        "docs/RMOT_SPORTS_20261019/PHASE44_EXPERIMENT_MATRIX.json"
+      ],
+      "claim_boundary": "Only seed 42 jobs are currently registered as live; stability across additional seeds is not claimed."
+    },
+    {
+      "id": "H_EFFICIENCY_AND_RECOVERY",
+      "status": "PARTIAL",
+      "evidence": [
+        "docs/STORAGE_PLAN.md",
+        "docs/RMOT_SPORTS_20261019/PHASE1_CHECKPOINT_ARCHIVE_SMOKE.json",
+        "docs/RMOT_SPORTS_20261019/PHASE70_FLEXHOOK_INTERNAL_CORE_TRAINING.json"
+      ],
+      "claim_boundary": "NAS-direct artifact storage and synthetic archive checks are recorded; final online FPS, peak-memory comparison and real strict-run resume verification remain outstanding."
+    },
+    {
+      "id": "I_REPORT_AND_REMOTE_SYNC",
+      "status": "IN_PROGRESS",
+      "evidence": [
+        "docs/RMOT_SPORTS_20261019/EXPERIMENT_REGISTRY.csv",
+        "docs/RMOT_SPORTS_20261019/MASTER_PLAN.md",
+        "GitHub branch research/sports-rmot-strong-baselines-20261019"
+      ],
+      "claim_boundary": "Phase reports and remote commits are being maintained; the final reviewer report is not complete."
+    }
+  ],
+  "live_jobs_at_observation": [
+    {
+      "run_id": "flexhook_f1_internal_core_seed42",
+      "status": "RUNNING",
+      "manifest": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/runs/gpu/flexhook_f1_internal_core_seed42/RUN_MANIFEST.json",
+      "log": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/runs/gpu/flexhook_f1_internal_core_seed42/flexhook_f1_internal_core_seed42.log"
+    },
+    {
+      "run_id": "yestrack_y1_sports_lora_seed42_v2",
+      "status": "RUNNING",
+      "manifest": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/runs/gpu/yestrack_y1_sports_lora_seed42_v2/RUN_MANIFEST.json",
+      "log": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/runs/gpu/yestrack_y1_sports_lora_seed42_v2/yestrack_y1_sports_lora_seed42_v2.log"
+    },
+    {
+      "run_id": "yestrack_y1_sports_core_lora_seed42",
+      "status": "RUNNING",
+      "manifest": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/runs/gpu/yestrack_y1_sports_core_lora_seed42/RUN_MANIFEST.json",
+      "log": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/runs/gpu/yestrack_y1_sports_core_lora_seed42/yestrack_y1_sports_core_lora_seed42.log"
+    }
+  ],
+  "next_gates": [
+    "complete FlexHook strict core training and internal checkpoint selection",
+    "complete YesTrack full and internal training, then validate before historical test",
+    "archive real FlexHook train-core/internal-val features and train/select the causal temporal head",
+    "run registered proposed-method and baseline ablations after the baseline gate",
+    "complete multi-seed, efficiency, recovery, final-test and reviewer-report evidence"
+  ]
+}
