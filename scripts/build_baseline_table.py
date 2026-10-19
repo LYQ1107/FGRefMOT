@@ -78,6 +78,23 @@ def resolve_flexhook_eval_manifest(nas_root: Path) -> Path:
     return (successful or candidates)[-1]
 
 
+def resolve_yestrack_eval_manifest(nas_root: Path) -> Path:
+    """Select the newest versioned YesTrack formal-evaluation manifest.
+
+    A completed training run may need more than one evaluator retry (for
+    example after a transient GPU or output-tree failure).  Keep every retry
+    on NAS and choose the newest successful manifest, or the newest pending
+    manifest while no retry has succeeded yet.
+    """
+
+    pattern = "runs/gpu/yestrack_y1_common_eval_20261019_v*/YESTRACK_EVAL_MANIFEST.json"
+    candidates = sorted(nas_root.glob(pattern), key=lambda path: path.stat().st_mtime)
+    if not candidates:
+        return nas_root / "runs/gpu/yestrack_y1_common_eval_20261019_v2/YESTRACK_EVAL_MANIFEST.json"
+    successful = [path for path in candidates if manifest_status(path) == "SUCCEEDED"]
+    return (successful or candidates)[-1]
+
+
 def _mean_percent(value: Any) -> str:
     """Format TrackEval's unit-scale scalar/array as a percentage."""
 
@@ -194,7 +211,7 @@ def build_rows(project: Path, nas_root: Path) -> list[dict[str, str]]:
         if y1_data.get("outputs", {}).get("run_root_mount")
         else None
     )
-    y1_eval_manifest = nas_root / "runs/gpu/yestrack_y1_common_eval_20261019_v2/YESTRACK_EVAL_MANIFEST.json"
+    y1_eval_manifest = resolve_yestrack_eval_manifest(nas_root)
     f1_checkpoint = nas_root / "runs/gpu/flexhook_f1_sports_trained_seed42/ckpt_epoch_best_0.pth"
     f1_eval_manifest = resolve_flexhook_eval_manifest(nas_root)
 

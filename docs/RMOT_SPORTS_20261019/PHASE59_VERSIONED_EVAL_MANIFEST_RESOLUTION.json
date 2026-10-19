@@ -1,0 +1,17 @@
+{
+  "schema_version": "rmot-sports-phase-0.1",
+  "phase": 59,
+  "title": "Versioned formal-evaluation manifest resolution",
+  "status": "COMPLETED",
+  "date": "2026-10-19",
+  "changes": [
+    "Added versioned YesTrack formal-evaluation manifest resolver.",
+    "Baseline table now follows the newest successful retry for both baselines.",
+    "Pending retries remain visible while no successful manifest exists."
+  ],
+  "validation": {
+    "command": "/data3/liuyeqiang/.venvs/fgrefmot-rmot-sports-20261019/bin/python -m pytest -q tests",
+    "result": "39 passed"
+  },
+  "active_jobs_untouched": true
+}

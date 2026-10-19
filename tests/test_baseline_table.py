@@ -65,3 +65,14 @@ def test_resolve_flexhook_eval_manifest_prefers_latest_success(tmp_path: Path) -
     old.write_text('{"status":"PREPARED_NO_MODEL_RUN"}\n', encoding="utf-8")
     new.write_text('{"status":"SUCCEEDED"}\n', encoding="utf-8")
     assert module.resolve_flexhook_eval_manifest(tmp_path) == new
+
+
+def test_resolve_yestrack_eval_manifest_prefers_latest_success(tmp_path: Path) -> None:
+    module = _load_builder()
+    old = tmp_path / "runs/gpu/yestrack_y1_common_eval_20261019_v2/YESTRACK_EVAL_MANIFEST.json"
+    new = tmp_path / "runs/gpu/yestrack_y1_common_eval_20261019_v3/YESTRACK_EVAL_MANIFEST.json"
+    old.parent.mkdir(parents=True)
+    new.parent.mkdir(parents=True)
+    old.write_text('{"status":"RUNNING"}\n', encoding="utf-8")
+    new.write_text('{"status":"SUCCEEDED"}\n', encoding="utf-8")
+    assert module.resolve_yestrack_eval_manifest(tmp_path) == new
