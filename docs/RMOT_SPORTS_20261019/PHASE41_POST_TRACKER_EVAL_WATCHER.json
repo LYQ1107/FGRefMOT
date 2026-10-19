@@ -1,0 +1,22 @@
+{
+  "schema_version": "rmot-sports-phase-41-0.1",
+  "phase": 41,
+  "status": "PREPARED_TRAINING_IN_PROGRESS",
+  "branch": "research/sports-rmot-strong-baselines-20261019",
+  "watcher": "scripts/post_tracker_eval_watch.py",
+  "order": ["fixed_common_tracker", "yestrack_formal_eval", "flexhook_formal_eval"],
+  "output_policy": "DIRECT_NAS_OUTPUT_ROOTS",
+  "gt_or_labels_as_tracker_input": "REJECTED",
+  "gpu_policy": {
+    "selection": "ANY_FREE_PHYSICAL_GPU",
+    "max_memory_mib": 1000,
+    "other_gpu_jobs_modified": false
+  },
+  "validation": {
+    "py_compile": "PASS",
+    "cli_help": "PASS",
+    "real_tracker": "PENDING_YESTRACK_COMPLETION",
+    "real_yetrack_eval": "PENDING_YESTRACK_COMPLETION",
+    "real_flexhook_eval": "PENDING_YESTRACK_COMPLETION"
+  }
+}
