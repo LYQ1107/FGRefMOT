@@ -131,6 +131,7 @@ def _write_shard(output_root: Path, shard_index: int, batches: list[dict[str, An
     payload: dict[str, Any] = {
         "schema_version": "flexhook-feature-shard-0.1",
         "features": torch.cat([item["features"] for item in batches], dim=0).float(),
+        "language": torch.cat([item["language"] for item in batches], dim=0).float(),
         "logits": torch.cat([item["logits"] for item in batches], dim=0).float(),
         "labels": torch.cat([item["labels"] for item in batches], dim=0).long(),
         "bboxes": torch.cat([item["bboxes"] for item in batches], dim=0).float(),
@@ -155,6 +156,7 @@ def _write_shard(output_root: Path, shard_index: int, batches: list[dict[str, An
         "sha256": sha256_file(final_path),
         "sample_count": int(payload["features"].shape[0]),
         "feature_shape": list(payload["features"].shape),
+        "language_shape": list(payload["language"].shape),
     }
 
 
@@ -252,13 +254,23 @@ def archive_features(
         model.eval()
 
         captured: list[torch.Tensor] = []
+        language_captured: list[torch.Tensor] = []
 
         def capture(_module: Any, _inputs: tuple[Any, ...], output: Any) -> None:
             if not hasattr(output, "detach"):
                 raise TypeError("output_ca_qkv hook returned a non-tensor value")
             captured.append(output.detach().cpu())
 
+        def capture_language(_module: Any, _inputs: tuple[Any, ...], output: Any) -> None:
+            """Capture the frozen text encoder sequence for the adapter input."""
+
+            hidden = getattr(output, "last_hidden_state", output)
+            if not hasattr(hidden, "detach"):
+                raise TypeError("text encoder hook returned no tensor hidden state")
+            language_captured.append(hidden.detach().cpu())
+
         handle = model.output_ca_qkv[-1].register_forward_hook(capture)
+        language_handle = model.text_encoder.register_forward_hook(capture_language)
         manifest: dict[str, Any] = {
             "schema_version": "flexhook-feature-archive-0.1",
             "status": "RUNNING",
@@ -278,6 +290,7 @@ def archive_features(
             "shards": [],
             "samples": 0,
             "feature_shape": None,
+            "language_shape": None,
             "logit_shape": None,
         }
         _atomic_json(output_root / "FEATURE_ARCHIVE_MANIFEST.json", manifest)
@@ -304,6 +317,7 @@ def archive_features(
                         )
                     cursor += current_batch
                     captured.clear()
+                    language_captured.clear()
                     outputs, _regular = model(
                         images.cuda(non_blocking=True),
                         pes.cuda(non_blocking=True),
@@ -313,7 +327,35 @@ def archive_features(
                     )
                     if len(captured) != 1:
                         raise RuntimeError(f"expected one hook output, got {len(captured)}")
+                    if len(language_captured) != 1:
+                        raise RuntimeError(f"expected one text hook output, got {len(language_captured)}")
                     features = captured[0]
+                    language_tokens = language_captured[0]
+                    if language_tokens.ndim != 3:
+                        raise RuntimeError(
+                            "expected text encoder output [B*N,L,C], "
+                            f"got {tuple(language_tokens.shape)}"
+                        )
+                    sample_expression_count = int(labels.shape[1])
+                    if language_tokens.shape[0] != current_batch * sample_expression_count:
+                        raise RuntimeError(
+                            "text encoder batch does not match sampled expression count: "
+                            f"{tuple(language_tokens.shape)} vs {tuple(labels.shape)}"
+                        )
+                    token_mask = expma.detach().cpu().float()
+                    if token_mask.ndim != 3 or tuple(token_mask.shape[:2]) != tuple(labels.shape):
+                        raise RuntimeError(
+                            f"expression mask shape {tuple(token_mask.shape)} does not match labels "
+                            f"{tuple(labels.shape)}"
+                        )
+                    token_mask = token_mask.reshape(
+                        language_tokens.shape[0], token_mask.shape[-1], 1
+                    )
+                    token_count = min(token_mask.shape[1], language_tokens.shape[1])
+                    token_mask = token_mask[:, :token_count]
+                    language_tokens = language_tokens[:, :token_count]
+                    language = (language_tokens * token_mask).sum(dim=1) / token_mask.sum(dim=1).clamp_min(1.0)
+                    language = language.reshape(current_batch, sample_expression_count, language.shape[-1])
                     logits = outputs[:, -1].detach().cpu()
                     labels_cpu = labels.detach().cpu()
                     bboxes = bbox_gt[:, -1].detach().cpu()
@@ -326,6 +368,7 @@ def archive_features(
                     shard_batches_data.append(
                         {
                             "features": features,
+                            "language": language,
                             "logits": logits,
                             "labels": labels_cpu,
                             "bboxes": bboxes,
@@ -338,6 +381,7 @@ def archive_features(
                     )
                     manifest["samples"] += current_batch
                     manifest["feature_shape"] = list(features.shape[1:])
+                    manifest["language_shape"] = list(language.shape[1:])
                     manifest["logit_shape"] = list(logits.shape[1:])
                     if len(shard_batches_data) >= shard_batches:
                         record = _write_shard(output_root, shard_index, shard_batches_data)
@@ -347,6 +391,7 @@ def archive_features(
                         shard_batches_data = []
         finally:
             handle.remove()
+            language_handle.remove()
             for candidate_loader in (loader_train, loader_val):
                 if hasattr(candidate_loader, "_iterator") and candidate_loader._iterator is not None:
                     candidate_loader._iterator._shutdown_workers()

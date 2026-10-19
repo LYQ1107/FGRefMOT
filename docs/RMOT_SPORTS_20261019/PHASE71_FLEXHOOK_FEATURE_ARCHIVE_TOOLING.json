@@ -14,8 +14,10 @@
       "internal_val"
     ],
     "representation": "final model.output_ca_qkv[-1] query features",
+    "language_representation": "masked mean of the frozen text encoder sequence for each sampled expression",
     "stored_controls": [
       "frozen final-stage logits",
+      "pooled frozen language features",
       "clip frame IDs",
       "video and physical track IDs",
       "normalized terminal bounding box",

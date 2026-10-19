@@ -34,7 +34,8 @@ remains closed until the formal YesTrack baseline exists. Watchers are
 registered for the YesTrack post-training evaluations and score-level
 ablations. The learned temporal module package now has a CPU-tested causal
 sequence adapter, Phase 69 verified the real F1 checkpoint hook interface, and
-Phase 71 adds the reproducible train-core/internal-val feature archive command.
+Phase 71 adds the reproducible train-core/internal-val feature archive command
+with frozen visual and pooled language representations.
 The temporal head has not yet been trained or attached to a proposed
 checkpoint, so it has no claimed metric.
 
