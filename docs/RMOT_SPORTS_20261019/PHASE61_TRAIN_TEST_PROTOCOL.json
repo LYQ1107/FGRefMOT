@@ -1,0 +1,31 @@
+{
+  "phase": 61,
+  "title": "train/validation/test protocol",
+  "status": "YES_TRACK_TRAINING_IN_PROGRESS",
+  "dataset": "Refer-Sports",
+  "splits": {
+    "sports_train": {"videos": 22, "expressions": 181, "purpose": "task training"},
+    "internal_train": {"videos": 17, "expressions": 136, "purpose": "temporal-method training/selection run"},
+    "internal_val": {"videos": 5, "expressions": 45, "purpose": "selection and diagnostics only"},
+    "historical_test": {"videos": 19, "expressions": 142, "purpose": "formal evaluation after training"}
+  },
+  "model_time_inputs": "fixed common SambaMOTR tracker outputs only",
+  "ground_truth_policy": "GT is offline TrackEval input after inference; never model input, tracker input, checkpoint selector, or test tuner",
+  "flexhook_f1": {
+    "status": "FORMAL_EVAL_SUCCEEDED",
+    "hota": 68.385415,
+    "deta": 59.317842,
+    "assa": 78.842302,
+    "idf1": 66.627791,
+    "idsw": 409
+  },
+  "yestrack": {
+    "full_training_status": "RUNNING",
+    "internal_training_status": "RUNNING",
+    "formal_eval": "scheduled on checkpoint appearance"
+  },
+  "sequence_lists": {
+    "historical_test": "configs/refer_sports_eval_sequences_20261019.txt",
+    "internal_val": "configs/refer_sports_internal_val_sequences_20261019.txt"
+  }
+}
