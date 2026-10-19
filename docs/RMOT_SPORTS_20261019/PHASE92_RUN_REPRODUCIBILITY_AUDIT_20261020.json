@@ -1,0 +1,116 @@
+{
+  "schema_version": "rmot-sports-phase-0.1",
+  "phase": 92,
+  "title": "Long-run reproducibility metadata audit",
+  "status": "ACTIVE_METADATA_COMPLETE_TERMINAL_CHECKPOINT_FIELDS_PENDING",
+  "observed_at": "2026-10-20T07:20:19+08:00",
+  "runs": [
+    {
+      "run_id": "yestrack_y1_sports_lora_seed43_v2",
+      "seed": 43,
+      "manifest_status": "RUNNING",
+      "contract_path": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/runs/contracts_20261019/yestrack_y1_sports_lora_seed43_v2.json",
+      "fields": {
+        "run_id": {
+          "value": "yestrack_y1_sports_lora_seed43_v2",
+          "status": "PRESENT"
+        },
+        "pid": {
+          "launcher_pid": 3078684,
+          "trainer_pid": 3078707,
+          "trainer_process_observed": true,
+          "status": "PRESENT_AND_LIVE"
+        },
+        "start_time": {
+          "value": "2026-10-20T06:03:34+08:00",
+          "status": "PRESENT"
+        },
+        "source_commit": {
+          "value": "7f12cfe48a6892a3641d2341bf221ff971dfb969",
+          "status": "PRESENT_IN_LAUNCH_CONTRACT"
+        },
+        "split_hash": {
+          "dataset_manifest_sha256": "88e0ba5cfcf522887237af7fd4be075b7d0ad4cbac373ab56fbcd8fda21e25a3",
+          "layout_manifest_sha256": "3ccf91f155155401c61e8afbc56bfe784f997783f2653a8007d7668109da3846",
+          "status": "PRESENT_IN_LAUNCH_CONTRACT"
+        },
+        "config_hash": {
+          "launch_contract_sha256": "f6610692ad2d6e14b67b4dcc51d3b58b25fd518bd16e875c2262762fc3e2c80f",
+          "source_adapter_sha256": "da263bf870d4858a00910eccb14e24001abb9ac3c105143564ba7153bbec3c91",
+          "status": "PRESENT_IN_LAUNCH_CONTRACT"
+        },
+        "train_log": {
+          "path": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/runs/gpu/yestrack_y1_sports_lora_seed43_v2/yestrack_y1_sports_lora_seed43_v2.log",
+          "exists": true,
+          "status": "PRESENT"
+        },
+        "checkpoint_manifest": {
+          "path": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/yestrack_y1_sports_lora_seed43_v2/RUN_MANIFEST.json",
+          "exists": false,
+          "status": "PENDING_UNTIL_TERMINAL_RUN"
+        },
+        "exit_code": {
+          "value": null,
+          "status": "PENDING_UNTIL_TERMINAL_RUN"
+        }
+      }
+    },
+    {
+      "run_id": "yestrack_y1_sports_lora_seed44_v2",
+      "seed": 44,
+      "manifest_status": "RUNNING",
+      "contract_path": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/runs/contracts_20261019/yestrack_y1_sports_lora_seed44_v2.json",
+      "fields": {
+        "run_id": {
+          "value": "yestrack_y1_sports_lora_seed44_v2",
+          "status": "PRESENT"
+        },
+        "pid": {
+          "launcher_pid": 3078686,
+          "trainer_pid": 3078708,
+          "trainer_process_observed": true,
+          "status": "PRESENT_AND_LIVE"
+        },
+        "start_time": {
+          "value": "2026-10-20T06:03:34+08:00",
+          "status": "PRESENT"
+        },
+        "source_commit": {
+          "value": "7f12cfe48a6892a3641d2341bf221ff971dfb969",
+          "status": "PRESENT_IN_LAUNCH_CONTRACT"
+        },
+        "split_hash": {
+          "dataset_manifest_sha256": "88e0ba5cfcf522887237af7fd4be075b7d0ad4cbac373ab56fbcd8fda21e25a3",
+          "layout_manifest_sha256": "3ccf91f155155401c61e8afbc56bfe784f997783f2653a8007d7668109da3846",
+          "status": "PRESENT_IN_LAUNCH_CONTRACT"
+        },
+        "config_hash": {
+          "launch_contract_sha256": "03382ee598ee4db5c9bcd066296a780ed5d3e58d82b426b54158cc869a69aa20",
+          "source_adapter_sha256": "da263bf870d4858a00910eccb14e24001abb9ac3c105143564ba7153bbec3c91",
+          "status": "PRESENT_IN_LAUNCH_CONTRACT"
+        },
+        "train_log": {
+          "path": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/runs/gpu/yestrack_y1_sports_lora_seed44_v2/yestrack_y1_sports_lora_seed44_v2.log",
+          "exists": true,
+          "status": "PRESENT"
+        },
+        "checkpoint_manifest": {
+          "path": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/yestrack_y1_sports_lora_seed44_v2/RUN_MANIFEST.json",
+          "exists": false,
+          "status": "PENDING_UNTIL_TERMINAL_RUN"
+        },
+        "exit_code": {
+          "value": null,
+          "status": "PENDING_UNTIL_TERMINAL_RUN"
+        }
+      }
+    }
+  ],
+  "recovery_requirements": {
+    "model_optimizer_scheduler_global_step_random_states": "terminal checkpoint manifest and resume test pending",
+    "dataloader_state_or_deterministic_sampling": "adapter contract records deterministic layout and seed; terminal resume evidence pending",
+    "continuous_vs_resumed_output_comparison": "NOT_RUN"
+  },
+  "claim_boundary": "Both active v2 multi-seed jobs have mapped run identifiers, live PIDs, launch source commit, dataset/layout hashes, contract/source hashes and train logs. Checkpoint manifest, exit code and resume equivalence remain pending until the jobs terminate; no recovery claim is made.",
+  "next_step": "After each training manifest reaches a terminal state, verify the NAS checkpoint manifest and resume metadata before accepting its internal validation result."
+}
