@@ -122,7 +122,7 @@ def collect_temporal_outputs(
     try:
         with torch.no_grad():
             for batch_index, batch in enumerate(_CudaTextBatchLoader(data_loader)):
-                images, pes, bbox_gt, expressions, expid, expma, videos, objects, frame_ids, _last = batch
+                images, pes, bbox_gt, expressions, expid, expma, videos, objects, frame_ids, last = batch
                 batch_size = int(images.shape[0])
                 captured.clear()
                 language_captured.clear()
@@ -158,12 +158,13 @@ def collect_temporal_outputs(
                     video = str(_metadata_item(videos, sample))
                     object_id = int(_metadata_item(objects, sample))
                     frame = int(_metadata_item(frame_ids, sample))
+                    valid_start = max(0, candidates - int(_metadata_item(last, sample)))
                     bbox = tracker_boxes.get((video, frame, object_id))
                     if bbox is None:
                         raise KeyError(f"tracker box missing for {video}/{frame}/{object_id}")
                     for candidate, expression in enumerate(expression_rows[sample]):
-                        if candidate >= candidates:
-                            break
+                        if candidate < valid_start or candidate >= candidates:
+                            continue
                         key = (video, str(object_id), expression)
                         rows[key][frame] = (
                             features[sample, candidate].float(),
