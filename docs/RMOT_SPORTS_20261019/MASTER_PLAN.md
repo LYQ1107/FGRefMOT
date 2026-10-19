@@ -1,0 +1,43 @@
+# Refer-Sports RMOT research execution index
+
+Status: `IN_PROGRESS`
+
+This branch is the isolated execution route for the Refer-Sports RMOT study.
+The local workspace is `/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019`, the
+research branch is `research/sports-rmot-strong-baselines-20261019`, and the
+NAS project root is
+`/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019`.
+
+The registered protocol uses the 22-video/181-expression Sports training set,
+an internal 17-video/136-expression training core plus 5-video/45-expression
+validation split for selection, and the historical 19-video/142-expression
+test split only for final offline TrackEval. Model-time candidates come from
+the fixed common SambaMOTR tracker outputs. Test GT is never passed to the
+model, tracker, checkpoint selector or threshold tuner.
+
+Completed evidence includes the environment/NAS/data audit, atomic NAS
+storage tooling, the storage I/O and synthetic archive/restore smoke reports,
+the common tracker manifests, the pinned FlexHook and YesTrack source audits,
+and the FlexHook F1 formal test evaluation. FlexHook F1 currently reports
+HOTA 68.385415, DetA 59.317842, AssA 78.842302, IDF1 66.627791 and IDSW 409
+from its successful manifest; these are historical-test values and are not
+internal validation values.
+
+Active work is recorded in `EXPERIMENT_REGISTRY.csv`. The full and internal
+YesTrack Sports-LoRA runs, the internal FlexHook validation run, and the
+FlexHook score archive are live jobs. Watchers are registered for their
+post-training evaluations and score-level ablations. The learned temporal
+module package is CPU-tested but has not yet been attached to a trained
+checkpoint, so it has no claimed metric.
+
+The remaining gates are YesTrack training and formal evaluation, internal
+validation metric extraction, H0–H8/YB score and learned-method ablations,
+diagnostic subsets, multi-seed confirmation, efficiency measurements, and the
+final reviewer report. F0/Y0 remain `NOT_RUN/BLOCKED` because no eligible
+official task checkpoint or YesTrack LoRA checkpoint is present on NAS.
+
+Each completed gate must update the relevant phase report, preserve its real
+manifest/log/checkpoint evidence, pass the scoped tests, create a local Git
+commit, and verify the corresponding GitHub branch head through the GitHub
+API. Raw videos, large weights, private NAS data and credentials stay off
+GitHub.
