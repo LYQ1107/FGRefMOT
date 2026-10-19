@@ -58,15 +58,15 @@
     "selection_finalized": false
   },
   "observed_progress": {
-    "observed_at": "2026-10-20T00:16:06+08:00",
-    "epoch_completed": 10,
-    "training_epoch_in_progress": 11,
+    "observed_at": "2026-10-20T00:22:06+08:00",
+    "epoch_completed": 11,
+    "training_epoch_in_progress": 12,
     "internal_validation": {
       "split": "5-video/45-expression internal validation",
-      "f1": 72.126,
-      "acc1": 80.720,
-      "precision": 59.560,
-      "recall": 91.411,
+      "f1": 71.200,
+      "acc1": 79.436,
+      "precision": 57.622,
+      "recall": 93.149,
       "policy": "diagnostic checkpoint candidate only; final selection remains pending"
     },
     "best_internal_validation": {
