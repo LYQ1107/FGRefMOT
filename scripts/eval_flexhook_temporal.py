@@ -271,6 +271,8 @@ def run_temporal_inference(
         cfg.freeze()
         logger = create_logger(str(output_root), dist_rank=0, name="flexhook_temporal_eval")
         _, dataset_val, _, data_loader_val, _ = build_loader(cfg)
+        model_load_start = time.perf_counter()
+        torch.cuda.reset_peak_memory_stats()
         with _working_directory(Path(str(cfg.ROBERTA_PATH)).expanduser().parent.parent):
             model = build_model(cfg).cuda()
         load_ckpt_my(cfg, model, logger)
@@ -286,9 +288,13 @@ def run_temporal_inference(
         ).cuda()
         adapter.load_state_dict(payload["state_dict"])
         adapter.eval()
+        torch.cuda.synchronize()
+        model_loading_seconds = time.perf_counter() - model_load_start
+        model_load_peak_memory_mib = torch.cuda.max_memory_reserved() / (1024 * 1024)
+        torch.cuda.reset_peak_memory_stats()
         videos = list(manifest["sequence_names"])
         boxes = _tracker_boxes(tracker_root, videos)
-        start = time.time()
+        start = time.perf_counter()
         cls_dict = collect_temporal_outputs(
             config=cfg,
             data_loader=data_loader_val,
@@ -298,7 +304,9 @@ def run_temporal_inference(
             device=torch.device("cuda"),
             logger=logger,
         )
-        elapsed = time.time() - start
+        torch.cuda.synchronize()
+        elapsed = time.perf_counter() - start
+        peak_memory_mib = torch.cuda.max_memory_reserved() / (1024 * 1024)
         written = write_predictions(
             cls_dict=cls_dict,
             manifest=manifest,
@@ -310,7 +318,47 @@ def run_temporal_inference(
         manifest["temporal_checkpoint"] = str(temporal_checkpoint)
         manifest["temporal_checkpoint_sha256"] = sha256_file(temporal_checkpoint)
         manifest["dataset_count"] = len(dataset_val)
-        return {"dataset_count": len(dataset_val), "prediction_rows": written, "inference_seconds": elapsed}
+        video_lengths: dict[str, int] = {}
+        expression_frame_count = 0
+        for record in manifest.get("records", []):
+            sequence = record.get("sequence_name")
+            video = record.get("video")
+            try:
+                frames = int(manifest["seq_info"][sequence])
+            except (KeyError, TypeError, ValueError):
+                continue
+            expression_frame_count += frames
+            if isinstance(video, str):
+                video_lengths[video] = max(video_lengths.get(video, 0), frames)
+        video_frame_count = sum(video_lengths.values())
+        result = {
+            "dataset_count": len(dataset_val),
+            "prediction_rows": written,
+            "inference_seconds": elapsed,
+            "model_loading_seconds": model_loading_seconds,
+            "model_load_peak_gpu_memory_mib": model_load_peak_memory_mib,
+            "peak_gpu_memory_mib": peak_memory_mib,
+            "efficiency": {
+                "schema_version": "rmot-efficiency-0.1",
+                "video_frame_count": video_frame_count,
+                "expression_frame_count": expression_frame_count,
+                "video_frame_fps": video_frame_count / elapsed if elapsed else None,
+                "referring_module_fps": expression_frame_count / elapsed if elapsed else None,
+                "complete_pipeline_fps": None,
+                "fps_units": {
+                    "video_frame_fps": "unique video frames / referring inference second",
+                    "referring_module_fps": "expression-video-frame pairs / referring inference second",
+                    "complete_pipeline_fps": "requires tracker wall time; derived by scripts/measure_efficiency.py",
+                },
+            },
+        }
+        manifest["run"] = result
+        manifest["efficiency"] = result["efficiency"]
+        manifest["status"] = "PREDICTIONS_WRITTEN"
+        (output_root / "FLEXHOOK_EVAL_MANIFEST.json").write_text(
+            json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+        )
+        return result
     finally:
         if temporary_config is not None:
             temporary_config.unlink(missing_ok=True)

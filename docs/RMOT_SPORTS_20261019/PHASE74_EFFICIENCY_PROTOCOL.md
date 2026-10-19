@@ -16,11 +16,12 @@ The reported units are explicit:
 - complete-pipeline FPS is unique video frames divided by tracker wall time
   plus referring inference time.
 
-FlexHook evaluation now records model-loading time, inference time, peak GPU
-memory, and both referring rates in its evaluation manifest.  YesTrack's
-upstream timing file records the same values and the Refer-Sports adapter
-copies them into its evaluation manifest.  Future common-tracker runs record
-wall time and tracker FPS in their run manifest.
+FlexHook baseline and learned temporal-head evaluation now record model-loading
+time, inference time, peak GPU memory, and both referring rates in their
+evaluation manifests.  YesTrack's upstream timing file records the same
+values and the Refer-Sports adapter copies them into its evaluation manifest.
+Future common-tracker runs record wall time and tracker FPS in their run
+manifest.
 
 The previously completed FlexHook F1 and common-tracker manifests were
 created before this instrumentation and do not contain enough timing data.

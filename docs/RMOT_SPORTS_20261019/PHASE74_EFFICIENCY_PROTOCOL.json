@@ -26,12 +26,14 @@
     "scripts/measure_efficiency.py",
     "tests/test_efficiency.py",
     "scripts/eval_flexhook_refersports.py",
+    "scripts/eval_flexhook_temporal.py",
     "scripts/eval_yestrack_refersports.py",
     "third_party/YesTrack/refer_llm/llm_eval_from_mot.py",
     "scripts/run_sambamotr_refersports_tracker.py"
   ],
   "instrumentation": {
     "flexhook": "evaluation manifest records inference time, model-loading time, peak memory, and both frame-rate units",
+    "flexhook_temporal": "learned temporal-head evaluation records the same timing and frame-rate fields while keeping the frozen tracker and task checkpoint",
     "yestrack": "overall_infer_time.json records inference/model-loading time and peak memory; adapter copies the record into YESTRACK_EVAL_MANIFEST.json",
     "common_tracker": "future tracker runs record wall time, frame count, and tracker FPS in TRACKER_RUN_MANIFEST.json",
     "pipeline_report": "scripts/measure_efficiency.py joins a tracker manifest with a referring-evaluation manifest"
