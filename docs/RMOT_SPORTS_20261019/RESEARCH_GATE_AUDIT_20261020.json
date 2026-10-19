@@ -1,6 +1,6 @@
 {
   "schema_version": "rmot-sports-gate-audit-0.1",
-  "observed_at": "2026-10-20T07:13:27+08:00",
+  "observed_at": "2026-10-20T07:17:06+08:00",
   "status": "IN_PROGRESS",
   "workspace": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019",
   "branch": "research/sports-rmot-strong-baselines-20261019",
@@ -53,7 +53,8 @@
         "docs/RMOT_SPORTS_20261019/PHASE82_LIVE_PROGRESS_20261020.json",
         "docs/RMOT_SPORTS_20261019/PHASE83_LIVE_HEALTH_20261020.json",
         "docs/RMOT_SPORTS_20261019/PHASE85_LIVE_PROGRESS_20261020.json",
-        "docs/RMOT_SPORTS_20261019/PHASE87_LIVE_HEALTH_20261020.json"
+        "docs/RMOT_SPORTS_20261019/PHASE87_LIVE_HEALTH_20261020.json",
+        "docs/RMOT_SPORTS_20261019/PHASE90_LIVE_HEALTH_20261020.json"
       ],
       "claim_boundary": "The full 22-video training manifest succeeded and its formal historical evaluation is running. The 17-video internal training and fixed five-video validation evaluation also succeeded; threshold 0.8 was selected on internal HOTA. The internal metric is selection evidence, while no full historical-test result is claimed until the formal manifest succeeds."
     },
@@ -93,7 +94,8 @@
         "docs/RMOT_SPORTS_20261019/PHASE82_LIVE_PROGRESS_20261020.json",
         "docs/RMOT_SPORTS_20261019/PHASE83_LIVE_HEALTH_20261020.json",
         "docs/RMOT_SPORTS_20261019/PHASE85_LIVE_PROGRESS_20261020.json",
-        "docs/RMOT_SPORTS_20261019/PHASE87_LIVE_HEALTH_20261020.json"
+        "docs/RMOT_SPORTS_20261019/PHASE87_LIVE_HEALTH_20261020.json",
+        "docs/RMOT_SPORTS_20261019/PHASE90_LIVE_HEALTH_20261020.json"
       ],
       "claim_boundary": "The isolated v2 seed43 and seed44 YesTrack trainings are in the optimizer loop; the v1 timestamp-collision attempts are invalidated with no accepted checkpoint. No multi-seed metric or stability claim is made until both v2 internal validation manifests succeed."
     },
@@ -127,7 +129,8 @@
         "GitHub branch research/sports-rmot-strong-baselines-20261019",
         "docs/RMOT_SPORTS_20261019/PHASE84_STORAGE_SNAPSHOT_20261020.json",
         "docs/RMOT_SPORTS_20261019/PHASE88_REGRESSION_TEST_20261020.json",
-        "docs/RMOT_SPORTS_20261019/PHASE89_BASELINE_TABLE_READINESS_20261020.json"
+        "docs/RMOT_SPORTS_20261019/PHASE89_BASELINE_TABLE_READINESS_20261020.json",
+        "docs/RMOT_SPORTS_20261019/PHASE90_LIVE_HEALTH_20261020.json"
       ],
       "claim_boundary": "The required final-report entrypoints and evidence ledger exist and are remotely synchronized; the final reviewer conclusion and remaining formal comparisons are not complete."
     }
@@ -136,26 +139,34 @@
     {
       "run_id": "yestrack_y1_sports_lora_seed42_v2",
       "status": "TRAINING_SUCCEEDED_FORMAL_EVALUATION_IN_PROGRESS",
-      "manifest": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/runs/gpu/yestrack_y1_sports_lora_seed42_v2/RUN_MANIFEST.json",
-      "log": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/runs/gpu/yestrack_y1_sports_lora_seed42_v2/yestrack_y1_sports_lora_seed42_v2.log"
+      "manifest": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/yestrack_y1_common_eval_20261019_v3/YESTRACK_EVAL_MANIFEST.json",
+      "prediction_files_observed": 61,
+      "prediction_files_expected": 142,
+      "gpu_process_pid": 2708884
     },
     {
       "run_id": "yestrack_y1_sports_lora_seed43_v2",
       "status": "TRAINING_IN_PROGRESS",
       "manifest": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/runs/gpu/yestrack_y1_sports_lora_seed43_v2/RUN_MANIFEST.json",
-      "log": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/runs/gpu/yestrack_y1_sports_lora_seed43_v2/yestrack_y1_sports_lora_seed43_v2.log"
+      "optimizer_steps_observed": 10618,
+      "optimizer_steps_expected": 90523,
+      "gpu_process_pid": 3078707,
+      "gpu": "2"
     },
     {
       "run_id": "yestrack_y1_sports_lora_seed44_v2",
       "status": "TRAINING_IN_PROGRESS",
       "manifest": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/runs/gpu/yestrack_y1_sports_lora_seed44_v2/RUN_MANIFEST.json",
-      "log": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/runs/gpu/yestrack_y1_sports_lora_seed44_v2/yestrack_y1_sports_lora_seed44_v2.log"
+      "optimizer_steps_observed": 10414,
+      "optimizer_steps_expected": 90528,
+      "gpu_process_pid": 3078708,
+      "gpu": "3"
     },
     {
       "run_id": "common_tracker_refersports_timed_20261020",
       "status": "TRACKER_TIMING_SUCCEEDED",
       "manifest": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/common_tracker_refersports_timed_20261020/TRACKER_RUN_MANIFEST.json",
-      "gpu": 0
+      "gpu": "0"
     }
   ],
   "next_gates": [

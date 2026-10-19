@@ -1,0 +1,46 @@
+{
+  "schema_version": "rmot-sports-phase-0.1",
+  "phase": 90,
+  "title": "Live health after formal prediction and multi-seed progress advance",
+  "status": "FORMAL_EVALUATION_AND_MULTI_SEED_TRAINING_IN_PROGRESS",
+  "observed_at": "2026-10-20T07:17:06+08:00",
+  "authoritative_checks": {
+    "formal_yestrack_manifest": {
+      "path": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/yestrack_y1_common_eval_20261019_v3/YESTRACK_EVAL_MANIFEST.json",
+      "exists": false,
+      "status": "IN_PROGRESS_BY_LIVE_PROCESS",
+      "prediction_files_observed": 61,
+      "expected_prediction_files": 142,
+      "policy": "partial prediction files are progress evidence only; formal metrics remain NOT_RUN until manifest status SUCCEEDED"
+    },
+    "seed43_training": {
+      "manifest": "runs/gpu/yestrack_y1_sports_lora_seed43_v2/RUN_MANIFEST.json",
+      "status": "RUNNING",
+      "optimizer_steps_observed": 10618,
+      "optimizer_steps_expected": 90523,
+      "gpu_process_pid": 3078707,
+      "gpu": "2"
+    },
+    "seed44_training": {
+      "manifest": "runs/gpu/yestrack_y1_sports_lora_seed44_v2/RUN_MANIFEST.json",
+      "status": "RUNNING",
+      "optimizer_steps_observed": 10414,
+      "optimizer_steps_expected": 90528,
+      "gpu_process_pid": 3078708,
+      "gpu": "3"
+    }
+  },
+  "independent_tracker_check": {
+    "manifest": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/common_tracker_refersports_timed_20261020/TRACKER_RUN_MANIFEST.json",
+    "status": "SUCCEEDED",
+    "gpu": "0",
+    "frame_count": 11900
+  },
+  "safety_checks": [
+    "All three authoritative live processes were present at observation time.",
+    "No exit code or failure manifest was observed for the active runs.",
+    "No metric was inferred from the 61 partial formal prediction files.",
+    "The occupied GPUs are the registered YesTrack/formal-evaluation jobs; no extra GPU work was started."
+  ],
+  "next_step": "Wait for the formal YesTrack manifest and both v2 seed training manifests to reach terminal states; then run the registered fixed-threshold internal validations, ablation watchers, and timing joins."
+}
