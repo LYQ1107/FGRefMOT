@@ -53,3 +53,9 @@ Standard/LSTM/Temporal Attention/Original Mamba, measured from the step-200
 checkpoint timestamp); later milestone fields remain explicitly missing until
 their checkpoints are written.
 
+The long-run logs also contain explicit no-gradient QIM batches: Standard at
+steps 1535, 3316, and 13539, and Original Mamba at steps 3624 and 12472 in the
+current snapshot. The training loop handles these by skipping only that
+optimizer step when no trainable QIM path exists; this is recorded as a no-op,
+not reported as a crash or converted into an accuracy claim.
+
