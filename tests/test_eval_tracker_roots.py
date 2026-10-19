@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import importlib.util
 from pathlib import Path
+from types import SimpleNamespace
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -46,6 +47,46 @@ def test_yestrack_expression_dirs_suffix_duplicate_sentences() -> None:
     records = [{"sentence": "Basketball players"}, {"sentence": "basketball players"}]
 
     assert module._expression_dirnames(records) == ["basketball-players", "basketball-players__2"]
+
+
+def test_yestrack_inference_forwards_temporal_controls(monkeypatch, tmp_path: Path) -> None:
+    module = _load_script("eval_yestrack_refersports.py")
+    tracker = tmp_path / "tracker"
+    tracker.mkdir()
+    (tracker / "video.txt").write_text("1,7,10,20,30,40,1\n", encoding="utf-8")
+    seen: dict[str, list[str]] = {}
+
+    def fake_run(command, **kwargs):
+        seen["command"] = command
+        return SimpleNamespace(returncode=0)
+
+    monkeypatch.setattr(module.subprocess, "run", fake_run)
+    result = module.run_yestrack_inference(
+        python=tmp_path / "python",
+        model_name=tmp_path / "model",
+        lora_path=tmp_path / "lora",
+        data_root=tmp_path / "data",
+        tracker_root=tracker,
+        results_root=tmp_path / "results",
+        gpu=4,
+        re_refer_lower=0.2,
+        re_refer_thresh=0.8,
+        infer_every_n_frames=4,
+        frame_offset=-1,
+        stability_enable=True,
+        stability_window=6,
+        stability_thresh=0.4,
+        stability_boost=0.3,
+        enable_video_mode=True,
+        video_n_frames=4,
+    )
+
+    command = seen["command"]
+    assert result["exit_code"] == 0
+    assert "--stability_enable" in command
+    assert command[command.index("--stability_window") + 1] == "6"
+    assert "--enable_video_mode" in command
+    assert command[command.index("--video_n_frames") + 1] == "4"
 
 
 def test_flexhook_eval_legacy_tokenizer_compatibility(monkeypatch) -> None:
