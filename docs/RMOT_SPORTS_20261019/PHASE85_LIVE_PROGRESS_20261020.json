@@ -1,0 +1,33 @@
+{
+  "schema_version": "rmot-sports-phase-0.1",
+  "phase": 85,
+  "title": "Live progress after formal and timed-output increments",
+  "status": "ALL_LIVE_RUNS_PROGRESSING",
+  "observed_at": "2026-10-20T06:53:48+08:00",
+  "formal_test": {
+    "run_id": "yestrack_y1_common_eval_20261019_v3",
+    "gpu": 1,
+    "manifest_status": "ABSENT",
+    "completed_prediction_files": 59,
+    "expected_expression_count": 142,
+    "claim_boundary": "Partial prediction files are progress evidence only; no historical-test metric is claimed."
+  },
+  "timed_tracker": {
+    "run_id": "common_tracker_refersports_timed_20261020",
+    "gpu": 0,
+    "manifest_status": "RUNNING",
+    "completed_sequence_files": 10,
+    "expected_sequence_count": 19,
+    "claim_boundary": "Tracker FPS and efficiency joins wait for the terminal manifest."
+  },
+  "multi_seed_training": [
+    {"seed": 43, "gpu": 2, "status": "RUNNING", "optimizer_steps_observed": 6744, "planned_steps": 90523},
+    {"seed": 44, "gpu": 3, "status": "RUNNING", "optimizer_steps_observed": 6690, "planned_steps": 90528}
+  ],
+  "protocol_boundary": {
+    "train": "22 videos / 181 expressions",
+    "internal_selection": "5 reserved videos; threshold 0.8 fixed before historical test",
+    "historical_test": "test ground truth remains offline-only and no partial output is scored"
+  },
+  "next_step": "Wait for terminal tracker, formal YesTrack, and seed43/44 manifests; then run efficiency joins, internal validation, and registered ablation watchers."
+}

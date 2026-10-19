@@ -79,3 +79,8 @@ Phase 84 adds a read-only storage snapshot at 06:49:52: local `/data3` had
 61G available, the NAS had 3.7T available, the local workspace used 6.5G, and
 the NAS project used 23G in runs plus 5.4G in assets. This is interim evidence;
 final accounting will be repeated after live jobs terminate.
+
+Phase 85 records the 06:53:48 increment: the formal evaluator reached 59/142
+prediction files, the timed tracker reached 10/19 sequence files, and seed43 /
+seed44 reached 6,744/6,690 steps. These remain progress evidence only until
+terminal manifests succeed.
