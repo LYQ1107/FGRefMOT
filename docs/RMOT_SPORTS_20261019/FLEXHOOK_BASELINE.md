@@ -6,6 +6,7 @@ F1 uses the pinned FlexHook implementation, Sports training, seed 42, and the
 fixed common SambaMOTR tracker. The successful checkpoint is
 `.../runs/gpu/flexhook_f1_sports_trained_seed42/ckpt_epoch_best_0.pth` on NAS;
 its SHA-256 is recorded in `PHASE29_FLEXHOOK_F1_COMPLETION.md`.
+The native training log records 248,218,728 model parameters.
 
 | split | HOTA | DetA | AssA | IDF1 | IDSW |
 | --- | ---: | ---: | ---: | ---: | ---: |

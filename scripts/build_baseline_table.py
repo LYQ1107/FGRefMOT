@@ -14,6 +14,7 @@ import argparse
 import csv
 import json
 from pathlib import Path
+import re
 from typing import Any
 
 
@@ -248,6 +249,42 @@ def validation_metrics(payload: dict[str, Any]) -> dict[str, str]:
     return _metrics(payload, "validation")
 
 
+def _parameter_count_from_log(path: Path) -> str:
+    """Read an explicitly logged model parameter count without loading weights."""
+
+    if not path.is_file():
+        return "NOT_RUN"
+    pattern = re.compile(r"number of params:\s*(\d+)", re.IGNORECASE)
+    try:
+        for line in reversed(path.read_text(encoding="utf-8", errors="replace").splitlines()):
+            match = pattern.search(line)
+            if match:
+                return match.group(1)
+    except OSError:
+        pass
+    return "NOT_RUN"
+
+
+def _safetensors_parameter_count(path: Path) -> str:
+    """Count LoRA tensors from a safetensors header without loading them to GPU."""
+
+    if not path.is_file():
+        return "NOT_RUN"
+    try:
+        from safetensors import safe_open
+
+        total = 0
+        with safe_open(str(path), framework="pt", device="cpu") as handle:
+            for key in handle.keys():
+                count = 1
+                for dimension in handle.get_slice(key).get_shape():
+                    count *= int(dimension)
+                total += count
+        return str(total)
+    except (ImportError, OSError, RuntimeError, ValueError):
+        return "NOT_RUN"
+
+
 def row(
     *,
     method: str,
@@ -259,6 +296,7 @@ def row(
     status: str,
     validation_split: str = "NOT_RUN",
     evaluation_split: str = "NOT_RUN",
+    trainable_parameters: str = "NOT_RUN",
     checkpoint_path: str = "NOT_RUN",
     validation_manifest: str = "NOT_RUN",
     source_manifest: str = "NOT_RUN",
@@ -273,7 +311,7 @@ def row(
         "referring_model": referring_model,
         "validation_split": validation_split,
         "evaluation_split": evaluation_split,
-        "trainable_parameters": "NOT_RUN",
+        "trainable_parameters": trainable_parameters,
         "checkpoint_path": checkpoint_path,
         "validation_manifest": validation_manifest,
         "status": status,
@@ -299,6 +337,9 @@ def build_rows(project: Path, nas_root: Path) -> list[dict[str, str]]:
     y1_eval_manifest = resolve_yestrack_eval_manifest(nas_root)
     y1_validation_manifest = resolve_yestrack_validation_manifest(nas_root)
     f1_checkpoint = nas_root / "runs/gpu/flexhook_f1_sports_trained_seed42/ckpt_epoch_best_0.pth"
+    f1_parameter_count = _parameter_count_from_log(
+        nas_root / "runs/gpu/flexhook_f1_sports_trained_seed42/log_rank0.txt"
+    )
     f1_eval_manifest = resolve_flexhook_eval_manifest(nas_root)
     f1_validation_manifest = resolve_flexhook_validation_manifest(nas_root)
 
@@ -312,6 +353,11 @@ def build_rows(project: Path, nas_root: Path) -> list[dict[str, str]]:
         else DEFAULT_YESTRACK_THRESHOLD
     )
     y1_status = manifest_status(y1_manifest)
+    y1_parameter_count = _safetensors_parameter_count(
+        y1_checkpoint_root / "adapter_model.safetensors"
+        if y1_checkpoint_root is not None
+        else Path()
+    )
     if y1_status.startswith("RUNNING"):
         y1_status = "TRAINING_RUNNING"
     if y1_eval_status == "SUCCEEDED":
@@ -380,6 +426,7 @@ def build_rows(project: Path, nas_root: Path) -> list[dict[str, str]]:
             status=f1_status,
             validation_split="INTERNAL_VAL_5" if f1_validation_status == "SUCCEEDED" else "NOT_RUN",
             evaluation_split="HISTORICAL_TEST_19",
+            trainable_parameters=f1_parameter_count,
             checkpoint_path=str(f1_checkpoint) if f1_checkpoint.is_file() else "NOT_RUN",
             validation_manifest=str(f1_validation_manifest),
             source_manifest=str(f1_eval_manifest),
@@ -404,6 +451,7 @@ def build_rows(project: Path, nas_root: Path) -> list[dict[str, str]]:
             status=y1_status,
             validation_split="INTERNAL_VAL_5" if y1_validation_status == "SUCCEEDED" else "NOT_RUN",
             evaluation_split="HISTORICAL_TEST_19",
+            trainable_parameters=y1_parameter_count,
             checkpoint_path=str(y1_checkpoint_root) if y1_checkpoint_root and y1_checkpoint_root.is_dir() else "NOT_RUN",
             validation_manifest=str(y1_validation_manifest),
             source_manifest=str(y1_eval_manifest),

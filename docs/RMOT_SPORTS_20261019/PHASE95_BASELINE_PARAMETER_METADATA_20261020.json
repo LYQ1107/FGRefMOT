@@ -1,0 +1,28 @@
+{
+  "schema_version": "rmot-sports-phase-0.1",
+  "phase": 95,
+  "title": "Baseline table parameter metadata completion",
+  "status": "REAL_PARAMETER_METADATA_RECORDED_METRICS_PENDING",
+  "observed_at": "2026-10-20T07:26:11+08:00",
+  "changes": [
+    {
+      "variant": "FlexHook F1",
+      "field": "trained_parameter_count",
+      "value": "248218728",
+      "source": "NAS native log_rank0.txt line containing \"number of params\""
+    },
+    {
+      "variant": "YesTrack Y1 seed42",
+      "field": "trainable_parameter_count",
+      "value": "8716288",
+      "source": "NAS adapter_model.safetensors tensor headers via safetensors.safe_open"
+    }
+  ],
+  "command": "python scripts/build_baseline_table.py --nas-root /data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019 --output runs/baseline_table_live_20261020",
+  "table_rows": 9,
+  "test_command": "python -m pytest -q tests/test_baseline_table.py tests/test_temporal_score_control.py tests/test_temporal_score_variant.py tests/test_yestrack_score_variant.py",
+  "test_result": "17 passed",
+  "policy": "Only source-backed parameter counts were filled; pending formal HOTA/AssA/IDF1/FPS values remain NOT_RUN.",
+  "claim_boundary": "Parameter metadata is now recorded in the live builder and baseline comparison. This does not change the pending formal YesTrack result or any proposed-method claim.",
+  "next_step": "After terminal manifests, rebuild the same table so completed validation/formal metrics and timing fields are joined without changing the parameter-count provenance."
+}

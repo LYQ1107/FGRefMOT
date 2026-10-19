@@ -7,6 +7,8 @@ layout, completed 90,559 optimizer steps, and wrote its adapter on NAS. The
 separate 17-video core run produced the adapter used for internal selection.
 The fixed threshold chosen on the five-video internal split is `0.8` from the
 registered grid 0.2–0.8.
+The accepted seed42 adapter contains 8,716,288 trainable LoRA parameters,
+counted from the safetensors tensor headers.
 
 | split | HOTA | DetA | AssA | MOTA | IDF1 | IDSW |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |

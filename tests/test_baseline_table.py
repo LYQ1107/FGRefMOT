@@ -89,6 +89,15 @@ def test_validation_metrics_use_validation_namespace() -> None:
     assert "formal_hota" not in metrics
 
 
+def test_parameter_count_helpers_use_logged_or_header_metadata(tmp_path: Path) -> None:
+    module = _load_builder()
+    log = tmp_path / "log_rank0.txt"
+    log.write_text("INFO number of params: 12345\n", encoding="utf-8")
+
+    assert module._parameter_count_from_log(log) == "12345"
+    assert module._parameter_count_from_log(tmp_path / "missing.log") == "NOT_RUN"
+
+
 def test_resolve_flexhook_eval_manifest_prefers_latest_success(tmp_path: Path) -> None:
     module = _load_builder()
     old = tmp_path / "runs/gpu/flexhook_f1_common_eval_20261019_v2/FLEXHOOK_EVAL_MANIFEST.json"
