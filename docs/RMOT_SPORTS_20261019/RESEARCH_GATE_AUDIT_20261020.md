@@ -52,3 +52,12 @@ and seed44 attempts shared the upstream second-resolution NAS timestamp and
 were stopped before any checkpoint was accepted. Isolated v2 roots are now
 running on GPU2 and GPU3; the historical test evaluator on GPU1 was left
 untouched.
+
+Phase 80 records that both isolated jobs entered the optimizer loop after NAS
+model initialization. Phase 81 records the later live checkpoint boundary:
+seed43 and seed44 had reached 1,924 and 1,974 steps at observation, while the
+formal evaluator had produced 54/142 prediction files without writing a
+terminal manifest. Because these runs save the LoRA adapter at epoch end, the
+internal watchers continue to wait for a terminal training manifest and
+`lora_epoch_0`; no partial checkpoint or partial historical output is used as a
+metric.
