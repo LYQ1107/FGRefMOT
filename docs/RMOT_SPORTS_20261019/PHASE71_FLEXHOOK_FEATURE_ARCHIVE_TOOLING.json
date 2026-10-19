@@ -1,0 +1,34 @@
+{
+  "schema_version": "rmot-sports-phase-0.1",
+  "phase": 71,
+  "title": "FlexHook temporal feature archive tooling",
+  "status": "IMPLEMENTED_NOT_RUN",
+  "script": "scripts/flexhook_feature_archive.py",
+  "tests": {
+    "test_file": "tests/test_flexhook_feature_archive.py",
+    "result": "4 passed"
+  },
+  "archive_contract": {
+    "allowed_splits": [
+      "train_core",
+      "internal_val"
+    ],
+    "representation": "final model.output_ca_qkv[-1] query features",
+    "stored_controls": [
+      "frozen final-stage logits",
+      "clip frame IDs",
+      "video and physical track IDs",
+      "normalized terminal bounding box",
+      "expression strings",
+      "supervised labels"
+    ],
+    "label_policy": "labels are training targets only; never model or tracker input",
+    "test_policy": "historical test is rejected by the command and remains offline TrackEval-only"
+  },
+  "result_boundary": {
+    "archive_created": false,
+    "temporal_checkpoint_trained": false,
+    "metrics_claimed": false
+  },
+  "next_gate": "run the archive after the strict FlexHook core checkpoint exists, then train and select the temporal head on internal validation"
+}
