@@ -1,0 +1,46 @@
+{
+  "phase": 77,
+  "title": "YesTrack multi-seed stability training",
+  "status": "SEEDS_43_44_TRAINING_IN_PROGRESS",
+  "protocol": {
+    "variant": "yestrack_y1_sports_lora",
+    "train_split": "SPORTS_TRAIN_FULL_22_VIDEOS_181_EXPRESSIONS",
+    "evaluation_split": "INTERNAL_VAL_5_ONLY_AFTER_TRAINING",
+    "historical_test_policy": "untouched_until_all_selection_is_frozen",
+    "seed42_selected_threshold": 0.8,
+    "threshold_policy": "reuse_seed42_internal_selection; do_not_tune_historical_test",
+    "common_tracker": "fixed-common-SambaMOTR",
+    "storage": "NAS_DIRECT_THROUGH_SSHFS_MOUNT"
+  },
+  "runs": [
+    {
+      "run_id": "yestrack_y1_sports_lora_seed43_v1",
+      "seed": 43,
+      "gpu": 2,
+      "status": "RUNNING",
+      "manifest": "runs/gpu/yestrack_y1_sports_lora_seed43_v1/RUN_MANIFEST.json",
+      "launch_script": "runs/gpu/yestrack_y1_sports_lora_seed43_v1/launch_yestrack_y1_sports_lora_seed43_v1.sh",
+      "output_root": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs"
+    },
+    {
+      "run_id": "yestrack_y1_sports_lora_seed44_v1",
+      "seed": 44,
+      "gpu": 3,
+      "status": "RUNNING",
+      "manifest": "runs/gpu/yestrack_y1_sports_lora_seed44_v1/RUN_MANIFEST.json",
+      "launch_script": "runs/gpu/yestrack_y1_sports_lora_seed44_v1/launch_yestrack_y1_sports_lora_seed44_v1.sh",
+      "output_root": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs"
+    }
+  ],
+  "training_arguments": {
+    "batch_size": 8,
+    "epochs": 1,
+    "learning_rate": 5e-06,
+    "negative_downsample": 0.5,
+    "eval_threshold_grid": [0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8],
+    "re_refer_lower": 0.2,
+    "re_refer_thresh": 0.8
+  },
+  "next_step": "after both training manifests succeed, run fixed-threshold 0.8 internal validation and record seed-wise mean-over-alpha TrackEval metrics",
+  "metrics_claimed": false
+}

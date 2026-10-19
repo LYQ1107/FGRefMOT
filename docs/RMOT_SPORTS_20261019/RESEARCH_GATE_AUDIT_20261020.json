@@ -1,6 +1,6 @@
 {
   "schema_version": "rmot-sports-gate-audit-0.1",
-  "observed_at": "2026-10-20T05:35:38+08:00",
+  "observed_at": "2026-10-20T05:49:27+08:00",
   "status": "IN_PROGRESS",
   "workspace": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019",
   "branch": "research/sports-rmot-strong-baselines-20261019",
@@ -76,12 +76,13 @@
     },
     {
       "id": "G_MULTI_SEED_STABILITY",
-      "status": "NOT_RUN",
+      "status": "SEEDS_43_44_TRAINING_IN_PROGRESS",
       "evidence": [
         "configs/experiment_matrix_20261019.json",
-        "docs/RMOT_SPORTS_20261019/PHASE44_EXPERIMENT_MATRIX.json"
+        "docs/RMOT_SPORTS_20261019/PHASE44_EXPERIMENT_MATRIX.json",
+        "docs/RMOT_SPORTS_20261019/PHASE77_YESTRACK_MULTI_SEED_TRAINING.json"
       ],
-      "claim_boundary": "Only seed 42 jobs are currently registered as live; stability across additional seeds is not claimed."
+      "claim_boundary": "Seed43 and seed44 YesTrack trainings are live; no multi-seed metric or stability claim is made until both internal validation manifests succeed."
     },
     {
       "id": "H_EFFICIENCY_AND_RECOVERY",
@@ -112,10 +113,23 @@
       "status": "TRAINING_SUCCEEDED_FORMAL_EVALUATION_IN_PROGRESS",
       "manifest": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/runs/gpu/yestrack_y1_sports_lora_seed42_v2/RUN_MANIFEST.json",
       "log": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/runs/gpu/yestrack_y1_sports_lora_seed42_v2/yestrack_y1_sports_lora_seed42_v2.log"
+    },
+    {
+      "run_id": "yestrack_y1_sports_lora_seed43_v1",
+      "status": "TRAINING_IN_PROGRESS",
+      "manifest": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/runs/gpu/yestrack_y1_sports_lora_seed43_v1/RUN_MANIFEST.json",
+      "log": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/runs/gpu/yestrack_y1_sports_lora_seed43_v1/yestrack_y1_sports_lora_seed43_v1.log"
+    },
+    {
+      "run_id": "yestrack_y1_sports_lora_seed44_v1",
+      "status": "TRAINING_IN_PROGRESS",
+      "manifest": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/runs/gpu/yestrack_y1_sports_lora_seed44_v1/RUN_MANIFEST.json",
+      "log": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/runs/gpu/yestrack_y1_sports_lora_seed44_v1/yestrack_y1_sports_lora_seed44_v1.log"
     }
   ],
   "next_gates": [
     "complete the full YesTrack 19-video historical evaluation manifest",
+    "complete seed43 and seed44 training and fixed-threshold internal validation",
     "run registered proposed-method and baseline ablations after the baseline gate",
     "complete multi-seed, efficiency, final-test and reviewer-report evidence"
   ]
