@@ -16,6 +16,7 @@
 | Step-200 development smoke | COMPLETE | fixed 4-video split, 30 frames/video, one expression/video; JSON results committed beside this report |
 | Step-200 full development evaluation | COMPLETE | fixed 4-video split, all 2,621 frames, one expression/video; four JSON results committed and pushed |
 | Step-5000 full development evaluation | COMPLETE | fixed 4-video split, all 2,621 frames, one expression/video; four JSON results and cross-variant summary |
+| Step-5000 observed training cost | COMPLETE (PARTIAL STUDY) | `reports/qim_ablation/training_cost_20261019.json`; checkpoint wall-clock from step 200 is 1.713/1.772/1.760/1.845 GPU-hours for Standard/LSTM/Temporal Attention/Mamba |
 | Real SportsMOT image benchmark | COMPLETE | 60-frame real clip, 5 warmup + 55 timed frames; `real_sportsmot_benchmark_step200.json` |
 | 20k/60k/120k training nodes | RUNNING | all four variants resumed exactly from step 200; 5k checkpoints and full development evaluations are complete |
 | Historical Test HOTA/DetA/AssA/IDF1/IDSW | BLOCKED | test images exist, corresponding local GT labels do not |
@@ -25,4 +26,6 @@ The four 200-step and four 5k benchmark logs/checkpoints are under
 marked `FINAL_TEST`; later long-run checkpoints will be promoted only after
 their actual logs and validation outputs are preserved. The development
 metrics are recorded in `FINAL_REPORT.md` and `FINAL_TRACKING_RESULTS.csv`.
+The current cost report records only observed checkpoints; missing 20k/60k/120k
+milestones remain null rather than being extrapolated.
 
