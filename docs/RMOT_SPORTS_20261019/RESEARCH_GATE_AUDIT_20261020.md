@@ -24,7 +24,7 @@ selected checkpoint's one-time 19-video historical evaluation also succeeded
 finished successfully and its formal historical evaluation has started. The
 separate 17-video internal YesTrack training and fixed five-video validation
 evaluation also succeeded; threshold 0.8 was selected on internal HOTA
-(0.7936).
+00.7465, mean over the TrackEval alpha grid).
 The FlexHook frozen-score H0-H8 replay is a diagnostic control over a frozen
 checkpoint; it is not a learned temporal-head result.
 
