@@ -1,0 +1,46 @@
+{
+  "schema_version": "rmot-sports-phase-0.1",
+  "phase": 83,
+  "title": "Live health check for formal evaluation and timing run",
+  "status": "HEALTHY_LONG_RUNNING_JOBS",
+  "observed_at": "2026-10-20T06:48:36+08:00",
+  "formal_test": {
+    "run_id": "yestrack_y1_common_eval_20261019_v3",
+    "gpu": 1,
+    "manifest_status": "ABSENT",
+    "completed_prediction_files": 58,
+    "expected_expression_count": 142,
+    "last_prediction_mtime": "2026-10-20T06:38:30+08:00",
+    "process_observation": "evaluator child remained alive with approximately 347 percent CPU and GPU1 active",
+    "claim_boundary": "No historical-test metric is claimed until the terminal manifest succeeds."
+  },
+  "timed_tracker": {
+    "run_id": "common_tracker_refersports_timed_20261020",
+    "gpu": 0,
+    "manifest_status": "RUNNING",
+    "completed_sequence_files": 6,
+    "latest_output_mtime": "2026-10-20T06:48:31+08:00",
+    "process_observation": "main process and worker children alive; GPU0 active",
+    "input_policy": "image-only staging; GT and label files omitted"
+  },
+  "multi_seed_training": [
+    {
+      "seed": 43,
+      "gpu": 2,
+      "status": "RUNNING",
+      "optimizer_steps_observed": 5906,
+      "planned_steps": 90523,
+      "log_mtime": "2026-10-20T06:48:31+08:00"
+    },
+    {
+      "seed": 44,
+      "gpu": 3,
+      "status": "RUNNING",
+      "optimizer_steps_observed": 5902,
+      "planned_steps": 90528,
+      "log_mtime": "2026-10-20T06:48:31+08:00"
+    }
+  ],
+  "health_conclusion": "All observed jobs have live processes and active compute; no restart or failure classification is justified.",
+  "next_step": "Wait for terminal tracker, formal YesTrack, and multi-seed manifests before calculating efficiency, metrics, or ablation comparisons."
+}
