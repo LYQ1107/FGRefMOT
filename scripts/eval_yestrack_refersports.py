@@ -243,10 +243,27 @@ def _count_frame_units(
 
     # The generated YesTrack layout manifest contains frame and expression
     # counts without boxes or labels.  Efficiency accounting must not inspect
-    # the offline TrackEval GT tree.
-    manifest = json.loads((data_root / "manifest.json").read_text(encoding="utf-8"))
+    # the offline TrackEval GT tree.  A split directory (for example ``val``)
+    # has a compact aggregate manifest, while the parent layout manifest keeps
+    # the per-video metadata needed here.
+    manifest_path = data_root / "manifest.json"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    if not isinstance(manifest.get("metadata"), list):
+        parent_manifest_path = data_root.parent / "manifest.json"
+        if not parent_manifest_path.is_file():
+            raise KeyError(
+                f"YesTrack layout manifest has no metadata and parent manifest is missing: {manifest_path}"
+            )
+        manifest = json.loads(parent_manifest_path.read_text(encoding="utf-8"))
+    metadata = manifest.get("metadata")
+    if not isinstance(metadata, list):
+        raise KeyError(f"YesTrack layout manifest has no metadata list: {manifest_path}")
     wanted = set(sequence_names)
-    records = [record for record in manifest["metadata"] if record["video_id"] in wanted]
+    records = [record for record in metadata if record["video_id"] in wanted]
+    found = {record["video_id"] for record in records}
+    missing = sorted(wanted - found)
+    if missing:
+        raise ValueError(f"YesTrack layout manifest does not cover requested videos: {missing}")
     video_frames = sum(int(record["frame_count"]) for record in records)
     expression_frames = sum(
         int(record["frame_count"]) * int(record.get("expression_count", 0))

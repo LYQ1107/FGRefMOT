@@ -65,6 +65,23 @@ def test_yestrack_expression_dirs_suffix_duplicate_sentences() -> None:
     assert module._expression_dirnames(records) == ["basketball-players", "basketball-players__2"]
 
 
+def test_yestrack_efficiency_uses_parent_metadata_for_split_manifest(tmp_path: Path) -> None:
+    module = _load_script("eval_yestrack_refersports.py")
+    layout = tmp_path / "layout"
+    val = layout / "val"
+    val.mkdir(parents=True)
+    (layout / "manifest.json").write_text(
+        '{"metadata": [{"video_id": "video", "frame_count": 12, "expression_count": 3}]}',
+        encoding="utf-8",
+    )
+    (val / "manifest.json").write_text(
+        '{"layout_split": "val", "video_count": 1, "frame_count": 12, "expression_count": 3}',
+        encoding="utf-8",
+    )
+
+    assert module._count_frame_units(data_root=val, sequence_names=["video"]) == (12, 36)
+
+
 def test_yestrack_inference_forwards_temporal_controls(monkeypatch, tmp_path: Path) -> None:
     module = _load_script("eval_yestrack_refersports.py")
     monkeypatch.setattr(module, "ensure_yestrack_efficiency_patch", lambda: "test-patch-sha256")
