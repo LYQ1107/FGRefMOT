@@ -1,6 +1,6 @@
 {
   "schema_version": "rmot-sports-gate-audit-0.1",
-  "observed_at": "2026-10-20T06:04:16+08:00",
+  "observed_at": "2026-10-20T06:13:40+08:00",
   "status": "IN_PROGRESS",
   "workspace": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019",
   "branch": "research/sports-rmot-strong-baselines-20261019",
@@ -47,6 +47,7 @@
         "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/runs/gpu/yestrack_y1_sports_lora_seed42_v2/RUN_MANIFEST.json",
         "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/runs/gpu/yestrack_y1_sports_core_lora_seed42/RUN_MANIFEST.json",
         "docs/RMOT_SPORTS_20261019/PHASE56_INTERNAL_YESTRACK_RUNNING.json",
+        "docs/RMOT_SPORTS_20261019/PHASE80_LIVE_PROGRESS_20261020.json",
         "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/yestrack_y1_internal_eval_20261019_v5/YESTRACK_EVAL_MANIFEST.json"
       ],
       "claim_boundary": "The full 22-video training manifest succeeded and its formal historical evaluation is running. The 17-video internal training and fixed five-video validation evaluation also succeeded; threshold 0.8 was selected on internal HOTA. The internal metric is selection evidence, while no full historical-test result is claimed until the formal manifest succeeds."
@@ -76,14 +77,15 @@
     },
     {
       "id": "G_MULTI_SEED_STABILITY",
-      "status": "SEEDS_43_44_V2_TRAINING_IN_PROGRESS",
+      "status": "SEEDS_43_44_V2_TRAINING_ACTIVE",
       "evidence": [
         "configs/experiment_matrix_20261019.json",
         "docs/RMOT_SPORTS_20261019/PHASE44_EXPERIMENT_MATRIX.json",
         "docs/RMOT_SPORTS_20261019/PHASE77_YESTRACK_MULTI_SEED_TRAINING.json",
-        "docs/RMOT_SPORTS_20261019/PHASE79_YESTRACK_MULTI_SEED_ISOLATION.json"
+        "docs/RMOT_SPORTS_20261019/PHASE79_YESTRACK_MULTI_SEED_ISOLATION.json",
+        "docs/RMOT_SPORTS_20261019/PHASE80_LIVE_PROGRESS_20261020.json"
       ],
-      "claim_boundary": "The isolated v2 seed43 and seed44 YesTrack trainings are live; the v1 timestamp-collision attempts are invalidated with no accepted checkpoint. No multi-seed metric or stability claim is made until both v2 internal validation manifests succeed."
+      "claim_boundary": "The isolated v2 seed43 and seed44 YesTrack trainings are in the optimizer loop; the v1 timestamp-collision attempts are invalidated with no accepted checkpoint. No multi-seed metric or stability claim is made until both v2 internal validation manifests succeed."
     },
     {
       "id": "H_EFFICIENCY_AND_RECOVERY",

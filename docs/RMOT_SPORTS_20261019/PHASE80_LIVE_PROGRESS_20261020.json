@@ -1,0 +1,48 @@
+{
+  "schema_version": "rmot-sports-phase-0.1",
+  "phase": 80,
+  "title": "Live YesTrack training and formal-evaluation progress checkpoint",
+  "status": "SEEDS_TRAINING_ACTIVE_FORMAL_TEST_ACTIVE",
+  "observed_at": "2026-10-20T06:13:40+08:00",
+  "formal_test": {
+    "run_id": "yestrack_y1_common_eval_20261019_v3",
+    "gpu": 1,
+    "process_pid": 2708884,
+    "manifest": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/yestrack_y1_common_eval_20261019_v3/YESTRACK_EVAL_MANIFEST.json",
+    "manifest_status": "NOT_YET_WRITTEN",
+    "completed_prediction_files_observed": 50,
+    "expected_expression_count": 142,
+    "claim_boundary": "This is progress evidence only; no historical-test metric is claimed until the evaluator writes a succeeded manifest."
+  },
+  "multi_seed_training": [
+    {
+      "run_id": "yestrack_y1_sports_lora_seed43_v2",
+      "seed": 43,
+      "gpu": 2,
+      "status": "RUNNING",
+      "optimizer_steps_observed": 160,
+      "planned_optimizer_steps": 90523,
+      "run_timestamp": "20261020_061238",
+      "config": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/yestrack_y1_sports_lora_seed43_v2/20261020_061238/config.json"
+    },
+    {
+      "run_id": "yestrack_y1_sports_lora_seed44_v2",
+      "seed": 44,
+      "gpu": 3,
+      "status": "RUNNING",
+      "optimizer_steps_observed": 167,
+      "planned_optimizer_steps": 90528,
+      "run_timestamp": "20261020_061238",
+      "config": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/yestrack_y1_sports_lora_seed44_v2/20261020_061238/config.json"
+    }
+  ],
+  "protocol_invariants": {
+    "training_split": "SPORTS_TRAIN_FULL_22_VIDEOS_181_EXPRESSIONS",
+    "internal_selection": "INTERNAL_VAL_5_ONLY_AFTER_TRAINING",
+    "historical_test": "untouched_for_selection",
+    "seed43_seed44_output_roots": "isolated NAS roots",
+    "selected_threshold": 0.8,
+    "common_tracker": "fixed-common-SambaMOTR"
+  },
+  "next_step": "Wait for both training manifests and the seed42 formal manifest, then run the registered fixed-threshold internal and postbaseline evaluations."
+}
