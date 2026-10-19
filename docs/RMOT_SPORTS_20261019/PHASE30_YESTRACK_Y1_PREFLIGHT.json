@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "phase": 30,
+  "audit_date": "2026-10-19",
+  "status": "Y1_CPU_IMPORT_AND_ADAPTER_PASS_GPU_LAUNCH_PENDING_NAS_TUNNEL",
+  "workspace": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019",
+  "branch": "research/sports-rmot-strong-baselines-20261019",
+  "environment": {
+    "python": "/data3/liuyeqiang/.venvs/fgrefmot-rmot-sports-20261019/bin/python",
+    "torch": "2.6.0+cu118",
+    "transformers": "5.2.0",
+    "peft": "0.18.1",
+    "accelerate": "1.10.1",
+    "imports": ["refer_llm.llm_train", "refer_llm.llm_eval_from_mot"]
+  },
+  "adapter_dry_run": {
+    "command": "PYTHONPATH=third_party/YesTrack python scripts/yestrack_sportsmot_adapter.py --layout-root runs/yestrack_sports_layout_20261019_v1 --dry-run --json",
+    "status": "PASS",
+    "policy": "SUPERVISED_LABELS_ONLY; NO_GT_AS_TRACKER_INPUT",
+    "train": {"sequence_count": 22, "frame_count": 14750, "box_count": 160489, "expression_count": 181},
+    "val": {"sequence_count": 19, "frame_count": 11900, "box_count": 130152, "expression_count": 142}
+  },
+  "contract": {
+    "path": "runs/contracts_20261019/yestrack_y1_sports_lora_seed42.json",
+    "sha256": "cf60bbaded5e37c333c6c0f34f22aad8cb813985faace1cc8be7a1384afa523b",
+    "gpu_launch": "DEFERRED_UNTIL_NAS_TUNNEL_AND_QWEN_ASSET_RECHECK"
+  },
+  "nas": {
+    "reverse_forward": "127.0.0.1:24557 connection refused",
+    "mounted_path": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019",
+    "mounted_path_status": "I/O_ERROR"
+  },
+  "next_action": "Restore the Windows reverse SSH tunnel, run the Y1 contract check, recheck GPU 1, and launch the authorized Y1 baseline."
+}
