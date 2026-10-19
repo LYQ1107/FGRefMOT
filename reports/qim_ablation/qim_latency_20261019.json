@@ -1,0 +1,195 @@
+{
+  "contract": {
+    "input": "[1, N_active, 256] for original Mamba; alternatives use the same N_active x 256 token axis",
+    "warmup": 20,
+    "repeats": 50,
+    "device": "cuda",
+    "cuda_events": true
+  },
+  "variants": {
+    "standard": {
+      "variant_label": "REIMPLEMENTED_VARIANT",
+      "qim_params": 1907712,
+      "active_tracks": {
+        "5": {
+          "mean_ms": 1.7982873582839967,
+          "median_ms": 1.7172479629516602,
+          "p95_ms": 1.77981436252594,
+          "repeats": 50,
+          "peak_allocated_gb": 0.017241477966308594,
+          "peak_reserved_gb": 0.029296875
+        },
+        "10": {
+          "mean_ms": 2.2188236904144287,
+          "median_ms": 2.228224039077759,
+          "p95_ms": 2.26053124666214,
+          "repeats": 50,
+          "peak_allocated_gb": 0.0182952880859375,
+          "peak_reserved_gb": 0.03125
+        },
+        "20": {
+          "mean_ms": 2.2608486461639403,
+          "median_ms": 2.2599680423736572,
+          "p95_ms": 2.304665505886078,
+          "repeats": 50,
+          "peak_allocated_gb": 0.020402908325195312,
+          "peak_reserved_gb": 0.033203125
+        },
+        "50": {
+          "mean_ms": 2.452971510887146,
+          "median_ms": 2.4596478939056396,
+          "p95_ms": 2.505830407142639,
+          "repeats": 50,
+          "peak_allocated_gb": 0.026759624481201172,
+          "peak_reserved_gb": 0.0390625
+        },
+        "100": {
+          "mean_ms": 2.4415436935424806,
+          "median_ms": 2.447360038757324,
+          "p95_ms": 2.4872961044311523,
+          "repeats": 50,
+          "peak_allocated_gb": 0.03743314743041992,
+          "peak_reserved_gb": 0.05078125
+        }
+      }
+    },
+    "lstm": {
+      "variant_label": "REIMPLEMENTED_VARIANT",
+      "qim_params": 6119424,
+      "active_tracks": {
+        "5": {
+          "mean_ms": 3.0099046516418455,
+          "median_ms": 3.0054399967193604,
+          "p95_ms": 3.042304039001465,
+          "repeats": 50,
+          "peak_allocated_gb": 0.07105541229248047,
+          "peak_reserved_gb": 0.111328125
+        },
+        "10": {
+          "mean_ms": 4.0643174362182615,
+          "median_ms": 4.033535957336426,
+          "p95_ms": 4.283596944808959,
+          "repeats": 50,
+          "peak_allocated_gb": 0.07210922241210938,
+          "peak_reserved_gb": 0.111328125
+        },
+        "20": {
+          "mean_ms": 4.616232948303223,
+          "median_ms": 4.580351829528809,
+          "p95_ms": 4.853299307823181,
+          "repeats": 50,
+          "peak_allocated_gb": 0.07421684265136719,
+          "peak_reserved_gb": 0.111328125
+        },
+        "50": {
+          "mean_ms": 8.359874477386475,
+          "median_ms": 8.282112121582031,
+          "p95_ms": 8.456909036636352,
+          "repeats": 50,
+          "peak_allocated_gb": 0.08057355880737305,
+          "peak_reserved_gb": 0.111328125
+        },
+        "100": {
+          "mean_ms": 12.421160984039307,
+          "median_ms": 12.391424179077148,
+          "p95_ms": 12.714342498779297,
+          "repeats": 50,
+          "peak_allocated_gb": 0.0912470817565918,
+          "peak_reserved_gb": 0.111328125
+        }
+      }
+    },
+    "temporal_attention": {
+      "variant_label": "REIMPLEMENTED_VARIANT",
+      "qim_params": 4017152,
+      "active_tracks": {
+        "5": {
+          "mean_ms": 5.278126072883606,
+          "median_ms": 5.732351779937744,
+          "p95_ms": 7.678207898139953,
+          "repeats": 50,
+          "peak_allocated_gb": 0.025109291076660156,
+          "peak_reserved_gb": 0.111328125
+        },
+        "10": {
+          "mean_ms": 5.648199691772461,
+          "median_ms": 5.644288063049316,
+          "p95_ms": 5.7218560695648195,
+          "repeats": 50,
+          "peak_allocated_gb": 0.026172637939453125,
+          "peak_reserved_gb": 0.111328125
+        },
+        "20": {
+          "mean_ms": 5.740687351226807,
+          "median_ms": 5.724160194396973,
+          "p95_ms": 5.859891104698181,
+          "repeats": 50,
+          "peak_allocated_gb": 0.028299331665039062,
+          "peak_reserved_gb": 0.111328125
+        },
+        "50": {
+          "mean_ms": 7.968235521316529,
+          "median_ms": 7.882751941680908,
+          "p95_ms": 8.093798494338989,
+          "repeats": 50,
+          "peak_allocated_gb": 0.0347132682800293,
+          "peak_reserved_gb": 0.111328125
+        },
+        "100": {
+          "mean_ms": 7.909191703796386,
+          "median_ms": 7.890944004058838,
+          "p95_ms": 8.153497219085693,
+          "repeats": 50,
+          "peak_allocated_gb": 0.04548215866088867,
+          "peak_reserved_gb": 0.119140625
+        }
+      }
+    },
+    "mamba": {
+      "variant_label": "ORIGINAL_MAMBA",
+      "qim_params": 5413888,
+      "active_tracks": {
+        "5": {
+          "mean_ms": 7.32125184059143,
+          "median_ms": 7.282688140869141,
+          "p95_ms": 7.485952019691467,
+          "repeats": 50,
+          "peak_allocated_gb": 0.030332088470458984,
+          "peak_reserved_gb": 0.359375
+        },
+        "10": {
+          "mean_ms": 9.177477073669433,
+          "median_ms": 9.164799690246582,
+          "p95_ms": 9.324799823760987,
+          "repeats": 50,
+          "peak_allocated_gb": 0.03141450881958008,
+          "peak_reserved_gb": 0.359375
+        },
+        "20": {
+          "mean_ms": 10.950184955596924,
+          "median_ms": 10.899456024169922,
+          "p95_ms": 11.199999666213989,
+          "repeats": 50,
+          "peak_allocated_gb": 0.033579349517822266,
+          "peak_reserved_gb": 0.359375
+        },
+        "50": {
+          "mean_ms": 11.327815742492676,
+          "median_ms": 11.300864219665527,
+          "p95_ms": 11.664691305160522,
+          "repeats": 50,
+          "peak_allocated_gb": 0.04010772705078125,
+          "peak_reserved_gb": 0.359375
+        },
+        "100": {
+          "mean_ms": 11.230125999450683,
+          "median_ms": 11.234304428100586,
+          "p95_ms": 11.514777565002442,
+          "repeats": 50,
+          "peak_allocated_gb": 0.05107927322387695,
+          "peak_reserved_gb": 0.365234375
+        }
+      }
+    }
+  }
+}

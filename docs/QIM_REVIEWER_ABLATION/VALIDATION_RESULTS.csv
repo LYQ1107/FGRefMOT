@@ -1,0 +1,5 @@
+variant,protocol,status,HOTA,DetA,AssA,IDF1,IDSW,reason
+standard,Refer-Sports development,NOT_RUN,,,,,,SportsMOT image/labels unavailable
+lstm,Refer-Sports development,NOT_RUN,,,,,,SportsMOT image/labels unavailable
+temporal_attention,Refer-Sports development,NOT_RUN,,,,,,SportsMOT image/labels unavailable
+mamba,Refer-Sports development,NOT_RUN,,,,,,SportsMOT image/labels unavailable

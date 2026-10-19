@@ -480,8 +480,12 @@ def create_block(
     return block
 
 def build(args, layer_name, dim_in, hidden_dim, dim_out):
-    interaction_layers = {
-        'QIM': QueryInteractionModule,
-    }
-    assert layer_name in interaction_layers, 'invalid query interaction layer: {}'.format(layer_name)
-    return interaction_layers[layer_name](args, dim_in, hidden_dim, dim_out)
+    # Keep the original class and its state-dict names as the default.  The
+    # alternative variants live in a separate module so loading a historical
+    # Mamba checkpoint remains an exact operation.
+    assert layer_name == 'QIM', 'invalid query interaction layer: {}'.format(layer_name)
+    variant = getattr(args, 'qim_variant', 'mamba').lower()
+    if variant == 'mamba':
+        return QueryInteractionModule(args, dim_in, hidden_dim, dim_out)
+    from .qim_variants import build_qim_variant
+    return build_qim_variant(args, variant, dim_in, hidden_dim, dim_out)

@@ -15,7 +15,8 @@ Train and eval functions used in main.py
 import cv2
 import math
 import numpy as np
-import torch, gc
+import torch
+from torch import nn
 import os
 import sys
 from typing import Iterable
@@ -32,11 +33,34 @@ from datasets.data_prefetcher import data_prefetcher, data_dict_to_cuda
 
 import time
 import datetime
+
+
+def _set_frozen_stochastic_layers_eval(model):
+    """Keep frozen BN/Dropout deterministic without disabling QIM gradients."""
+
+    trainable_top_levels = {
+        name.split('.', 1)[0]
+        for name, parameter in model.named_parameters()
+        if parameter.requires_grad
+    }
+    stochastic_types = (
+        nn.Dropout, nn.Dropout1d, nn.Dropout2d, nn.Dropout3d,
+        nn.BatchNorm1d, nn.BatchNorm2d, nn.BatchNorm3d,
+        nn.SyncBatchNorm,
+    )
+    for name, module in model.named_modules():
+        if isinstance(module, stochastic_types):
+            top_level = name.split('.', 1)[0] if name else ''
+            if top_level not in trainable_top_levels:
+                module.eval()
+
+
 def train_one_epoch(model: torch.nn.Module, criterion: torch.nn.Module,
                     data_loader: Iterable, optimizer: torch.optim.Optimizer,
                     device: torch.device, epoch: int, max_norm: float = 0):
     model.train()
     criterion.train()
+    _set_frozen_stochastic_layers_eval(model)
     metric_logger = utils.MetricLogger(delimiter="  ")
     metric_logger.add_meter('lr', utils.SmoothedValue(window_size=1, fmt='{value:.6f}'))
     metric_logger.add_meter('class_error', utils.SmoothedValue(window_size=1, fmt='{value:.2f}'))
@@ -92,9 +116,12 @@ def train_one_epoch(model: torch.nn.Module, criterion: torch.nn.Module,
 
 def train_one_epoch_rmot(model: torch.nn.Module, criterion: torch.nn.Module,
                     data_loader: Iterable, optimizer: torch.optim.Optimizer,
-                    device: torch.device, epoch: int, max_norm: float = 0, writer=None):
+                    device: torch.device, epoch: int, max_norm: float = 0, writer=None,
+                    max_steps=None, global_step=0, benchmark=False,
+                    skip_steps=0, step_callback=None):
     model.train()
     criterion.train()
+    _set_frozen_stochastic_layers_eval(model)
     metric_logger = utils.MetricLogger(delimiter="  ")
     # metric_logger.add_meter('lr', utils.SmoothedValue(window_size=1, fmt='{value:.6f}'))
     # metric_logger.add_meter('class_error', utils.SmoothedValue(window_size=1, fmt='{value:.2f}'))
@@ -103,7 +130,19 @@ def train_one_epoch_rmot(model: torch.nn.Module, criterion: torch.nn.Module,
     print_freq = 10
 
     iter_id = 0
+    step_times = []
+    data_times = []
+    forward_times = []
+    backward_times = []
+    previous_step_end = time.perf_counter()
     for data_dict in metric_logger.log_every(data_loader, print_freq, header):
+        if skip_steps > 0:
+            skip_steps -= 1
+            continue
+        if max_steps is not None and iter_id >= max_steps:
+            break
+        step_start = time.perf_counter()
+        data_times.append(step_start - previous_step_end)
         
         if 'sentences' in data_dict.keys():
             sentences = data_dict['sentences']
@@ -117,7 +156,9 @@ def train_one_epoch_rmot(model: torch.nn.Module, criterion: torch.nn.Module,
 
         else:
             data_dict = data_dict_to_cuda(data_dict, device)
+        forward_start = time.perf_counter()
         outputs = model(data_dict)
+        forward_times.append(time.perf_counter() - forward_start)
 
         loss_dict = criterion(outputs, data_dict) # 4*7*n
         weight_dict = criterion.weight_dict # 4*7*n
@@ -136,15 +177,17 @@ def train_one_epoch_rmot(model: torch.nn.Module, criterion: torch.nn.Module,
             print(loss_dict_reduced)
             sys.exit(1)
 
-        optimizer.zero_grad()
-        gc.collect()
-        torch.cuda.empty_cache()
+        optimizer.zero_grad(set_to_none=True)
+        backward_start = time.perf_counter()
         losses.backward()
+        backward_times.append(time.perf_counter() - backward_start)
         if max_norm > 0:
             grad_total_norm = torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm)
         else:
             grad_total_norm = utils.get_total_grad_norm(model.parameters(), max_norm)
         optimizer.step()
+        if step_callback is not None:
+            step_callback(global_step + iter_id + 1, iter_id + 1)
 
         # metric_logger.update(loss=loss_value, **loss_dict_reduced_scaled, **loss_dict_reduced_unscaled)
         loss_dict_reduced_scaled_wo_aux = {k:v for k, v in loss_dict_reduced.items() if 'aux' not in k} # n*8
@@ -154,10 +197,15 @@ def train_one_epoch_rmot(model: torch.nn.Module, criterion: torch.nn.Module,
         # metric_logger.update(grad_norm=grad_total_norm)
         # gather the stats from all processes
 
-        writer.add_scalar('Training/loss', loss_value, epoch * (data_loader.__len__()) + iter_id)
+        if writer is not None:
+            writer.add_scalar('Training/loss', loss_value,
+                              global_step + iter_id)
         loss_ce,loss_bbox,loss_giou,loss_refer=0,0,0,0
         temporal_loss_ce,temporal_loss_bbox,temporal_loss_giou,temporal_loss_refer=0,0,0,0
-        for i in range(4):
+        frame_count = len(data_dict.get('imgs', []))
+        for i in range(frame_count):
+            if 'frame_{}_loss_ce'.format(i) not in loss_dict_reduced_scaled_wo_aux:
+                continue
             loss_ce += loss_dict_reduced_scaled_wo_aux['frame_{}_loss_ce'.format(i)]
             loss_bbox += loss_dict_reduced_scaled_wo_aux['frame_{}_loss_bbox'.format(i)]
             loss_giou += loss_dict_reduced_scaled_wo_aux['frame_{}_loss_giou'.format(i)]
@@ -167,24 +215,53 @@ def train_one_epoch_rmot(model: torch.nn.Module, criterion: torch.nn.Module,
             temporal_loss_giou += loss_dict_reduced_scaled_wo_aux['frame_{}_temporal_loss_giou'.format(i)]
             temporal_loss_refer += loss_dict_reduced_scaled_wo_aux['frame_{}_temporal_loss_refer'.format(i)]
 
-        writer.add_scalar('Training/frame_loss_ce', loss_ce, epoch * (data_loader.__len__()) + iter_id)
-        writer.add_scalar('Training/frame_loss_bbox', loss_bbox, epoch * (data_loader.__len__()) + iter_id)
-        writer.add_scalar('Training/frame_loss_giou', loss_giou, epoch * (data_loader.__len__()) + iter_id)
-        writer.add_scalar('Training/frame_loss_refer', loss_refer, epoch * (data_loader.__len__()) + iter_id)
-        writer.add_scalar('Training/frame_temporal_loss_ce', temporal_loss_ce, epoch * (data_loader.__len__()) + iter_id)
-        writer.add_scalar('Training/frame_temporal_loss_bbox', temporal_loss_bbox,
-                          epoch * (data_loader.__len__()) + iter_id)
-        writer.add_scalar('Training/frame_temporal_loss_giou', temporal_loss_giou,
-                          epoch * (data_loader.__len__()) + iter_id)
-        writer.add_scalar('Training/frame_temporal_loss_refer', temporal_loss_refer,
-                          epoch * (data_loader.__len__()) + iter_id)
+        if writer is not None:
+            writer.add_scalar('Training/frame_loss_ce', loss_ce, global_step + iter_id)
+            writer.add_scalar('Training/frame_loss_bbox', loss_bbox, global_step + iter_id)
+            writer.add_scalar('Training/frame_loss_giou', loss_giou, global_step + iter_id)
+            writer.add_scalar('Training/frame_loss_refer', loss_refer, global_step + iter_id)
+            writer.add_scalar('Training/frame_temporal_loss_ce', temporal_loss_ce,
+                              global_step + iter_id)
+            writer.add_scalar('Training/frame_temporal_loss_bbox', temporal_loss_bbox,
+                              global_step + iter_id)
+            writer.add_scalar('Training/frame_temporal_loss_giou', temporal_loss_giou,
+                              global_step + iter_id)
+            writer.add_scalar('Training/frame_temporal_loss_refer', temporal_loss_refer,
+                              global_step + iter_id)
 
         iter_id += 1
+        previous_step_end = time.perf_counter()
+        step_times.append(previous_step_end - step_start)
 
 
     metric_logger.synchronize_between_processes()
     print("Averaged stats:", metric_logger)
-    return {k: meter.global_avg for k, meter in metric_logger.meters.items()}
+    stats = {k: meter.global_avg for k, meter in metric_logger.meters.items()}
+    stats['_steps'] = iter_id
+    if benchmark and step_times:
+        step_array = np.asarray(step_times, dtype=np.float64)
+        data_array = np.asarray(data_times, dtype=np.float64)
+        forward_array = np.asarray(forward_times, dtype=np.float64)
+        backward_array = np.asarray(backward_times, dtype=np.float64)
+        benchmark_stats = {
+            'steps': int(iter_id),
+            'step_mean_ms': float(step_array.mean() * 1000.0),
+            'step_median_ms': float(np.median(step_array) * 1000.0),
+            'step_p95_ms': float(np.percentile(step_array, 95) * 1000.0),
+            'data_mean_ms': float(data_array.mean() * 1000.0),
+            'forward_mean_ms': float(forward_array.mean() * 1000.0),
+            'backward_mean_ms': float(backward_array.mean() * 1000.0),
+        }
+        if torch.cuda.is_available():
+            benchmark_stats['peak_allocated_gb'] = float(
+                torch.cuda.max_memory_allocated(device) / (1024 ** 3)
+            )
+            benchmark_stats['peak_reserved_gb'] = float(
+                torch.cuda.max_memory_reserved(device) / (1024 ** 3)
+            )
+        print('TRAIN_BENCHMARK', benchmark_stats)
+        stats['_benchmark'] = benchmark_stats
+    return stats
 
 
 @torch.no_grad()

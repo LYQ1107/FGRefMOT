@@ -1,0 +1,121 @@
+{
+  "protocol": {
+    "input": "synthetic fixed tensor; no SportsMOT image files are locally available",
+    "resolution": [
+      360,
+      640
+    ],
+    "frames_per_clip": 2,
+    "warmup_clips": 1,
+    "timed_clips": 3,
+    "device": "Tesla V100-DGXS-32GB",
+    "precision": "fp32",
+    "preprocessing": "prepared GPU tensor and NestedTensor wrapper; image decode/resize excluded"
+  },
+  "variants": {
+    "standard": {
+      "qim_label": "REIMPLEMENTED_VARIANT",
+      "qim_params": 1907712,
+      "full_model_params": 178730476,
+      "frame_mean_ms": 87.83935546875,
+      "frame_median_ms": 88.289794921875,
+      "frame_p95_ms": 90.75736618041992,
+      "clip_mean_ms": 175.6787109375,
+      "fps_prepared_tensor": 11.384418688679506,
+      "active_tracks_per_frame": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ],
+      "peak_allocated_gb": 0.8087654113769531,
+      "peak_reserved_gb": 0.943359375
+    },
+    "lstm": {
+      "qim_label": "REIMPLEMENTED_VARIANT",
+      "qim_params": 6119424,
+      "full_model_params": 182942188,
+      "frame_mean_ms": 85.82040023803711,
+      "frame_median_ms": 85.78665924072266,
+      "frame_p95_ms": 86.8105354309082,
+      "clip_mean_ms": 171.64080047607422,
+      "fps_prepared_tensor": 11.65224115975146,
+      "active_tracks_per_frame": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ],
+      "peak_allocated_gb": 0.8251991271972656,
+      "peak_reserved_gb": 0.962890625
+    },
+    "temporal_attention": {
+      "qim_label": "REIMPLEMENTED_VARIANT",
+      "qim_params": 4017152,
+      "full_model_params": 180839916,
+      "frame_mean_ms": 86.57992680867513,
+      "frame_median_ms": 86.18396759033203,
+      "frame_p95_ms": 87.23514556884766,
+      "clip_mean_ms": 173.15985361735025,
+      "fps_prepared_tensor": 11.550021313945049,
+      "active_tracks_per_frame": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ],
+      "peak_allocated_gb": 0.8195648193359375,
+      "peak_reserved_gb": 0.951171875
+    },
+    "mamba": {
+      "qim_label": "ORIGINAL_MAMBA",
+      "qim_params": 5413888,
+      "full_model_params": 182236652,
+      "frame_mean_ms": 83.1519037882487,
+      "frame_median_ms": 82.59964752197266,
+      "frame_p95_ms": 86.39249610900879,
+      "clip_mean_ms": 166.3038075764974,
+      "fps_prepared_tensor": 12.026182858621732,
+      "active_tracks_per_frame": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ],
+      "peak_allocated_gb": 0.82476806640625,
+      "peak_reserved_gb": 0.955078125
+    }
+  }
+}

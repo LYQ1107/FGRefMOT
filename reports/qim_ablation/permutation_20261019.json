@@ -1,0 +1,80 @@
+{
+  "device": "cuda",
+  "active_tracks": 20,
+  "checkpoint": "/data1/liuyeqiang/fgref_v2_runs/checkpoints/checkpoint0089.pth",
+  "interpretation": "query-level diagnostic; no next-frame detector was run",
+  "variants": {
+    "standard": {
+      "original": {
+        "max_abs_query_delta": 0.0,
+        "mean_abs_query_delta": 0.0
+      },
+      "reverse": {
+        "max_abs_query_delta": 7.152557373046875e-07,
+        "mean_abs_query_delta": 8.806956941498356e-08
+      },
+      "random": {
+        "max_abs_query_delta": 7.152557373046875e-07,
+        "mean_abs_query_delta": 8.872225265577072e-08
+      },
+      "track_id_sorted": {
+        "max_abs_query_delta": 0.0,
+        "mean_abs_query_delta": 0.0
+      }
+    },
+    "lstm": {
+      "original": {
+        "max_abs_query_delta": 0.0,
+        "mean_abs_query_delta": 0.0
+      },
+      "reverse": {
+        "max_abs_query_delta": 0.048769354820251465,
+        "mean_abs_query_delta": 0.003688681870698929
+      },
+      "random": {
+        "max_abs_query_delta": 0.049173593521118164,
+        "mean_abs_query_delta": 0.0030946240294724703
+      },
+      "track_id_sorted": {
+        "max_abs_query_delta": 0.0,
+        "mean_abs_query_delta": 0.0
+      }
+    },
+    "temporal_attention": {
+      "original": {
+        "max_abs_query_delta": 0.0,
+        "mean_abs_query_delta": 0.0
+      },
+      "reverse": {
+        "max_abs_query_delta": 7.152557373046875e-07,
+        "mean_abs_query_delta": 1.3233056961325929e-07
+      },
+      "random": {
+        "max_abs_query_delta": 7.152557373046875e-07,
+        "mean_abs_query_delta": 1.3150993538602052e-07
+      },
+      "track_id_sorted": {
+        "max_abs_query_delta": 0.0,
+        "mean_abs_query_delta": 0.0
+      }
+    },
+    "mamba": {
+      "original": {
+        "max_abs_query_delta": 0.0,
+        "mean_abs_query_delta": 0.0
+      },
+      "reverse": {
+        "max_abs_query_delta": 2.0070834159851074,
+        "mean_abs_query_delta": 0.15710215270519257
+      },
+      "random": {
+        "max_abs_query_delta": 2.3218138217926025,
+        "mean_abs_query_delta": 0.16313284635543823
+      },
+      "track_id_sorted": {
+        "max_abs_query_delta": 0.0,
+        "mean_abs_query_delta": 0.0
+      }
+    }
+  }
+}

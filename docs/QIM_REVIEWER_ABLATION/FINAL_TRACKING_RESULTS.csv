@@ -1,0 +1,5 @@
+variant,source_status,protocol,HOTA,DetA,AssA,IDF1,IDSW,referring_F1,notes
+standard,REIMPLEMENTED_VARIANT,FINAL_TEST,,,,,,,Not run: SportsMOT image/labels unavailable
+lstm,REIMPLEMENTED_VARIANT,FINAL_TEST,,,,,,,Not run: SportsMOT image/labels unavailable
+temporal_attention,REIMPLEMENTED_VARIANT,FINAL_TEST,,,,,,,Not run: SportsMOT image/labels unavailable
+mamba,ORIGINAL_MAMBA,FINAL_TEST,,,,,,,Not run: SportsMOT image/labels unavailable

@@ -12,6 +12,7 @@ import os
 
 import argparse
 import datetime
+import hashlib
 import json
 import os.path
 import random
@@ -166,6 +167,11 @@ def get_args_parser():
 
     parser.add_argument('--query_interaction_layer', default='QIM', type=str,
                         help="")
+    parser.add_argument('--qim_variant', default='mamba',
+                        choices=('standard', 'lstm', 'temporal_attention', 'mamba'),
+                        help='QIM implementation; mamba is the untouched original implementation')
+    parser.add_argument('--qim_depth', default=4, type=int,
+                        help='depth for the reimplemented LSTM/attention active-token mixer')
     parser.add_argument('--sample_mode', type=str, default='fixed_interval')
     parser.add_argument('--sample_interval', type=int, default=1)
     parser.add_argument('--random_drop', type=float, default=0)
@@ -192,8 +198,128 @@ def get_args_parser():
     parser.add_argument('--hist_len', type=int, default=4)
     parser.add_argument('--lr_trans', type=float, default=1e-5)
     parser.add_argument('--save_dir', default='')
+    # Controlled QIM ablation and step-based training controls.
+    parser.add_argument('--init_common_checkpoint', default=None, type=str,
+                        help='load model weights only; never restore optimizer/epoch state')
+    parser.add_argument('--reset_qim', action='store_true', default=False,
+                        help='exclude track_embed.* from init_common_checkpoint')
+    parser.add_argument('--train_qim_only', action='store_true', default=False)
+    parser.add_argument('--train_qim_and_temporal', action='store_true', default=False)
+    parser.add_argument('--max_train_steps', default=0, type=int)
+    parser.add_argument('--eval_every_steps', default=0, type=int)
+    parser.add_argument('--save_every_steps', default=0, type=int)
+    parser.add_argument('--resume_exact', default='', type=str,
+                        help='resume the exact same experiment including optimizer and RNG state')
+    parser.add_argument('--benchmark_train', action='store_true', default=False)
     # code end
     return parser
+
+
+def _sha256_file(path):
+    digest = hashlib.sha256()
+    with open(path, 'rb') as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b''):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def _state_dict_hash(state_dict, prefix=None):
+    digest = hashlib.sha256()
+    for name in sorted(state_dict):
+        if prefix is not None and not name.startswith(prefix):
+            continue
+        value = state_dict[name]
+        if not torch.is_tensor(value):
+            continue
+        digest.update(name.encode('utf-8'))
+        digest.update(b'\0')
+        digest.update(value.detach().cpu().contiguous().numpy().tobytes())
+    return digest.hexdigest()
+
+
+def _load_init_common_checkpoint(model, checkpoint_path, qim_variant, reset_qim, qim_seed=None):
+    """Load only architecture-compatible model weights for controlled adaptation."""
+
+    checkpoint_sha = _sha256_file(checkpoint_path)
+    checkpoint = torch.load(checkpoint_path, map_location='cpu')
+    source_state = checkpoint.get('model', checkpoint)
+    target_state = model.state_dict()
+    skip_qim = reset_qim or qim_variant != 'mamba'
+    filtered = {}
+    shape_errors = []
+    for name, value in source_state.items():
+        if skip_qim and name.startswith('track_embed.'):
+            continue
+        if name not in target_state:
+            if not name.startswith('track_embed.'):
+                shape_errors.append(f'unexpected non-QIM key: {name}')
+            continue
+        if tuple(value.shape) != tuple(target_state[name].shape):
+            if not name.startswith('track_embed.'):
+                shape_errors.append(
+                    f'{name}: checkpoint {tuple(value.shape)} != model {tuple(target_state[name].shape)}'
+                )
+            continue
+        filtered[name] = value
+
+    missing, unexpected = model.load_state_dict(filtered, strict=False)
+    missing_non_qim = [name for name in missing if not name.startswith('track_embed.')]
+    unexpected_non_qim = [name for name in unexpected if not name.startswith('track_embed.')]
+    if shape_errors or missing_non_qim or unexpected_non_qim:
+        details = shape_errors + [f'missing non-QIM key: {x}' for x in missing_non_qim]
+        details += [f'unexpected non-QIM key: {x}' for x in unexpected_non_qim]
+        raise RuntimeError('common checkpoint is not architecture-compatible:\n' + '\n'.join(details))
+
+    shared_state = {name: value for name, value in filtered.items()
+                    if not name.startswith('track_embed.')}
+    print('init_common_checkpoint:', checkpoint_path)
+    print('shared checkpoint SHA256:', checkpoint_sha)
+    print('model missing keys:', missing)
+    print('model unexpected keys:', unexpected)
+    print('shared parameter hash:', _state_dict_hash(shared_state))
+    print('QIM initialization seed:', qim_seed)
+    return checkpoint
+
+
+def _configure_trainable_parameters(model, args):
+    if args.train_qim_only and args.train_qim_and_temporal:
+        raise ValueError('--train_qim_only and --train_qim_and_temporal are mutually exclusive')
+    if args.train_qim_only or args.train_qim_and_temporal:
+        for name, parameter in model.named_parameters():
+            parameter.requires_grad = name.startswith('track_embed.')
+            if args.train_qim_and_temporal and name.startswith('STReasoner.'):
+                parameter.requires_grad = True
+
+    trainable = [(name, parameter) for name, parameter in model.named_parameters()
+                 if parameter.requires_grad]
+    print('train mode:', 'qim_only' if args.train_qim_only else
+          'qim_plus_streasoner' if args.train_qim_and_temporal else 'full_model')
+    print('trainable parameters:')
+    for name, parameter in trainable:
+        print('  ', name, tuple(parameter.shape))
+    print('trainable parameter total:', sum(parameter.numel() for _, parameter in trainable))
+    return trainable
+
+
+def _capture_rng_state():
+    state = {
+        'python': random.getstate(),
+        'numpy': np.random.get_state(),
+        'torch': torch.get_rng_state(),
+    }
+    if torch.cuda.is_available():
+        state['cuda'] = torch.cuda.get_rng_state_all()
+    return state
+
+
+def _restore_rng_state(state):
+    if not state:
+        return
+    random.setstate(state['python'])
+    np.random.set_state(state['numpy'])
+    torch.set_rng_state(state['torch'])
+    if torch.cuda.is_available() and 'cuda' in state:
+        torch.cuda.set_rng_state_all(state['cuda'])
 
 
 def main(args):
@@ -216,6 +342,20 @@ def main(args):
     model.to(device)
 
     model_without_ddp = model
+    if args.init_common_checkpoint:
+        if args.pretrained is not None or args.resume or args.resume_exact:
+            raise ValueError('--init_common_checkpoint cannot be combined with --pretrained/--resume')
+        _load_init_common_checkpoint(
+            model_without_ddp,
+            args.init_common_checkpoint,
+            args.qim_variant,
+            args.reset_qim,
+            seed,
+        )
+    elif args.reset_qim:
+        print('WARNING: --reset_qim has no effect without --init_common_checkpoint')
+
+    _configure_trainable_parameters(model_without_ddp, args)
     print(model)
     # freeze_layers = ['deepfuse','mamba','decoder']
     # for name, param in model.named_parameters():
@@ -246,6 +386,9 @@ def main(args):
     data_loader_train = DataLoader(dataset_train, batch_sampler=batch_sampler_train,
                                    collate_fn=collate_fn, num_workers=args.num_workers,
                                    pin_memory=True)
+    if args.eval_every_steps:
+        print('NOTE: --eval_every_steps is recorded, but this original tree has no '
+              'Refer-Sports validation loader; attach the frozen protocol loader before enabling it.')
 
     def match_name_keywords(n, name_keywords):
         out = False
@@ -257,20 +400,28 @@ def main(args):
 
     param_dicts = [
         {
-            "params":
-                [p for n, p in model_without_ddp.named_parameters()
-                 if not match_name_keywords(n, args.lr_backbone_names) and not match_name_keywords(n, args.lr_linear_proj_names) and p.requires_grad],
+            "params": [p for n, p in model_without_ddp.named_parameters()
+                       if not match_name_keywords(n, args.lr_backbone_names)
+                       and not match_name_keywords(n, args.lr_linear_proj_names)
+                       and p.requires_grad],
             "lr": args.lr,
         },
         {
-            "params": [p for n, p in model_without_ddp.named_parameters() if match_name_keywords(n, args.lr_backbone_names) and p.requires_grad],
+            "params": [p for n, p in model_without_ddp.named_parameters()
+                       if match_name_keywords(n, args.lr_backbone_names) and p.requires_grad],
             "lr": args.lr_backbone,
         },
         {
-            "params": [p for n, p in model_without_ddp.named_parameters() if match_name_keywords(n, args.lr_linear_proj_names) and p.requires_grad],
+            "params": [p for n, p in model_without_ddp.named_parameters()
+                       if match_name_keywords(n, args.lr_linear_proj_names) and p.requires_grad],
             "lr": args.lr * args.lr_linear_proj_mult,
         }
     ]
+    param_dicts = [group for group in param_dicts if group['params']]
+    print('optimizer parameter groups:', [
+        {'lr': group['lr'], 'parameters': sum(p.numel() for p in group['params'])}
+        for group in param_dicts
+    ])
     if args.sgd:
         optimizer = torch.optim.SGD(param_dicts, lr=args.lr, momentum=0.9,
                                     weight_decay=args.weight_decay)
@@ -290,20 +441,32 @@ def main(args):
     if args.pretrained is not None:
         model_without_ddp = load_model(model_without_ddp, args.pretrained)
 
-    output_dir = Path(args.save_dir)
-    if args.resume:
-        if args.resume.startswith('https'):
+    has_output_dir = bool(args.save_dir or args.output_dir)
+    output_dir = Path(args.save_dir or args.output_dir or '.')
+    exact_resume = None
+    resume_path = args.resume_exact or args.resume
+    if resume_path:
+        if args.resume_exact and args.init_common_checkpoint:
+            raise ValueError('--resume_exact cannot be combined with --init_common_checkpoint')
+        if resume_path.startswith('https'):
             checkpoint = torch.hub.load_state_dict_from_url(
-                args.resume, map_location='cpu', check_hash=True)
+                resume_path, map_location='cpu', check_hash=True)
         else:
-            checkpoint = torch.load(args.resume, map_location='cpu')
+            checkpoint = torch.load(resume_path, map_location='cpu')
         missing_keys, unexpected_keys = model_without_ddp.load_state_dict(checkpoint['model'], strict=False)
         unexpected_keys = [k for k in unexpected_keys if not (k.endswith('total_params') or k.endswith('total_ops'))]
         if len(missing_keys) > 0:
             print('Missing Keys: {}'.format(missing_keys))
         if len(unexpected_keys) > 0:
             print('Unexpected Keys: {}'.format(unexpected_keys))
-        if not args.eval and 'optimizer' in checkpoint and 'lr_scheduler' in checkpoint and 'epoch' in checkpoint:
+        if args.resume_exact:
+            if 'optimizer' not in checkpoint or 'lr_scheduler' not in checkpoint:
+                raise RuntimeError('--resume_exact checkpoint lacks optimizer/lr_scheduler state')
+            optimizer.load_state_dict(checkpoint['optimizer'])
+            lr_scheduler.load_state_dict(checkpoint['lr_scheduler'])
+            args.start_epoch = checkpoint.get('epoch', 0)
+            exact_resume = checkpoint
+        elif not args.eval and 'optimizer' in checkpoint and 'lr_scheduler' in checkpoint and 'epoch' in checkpoint:
             import copy
             p_groups = copy.deepcopy(optimizer.param_groups)
             optimizer.load_state_dict(checkpoint['optimizer'])
@@ -321,10 +484,15 @@ def main(args):
             lr_scheduler.step(lr_scheduler.last_epoch)
             args.start_epoch = checkpoint['epoch'] + 1
 
+    if exact_resume is not None:
+        _restore_rng_state(exact_resume.get('rng_state'))
+        print('exact resume global_step:', exact_resume.get('global_step', 0))
+
     print("Start training")
     start_time = time.time()
 
-    writer_name = args.output_dir.split('/')[1]
+    writer_name = str(output_dir) if str(output_dir) else './log/fgrefmot_qim_ablation'
+    writer_name = writer_name.replace('/', '_').strip('_')
     writer_name = os.path.join('./log', writer_name)
     writer = SummaryWriter(writer_name)
 
@@ -332,13 +500,48 @@ def main(args):
     if args.dataset_file in ['e2e_rmot','e2e_dance']:
         train_func = train_one_epoch_rmot
         dataset_train.set_epoch(args.start_epoch)
+    global_step = 0 if exact_resume is None else int(exact_resume.get('global_step', 0))
+    resume_skip_steps = 0 if exact_resume is None else int(exact_resume.get('step_in_epoch', 0))
+    max_train_steps = args.max_train_steps if args.max_train_steps > 0 else None
+
+    def save_step_checkpoint(step, step_in_epoch):
+        if not has_output_dir or args.save_every_steps <= 0:
+            return
+        if step % args.save_every_steps != 0:
+            return
+        utils.save_on_master({
+            'model': model_without_ddp.state_dict(),
+            'optimizer': optimizer.state_dict(),
+            'lr_scheduler': lr_scheduler.state_dict(),
+            'epoch': epoch,
+            'step_in_epoch': step_in_epoch,
+            'global_step': step,
+            'rng_state': _capture_rng_state(),
+            'args': args,
+        }, output_dir / f'checkpoint_step{step:08d}.pth')
+
     for epoch in range(args.start_epoch, args.epochs):
         if args.distributed:
             sampler_train.set_epoch(epoch)
-        train_stats = train_func(
-            model, criterion, data_loader_train, optimizer, device, epoch, args.clip_max_norm, writer)
+        if train_func is train_one_epoch_rmot:
+            remaining_steps = None if max_train_steps is None else max_train_steps - global_step
+            if remaining_steps is not None and remaining_steps <= 0:
+                break
+            train_stats = train_func(
+                model, criterion, data_loader_train, optimizer, device, epoch,
+                args.clip_max_norm, writer, max_steps=remaining_steps,
+                global_step=global_step, benchmark=args.benchmark_train,
+                skip_steps=resume_skip_steps if epoch == args.start_epoch else 0,
+                step_callback=save_step_checkpoint)
+        else:
+            train_stats = train_func(
+                model, criterion, data_loader_train, optimizer, device, epoch,
+                args.clip_max_norm, writer)
+        steps_this_epoch = int(train_stats.pop('_steps', len(data_loader_train)))
+        global_step += steps_this_epoch
+        resume_skip_steps = 0
         lr_scheduler.step()
-        if args.output_dir:
+        if has_output_dir:
             checkpoint_paths = [output_dir / 'checkpoint.pth']
             # extra checkpoint before LR drop and every 5 epochs
             if epoch >30 and (epoch + 1) % 10 == 0:
@@ -349,11 +552,17 @@ def main(args):
                     'optimizer': optimizer.state_dict(),
                     'lr_scheduler': lr_scheduler.state_dict(),
                     'epoch': epoch,
+                    'step_in_epoch': steps_this_epoch,
+                    'global_step': global_step,
+                    'rng_state': _capture_rng_state(),
                     'args': args,
                 }, checkpoint_path)
 
         if args.dataset_file in ['e2e_rmot','e2e_dance']:
             dataset_train.step_epoch()
+        if max_train_steps is not None and global_step >= max_train_steps:
+            print('Reached max_train_steps:', max_train_steps)
+            break
     total_time = time.time() - start_time
     total_time_str = str(datetime.timedelta(seconds=int(total_time)))
     print('Training time {}'.format(total_time_str))

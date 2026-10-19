@@ -1,0 +1,30 @@
+{
+  "study_branch": "research/qim-reviewer-ablation-20261019",
+  "source_commit": "d651fec18d4eda54bd141d90cd934b520343b789",
+  "checkpoint": {
+    "path": "/data1/liuyeqiang/fgref_v2_runs/checkpoints/checkpoint0089.pth",
+    "sha256": "adb2ad9591a4a14dcdd05718b271d6c7b391e97bd9cb20f4fd8e3bfe26e54038",
+    "role": "historical_recovered_original_mamba_checkpoint",
+    "strict_original_qim_load": "PASS",
+    "strict_full_model_load_in_offline_probe": "PASS",
+    "formal_refer_sports_final": false
+  },
+  "source_qim": {
+    "nas_path": "/data1/liuyeqiang/nas/A100/codex_archive_20261014/TempMam/models/qim_pro.py",
+    "sha256": "568c7d8c2af11e40d5ab540518c3a0f3ef9aa8bd8d4140d5ce16360b3a25132a"
+  },
+  "sports_manifest": {
+    "path": "/data1/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/metadata/datasets/refer_sports_manifest_global_ids_rev2.json",
+    "sha256": "88e0ba5cfcf522887237af7fd4be075b7d0ad4cbac373ab56fbcd8fda21e25a",
+    "videos": 41,
+    "expressions": 323,
+    "train_videos": 22,
+    "test_videos": 19
+  },
+  "missing_assets": [
+    "SportsMOT image tree",
+    "SportsMOT labels_with_ids tree",
+    "verified common physical tracker manifest/output",
+    "verified Refer-Sports task checkpoint"
+  ]
+}

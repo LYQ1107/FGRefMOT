@@ -35,6 +35,9 @@ class DetMOTDetection:
         self.sample_interval = args.sample_interval # 1
         self.vis = args.vis # False
         self.video_dict = {}
+        self.video_to_indices = {}
+        self.index_to_video = {}
+        self.index_to_local = {}
 
         with open(data_txt_path, 'r') as file:
             self.img_files = file.readlines()
@@ -43,10 +46,6 @@ class DetMOTDetection:
 
         self.label_files = [(x.replace('images', 'labels_with_ids').replace('training', 'labels_with_ids').replace('.png', '.txt').replace('.jpg', '.txt'))
                             for x in self.img_files]
-        # The number of images per sample: 1 + (num_frames - 1) * interval.
-        # The number of valid samples: num_images - num_image_per_sample + 1.
-        self.item_num = len(self.img_files) - (self.num_frames_per_batch - 1) * self.sample_interval
-
         self._register_videos()
 
         # video sampler.
@@ -59,10 +58,10 @@ class DetMOTDetection:
             assert len(self.lengths) == len(self.sampler_steps) + 1
             for i in range(len(self.sampler_steps) - 1):
                 assert self.sampler_steps[i] < self.sampler_steps[i + 1]
-            self.item_num = len(self.img_files) - (self.lengths[-1] - 1) * self.sample_interval
             self.period_idx = 0
             self.num_frames_per_batch = self.lengths[0]
             self.current_epoch = 0
+        self._refresh_valid_starts()
 
     def _register_videos(self):
         for label_name in self.label_files:
@@ -71,6 +70,35 @@ class DetMOTDetection:
                 print("register {}-th video: {} ".format(len(self.video_dict) + 1, video_name))
                 self.video_dict[video_name] = len(self.video_dict)
                 # assert len(self.video_dict) <= 300
+        for index, label_name in enumerate(self.label_files):
+            video_name = '/'.join(label_name.split('/')[:-1])
+            local_index = len(self.video_to_indices.setdefault(video_name, []))
+            self.video_to_indices[video_name].append(index)
+            self.index_to_video[index] = video_name
+            self.index_to_local[index] = local_index
+
+    def _refresh_valid_starts(self):
+        """Build starts that stay inside one source video.
+
+        The old implementation treated the flattened image list as one video,
+        so the tail of a sequence could silently consume frames from the next
+        sequence.  The sampler now indexes this explicit list of legal starts.
+        """
+
+        max_interval = max(1, int(self.sample_interval))
+        self._valid_starts = []
+        for video_name, indices in self.video_to_indices.items():
+            length = len(indices)
+            last_start = length - 1 - (self.num_frames_per_batch - 1) * max_interval
+            for local_start in range(max(0, last_start + 1)):
+                self._valid_starts.append(indices[local_start])
+        if not self._valid_starts:
+            raise ValueError(
+                'no valid same-video clips: videos={}, clip_length={}, interval={}'.format(
+                    len(self.video_to_indices), self.num_frames_per_batch, self.sample_interval
+                )
+            )
+        self.item_num = len(self._valid_starts)
 
     def set_epoch(self, epoch):
         self.current_epoch = epoch
@@ -83,6 +111,7 @@ class DetMOTDetection:
                 self.period_idx = i + 1
         print("set epoch: epoch {} period_idx={}".format(epoch, self.period_idx))
         self.num_frames_per_batch = self.lengths[self.period_idx]
+        self._refresh_valid_starts()
 
     def step_epoch(self):
         # one epoch finishes.
@@ -178,26 +207,42 @@ class DetMOTDetection:
 
         # take default sampling method for normal dataset.
         assert self.sample_mode in ['fixed_interval', 'random_interval'], 'invalid sample mode: {}'.format(self.sample_mode)
+        if start_idx < 0 or start_idx >= len(self._valid_starts):
+            raise IndexError('sample index {} outside {} valid same-video starts'.format(
+                start_idx, len(self._valid_starts)))
+        global_start = self._valid_starts[start_idx]
+        video_name = self.index_to_video[global_start]
+        video_indices = self.video_to_indices[video_name]
+        local_start = self.index_to_local[global_start]
         if self.sample_mode == 'fixed_interval':
             sample_interval = self.sample_interval
         elif self.sample_mode == 'random_interval':
             sample_interval = np.random.randint(1, self.sample_interval + 1)
-        default_range = start_idx, start_idx + (self.num_frames_per_batch - 1) * sample_interval + 1, sample_interval
-        return default_range
+        local_indices = list(video_indices[
+            local_start:local_start + (self.num_frames_per_batch - 1) * sample_interval + 1:
+            sample_interval
+        ])
+        if len(local_indices) != self.num_frames_per_batch:
+            raise RuntimeError('invalid same-video sample construction for {}'.format(video_name))
+        return local_indices
 
-    def pre_continuous_frames(self, start, end, interval=1, expression_info=None):
+    def pre_continuous_frames(self, start, end=None, interval=1, expression_info=None):
         targets = []
         images = []
-        for i in range(start, end, interval):
+        if isinstance(start, (list, tuple)):
+            frame_indices = start
+        else:
+            frame_indices = range(start, end, interval)
+        for i in frame_indices:
             img_i, targets_i = self._pre_single_frame(i, expression_info)
             images.append(img_i)
             targets.append(targets_i)
         return images, targets
 
     def __getitem__(self, idx):
-        sample_start, sample_end, sample_interval = self._get_sample_range(idx)
+        sample_indices = self._get_sample_range(idx)
 
-        img_path = self.img_files[sample_start]
+        img_path = self.img_files[sample_indices[0]]
 
         if 'KITTI' in img_path:
             video_id = img_path.split('/')[-2]
@@ -220,7 +265,7 @@ class DetMOTDetection:
 
             # raise NotImplementedError()
 
-        images, targets = self.pre_continuous_frames(sample_start, sample_end, sample_interval, expression_info)
+        images, targets = self.pre_continuous_frames(sample_indices, expression_info=expression_info)
         data = {}
         dataset_name = targets[0]['dataset']
         transform = self.dataset2transform[dataset_name]
