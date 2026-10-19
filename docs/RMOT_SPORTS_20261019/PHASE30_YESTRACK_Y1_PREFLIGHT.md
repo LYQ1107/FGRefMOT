@@ -1,7 +1,7 @@
 # Phase 30 — YesTrack Y1 post-F1 preflight
 
 Audit date: 2026-10-19  
-Status: **CPU IMPORT AND SPORTSMOT ADAPTER PASS / GPU LAUNCH WAITING FOR NAS TUNNEL**
+Status: **CPU IMPORT, SPORTSMOT ADAPTER, NAS ASSETS, AND Y1 CONTRACT PASS / GPU LAUNCH READY**
 
 After the FlexHook F1 completion, the dedicated environment imported the pinned
 YesTrack training and evaluation entry points on CPU:
@@ -18,11 +18,9 @@ boxes, and 181 train expressions; validation has 19 sequences, 11,900 frames,
 130,152 boxes, and 142 expressions. No GPU process, model, tracker output, or
 LLM result was started by this preflight.
 
-The Y1 launch contract is
+The Y1 launch contract was refreshed after Phase 31 and is
 `runs/contracts_20261019/yestrack_y1_sports_lora_seed42.json` with SHA-256
-`cf60bbaded5e37c333c6c0f34f22aad8cb813985faace1cc8be7a1384afa523b`. The launch
-gate still requires the NAS-backed Qwen base and common tracker manifest. The
-NAS reverse tunnel currently returns connection refused and the mounted NAS
-path reports I/O errors, so the gate and GPU launch remain deferred. Once the
-Windows reverse tunnel is restored, run the contract check, recheck GPU 1, and
-launch Y1 with the same no-GT-as-tracker policy.
+`ecae2a3f649a132927ce046d96ca5e214d92e7a443d561112c788d0ea62ff357`. The launch
+gate now passes against the restored NAS-backed Qwen base and common tracker
+manifest (`contract: READY — hashes and policy verified`). GPU 1 is free, so the
+authorized Y1 launch can proceed with the same no-GT-as-tracker policy.
