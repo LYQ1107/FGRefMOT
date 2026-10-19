@@ -46,3 +46,48 @@ def test_yestrack_expression_dirs_suffix_duplicate_sentences() -> None:
     records = [{"sentence": "Basketball players"}, {"sentence": "basketball players"}]
 
     assert module._expression_dirnames(records) == ["basketball-players", "basketball-players__2"]
+
+
+def test_flexhook_eval_legacy_tokenizer_compatibility(monkeypatch) -> None:
+    module = _load_script("eval_flexhook_refersports.py")
+    from transformers import PreTrainedTokenizerBase
+
+    monkeypatch.delattr(PreTrainedTokenizerBase, "batch_encode_plus", raising=False)
+    assert module.patch_legacy_tokenizer_api()
+
+    class DummyTokenizer:
+        def __call__(self, *args, **kwargs):
+            return kwargs
+
+    result = PreTrainedTokenizerBase.batch_encode_plus(
+        DummyTokenizer(), ["short"], padding="max_length", max_length=25
+    )
+    assert result["truncation"] is True
+
+
+def test_flexhook_eval_moves_only_text_fields_to_cuda() -> None:
+    module = _load_script("eval_flexhook_refersports.py")
+
+    class FakeTensor:
+        def __init__(self):
+            self.moved = False
+
+        def cuda(self, non_blocking=False):
+            self.moved = True
+            return self
+
+    expid, expma = FakeTensor(), FakeTensor()
+    batch = ("images", "pes", "bbox", "exp", expid, expma, "video", "obj", "frame", "last")
+
+    class Loader:
+        def __iter__(self):
+            return iter([batch])
+
+        def __len__(self):
+            return 1
+
+    wrapped = module._CudaTextBatchLoader(Loader())
+    values = list(wrapped)
+    assert len(wrapped) == 1
+    assert values[0][4] is expid and values[0][5] is expma
+    assert expid.moved and expma.moved

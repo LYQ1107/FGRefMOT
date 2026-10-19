@@ -109,6 +109,54 @@ def resolve_tracker_input_root(tracker_root: Path, sequence_names: list[str]) ->
     raise FileNotFoundError(f"no complete tracker input root under {tracker_root}")
 
 
+def patch_legacy_tokenizer_api() -> bool:
+    """Restore the removed Transformers tokenizer alias for FlexHook's loader.
+
+    The vendored FlexHook dataset calls ``batch_encode_plus`` on fast
+    tokenizers.  Recent Transformers releases removed that alias while keeping
+    the equivalent ``__call__`` implementation.  Patching the base class here
+    keeps the upstream checkout byte-for-byte unchanged and makes the runtime
+    compatibility explicit in the evaluation adapter.
+    """
+
+    from transformers import PreTrainedTokenizerBase
+
+    if hasattr(PreTrainedTokenizerBase, "batch_encode_plus"):
+        return False
+
+    def batch_encode_plus(self: Any, *args: Any, **kwargs: Any) -> Any:
+        # The legacy FlexHook call supplies ``padding="max_length"`` but no
+        # explicit truncation flag.  Newer Transformers leaves overlong
+        # examples untruncated in that combination, which prevents tensor
+        # collation when expressions have different lengths.
+        if kwargs.get("padding") == "max_length":
+            kwargs.setdefault("truncation", True)
+        return self(*args, **kwargs)
+
+    setattr(PreTrainedTokenizerBase, "batch_encode_plus", batch_encode_plus)
+    return True
+
+
+class _CudaTextBatchLoader:
+    """Adapt the upstream inference loader's text tensors to the active GPU."""
+
+    def __init__(self, loader: Any) -> None:
+        self.loader = loader
+
+    def __iter__(self):
+        for batch in self.loader:
+            values = list(batch)
+            # FlexHook's inference path moves image/geometry tensors itself,
+            # but historically forgot expid and expma.  Keep the batch shape
+            # and metadata unchanged while fixing only those two fields.
+            values[4] = values[4].cuda(non_blocking=True)
+            values[5] = values[5].cuda(non_blocking=True)
+            yield tuple(values)
+
+    def __len__(self) -> int:
+        return len(self.loader)
+
+
 def _write_rows(path: Path, rows: list[list[float | int]]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8") as handle:
@@ -342,6 +390,8 @@ def run_flexhook_inference(
     from utils import load_ckpt_my
     import main as flexhook_main
 
+    patch_legacy_tokenizer_api()
+
     if not torch.cuda.is_available():
         raise RuntimeError("FlexHook evaluation requires a CUDA device")
     torch.cuda.set_device(0)
@@ -371,6 +421,12 @@ def run_flexhook_inference(
     cfg.DATA.NUM_WORKERS = int(workers)
     cfg.EVAL_MODE = True
     cfg.LOCAL_RANK = 0
+    # The training config keeps an 8-frame sampling pool and reduces it to
+    # four frames during training.  In test mode the upstream loader indexes
+    # that pool before reduction, so short fixed tracks can go out of range.
+    # Evaluation uses the model's four-frame context directly, which is valid
+    # for every track retained by the loader and avoids test-time randomness.
+    cfg.sample_frame_len = cfg.sample_frame_num
     cfg.MODEL.PRETRAINED = str(checkpoint)
     cfg.MODEL.RESUME = str(checkpoint)
     cfg.OUTPUT = str(output_root)
@@ -388,7 +444,7 @@ def run_flexhook_inference(
     model.eval()
     start = time.time()
     with torch.no_grad():
-        cls_dict = flexhook_main.inference(cfg, data_loader_val, model)
+        cls_dict = flexhook_main.inference(cfg, _CudaTextBatchLoader(data_loader_val), model)
     elapsed = time.time() - start
     written = write_predictions(
         cls_dict=cls_dict,
