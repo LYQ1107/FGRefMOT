@@ -21,6 +21,22 @@ GB. This is a single-clip engineering measurement, not a paper-wide speed
 claim; the exact p95 values and protocol are in
 `reports/qim_ablation/real_sportsmot_benchmark_step200.json`.
 
+## What are the lightweight Mamba follow-ups?
+
+Three explicitly labeled lightweight designs were implemented and trained in a
+separate matched branch: M1 OrderedBi (geometry-ordered bidirectional Mamba),
+M2 Trackwise (one causal sequence per active track), and M3
+Reliability-Hybrid (M2 plus reliability-gated identity memory). They use the
+same Refer-Sports loader, optimizer protocol, frozen four-video development
+split, and exact step-200 resume. Their completed step-5000 development means
+(HOTA/IDF1/AssA/IDSW sum) are M1 0.5978/0.5751/0.5349/157, M2
+0.6205/0.6263/0.6368/80, and M3 0.5628/0.5476/0.5900/121. The parameter
+counts are 1,992,000, 2,032,640, and 2,099,329 respectively. These are real
+development measurements over four videos and 2,621 frames; the 20k runs and
+their matched evaluations are still in progress, and no Test-set claim is made.
+The detailed reports are in `docs/QIM_MAMBA_20261020/STEP5000_RESULTS.md` and
+`reports/qim_mamba/*_step5000_dev_full.json` on the lightweight branch.
+
 ## What cannot be claimed yet?
 
 The local SportsMOT image tree, `labels_with_ids`, expressions, and global-ID
