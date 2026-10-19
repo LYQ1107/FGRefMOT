@@ -79,6 +79,15 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--tracker-root", required=True)
     parser.add_argument("--gt-manifest-root", required=True)
     parser.add_argument("--yestrack-output-root", required=True)
+    parser.add_argument(
+        "--sequence-list",
+        help="Optional exact sequence list forwarded to the YesTrack evaluator.",
+    )
+    parser.add_argument(
+        "--skip-flexhook",
+        action="store_true",
+        help="Run only the YesTrack evaluation; useful for an internal-selection split.",
+    )
     parser.add_argument("--flexhook-config", required=True)
     parser.add_argument("--flexhook-layout-root", required=True)
     parser.add_argument("--flexhook-checkpoint", required=True)
@@ -169,10 +178,17 @@ def main(argv: list[str] | None = None) -> int:
             "--run-inference",
             "--json",
         ]
+        if args.sequence_list:
+            command.extend(["--sequence-list", args.sequence_list])
         if run_step("yestrack_eval", command, project, watch_log) != 0:
             return 4
     else:
         log("yestrack_eval_already_succeeded")
+
+    if args.skip_flexhook:
+        log("flexhook_eval_skipped")
+        log("eval_watch_succeeded")
+        return 0
 
     flexhook_manifest = Path(args.flexhook_output_root).expanduser().resolve() / "FLEXHOOK_EVAL_MANIFEST.json"
     if not (flexhook_manifest.is_file() and load_json(flexhook_manifest).get("status") == "SUCCEEDED"):
