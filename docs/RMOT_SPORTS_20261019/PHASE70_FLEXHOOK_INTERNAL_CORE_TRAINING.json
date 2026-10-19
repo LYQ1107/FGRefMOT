@@ -58,20 +58,20 @@
     "selection_finalized": false
   },
   "observed_progress": {
-    "observed_at": "2026-10-20T00:01:30+08:00",
-    "epoch_completed": 7,
-    "training_epoch_in_progress": 8,
+    "observed_at": "2026-10-20T00:07:20+08:00",
+    "epoch_completed": 8,
+    "training_epoch_in_progress": 9,
     "internal_validation": {
       "split": "5-video/45-expression internal validation",
-      "f1": 73.181,
-      "acc1": 82.003,
-      "precision": 61.668,
-      "recall": 89.98,
+      "f1": 73.702,
+      "acc1": 82.338,
+      "precision": 62.071,
+      "recall": 90.695,
       "policy": "diagnostic checkpoint candidate only; final selection remains pending"
     },
     "checkpoint_candidate": {
       "path": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_f1_internal_core_seed42/ckpt_epoch_best_0.pth",
-      "sha256": "875b37af0d2480405b23787c31df4b319c59d2f4e426bccfea8300bee7fa9029"
+      "sha256": "af56903c9a6da854b01fd6b0b6c5b4f25f1a263ed9309d13bb99d5ccc1199e8a"
     }
   },
   "next_gate": "complete core training, select checkpoint on the 5-video internal validation split, then archive the selected checkpoint hash"
