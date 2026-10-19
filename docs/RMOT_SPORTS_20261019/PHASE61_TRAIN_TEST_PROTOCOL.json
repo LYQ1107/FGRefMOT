@@ -1,7 +1,7 @@
 {
   "phase": 61,
   "title": "train/validation/test protocol",
-  "status": "YES_TRACK_TRAINING_IN_PROGRESS",
+  "status": "YES_TRACK_TRAINING_IN_PROGRESS_FLEXHOOK_INTERNAL_VALIDATED",
   "dataset": "Refer-Sports",
   "splits": {
     "sports_train": {"videos": 22, "expressions": 181, "purpose": "task training"},
@@ -12,12 +12,28 @@
   "model_time_inputs": "fixed common SambaMOTR tracker outputs only",
   "ground_truth_policy": "GT is offline TrackEval input after inference; never model input, tracker input, checkpoint selector, or test tuner",
   "flexhook_f1": {
-    "status": "FORMAL_EVAL_SUCCEEDED",
-    "hota": 68.385415,
-    "deta": 59.317842,
-    "assa": 78.842302,
-    "idf1": 66.627791,
-    "idsw": 409
+    "status": "FORMAL_AND_INTERNAL_EVAL_SUCCEEDED",
+    "internal_validation": {
+      "split": "INTERNAL_VAL_5",
+      "videos": 5,
+      "expressions": 45,
+      "hota": 71.241265,
+      "deta": 64.157324,
+      "assa": 79.107500,
+      "idf1": 71.282648,
+      "idsw": 103,
+      "manifest": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_f1_internal_eval_20261019_v1/FLEXHOOK_EVAL_MANIFEST.json"
+    },
+    "formal_evaluation": {
+      "split": "HISTORICAL_TEST_19",
+      "videos": 19,
+      "expressions": 142,
+      "hota": 68.385415,
+      "deta": 59.317842,
+      "assa": 78.842302,
+      "idf1": 66.627791,
+      "idsw": 409
+    }
   },
   "yestrack": {
     "full_training_status": "RUNNING",
