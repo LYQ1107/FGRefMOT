@@ -38,6 +38,8 @@ Phase 71 adds the reproducible train-core/internal-val feature archive command
 with frozen visual and pooled language representations.
 Phase 72 adds the causal temporal-head training command and keeps its real
 metric gate closed until the strict core archives exist.
+Phase 73 adds the inference adapter that applies a selected causal head before
+the standard TrackEval tree is written; it has no metric yet.
 The temporal head has not yet been trained or attached to a proposed
 checkpoint, so it has no claimed metric.
 

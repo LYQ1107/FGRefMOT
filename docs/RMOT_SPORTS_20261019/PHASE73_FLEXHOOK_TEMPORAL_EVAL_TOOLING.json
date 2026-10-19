@@ -1,0 +1,22 @@
+{
+  "schema_version": "rmot-sports-phase-0.1",
+  "phase": 73,
+  "title": "FlexHook temporal-head evaluation adapter",
+  "status": "IMPLEMENTED_NOT_RUN",
+  "script": "scripts/eval_flexhook_temporal.py",
+  "tests": {
+    "test_file": "tests/test_eval_flexhook_temporal.py",
+    "result": "2 passed"
+  },
+  "policy": {
+    "model_input": "fixed_tracker_outputs_only",
+    "temporal_state": "current_and_past_frames_only",
+    "historical_test": "offline_final_evaluation_only",
+    "gt_usage": "TrackEval_tree_only"
+  },
+  "result_boundary": {
+    "internal_metric": false,
+    "historical_test_metric": false
+  },
+  "next_gate": "run after Phase 72 produces a selected temporal checkpoint"
+}
