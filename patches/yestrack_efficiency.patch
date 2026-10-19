@@ -1,0 +1,100 @@
+diff --git a/refer_llm/llm_eval_from_mot.py b/refer_llm/llm_eval_from_mot.py
+index 8e8be44..3ecca65 100644
+--- a/refer_llm/llm_eval_from_mot.py
++++ b/refer_llm/llm_eval_from_mot.py
+@@ -683,6 +683,10 @@ def main():
+     rank, world_size, local_rank = setup_distributed()
+     device = torch.device(f"cuda:{local_rank}" if torch.cuda.is_available() else "cpu")
+ 
++    # RMOT_EFFICIENCY_INSTRUMENTATION_20261020
++    model_load_start_perf = time.perf_counter()
++    if torch.cuda.is_available():
++        torch.cuda.reset_peak_memory_stats(device)
+     model, processor, _ = build_model_and_processor_for_eval(
+         model_name=args.model_name,
+         use_4bit=bool(args.use_4bit),
+@@ -690,6 +694,18 @@ def main():
+         lora_path=args.lora_path,
+     )
+     model.to(device)
++    if torch.cuda.is_available():
++        torch.cuda.synchronize(device)
++    model_loading_seconds = float(time.perf_counter() - model_load_start_perf)
++    model_load_peak_gpu_memory_mib = (
++        float(torch.cuda.max_memory_reserved(device) / (1024 * 1024))
++        if torch.cuda.is_available()
++        else None
++    )
++    # Keep model-construction memory separate from the peak of the actual
++    # referring forward pass.
++    if torch.cuda.is_available():
++        torch.cuda.reset_peak_memory_stats(device)
+     yes_id, no_id = get_yes_no_token_ids(processor)
+ 
+     # 输出目录
+@@ -1193,10 +1209,22 @@ def main():
+         dist.barrier()
+     elapsed_rank = float(time.perf_counter() - timing_start_perf)
+     timing_end_wall = time.time()
++    if torch.cuda.is_available():
++        torch.cuda.synchronize(device)
++    peak_gpu_memory_mib = (
++        float(torch.cuda.max_memory_reserved(device) / (1024 * 1024))
++        if torch.cuda.is_available()
++        else None
++    )
+ 
+     elapsed_max = elapsed_rank
+     elapsed_min = elapsed_rank
+     elapsed_avg = elapsed_rank
++    model_loading_seconds_max = model_loading_seconds
++    model_loading_seconds_min = model_loading_seconds
++    model_loading_seconds_avg = model_loading_seconds
++    model_load_peak_gpu_memory_mib_max = model_load_peak_gpu_memory_mib
++    peak_gpu_memory_mib_max = peak_gpu_memory_mib
+     attempted_sum = attempted_tasks
+     ok_sum = ok_tasks
+     err_sum = err_tasks
+@@ -1220,6 +1248,25 @@ def main():
+         dist.all_reduce(t_sum, op=dist.ReduceOp.SUM)
+         elapsed_avg = float((t_sum / float(world_size)).item())
+ 
++        t_load = torch.tensor([model_loading_seconds], device=device, dtype=torch.float64)
++        dist.all_reduce(t_load, op=dist.ReduceOp.MAX)
++        model_loading_seconds_max = float(t_load.item())
++        t_load_min = torch.tensor([model_loading_seconds], device=device, dtype=torch.float64)
++        dist.all_reduce(t_load_min, op=dist.ReduceOp.MIN)
++        model_loading_seconds_min = float(t_load_min.item())
++        t_load_sum = torch.tensor([model_loading_seconds], device=device, dtype=torch.float64)
++        dist.all_reduce(t_load_sum, op=dist.ReduceOp.SUM)
++        model_loading_seconds_avg = float((t_load_sum / float(world_size)).item())
++
++        if model_load_peak_gpu_memory_mib is not None:
++            t_load_mem = torch.tensor([model_load_peak_gpu_memory_mib], device=device, dtype=torch.float64)
++            dist.all_reduce(t_load_mem, op=dist.ReduceOp.MAX)
++            model_load_peak_gpu_memory_mib_max = float(t_load_mem.item())
++        if peak_gpu_memory_mib is not None:
++            t_peak_mem = torch.tensor([peak_gpu_memory_mib], device=device, dtype=torch.float64)
++            dist.all_reduce(t_peak_mem, op=dist.ReduceOp.MAX)
++            peak_gpu_memory_mib_max = float(t_peak_mem.item())
++
+         c_attempted = torch.tensor([attempted_tasks], device=device, dtype=torch.int64)
+         c_ok = torch.tensor([ok_tasks], device=device, dtype=torch.int64)
+         c_err = torch.tensor([err_tasks], device=device, dtype=torch.int64)
+@@ -1246,6 +1293,11 @@ def main():
+             "elapsed_seconds_max": elapsed_max,
+             "elapsed_seconds_min": elapsed_min,
+             "elapsed_seconds_avg": elapsed_avg,
++            "model_loading_seconds_max": model_loading_seconds_max,
++            "model_loading_seconds_min": model_loading_seconds_min,
++            "model_loading_seconds_avg": model_loading_seconds_avg,
++            "model_load_peak_gpu_memory_mib_max": model_load_peak_gpu_memory_mib_max,
++            "peak_gpu_memory_mib_max": peak_gpu_memory_mib_max,
+             "world_size": int(world_size),
+             "tasks_total": int(len(tasks)),
+             "attempted_tasks_sum": int(attempted_sum),
+@@ -1274,4 +1326,3 @@ def main():
+ 
+ if __name__ == "__main__":
+     main()
+-

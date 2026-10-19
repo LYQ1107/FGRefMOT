@@ -67,6 +67,7 @@ def test_yestrack_expression_dirs_suffix_duplicate_sentences() -> None:
 
 def test_yestrack_inference_forwards_temporal_controls(monkeypatch, tmp_path: Path) -> None:
     module = _load_script("eval_yestrack_refersports.py")
+    monkeypatch.setattr(module, "ensure_yestrack_efficiency_patch", lambda: "test-patch-sha256")
     tracker = tmp_path / "tracker"
     tracker.mkdir()
     (tracker / "video.txt").write_text("1,7,10,20,30,40,1\n", encoding="utf-8")

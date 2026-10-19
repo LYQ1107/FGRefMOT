@@ -517,14 +517,29 @@ def run_flexhook_inference(
             "FlexHook runtime is missing the Swin asset symlink: "
             f"{runtime_root / 'pretrained' / 'swin_rope_mixed_tiny_patch4_window7_224'}"
         )
+    model_load_start = time.perf_counter()
+    if torch.cuda.is_available():
+        torch.cuda.reset_peak_memory_stats()
     with _working_directory(runtime_root):
         model = build_model(cfg).cuda()
     load_ckpt_my(cfg, model, logger)
     model.eval()
-    start = time.time()
+    if torch.cuda.is_available():
+        torch.cuda.synchronize()
+    model_loading_seconds = time.perf_counter() - model_load_start
+    model_load_peak_memory_mib = torch.cuda.max_memory_reserved() / (1024 * 1024)
+    # The inference peak is recorded separately from model construction.  The
+    # two values make the loading overhead auditable without conflating it with
+    # the memory required by the referring forward pass.
+    if torch.cuda.is_available():
+        torch.cuda.reset_peak_memory_stats()
+    start = time.perf_counter()
     with torch.no_grad():
         cls_dict = flexhook_main.inference(cfg, _CudaTextBatchLoader(data_loader_val), model)
-    elapsed = time.time() - start
+    if torch.cuda.is_available():
+        torch.cuda.synchronize()
+    elapsed = time.perf_counter() - start
+    peak_memory_mib = torch.cuda.max_memory_reserved() / (1024 * 1024)
     written = write_predictions(
         cls_dict=cls_dict,
         manifest=manifest,
@@ -535,11 +550,48 @@ def run_flexhook_inference(
     result = {
         "dataset_count": len(dataset_val),
         "inference_seconds": elapsed,
+        "model_loading_seconds": model_loading_seconds,
+        "model_load_peak_gpu_memory_mib": model_load_peak_memory_mib,
+        "peak_gpu_memory_mib": peak_memory_mib,
         "prediction_rows": written,
         "checkpoint": str(checkpoint),
         "checkpoint_sha256": sha256_file(checkpoint),
         "save_scores": bool(save_scores),
     }
+    # Keep efficiency information in the authoritative manifest.  The
+    # per-expression frame count is the workload presented to the referring
+    # module; the unique video-frame count is used for pipeline FPS.
+    video_lengths: dict[str, int] = {}
+    expression_frame_count = 0
+    for record in manifest.get("records", []):
+        sequence = record.get("sequence_name")
+        video = record.get("video")
+        try:
+            frames = int(manifest["seq_info"][sequence])
+        except (KeyError, TypeError, ValueError):
+            continue
+        expression_frame_count += frames
+        if isinstance(video, str):
+            video_lengths[video] = max(video_lengths.get(video, 0), frames)
+    video_frame_count = sum(video_lengths.values())
+    result["efficiency"] = {
+        "schema_version": "rmot-efficiency-0.1",
+        "video_frame_count": video_frame_count,
+        "expression_frame_count": expression_frame_count,
+        "video_frame_fps": video_frame_count / elapsed if elapsed else None,
+        "referring_module_fps": expression_frame_count / elapsed if elapsed else None,
+        "complete_pipeline_fps": None,
+        "fps_units": {
+            "video_frame_fps": "unique video frames / referring inference second",
+            "referring_module_fps": "expression-video-frame pairs / referring inference second",
+            "complete_pipeline_fps": "requires tracker wall time; derived by scripts/measure_efficiency.py",
+        },
+    }
+    manifest["run"] = result
+    manifest["efficiency"] = result["efficiency"]
+    manifest["status"] = "PREDICTIONS_WRITTEN"
+    manifest_path.write_text(json.dumps(_jsonable(manifest), indent=2, sort_keys=True) + "\n")
+    manifest["manifest_sha256"] = sha256_file(manifest_path)
     dist.destroy_process_group()
     return result
 

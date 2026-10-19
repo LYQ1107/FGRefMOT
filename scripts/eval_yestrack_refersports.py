@@ -17,6 +17,7 @@ import os
 import shutil
 import subprocess
 import sys
+import time
 from pathlib import Path
 from typing import Any
 
@@ -25,6 +26,7 @@ import numpy as np
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_SEQUENCE_LIST = REPO_ROOT / "configs" / "refer_sports_eval_sequences_20261019.txt"
+YESTRACK_EFFICIENCY_PATCH = REPO_ROOT / "patches" / "yestrack_efficiency.patch"
 
 
 def sha256_file(path: Path) -> str:
@@ -33,6 +35,33 @@ def sha256_file(path: Path) -> str:
         for block in iter(lambda: handle.read(1024 * 1024), b""):
             digest.update(block)
     return digest.hexdigest()
+
+
+def ensure_yestrack_efficiency_patch() -> str:
+    """Apply the tracked timing patch to the isolated upstream checkout once."""
+
+    source = REPO_ROOT / "third_party" / "YesTrack" / "refer_llm" / "llm_eval_from_mot.py"
+    marker = "RMOT_EFFICIENCY_INSTRUMENTATION_20261020"
+    if marker not in source.read_text(encoding="utf-8"):
+        patch = YESTRACK_EFFICIENCY_PATCH
+        if not patch.is_file():
+            raise FileNotFoundError(f"tracked YesTrack timing patch is missing: {patch}")
+        completed = subprocess.run(
+            ["patch", "-p1", "--forward", "--silent"],
+            cwd=REPO_ROOT / "third_party" / "YesTrack",
+            input=patch.read_text(encoding="utf-8"),
+            text=True,
+            capture_output=True,
+            check=False,
+        )
+        if completed.returncode != 0 or marker not in source.read_text(encoding="utf-8"):
+            detail = (
+                getattr(completed, "stderr", "")
+                or getattr(completed, "stdout", "")
+                or "unknown patch failure"
+            ).strip()
+            raise RuntimeError(f"could not apply YesTrack timing patch: {detail}")
+    return sha256_file(YESTRACK_EFFICIENCY_PATCH)
 
 
 def read_sequence_list(path: str | Path) -> list[str]:
@@ -129,6 +158,7 @@ def run_yestrack_inference(
     video_n_frames: int = 4,
 ) -> dict[str, Any]:
     results_root.mkdir(parents=True, exist_ok=True)
+    timing_patch_sha256 = ensure_yestrack_efficiency_patch()
     tracker_input_root = resolve_tracker_input_root(tracker_root)
     command = [
         str(python),
@@ -180,14 +210,90 @@ def run_yestrack_inference(
     env["PYTHONPATH"] = os.pathsep.join(
         [str(REPO_ROOT / "third_party" / "YesTrack"), env.get("PYTHONPATH", "")]
     )
+    wall_start = time.perf_counter()
     completed = subprocess.run(command, cwd=REPO_ROOT / "third_party" / "YesTrack", env=env, check=False)
+    wall_seconds = time.perf_counter() - wall_start
     if completed.returncode != 0:
         raise RuntimeError(f"YesTrack evaluator exited with {completed.returncode}")
+    timing_path = results_root / "overall_infer_time.json"
+    timing: dict[str, Any] = {}
+    if timing_path.is_file():
+        loaded = json.loads(timing_path.read_text(encoding="utf-8"))
+        if isinstance(loaded, dict):
+            timing = loaded
     return {
         "command": command,
         "exit_code": completed.returncode,
         "results_root": str(results_root),
         "tracker_input_root": str(tracker_input_root),
+        "wall_seconds": wall_seconds,
+        "timing_path": str(timing_path),
+        "timing": timing,
+        "timing_patch": str(YESTRACK_EFFICIENCY_PATCH),
+        "timing_patch_sha256": timing_patch_sha256,
+    }
+
+
+def _count_frame_units(
+    *,
+    data_root: Path,
+    gt_manifest_root: Path,
+    sequence_names: list[str],
+) -> tuple[int, int]:
+    """Return unique video frames and expression-video-frame pairs."""
+
+    manifest = json.loads((gt_manifest_root / "manifest.json").read_text(encoding="utf-8"))
+    wanted = set(sequence_names)
+    records = [record for record in manifest["metadata"] if record["video_id"] in wanted]
+    by_video = {record["video_id"] for record in records}
+    frame_counts: dict[str, int] = {}
+    for video in by_video:
+        image_dir = data_root / "KITTI" / "training" / "image_02" / video
+        frame_counts[video] = len([path for path in image_dir.iterdir() if path.is_file()])
+    video_frames = sum(frame_counts.values())
+    expression_frames = sum(frame_counts[record["video_id"]] for record in records)
+    return video_frames, expression_frames
+
+
+def _efficiency_record(
+    *,
+    data_root: Path,
+    gt_manifest_root: Path,
+    sequence_names: list[str],
+    inference: dict[str, Any] | None,
+) -> dict[str, Any]:
+    inference = inference or {}
+    timing = inference.get("timing")
+    if not isinstance(timing, dict):
+        timing = {}
+    seconds = timing.get("elapsed_seconds_max")
+    if seconds is None:
+        seconds = inference.get("inference_seconds")
+    try:
+        seconds = float(seconds)
+    except (TypeError, ValueError):
+        seconds = None
+    video_frames, expression_frames = _count_frame_units(
+        data_root=data_root,
+        gt_manifest_root=gt_manifest_root,
+        sequence_names=sequence_names,
+    )
+    return {
+        "schema_version": "rmot-efficiency-0.1",
+        "video_frame_count": video_frames,
+        "expression_frame_count": expression_frames,
+        "inference_seconds": seconds,
+        "video_frame_fps": video_frames / seconds if seconds and seconds > 0 else None,
+        "referring_module_fps": expression_frames / seconds if seconds and seconds > 0 else None,
+        "model_loading_seconds": timing.get("model_loading_seconds_max"),
+        "model_load_peak_gpu_memory_mib": timing.get("model_load_peak_gpu_memory_mib_max"),
+        "peak_gpu_memory_mib": timing.get("peak_gpu_memory_mib_max"),
+        "complete_pipeline_fps": None,
+        "fps_units": {
+            "video_frame_fps": "unique video frames / referring inference second",
+            "referring_module_fps": "expression-video-frame pairs / referring inference second",
+            "complete_pipeline_fps": "requires tracker wall time; derived by scripts/measure_efficiency.py",
+        },
     }
 
 
@@ -380,6 +486,12 @@ def main(argv: list[str] | None = None) -> int:
             enable_video_mode=args.enable_video_mode,
             video_n_frames=args.video_n_frames,
         )
+    payload["efficiency"] = _efficiency_record(
+        data_root=Path(args.data_root).expanduser().resolve(),
+        gt_manifest_root=Path(args.gt_manifest_root).expanduser().resolve(),
+        sequence_names=sequence_names,
+        inference=payload.get("inference"),
+    )
     evaluations = []
     for threshold in args.thresholds:
         evaluations.append(

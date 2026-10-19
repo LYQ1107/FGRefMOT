@@ -23,6 +23,7 @@ import os
 import shutil
 import subprocess
 import sys
+import time
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Iterable
@@ -285,6 +286,7 @@ def run_tracker(
     # distinguish this invocation from a stale terminal manifest.
     _atomic_write_json(manifest_path, result)
     if run:
+        run_start_perf = time.perf_counter()
         env = os.environ.copy()
         env["CUDA_VISIBLE_DEVICES"] = str(physical_gpu)
         # The released tracker checkpoint contains the complete backbone.  Do
@@ -295,6 +297,7 @@ def run_tracker(
             [str(source_root / "models" / "ops"), str(source_root), env.get("PYTHONPATH", "")]
         )
         completed = subprocess.run(command, cwd=source_root, env=env, check=False)
+        result["wall_seconds"] = time.perf_counter() - run_start_perf
         result["exit_code"] = completed.returncode
         if completed.returncode != 0:
             result["status"] = "FAILED"
@@ -309,6 +312,12 @@ def run_tracker(
         result["output_root"] = str(formal)
         result["outputs"] = [_validate_tracker_file(formal / f"{name}.txt") for name in names]
         result["output_count"] = len(result["outputs"])
+        result["frame_count"] = sum(int(item["max_frame"]) for item in result["outputs"])
+        result["tracker_fps"] = (
+            result["frame_count"] / result["wall_seconds"]
+            if result["wall_seconds"] > 0
+            else None
+        )
         result["status"] = "SUCCEEDED"
         result["finished_at"] = _timestamp()
     _atomic_write_json(manifest_path, result)

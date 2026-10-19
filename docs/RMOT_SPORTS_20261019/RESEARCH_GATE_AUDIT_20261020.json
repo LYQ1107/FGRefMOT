@@ -83,9 +83,10 @@
       "evidence": [
         "docs/STORAGE_PLAN.md",
         "docs/RMOT_SPORTS_20261019/PHASE1_CHECKPOINT_ARCHIVE_SMOKE.json",
-        "docs/RMOT_SPORTS_20261019/PHASE70_FLEXHOOK_INTERNAL_CORE_TRAINING.json"
+        "docs/RMOT_SPORTS_20261019/PHASE70_FLEXHOOK_INTERNAL_CORE_TRAINING.json",
+        "docs/RMOT_SPORTS_20261019/PHASE74_EFFICIENCY_PROTOCOL.json"
       ],
-      "claim_boundary": "NAS-direct artifact storage and synthetic archive checks are recorded; final online FPS, peak-memory comparison and real strict-run resume verification remain outstanding."
+      "claim_boundary": "NAS-direct artifact storage and synthetic archive checks are recorded; measurement tooling is ready, but final online FPS, peak-memory comparison and real strict-run resume verification remain outstanding."
     },
     {
       "id": "I_REPORT_AND_REMOTE_SYNC",

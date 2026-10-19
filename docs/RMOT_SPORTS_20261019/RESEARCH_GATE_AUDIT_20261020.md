@@ -10,11 +10,11 @@ training core plus 5-video/45-expression internal validation split, and a
 is offline TrackEval input only after checkpoint and method selection.
 
 The environment, NAS/data audit, split registry, fixed SambaMOTR tracker
-manifests, FlexHook F1 formal baseline, and reproducible temporal-module
-tooling have evidence in the cited phase reports. The strict FlexHook core
-run and both YesTrack runs are still live. The FlexHook frozen-score H0-H8
-replay is a diagnostic control over a frozen checkpoint; it is not a learned
-temporal-head result.
+manifests, FlexHook F1 formal baseline, reproducible temporal-module tooling,
+and read-only efficiency measurement tooling have evidence in the cited phase
+reports. The strict FlexHook core run and both YesTrack runs are still live.
+The FlexHook frozen-score H0-H8 replay is a diagnostic control over a frozen
+checkpoint; it is not a learned temporal-head result.
 
 The following gates remain open: YesTrack validation and formal evaluation,
 real feature archiving and learned temporal-head selection, proposed-method

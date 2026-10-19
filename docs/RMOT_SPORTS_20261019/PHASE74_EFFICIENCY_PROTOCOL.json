@@ -1,0 +1,50 @@
+{
+  "phase": 74,
+  "title": "reproducible efficiency and memory measurement",
+  "status": "TOOLING_IMPLEMENTED_WAIT_FOR_STRICT_EVALUATIONS",
+  "schema_version": "rmot-efficiency-0.1",
+  "policy": {
+    "measurement_is_read_only": true,
+    "ground_truth_read": false,
+    "tracker_outputs_are_fixed": true,
+    "reported_rates": [
+      "physical tracker FPS",
+      "referring module FPS",
+      "complete pipeline FPS",
+      "model loading seconds",
+      "peak GPU memory MiB"
+    ],
+    "frame_units": {
+      "tracker_fps": "sum of max_frame values in the physical tracker output manifest / tracker wall seconds",
+      "video_frame_fps": "unique video frames / referring inference seconds",
+      "referring_module_fps": "expression-video-frame pairs / referring inference seconds",
+      "complete_pipeline_fps": "unique video frames / (tracker wall seconds + referring inference seconds)"
+    }
+  },
+  "artifacts": [
+    "scripts/efficiency.py",
+    "scripts/measure_efficiency.py",
+    "tests/test_efficiency.py",
+    "scripts/eval_flexhook_refersports.py",
+    "scripts/eval_yestrack_refersports.py",
+    "third_party/YesTrack/refer_llm/llm_eval_from_mot.py",
+    "scripts/run_sambamotr_refersports_tracker.py"
+  ],
+  "instrumentation": {
+    "flexhook": "evaluation manifest records inference time, model-loading time, peak memory, and both frame-rate units",
+    "yestrack": "overall_infer_time.json records inference/model-loading time and peak memory; adapter copies the record into YESTRACK_EVAL_MANIFEST.json",
+    "common_tracker": "future tracker runs record wall time, frame count, and tracker FPS in TRACKER_RUN_MANIFEST.json",
+    "pipeline_report": "scripts/measure_efficiency.py joins a tracker manifest with a referring-evaluation manifest"
+  },
+  "current_evidence_boundary": {
+    "existing_flexhook_f1_formal": "legacy manifest predates this instrumentation; no efficiency number is claimed",
+    "existing_common_tracker_outputs": "legacy manifests have incomplete timing metadata; no tracker or pipeline FPS is claimed",
+    "strict_runs": "instrumentation is ready before their post-training evaluation watchers launch",
+    "status": "no fabricated efficiency result"
+  },
+  "validation": {
+    "tests": "tests/test_efficiency.py and related adapter/tracker tests",
+    "result": "18 passed",
+    "compile_check": "all modified Python files compile in the project environment"
+  }
+}
