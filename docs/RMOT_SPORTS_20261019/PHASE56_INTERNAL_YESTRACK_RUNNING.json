@@ -1,7 +1,7 @@
 {
   "phase": 56,
   "title": "Internal YesTrack core training and validation",
-  "status": "TRAINING_SUCCEEDED_EVALUATION_IN_PROGRESS",
+  "status": "TRAINING_AND_INTERNAL_EVALUATION_SUCCEEDED",
   "run_id": "yestrack_y1_sports_core_lora_seed42",
   "run_manifest": "runs/gpu/yestrack_y1_sports_core_lora_seed42/RUN_MANIFEST.json",
   "launcher_started_at": "2026-10-19T18:38:38+08:00",
@@ -18,7 +18,7 @@
     "seed": 42,
     "batch_size": 8,
     "epochs": 1,
-    "learning_rate": 0.000005,
+    "learning_rate": 5e-06,
     "negative_downsample": 0.5
   },
   "preflight": {
@@ -38,15 +38,49 @@
     "lora_adapter_sha256": "0f67a3e5673357c4bb9341db23b94bba5fff437bb0d2caf5117e0d0d67d20d81"
   },
   "evaluation": {
-    "status": "IN_PROGRESS",
+    "status": "SUCCEEDED",
     "split": "internal_selection_val_5_videos",
     "tracker_policy": "common_fixed_sambamotr_dab_detr_outputs",
-    "metric_claimed": false,
-    "first_attempt_issue": "The evaluator inherited the resolved shared Python target and failed before inference because transformers was unavailable; the tracked wrapper now preserves the venv symlink and the efficiency patch initializes CUDA peak accounting without a device argument."
+    "metric_claimed": true,
+    "first_attempt_issue": "The evaluator inherited the resolved shared Python target and failed before inference because transformers was unavailable; the tracked wrapper now preserves the venv symlink and the efficiency patch initializes CUDA peak accounting without a device argument.",
+    "videos": 5,
+    "expressions": 45,
+    "output_root": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/yestrack_y1_internal_eval_20261019_v5",
+    "manifest": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/yestrack_y1_internal_eval_20261019_v5/YESTRACK_EVAL_MANIFEST.json",
+    "manifest_sha256": "b4a729d8a82d3c32e17d815e19f4cbc5f54166432d2cafad789e93e0934123c6",
+    "threshold_grid": [
+      0.2,
+      0.3,
+      0.4,
+      0.5,
+      0.6,
+      0.7,
+      0.8
+    ],
+    "selected_threshold": 0.8,
+    "selection_rule": "highest internal-validation HOTA over the registered threshold grid",
+    "trackeval": {
+      "HOTA": 0.7936402559280396,
+      "DetA": 0.806831419467926,
+      "AssA": 0.7806647419929504,
+      "MOTA": 0.7779810429791564,
+      "CLR_F1": 0.8908724771472532,
+      "IDF1": 0.7830233505294597,
+      "IDSW": 126
+    },
+    "inference_timing_source": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/yestrack_y1_internal_eval_20261019_v4/results/overall_infer_time.json",
+    "inference_timing": {
+      "inference_seconds": 9605.726348808996,
+      "model_loading_seconds": 570.1941000180086,
+      "referring_module_fps": 2.7443005393619684,
+      "video_frame_fps": 0.3402137309902854,
+      "peak_gpu_memory_mib": 13516.0
+    }
   },
   "storage": {
     "mode": "NAS_DIRECT_THROUGH_SSHFS_MOUNT",
     "run_root": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs"
   },
-  "metrics_claimed": false
+  "metrics_claimed": true,
+  "next_gate": "complete the full 19-video historical YesTrack evaluation; internal metrics are selection evidence only"
 }

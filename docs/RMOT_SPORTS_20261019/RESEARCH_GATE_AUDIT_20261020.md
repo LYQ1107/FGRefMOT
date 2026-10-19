@@ -18,21 +18,22 @@ complete, and a real patched one-GPU resume smoke run also completed: it loaded
 epoch 1, continued at epoch 2, saved a checkpoint, and exited successfully.
 The feature archives are complete, and the H8 causal temporal head has
 completed eight epochs with epoch 5 selected from internal validation. Its
-five-video internal TrackEval also succeeded (HOTA 0.7563, IDF1 0.7243), and
-the selected checkpoint is now running the one-time 19-video historical
-evaluation. The full 22-video YesTrack training also finished successfully;
-its formal historical evaluation has started. The separate 17-video internal
-YesTrack training succeeded, and its fixed five-video validation evaluation is
-still running against the completed adapter.
+five-video internal TrackEval succeeded (HOTA 0.7563, IDF1 0.7243), and the
+selected checkpoint's one-time 19-video historical evaluation also succeeded
+(HOTA 0.7191, IDF1 0.6780, IDSW 386). The full 22-video YesTrack training
+finished successfully and its formal historical evaluation has started. The
+separate 17-video internal YesTrack training and fixed five-video validation
+evaluation also succeeded; threshold 0.8 was selected on internal HOTA
+(0.7936).
 The FlexHook frozen-score H0-H8 replay is a diagnostic control over a frozen
 checkpoint; it is not a learned temporal-head result.
 
-The following gates remain open: YesTrack validation and formal evaluation,
-learned temporal-head historical evaluation, proposed-method
+The following gates remain open: YesTrack formal evaluation, proposed-method
 and baseline ablations, multi-seed stability, complete online efficiency,
-final-test evidence, and the final reviewer report. Until those manifests exist,
-the study must not claim a YesTrack metric, a learned-method improvement, a
-multi-seed gain, or a complete final result.
+final-test evidence for the remaining variants, and the final reviewer report.
+The internal YesTrack metric and the selected H8 historical metric are recorded
+as split-specific evidence; they must not be presented as a completed full
+baseline comparison or a learned-method improvement claim.
 
 The machine-readable gate states, evidence paths, live manifests and next
 gates are in `RESEARCH_GATE_AUDIT_20261020.json`. This report intentionally

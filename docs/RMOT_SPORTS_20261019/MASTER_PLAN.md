@@ -24,8 +24,10 @@ from its successful manifest; these are historical-test values and are not
 internal validation values.
 
 Active work is recorded in `EXPERIMENT_REGISTRY.csv`. The full and internal
-YesTrack Sports-LoRA trainings have succeeded and their evaluations are live
-jobs. The strict FlexHook core-only training
+YesTrack Sports-LoRA trainings have succeeded. The separate internal
+YesTrack validation evaluation has also succeeded, selecting threshold 0.8
+from internal HOTA (0.793640); its 19-video formal evaluation remains live.
+The strict FlexHook core-only training
 run has completed on GPU3: it used 17 train videos/136 expressions, selected
 the checkpoint on the reserved 5 videos/45 expressions, and wrote its
 artifacts directly to NAS. Its separate internal TrackEval manifest is
@@ -42,10 +44,13 @@ Phase 72 adds the causal temporal-head training command; the real H8 run
 completed eight epochs and selected epoch 5 using only internal validation.
 Phase 73 adds the inference adapter that applies the selected causal head before
 the standard TrackEval tree is written. Its five-video internal TrackEval
-completed successfully (HOTA 75.6316, IDF1 72.4347); the one-time 19-video
-historical evaluation is in progress and has no claimed test metric yet.
+completed successfully (HOTA 75.6316, IDF1 72.4347), followed by a successful
+19-video historical evaluation (HOTA 71.9128, DetA 66.7403, AssA 77.4862,
+MOTA 62.5810, IDF1 67.7970, IDSW 386). This is a selected temporal-head
+result; it is recorded separately from the formal YesTrack baseline and does
+not by itself establish a learned improvement.
 
-The remaining gates are YesTrack formal/internal evaluation,
+The remaining gates are the YesTrack formal evaluation,
 formal H0–H8/YB score and learned-method ablations after the baseline gate,
 multi-seed confirmation, efficiency measurements, and the final reviewer
 report. Phase 65 has registered candidate

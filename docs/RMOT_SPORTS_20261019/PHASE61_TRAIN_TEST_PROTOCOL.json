@@ -1,7 +1,7 @@
 {
   "phase": 61,
   "title": "train/validation/test protocol",
-  "status": "YES_TRACK_FULL_TRAINING_SUCCEEDED_EVALUATIONS_IN_PROGRESS",
+  "status": "YES_TRACK_FULL_TRAINING_INTERNAL_EVALUATION_SUCCEEDED_FORMAL_EVALUATION_IN_PROGRESS",
   "dataset": "Refer-Sports",
   "splits": {
     "sports_train": {
@@ -54,10 +54,35 @@
   "yestrack": {
     "full_training_status": "SUCCEEDED_EXIT_0",
     "internal_training_status": "SUCCEEDED_EXIT_0",
-    "internal_eval_status": "IN_PROGRESS",
+    "internal_eval_status": "SUCCEEDED",
     "formal_eval": "IN_PROGRESS",
     "full_run_manifest": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/runs/gpu/yestrack_y1_sports_lora_seed42_v2/RUN_MANIFEST.json",
-    "formal_eval_output_root": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/yestrack_y1_common_eval_20261019_v3"
+    "formal_eval_output_root": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/yestrack_y1_common_eval_20261019_v3",
+    "internal_evaluation": {
+      "status": "SUCCEEDED",
+      "split": "INTERNAL_VAL_5",
+      "videos": 5,
+      "expressions": 45,
+      "threshold_grid": [
+        0.2,
+        0.3,
+        0.4,
+        0.5,
+        0.6,
+        0.7,
+        0.8
+      ],
+      "selected_threshold": 0.8,
+      "hota": 0.7936402559280396,
+      "deta": 0.806831419467926,
+      "assa": 0.7806647419929504,
+      "mota": 0.7779810429791564,
+      "clear_f1": 0.8908724771472532,
+      "idf1": 0.7830233505294597,
+      "idsw": 126,
+      "manifest": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/yestrack_y1_internal_eval_20261019_v5/YESTRACK_EVAL_MANIFEST.json",
+      "manifest_sha256": "b4a729d8a82d3c32e17d815e19f4cbc5f54166432d2cafad789e93e0934123c6"
+    }
   },
   "sequence_lists": {
     "historical_test": "configs/refer_sports_eval_sequences_20261019.txt",
@@ -76,7 +101,7 @@
     "test_metrics_used_for_selection": false
   },
   "flexhook_temporal_h8": {
-    "status": "INTERNAL_EVAL_SUCCEEDED_HISTORICAL_EVAL_IN_PROGRESS",
+    "status": "INTERNAL_AND_HISTORICAL_EVALUATION_SUCCEEDED",
     "training_split": "INTERNAL_TRAIN_17",
     "selection_split": "INTERNAL_VAL_5",
     "historical_test_split": "HISTORICAL_TEST_19",
@@ -91,9 +116,20 @@
       "manifest": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_temporal_h8_internal_eval_20261019_v1/FLEXHOOK_EVAL_MANIFEST.json"
     },
     "historical_evaluation": {
-      "status": "IN_PROGRESS",
+      "status": "SUCCEEDED",
       "output_root": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_temporal_h8_common_eval_20261019_v1",
-      "metric_claimed": false
+      "metric_claimed": true,
+      "videos": 19,
+      "expressions": 142,
+      "hota": 0.7191281349053079,
+      "deta": 0.6674034066441494,
+      "assa": 0.7748616043371828,
+      "mota": 0.6258104763362571,
+      "clear_f1": 0.799027310604057,
+      "idf1": 0.6779701098709615,
+      "idsw": 386,
+      "manifest": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_temporal_h8_common_eval_20261019_v1/FLEXHOOK_EVAL_MANIFEST.json",
+      "manifest_sha256": "1b50d090c1582b3b0d92e600f4dd33d6af560a01d0c2a9951d1e01d88ae95581"
     }
   }
 }

@@ -1,7 +1,7 @@
 {
   "phase": 74,
   "title": "reproducible efficiency and memory measurement",
-  "status": "PARTIAL_INTERNAL_TEMPORAL_MEASURED_EVALUATIONS_IN_PROGRESS",
+  "status": "TEMPORAL_AND_YESTRACK_INTERNAL_MEASURED_FORMAL_EVALUATIONS_IN_PROGRESS",
   "schema_version": "rmot-efficiency-0.1",
   "policy": {
     "measurement_is_read_only": true,
@@ -41,8 +41,8 @@
   "current_evidence_boundary": {
     "existing_flexhook_f1_formal": "legacy manifest predates this instrumentation; no efficiency number is claimed",
     "existing_common_tracker_outputs": "legacy manifests have incomplete timing metadata; no tracker or pipeline FPS is claimed",
-    "strict_runs": "The strict FlexHook core and selected temporal-head internal evaluations record model-loading time, inference time, frame-rate units and peak memory; YesTrack internal/formal manifests and complete-pipeline joins remain pending.",
-    "status": "internal temporal efficiency measured; complete tracker-plus-referring and YesTrack efficiency pending"
+    "strict_runs": "The strict FlexHook core and selected temporal-head internal/historical evaluations record model-loading time, inference time, frame-rate units and peak memory; YesTrack internal timing is recorded from its completed inference timing file, while the full formal manifest and complete-pipeline joins remain pending.",
+    "status": "temporal and YesTrack internal referring efficiency measured; full YesTrack formal and complete tracker-plus-referring joins pending"
   },
   "validation": {
     "tests": "tests/test_efficiency.py and related adapter/tracker tests",
@@ -57,6 +57,19 @@
     "referring_module_fps": 15.333480434822986,
     "video_frame_fps": 1.9009071757900504,
     "peak_gpu_memory_mib": 12966.0,
+    "complete_pipeline_fps": "pending tracker wall-time join"
+  },
+  "measured_internal_yestrack": {
+    "manifest": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/yestrack_y1_internal_eval_20261019_v5/YESTRACK_EVAL_MANIFEST.json",
+    "timing_source": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/yestrack_y1_internal_eval_20261019_v4/results/overall_infer_time.json",
+    "split": "INTERNAL_VAL_5",
+    "inference_seconds": 9605.726348808996,
+    "model_loading_seconds": 570.1941000180086,
+    "referring_module_fps": 2.7443005393619684,
+    "video_frame_fps": 0.3402137309902854,
+    "peak_gpu_memory_mib": 13516.0,
+    "video_frame_count": 3268,
+    "expression_frame_count": 26361,
     "complete_pipeline_fps": "pending tracker wall-time join"
   }
 }

@@ -1,6 +1,6 @@
 # Phase 56 — Internal YesTrack core training and validation
 
-Status: `TRAINING_SUCCEEDED_EVALUATION_IN_PROGRESS`
+Status: `TRAINING_AND_INTERNAL_EVALUATION_SUCCEEDED`
 
 The corrected YesTrack Y1 baseline has been started on the fixed 17-video
 internal core split. This run is separate from the historical 22-video
@@ -24,10 +24,19 @@ exit code 0 at 2026-10-20 02:15:00 CST. The resulting LoRA adapter is
 `runs/20261019_184604/train/lora_epoch_0` on NAS with SHA-256
 `0f67a3e5673357c4bb9341db23b94bba5fff437bb0d2caf5117e0d0d67d20d81`.
 
-The fixed common tracker and the five-video internal validation split are now
-being evaluated. The first automatic attempt stopped before inference because
-the child process resolved the venv Python symlink to the shared base
-interpreter; the tracked evaluator now preserves the venv path, and the
-efficiency instrumentation resets CUDA peak accounting on the current device.
-The retry is using the same completed adapter. No internal metric is claimed
-until its evaluation manifest is `SUCCEEDED`.
+The fixed common tracker and the five-video internal validation split have now
+been evaluated with the completed adapter. The first automatic attempt stopped
+before inference because the child process resolved the venv Python symlink to
+the shared base interpreter. A later attempt completed inference but exposed a
+split-manifest metadata bug while writing efficiency data; the adapter now
+falls back to the parent layout manifest, and the completed prediction archive
+was reused without retraining.
+
+The successful validation manifest is
+`/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/yestrack_y1_internal_eval_20261019_v5/YESTRACK_EVAL_MANIFEST.json`
+(`b4a729d8a82d3c32e17d815e19f4cbc5f54166432d2cafad789e93e0934123c6`).
+Across the registered thresholds 0.2–0.8, threshold 0.8 was selected using
+internal-validation HOTA. It gives HOTA `0.793640`, DetA `0.806831`, AssA
+`0.780665`, MOTA `0.777981`, CLEAR-F1 `0.890872`, IDF1 `0.783023`, and IDSW
+`126`. These are internal-selection metrics; the separate full 19-video
+historical evaluation remains in progress.

@@ -2,7 +2,7 @@
   "schema_version": "rmot-sports-phase-0.1",
   "phase": 73,
   "title": "FlexHook temporal-head evaluation adapter",
-  "status": "INTERNAL_EVALUATION_SUCCEEDED_HISTORICAL_EVALUATION_IN_PROGRESS",
+  "status": "INTERNAL_AND_HISTORICAL_EVALUATION_SUCCEEDED",
   "script": "scripts/eval_flexhook_temporal.py",
   "tests": {
     "test_file": "tests/test_eval_flexhook_temporal.py",
@@ -16,7 +16,7 @@
   },
   "result_boundary": {
     "internal_metric": true,
-    "historical_test_metric": false
+    "historical_test_metric": true
   },
   "internal_evaluation": {
     "status": "SUCCEEDED",
@@ -45,11 +45,33 @@
     }
   },
   "historical_evaluation": {
-    "status": "IN_PROGRESS",
+    "status": "SUCCEEDED",
     "split": "HISTORICAL_TEST_19",
     "output_root": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_temporal_h8_common_eval_20261019_v1",
     "sequence_list": "configs/refer_sports_eval_sequences_20261019.txt",
-    "policy": "offline TrackEval after internal checkpoint selection; historical GT is never model or tracker input"
+    "policy": "offline TrackEval after internal checkpoint selection; historical GT is never model or tracker input",
+    "videos": 19,
+    "expressions": 142,
+    "prediction_rows": 296507,
+    "manifest": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_temporal_h8_common_eval_20261019_v1/FLEXHOOK_EVAL_MANIFEST.json",
+    "manifest_sha256": "1b50d090c1582b3b0d92e600f4dd33d6af560a01d0c2a9951d1e01d88ae95581",
+    "temporal_checkpoint_sha256": "5c3d5c39115f786390e23e86dd96763eac5d77028d43347f00f03c550d2008b9",
+    "trackeval": {
+      "HOTA": 0.7191281349053079,
+      "DetA": 0.6674034066441494,
+      "AssA": 0.7748616043371828,
+      "MOTA": 0.6258104763362571,
+      "CLR_F1": 0.799027310604057,
+      "IDF1": 0.6779701098709615,
+      "IDSW": 386
+    },
+    "efficiency": {
+      "inference_seconds": 4653.554734754987,
+      "model_loading_seconds": 323.6163459949894,
+      "referring_module_fps": 18.30127823874925,
+      "video_frame_fps": 2.5571849216954665,
+      "peak_gpu_memory_mib": 12976.0
+    }
   },
-  "next_gate": "finish the selected-checkpoint historical test evaluation; no historical metric is claimed until its manifest succeeds"
+  "next_gate": "formal proposed-method and ablation gate after the YesTrack baseline; no learned improvement claim is made from this single H8 result"
 }

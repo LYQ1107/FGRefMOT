@@ -1,6 +1,6 @@
 # Phase 50 — Formal-evaluation tracker-root compatibility
 
-Status: `FIXED_TESTED_YESTRACK_EVALUATIONS_IN_PROGRESS`
+Status: `FIXED_TESTED_YESTRACK_INTERNAL_SUCCEEDED_FORMAL_IN_PROGRESS`
 
 The completed common SambaMOTR tracker stores its 19 MOT files under
 `tracker_outputs/` below the tracker run root. The first FlexHook evaluation
@@ -13,9 +13,11 @@ model inference. The evaluation adapters now accept both layouts:
 - YesTrack resolves the directory passed to the upstream evaluator before
   launching it, and records that directory in the evaluation payload.
 
-No tracker files were copied, rewritten, or used as ground truth. Both valid
-YesTrack LoRA evaluations have now started; their output manifests remain
-unclaimed until inference and TrackEval finish.
+No tracker files were copied, rewritten, or used as ground truth. The
+five-video internal YesTrack LoRA evaluation now has a successful manifest
+after reusing the completed prediction archive; the threshold-0.8 internal
+result is recorded in Phase 56. The separate 19-video formal evaluation is
+still running and remains unclaimed until inference and TrackEval finish.
 
 Validation completed in the project environment:
 

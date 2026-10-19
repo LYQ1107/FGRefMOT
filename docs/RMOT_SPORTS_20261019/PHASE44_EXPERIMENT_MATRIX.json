@@ -1,7 +1,7 @@
 {
   "schema_version": "rmot-sports-phase-44-0.1",
   "phase": 44,
-  "status": "FLEXHOOK_FORMAL_COMPLETE_YESTRACK_EVALUATIONS_IN_PROGRESS",
+  "status": "FLEXHOOK_FORMAL_COMPLETE_YESTRACK_INTERNAL_COMPLETE_FORMAL_EVALUATION_IN_PROGRESS",
   "matrix": "configs/experiment_matrix_20261019.json",
   "validator": "scripts/validate_experiment_matrix.py",
   "common_tracker": "SambaMOTR-DAB-D-DETR",
@@ -25,8 +25,10 @@
     "gt_tracker_input_rejection": "PASS",
     "test_gt_tuning_rejection": "PASS",
     "unique_variant_ids": "PASS",
-    "formal_baselines": "FLEXHOOK_COMPLETE_YESTRACK_EVALUATIONS_PENDING",
+    "formal_baselines": "FLEXHOOK_COMPLETE_YESTRACK_INTERNAL_COMPLETE_FORMAL_PENDING",
     "flexhook_f1_formal_manifest": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_f1_common_eval_20261019_v7/FLEXHOOK_EVAL_MANIFEST.json",
-    "yestrack_y1_formal_manifest": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/yestrack_y1_common_eval_20261019_v3/YESTRACK_EVAL_MANIFEST.json"
+    "yestrack_y1_formal_manifest": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/yestrack_y1_common_eval_20261019_v3/YESTRACK_EVAL_MANIFEST.json",
+    "yestrack_y1_internal_manifest": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/yestrack_y1_internal_eval_20261019_v5/YESTRACK_EVAL_MANIFEST.json",
+    "yestrack_y1_internal_selected_threshold": 0.8
   }
 }
