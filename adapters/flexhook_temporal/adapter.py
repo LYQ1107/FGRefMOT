@@ -245,19 +245,20 @@ def run_causal_sequence(
     dynamic = torch.stack(dynamic_rows)
     reliability = torch.stack(reliability_rows)
     history = torch.stack(history_rows)
-    output_rows: list[Tensor] = []
-    for frame in range(frames):
-        lang = language if language.ndim == 2 else language[frame]
-        base = None if base_logits is None else base_logits[frame]
-        output_rows.append(
-            adapter(
-                current[frame:frame + 1],
-                lang.unsqueeze(0),
-                base_logits=None if base is None else base.unsqueeze(0),
-                identity=identity[frame:frame + 1],
-                dynamic=dynamic[frame:frame + 1],
-                dynamic_history=history[frame:frame + 1],
-                reliability=reliability[frame:frame + 1],
-            ).squeeze(0)
-        )
-    return torch.stack(output_rows)
+    # Evidence state is built causally above.  Once the state for every frame
+    # is fixed, the per-frame head has no cross-frame recurrence, so evaluate
+    # all frames in one call.  This preserves the sequential state semantics
+    # while avoiding one tiny GPU launch per frame during real evaluation.
+    if language.ndim == 2:
+        language_batch = language.unsqueeze(0).expand(frames, -1, -1)
+    else:
+        language_batch = language
+    return adapter(
+        current,
+        language_batch,
+        base_logits=base_logits,
+        identity=identity,
+        dynamic=dynamic,
+        dynamic_history=history,
+        reliability=reliability,
+    )
