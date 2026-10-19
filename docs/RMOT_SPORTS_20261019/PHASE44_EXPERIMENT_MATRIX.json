@@ -1,0 +1,18 @@
+{
+  "schema_version": "rmot-sports-phase-44-0.1",
+  "phase": 44,
+  "status": "REGISTERED_BASELINES_IN_PROGRESS",
+  "matrix": "configs/experiment_matrix_20261019.json",
+  "validator": "scripts/validate_experiment_matrix.py",
+  "common_tracker": "SambaMOTR-DAB-D-DETR",
+  "primary_split": "SPORTS_VAL",
+  "metrics": ["HOTA", "DetA", "AssA", "IDF1", "IDSW", "Ref-F1", "FPS"],
+  "seeds": [42, 43, 44],
+  "proposed_methods_started": false,
+  "validation": {
+    "gt_tracker_input_rejection": "PASS",
+    "test_gt_tuning_rejection": "PASS",
+    "unique_variant_ids": "PASS",
+    "formal_baselines": "PENDING_YESTRACK_AND_TRACKER_COMPLETION"
+  }
+}

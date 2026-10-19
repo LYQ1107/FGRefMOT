@@ -1,0 +1,36 @@
+{
+  "schema_version": "rmot-sports-experiment-matrix-0.1",
+  "protocol_id": "refer-sports-common-tracker-v1",
+  "dataset": "Refer-Sports",
+  "primary_split": "SPORTS_VAL",
+  "common_tracker": "SambaMOTR-DAB-D-DETR",
+  "common_tracker_root": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/assets/pretrained/common_tracker/sambamotr_dab_refersports_train_20261019/tracker_outputs",
+  "tracker_input_policy": {
+    "gt_or_labels_as_tracker_input": false,
+    "test_gt_for_tuning_or_checkpoint_selection": false,
+    "image_only_tracker_staging": true
+  },
+  "metrics": ["HOTA", "DetA", "AssA", "IDF1", "IDSW", "Ref-F1", "FPS"],
+  "seeds": [42, 43, 44],
+  "baseline_gate": "PROPOSED_METHODS_WAIT_FOR_FORMAL_FLEXHOOK_AND_YESTRACK_BASELINES",
+  "variants": [
+    {"id": "FGREF_HISTORICAL", "family": "FGRefMOT", "stage": "reference", "status": "HISTORICAL_SEPARATE_PROTOCOL"},
+    {"id": "FGREF_CURRENT", "family": "FGRefMOT", "stage": "reference", "status": "NOT_RUN"},
+    {"id": "FLEXHOOK_F0", "family": "FlexHook", "stage": "baseline", "status": "NOT_RUN", "training": "zero_shot"},
+    {"id": "FLEXHOOK_F1", "family": "FlexHook", "stage": "baseline", "status": "RUNNING_OR_FORMAL_EVAL_PENDING", "training": "Sports_trained"},
+    {"id": "FLEXHOOK_F2", "family": "FlexHook", "stage": "baseline", "status": "NOT_RUN", "training": "Sports_fine_tuned"},
+    {"id": "YESTRACK_Y0", "family": "YesTrack", "stage": "baseline", "status": "NOT_RUN", "training": "zero_shot"},
+    {"id": "YESTRACK_Y1", "family": "YesTrack", "stage": "baseline", "status": "RUNNING", "training": "Sports_LoRA"},
+    {"id": "YESTRACK_Y2", "family": "YesTrack", "stage": "baseline", "status": "NOT_RUN", "training": "Sports_LoRA_temporal_variant"},
+    {"id": "YESTRACK_Y3", "family": "YesTrack", "stage": "baseline", "status": "NOT_RUN", "training": "Sports_LoRA_proposed_variant"},
+    {"id": "FLEXHOOK_H0", "family": "FlexHook", "stage": "proposed_ablation", "status": "WAIT_FOR_BASELINE", "description": "original Sports-trained FlexHook"},
+    {"id": "FLEXHOOK_H1", "family": "FlexHook", "stage": "proposed_ablation", "status": "WAIT_FOR_BASELINE", "description": "capacity-matched MLP"},
+    {"id": "FLEXHOOK_H2", "family": "FlexHook", "stage": "proposed_ablation", "status": "WAIT_FOR_BASELINE", "description": "ordinary history mean or EMA"},
+    {"id": "FLEXHOOK_H3", "family": "FlexHook", "stage": "proposed_ablation", "status": "WAIT_FOR_BASELINE", "description": "GRU or ordinary temporal attention"},
+    {"id": "FLEXHOOK_H4", "family": "FlexHook", "stage": "proposed_ablation", "status": "WAIT_FOR_BASELINE", "description": "stable identity evidence read"},
+    {"id": "FLEXHOOK_H5", "family": "FlexHook", "stage": "proposed_ablation", "status": "WAIT_FOR_BASELINE", "description": "short-term dynamic evidence"},
+    {"id": "FLEXHOOK_H6", "family": "FlexHook", "stage": "proposed_ablation", "status": "WAIT_FOR_BASELINE", "description": "separated identity and dynamic evidence"},
+    {"id": "FLEXHOOK_H7", "family": "FlexHook", "stage": "proposed_ablation", "status": "WAIT_FOR_BASELINE", "description": "reliability-controlled memory write"},
+    {"id": "FLEXHOOK_H8", "family": "FlexHook", "stage": "proposed_ablation", "status": "WAIT_FOR_BASELINE", "description": "complete mechanism"}
+  ]
+}
