@@ -466,7 +466,11 @@ def main(argv: list[str] | None = None) -> int:
     }
     if args.run_inference:
         payload["inference"] = run_yestrack_inference(
-            python=Path(args.python).expanduser().resolve(),
+            # Preserve a venv symlink such as ``fgrefmot.../bin/python``.
+            # Resolving it can bypass that venv's site-packages and leave the
+            # evaluator with only the shared base environment (missing
+            # ``transformers``), even though the requested interpreter works.
+            python=Path(args.python).expanduser(),
             model_name=Path(args.model_name).expanduser().resolve(),
             lora_path=Path(args.lora_path).expanduser().resolve(),
             data_root=Path(args.data_root).expanduser().resolve(),

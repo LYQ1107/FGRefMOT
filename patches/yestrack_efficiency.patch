@@ -9,7 +9,7 @@ index 8e8be44..3ecca65 100644
 +    # RMOT_EFFICIENCY_INSTRUMENTATION_20261020
 +    model_load_start_perf = time.perf_counter()
 +    if torch.cuda.is_available():
-+        torch.cuda.reset_peak_memory_stats(device)
++        torch.cuda.reset_peak_memory_stats()
      model, processor, _ = build_model_and_processor_for_eval(
          model_name=args.model_name,
          use_4bit=bool(args.use_4bit),
@@ -28,7 +28,7 @@ index 8e8be44..3ecca65 100644
 +    # Keep model-construction memory separate from the peak of the actual
 +    # referring forward pass.
 +    if torch.cuda.is_available():
-+        torch.cuda.reset_peak_memory_stats(device)
++        torch.cuda.reset_peak_memory_stats()
      yes_id, no_id = get_yes_no_token_ids(processor)
  
      # 输出目录

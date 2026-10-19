@@ -157,6 +157,8 @@ def main(argv: list[str] | None = None) -> int:
         command = [
             args.python,
             str(project / "scripts" / "eval_yestrack_refersports.py"),
+            "--python",
+            args.python,
             "--model-name",
             args.model_name,
             "--lora-path",
