@@ -32,6 +32,9 @@ The corrected run `yestrack_y1_sports_lora_seed42_v2` started at
 `2026-10-19T17:55:41+08:00` on physical GPU 1. Its project-facing run directory
 is `runs/gpu/yestrack_y1_sports_lora_seed42_v2`; the upstream `runs/` link points
 directly to `/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs`.
+The actual YesTrack DataLoader reports 90,559 optimizer steps (NAS timestamp
+`20261019_180459`); the smoke-test estimate above was 90,485, so the live run
+uses the observed 90,559-step total.
 
 Validation performed before launch:
 
