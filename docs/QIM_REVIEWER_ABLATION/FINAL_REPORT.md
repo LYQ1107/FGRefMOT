@@ -1,6 +1,6 @@
 # FGRefMOT original QIM ablation — current report
 
-Status: **STEP-200 FULL DEVELOPMENT EVALUATION AND REAL-IMAGE BENCHMARK COMPLETE / LONG RUN IN PROGRESS / HISTORICAL TEST GT STILL MISSING**.
+Status: **STEP-200 AND STEP-5000 FULL DEVELOPMENT EVALUATIONS COMPLETE / LONG RUN IN PROGRESS / HISTORICAL TEST GT STILL MISSING**.
 
 Completed in this snapshot:
 
@@ -19,6 +19,8 @@ Completed in this snapshot:
 - fixed development-split smoke evaluation for all four QIM variants.
 - full step-200 development evaluation for all four QIM variants over 4 videos and
   2,621 frames;
+- full step-5000 development evaluation for all four QIM variants over the same
+  4 videos and 2,621 frames;
 - Mamba step-200 full-development result pushed to the research branch.
 
 Still in progress or blocked:
@@ -59,6 +61,25 @@ historical Test results; the local Test tree still has no matching ground truth.
 The exact per-sequence results are stored in
 `reports/qim_ablation/{standard,lstm,temporal_attention,mamba}_step200_dev_full.json`.
 
+## Step-5000 full development evaluation
+
+These are the first long-run milestone results from the exact-resume four-way
+training jobs. They use the same frozen four-video development list, one
+expression per video, all 2,621 frames, and the UNKNOWN-safe referring protocol.
+They are development results, not historical Test results.
+
+| QIM | HOTA | HOTA@0.5 | DetA | AssA | IDF1 | IDSW sum | IDSW mean/sequence | Referring F1 |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| Standard | 0.6720 | 0.7058 | 0.7019 | 0.6506 | 0.7028 | 65 | 16.25 | 0.9091 |
+| LSTM | 0.6519 | 0.6834 | 0.6726 | 0.6462 | 0.6754 | 62 | 15.50 | 0.8606 |
+| Temporal Attention | 0.5432 | 0.5681 | 0.5008 | 0.5999 | 0.5148 | 116 | 29.00 | 0.7382 |
+| Original Mamba | 0.7222 | 0.7587 | 0.8233 | 0.6378 | 0.7517 | 75 | 18.75 | 0.9695 |
+
+The exact machine-readable results are
+`reports/qim_ablation/{standard,lstm,temporal_attention,mamba}_step5000_dev_full.json`;
+the cross-variant summary is `reports/qim_ablation/step5000_dev_summary_20261019.json`.
+The 20k/60k/120k milestones remain in progress.
+
 ## Step-200 real SportsMOT image benchmark
 
 This is a full-model engineering benchmark on native images from
@@ -78,5 +99,4 @@ The machine-readable benchmark is
 `reports/qim_ablation/real_sportsmot_benchmark_step200.json`. The long-run
 training-cost fields will be filled from the actual 5k/20k/60k/120k completion
 logs; no extrapolated cost is presented as measured cost.
-
 

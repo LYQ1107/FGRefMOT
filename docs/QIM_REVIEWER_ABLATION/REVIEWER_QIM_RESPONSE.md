@@ -32,6 +32,15 @@ one expression per video, all frames): Standard HOTA/IDF1/AssA =
 corresponding IDSW sums are 1391, 4113, 44, and 74. These are explicitly
 development results, not historical Test claims.
 
+The exact-resume 5k milestone has now been evaluated on the same development
+protocol. The four-way means (HOTA/IDF1/AssA/IDSW sum) are Standard
+0.6720/0.7028/0.6506/65, LSTM 0.6519/0.6754/0.6462/62, Temporal Attention
+0.5432/0.5148/0.5999/116, and Original Mamba 0.7222/0.7517/0.6378/75.
+These are milestone development results over four videos and 2,621 frames;
+they are not historical Test results. The 20k/60k/120k checkpoints and their
+evaluations are still running, so no long-run final ranking or training-cost
+claim is made yet.
+
 The published Test images still have no matching local ground-truth labels;
 therefore historical Test HOTA/AssA/IDF1/IDSW, a reproducible 0.29-HOTA
 attribution, and a final paper conclusion must not be claimed until the Test
@@ -39,5 +48,4 @@ GT/protocol is supplied. The real-image efficiency benchmark is reported
 separately from the synthetic engineering probe and is now complete for the
 documented single clip; long-run training cost is still being measured from
 actual checkpoint logs.
-
 
