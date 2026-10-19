@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-10-19T13:57:24.034558+00:00",
+  "generated_at_utc": "2026-10-19T14:21:57.190202+00:00",
   "run_root": "/data1/liuyeqiang/fg_v2_runs/qim_ablation_sports_20261019",
   "milestones": [
     200,
@@ -20,13 +20,24 @@
       "log": {
         "status": "present",
         "path": "/data1/liuyeqiang/fg_v2_runs/qim_ablation_sports_20261019/standard_long.log",
-        "bytes": 1917471,
-        "last_modified_utc": "2026-10-19T13:57:14.459178+00:00",
+        "bytes": 2086610,
+        "last_modified_utc": "2026-10-19T14:21:51.995128+00:00",
         "source_sha": "445875fd38b767e8d011c74067e2a01820c3c663",
         "source_worktree_status": "has uncommited changes, branch: research/qim-reviewer-ablation-20261019",
         "training_time_s": null,
-        "benchmark_epochs": 0,
-        "latest_benchmark": null,
+        "benchmark_epochs": 1,
+        "latest_benchmark": {
+          "steps": 14484,
+          "no_grad_steps": 3,
+          "step_mean_ms": 1078.033365397201,
+          "step_median_ms": 1065.1519931852818,
+          "step_p95_ms": 1282.214742898941,
+          "data_mean_ms": 178.5375418311751,
+          "forward_mean_ms": 699.4276357466421,
+          "backward_mean_ms": 347.8076986374899,
+          "peak_allocated_gb": 11.82505750656128,
+          "peak_reserved_gb": 29.955078125
+        },
         "explicit_no_grad_log_events": 3
       },
       "checkpoints": {
@@ -71,8 +82,8 @@
       "log": {
         "status": "present",
         "path": "/data1/liuyeqiang/fg_v2_runs/qim_ablation_sports_20261019/lstm_long.log",
-        "bytes": 1854856,
-        "last_modified_utc": "2026-10-19T13:57:14.291178+00:00",
+        "bytes": 2013892,
+        "last_modified_utc": "2026-10-19T14:21:49.223143+00:00",
         "source_sha": "445875fd38b767e8d011c74067e2a01820c3c663",
         "source_worktree_status": "has uncommited changes, branch: research/qim-reviewer-ablation-20261019",
         "training_time_s": null,
@@ -122,8 +133,8 @@
       "log": {
         "status": "present",
         "path": "/data1/liuyeqiang/fg_v2_runs/qim_ablation_sports_20261019/temporal_attention_long.log",
-        "bytes": 1867374,
-        "last_modified_utc": "2026-10-19T13:57:18.375156+00:00",
+        "bytes": 2027807,
+        "last_modified_utc": "2026-10-19T14:21:48.847145+00:00",
         "source_sha": "445875fd38b767e8d011c74067e2a01820c3c663",
         "source_worktree_status": "has uncommited changes, branch: research/qim-reviewer-ablation-20261019",
         "training_time_s": null,
@@ -173,8 +184,8 @@
       "log": {
         "status": "present",
         "path": "/data1/liuyeqiang/fg_v2_runs/qim_ablation_sports_20261019/mamba_long.log",
-        "bytes": 1754500,
-        "last_modified_utc": "2026-10-19T13:57:12.511188+00:00",
+        "bytes": 1910740,
+        "last_modified_utc": "2026-10-19T14:21:49.015144+00:00",
         "source_sha": "445875fd38b767e8d011c74067e2a01820c3c663",
         "source_worktree_status": "has uncommited changes, branch: research/qim-reviewer-ablation-20261019",
         "training_time_s": null,
@@ -221,3 +232,4 @@
     }
   }
 }
+
