@@ -11,15 +11,16 @@ is offline TrackEval input only after checkpoint and method selection.
 
 The environment, NAS/data audit, split registry, fixed SambaMOTR tracker
 manifests, FlexHook F1 formal baseline, reproducible temporal-module tooling,
-and read-only efficiency measurement tooling have evidence in the cited phase
-reports. The strict FlexHook core run and both YesTrack runs are still live.
+read-only efficiency measurement tooling, and the fail-closed FlexHook
+resume-state patch have evidence in the cited phase reports. The strict
+FlexHook core run and both YesTrack runs are still live.
 The FlexHook frozen-score H0-H8 replay is a diagnostic control over a frozen
 checkpoint; it is not a learned temporal-head result.
 
 The following gates remain open: YesTrack validation and formal evaluation,
 real feature archiving and learned temporal-head selection, proposed-method
 and baseline ablations, multi-seed stability, complete online efficiency and
-resume evidence, and the final reviewer report. Until those manifests exist,
+real patched-run resume evidence, and the final reviewer report. Until those manifests exist,
 the study must not claim a YesTrack metric, a learned-method improvement, a
 multi-seed gain, or a complete final result.
 

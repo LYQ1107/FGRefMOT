@@ -1,0 +1,42 @@
+{
+  "schema_version": "rmot-sports-flexhook-resume-state-0.1",
+  "phase": 75,
+  "title": "FlexHook resume-state patch and verification",
+  "observed_at": "2026-10-20T00:38:46+08:00",
+  "status": "PATCH_READY_REAL_RUN_PENDING",
+  "scope": "isolated FlexHook checkout launched by this research workspace",
+  "source_patch": "patches/flexhook_resume_state.patch",
+  "runtime_hook": "scripts/launch_flexhook.py",
+  "saved_state": [
+    "model",
+    "optimizer",
+    "lr_scheduler",
+    "amp_scaler",
+    "epoch",
+    "python_numpy_torch_cuda_rng_state"
+  ],
+  "resume_compatibility": {
+    "explicit_weights_only_false": true,
+    "single_gpu_scope_verified": true,
+    "sampler_policy": "DistributedSampler.set_epoch(epoch) remains deterministic from the registered seed; worker-local state is not separately serialized",
+    "multi_gpu_resume_verified": false
+  },
+  "current_runs": {
+    "flexhook_f1_internal_core_seed42": {
+      "status": "RUNNING",
+      "patch_applied_before_launch": false,
+      "claim_boundary": "Its checkpoints remain evaluation artifacts; no real resume claim is made for this already-running job."
+    },
+    "future_flexhook_runs": {
+      "patch_applied_before_launch": true,
+      "claim_boundary": "The launcher fails closed if the tracked patch cannot be applied or verified."
+    }
+  },
+  "verification": {
+    "patch_idempotence_test": "tests/test_flexhook_resume_patch.py::test_flexhook_resume_patch_is_idempotent",
+    "payload_restore_test": "tests/test_flexhook_resume_patch.py::test_flexhook_resume_payload_restores_training_state",
+    "result": "2 passed",
+    "real_training_checkpoint_resume": "PENDING_NEXT_PATCHED_FLEXHOOK_RUN"
+  },
+  "claim_boundary": "This phase closes the code and unit-test gap, but does not claim real-run recovery until a patched FlexHook checkpoint is produced and resumed."
+}

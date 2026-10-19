@@ -1,0 +1,60 @@
+--- a/utils.py
++++ b/utils.py
+@@ -1,7 +1,9 @@
+ 
+ import os
++import random
+ import torch
+ import torch.distributed as dist
++import numpy as np
+ 
+ try:
+     from torch._six import inf
+@@ -18,7 +20,7 @@
+         checkpoint = torch.hub.load_state_dict_from_url(
+             config.MODEL.RESUME, map_location='cpu', check_hash=True)
+     else:
+-        checkpoint = torch.load(config.MODEL.RESUME, map_location='cpu')
++        checkpoint = torch.load(config.MODEL.RESUME, map_location='cpu', weights_only=False)
+     msg = model.load_state_dict(checkpoint['model'], strict=False)
+     logger.info(msg)
+     max_accuracy = 0.0
+@@ -30,6 +32,14 @@
+         config.freeze()
+         if 'scaler' in checkpoint:
+             loss_scaler.load_state_dict(checkpoint['scaler'])
++        rng_state = checkpoint.get('rng_state')
++        if rng_state:
++            random.setstate(rng_state['python'])
++            np.random.set_state(rng_state['numpy'])
++            torch.set_rng_state(rng_state['torch'])
++            cuda_state = rng_state.get('cuda')
++            if cuda_state is not None and torch.cuda.is_available():
++                torch.cuda.set_rng_state_all(cuda_state)
+         logger.info(f"=> loaded successfully '{config.MODEL.RESUME}' (epoch {checkpoint['epoch']})")
+         if 'max_accuracy' in checkpoint:
+             max_accuracy = checkpoint['max_accuracy']
+@@ -284,13 +294,20 @@
+ 
+ def save_checkpoint(config, epoch, model, max_accuracy, optimizer, lr_scheduler, loss_scaler, logger,F1,bestnumber=None):
+     save_state = {'model': model.state_dict(),
+-                  #'optimizer': optimizer.state_dict(),
++                  'optimizer': optimizer.state_dict(),
+                   'lr_scheduler': lr_scheduler.state_dict(),
+                   'max_accuracy': max_accuracy,
+                   'F1':F1,
+-                  #'scaler': loss_scaler.state_dict(),
++                  'scaler': loss_scaler.state_dict(),
+                   'epoch': epoch,
+-                  'config': config}
++                  'config': config,
++                  'resume_schema': 'fgrefmot-flexhook-resume-v1',
++                  'rng_state': {
++                      'python': random.getstate(),
++                      'numpy': np.random.get_state(),
++                      'torch': torch.get_rng_state(),
++                      'cuda': torch.cuda.get_rng_state_all() if torch.cuda.is_available() else None,
++                  }}
+ 
+     if bestnumber is not None:
+         save_path = os.path.join(config.OUTPUT, f'ckpt_epoch_best_{bestnumber}.pth')

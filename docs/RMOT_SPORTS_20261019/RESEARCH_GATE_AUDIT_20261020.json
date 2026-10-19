@@ -1,6 +1,6 @@
 {
   "schema_version": "rmot-sports-gate-audit-0.1",
-  "observed_at": "2026-10-20T00:18:15+08:00",
+  "observed_at": "2026-10-20T00:38:46+08:00",
   "status": "IN_PROGRESS",
   "workspace": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019",
   "branch": "research/sports-rmot-strong-baselines-20261019",
@@ -84,9 +84,10 @@
         "docs/STORAGE_PLAN.md",
         "docs/RMOT_SPORTS_20261019/PHASE1_CHECKPOINT_ARCHIVE_SMOKE.json",
         "docs/RMOT_SPORTS_20261019/PHASE70_FLEXHOOK_INTERNAL_CORE_TRAINING.json",
-        "docs/RMOT_SPORTS_20261019/PHASE74_EFFICIENCY_PROTOCOL.json"
+        "docs/RMOT_SPORTS_20261019/PHASE74_EFFICIENCY_PROTOCOL.json",
+        "docs/RMOT_SPORTS_20261019/PHASE75_FLEXHOOK_RESUME_STATE.json"
       ],
-      "claim_boundary": "NAS-direct artifact storage and synthetic archive checks are recorded; measurement tooling is ready, but final online FPS, peak-memory comparison and real strict-run resume verification remain outstanding."
+      "claim_boundary": "NAS-direct artifact storage and synthetic archive checks are recorded; measurement tooling and a fail-closed resume patch are ready, but final online FPS, peak-memory comparison and a real patched strict-run resume remain outstanding."
     },
     {
       "id": "I_REPORT_AND_REMOTE_SYNC",

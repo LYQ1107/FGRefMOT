@@ -12,8 +12,39 @@ from __future__ import annotations
 import argparse
 import os
 import runpy
+import subprocess
 import sys
 from pathlib import Path
+
+
+RESUME_PATCH = Path(__file__).resolve().parents[1] / "patches" / "flexhook_resume_state.patch"
+
+
+def _apply_flexhook_resume_patch(upstream_root: Path) -> None:
+    """Install the tracked resume-state patch in the ignored vendor checkout.
+
+    The patch is applied only to the isolated FlexHook checkout used by this
+    research workspace.  A marker makes repeated launches idempotent, while a
+    patch failure is fatal instead of silently changing resume semantics.
+    """
+
+    target = upstream_root / "utils.py"
+    marker = "resume_schema': 'fgrefmot-flexhook-resume-v1'"
+    if marker in target.read_text(encoding="utf-8"):
+        return
+    if not RESUME_PATCH.is_file():
+        raise FileNotFoundError(f"FlexHook resume patch missing: {RESUME_PATCH}")
+    result = subprocess.run(
+        ["patch", "-p1", "--forward", "--silent"],
+        cwd=upstream_root,
+        input=RESUME_PATCH.read_bytes(),
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        check=False,
+    )
+    if result.returncode != 0 or marker not in target.read_text(encoding="utf-8"):
+        detail = (result.stderr or result.stdout).decode("utf-8", errors="replace")
+        raise RuntimeError(f"could not apply FlexHook resume patch: {detail}")
 
 
 def _run_flexhook_in_process(command: list[str], runtime_root: Path) -> int | None:
@@ -39,6 +70,7 @@ def _run_flexhook_in_process(command: list[str], runtime_root: Path) -> int | No
         sys.path.insert(0, str(upstream_root))
     from scripts.transformers_compat import install_legacy_tokenizer_alias
 
+    _apply_flexhook_resume_patch(upstream_root)
     install_legacy_tokenizer_alias()
     os.chdir(runtime_root)
     sys.argv = [str(script), *command[2:]]
