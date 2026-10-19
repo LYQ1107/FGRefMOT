@@ -8,6 +8,7 @@ without changing the frozen baseline source tree.
 from .evidence_buffer import EvidenceBuffer, EvidenceSnapshot
 from .reliability_gate import ReliabilityGate, ReliabilityWeights
 from .temporal_referring import FLEXHOOK_VARIANTS, TemporalReferringHead
+from .adapter import CausalSequenceOutput, TemporalEvidenceAdapter, run_causal_sequence
 
 __all__ = [
     "EvidenceBuffer",
@@ -16,4 +17,7 @@ __all__ = [
     "ReliabilityWeights",
     "TemporalReferringHead",
     "FLEXHOOK_VARIANTS",
+    "CausalSequenceOutput",
+    "TemporalEvidenceAdapter",
+    "run_causal_sequence",
 ]

@@ -1,0 +1,39 @@
+{
+  "schema_version": "rmot-sports-phase-0.1",
+  "phase": 68,
+  "title": "FlexHook learned temporal sequence adapter integration path",
+  "status": "IMPLEMENTED_CPU_TESTED_WAIT_FOR_BASELINE_CHECKPOINT",
+  "package": "adapters/flexhook_temporal/adapter.py",
+  "protocol": {
+    "input_features": "caller-provided per-frame candidate features",
+    "current_shape": "[T,N,D]",
+    "bbox_shape": "[T,N,4]",
+    "language_shape": "[N,L] or [T,N,L]",
+    "base_logits_shape": "[T,N], [T,N,1] or [T,N,2]",
+    "track_ids_shape": "[N] or [T,N]",
+    "frame_order": "strictly increasing per expression/track key",
+    "gt_usage": "none during adapter execution"
+  },
+  "causal_state": {
+    "identity": "expression-scoped momentum state",
+    "dynamic": "causal fixed-window feature history",
+    "reliability": "detection, visibility, local quality, identity consistency and candidate conflict",
+    "future_prefix_invariant": true,
+    "candidate_normalization": false
+  },
+  "fusion": {
+    "two_class_base_logits": "antisymmetric learned residual",
+    "one_class_or_scalar_base_logits": "same-shape residual",
+    "no_base_logits": "independent temporal logit"
+  },
+  "validation": {
+    "test_path": "tests/test_flexhook_temporal.py",
+    "test_count": 6,
+    "status": "PASS",
+    "compileall": "PASS",
+    "upstream_checkout_modified": false
+  },
+  "metrics_claimed": false,
+  "selection_status": "WAIT_FOR_YESTRACK_FORMAL_AND_INTERNAL_BASELINES",
+  "next_gate": "train_and_select_real_temporal_checkpoint_on_internal_train_core_and_internal_val"
+}

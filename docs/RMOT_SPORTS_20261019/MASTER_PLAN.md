@@ -29,8 +29,9 @@ and the frozen-checkpoint H0–H8 prebaseline diagnostic replay are complete and
 recorded in Phases 66–67. The H0–H8 metrics are evidence only; the proposed
 method gate remains closed until the formal YesTrack baseline exists. Watchers
 are registered for the YesTrack post-training evaluations and score-level
-ablations. The learned temporal module package is CPU-tested but has not yet
-been attached to a trained checkpoint, so it has no claimed metric.
+ablations. The learned temporal module package now has a CPU-tested causal
+sequence adapter, but it has not yet been trained or attached to a checkpoint,
+so it has no claimed metric.
 
 The remaining gates are YesTrack training and formal/internal evaluation,
 formal H0–H8/YB score and learned-method ablations after the baseline gate,

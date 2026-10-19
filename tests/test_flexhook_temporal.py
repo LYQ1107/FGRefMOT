@@ -2,7 +2,13 @@ import unittest
 
 import torch
 
-from adapters.flexhook_temporal import EvidenceBuffer, ReliabilityGate, TemporalReferringHead
+from adapters.flexhook_temporal import (
+    EvidenceBuffer,
+    ReliabilityGate,
+    TemporalEvidenceAdapter,
+    TemporalReferringHead,
+    run_causal_sequence,
+)
 
 
 class FlexHookTemporalTest(unittest.TestCase):
@@ -97,7 +103,46 @@ class FlexHookTemporalTest(unittest.TestCase):
             # N.  This head emits one Bernoulli logit per candidate instead.
             self.assertFalse(torch.allclose(logits.sum(dim=1), torch.ones(2, 1)))
 
+    def test_adapter_preserves_two_class_contract(self):
+        torch.manual_seed(5)
+        adapter = TemporalEvidenceAdapter(feature_dim=6, language_dim=5, hidden_dim=8)
+        current = torch.randn(2, 3, 6)
+        language = torch.randn(2, 5)
+        base = torch.randn(2, 3, 2)
+        output = adapter(current, language, base_logits=base)
+        self.assertEqual(output.shape, base.shape)
+        self.assertTrue(torch.isfinite(output).all())
+        # The adapter adds an antisymmetric residual and does not normalize over
+        # candidates, preserving independent Bernoulli decisions.
+        self.assertTrue(torch.allclose((output - base).sum(dim=-1), torch.zeros(2, 3), atol=1e-6))
+
+    def test_sequence_prefix_is_independent_of_future_frames(self):
+        torch.manual_seed(6)
+        adapter = TemporalEvidenceAdapter(feature_dim=4, language_dim=3, hidden_dim=6)
+        adapter.eval()
+        current = torch.randn(5, 2, 4)
+        bboxes = torch.randn(5, 2, 4)
+        track_ids = torch.tensor([10, 11])
+        language = torch.randn(2, 3)
+        base = torch.randn(5, 2, 2)
+        first = run_causal_sequence(
+            adapter, current=current, bboxes=bboxes, track_ids=track_ids,
+            language=language, namespace="seq/expr", base_logits=base,
+        )
+        explicit_no_conflict = run_causal_sequence(
+            adapter, current=current, bboxes=bboxes, track_ids=track_ids,
+            language=language, namespace="seq/expr", base_logits=base,
+            candidate_conflict=torch.zeros(5, 2),
+        )
+        self.assertTrue(torch.allclose(first, explicit_no_conflict, atol=1e-6))
+        changed = current.clone()
+        changed[3:] = changed[3:] + 100.0
+        second = run_causal_sequence(
+            adapter, current=changed, bboxes=bboxes, track_ids=track_ids,
+            language=language, namespace="seq/expr", base_logits=base,
+        )
+        self.assertTrue(torch.allclose(first[:3], second[:3], atol=1e-6))
+
 
 if __name__ == "__main__":
     unittest.main()
-
