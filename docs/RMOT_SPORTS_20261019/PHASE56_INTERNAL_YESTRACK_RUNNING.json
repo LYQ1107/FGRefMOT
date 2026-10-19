@@ -1,0 +1,39 @@
+{
+  "phase": 56,
+  "title": "Internal YesTrack core training running",
+  "status": "TRAINING_RUNNING",
+  "run_id": "yestrack_y1_sports_core_lora_seed42",
+  "run_manifest": "runs/gpu/yestrack_y1_sports_core_lora_seed42/RUN_MANIFEST.json",
+  "launcher_started_at": "2026-10-19T18:38:38+08:00",
+  "physical_gpu": 2,
+  "cuda_visible_devices": "2",
+  "protocol": {
+    "train_split": "internal_selection_core_train_17_videos",
+    "validation_split": "internal_selection_val_5_videos",
+    "train_videos": 17,
+    "train_expressions": 136,
+    "validation_videos": 5,
+    "validation_expressions": 45,
+    "label_policy": "EXPLICIT_FRAME_KEYS_ONLY; MISSING_KEYS_UNKNOWN",
+    "seed": 42,
+    "batch_size": 8,
+    "epochs": 1,
+    "learning_rate": 0.000005,
+    "negative_downsample": 0.5
+  },
+  "preflight": {
+    "samples": 569159,
+    "explicit_negative_samples_added": 236561,
+    "unknown_samples_skipped": 163091,
+    "optimizer_steps_estimate": 71145
+  },
+  "estimate": {
+    "training_hours": "6.8-7.5",
+    "end_to_end_hours": "7-8"
+  },
+  "storage": {
+    "mode": "NAS_DIRECT_THROUGH_SSHFS_MOUNT",
+    "run_root": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs"
+  },
+  "metrics_claimed": false
+}
