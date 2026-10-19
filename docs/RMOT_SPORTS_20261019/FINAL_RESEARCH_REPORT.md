@@ -26,7 +26,7 @@ training, checkpoint selection, or threshold tuning.
 | HOTA/AssA/IDF1 improvement | NOT_RUN |
 | hard-subset improvement | NOT_RUN; labels insufficient for current candidates |
 | generalization claim | NOT_SUPPORTED until multi-seed and final gates |
-| FPS change | NOT_RUN for complete pipeline |
+| FlexHook H8 complete-pipeline FPS | 1.908807 on the 19-video historical split; YesTrack comparison pending |
 | total GPU hours | PENDING final accounting |
 | local peak storage | PENDING final accounting |
 | NAS checkpoint root | `/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019` |

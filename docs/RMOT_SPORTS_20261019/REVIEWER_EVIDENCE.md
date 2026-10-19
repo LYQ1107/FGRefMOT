@@ -13,10 +13,13 @@ Evidence currently supports the following statements:
   selection succeeded, while its historical test evaluation is still running.
 - A causal FlexHook H8 temporal head was actually trained on train-core data,
   selected on internal validation, and evaluated on the historical test.
+- The timed common tracker and selected FlexHook H8 historical run have a
+  measured complete-pipeline throughput of 1.908807 FPS; the analogous
+  YesTrack timing remains pending.
 - NAS-direct checkpoints and a real FlexHook resume smoke test are verified.
 
 The following claims are deliberately withheld: a completed YesTrack formal
 metric, a best baseline across both models, an independent proposed-method
-gain, multi-seed stability, complete-pipeline speed comparison, and a verified
-S1–S4 semantic improvement. The authoritative gate state is
+gain, multi-seed stability, a complete cross-method speed comparison, and a
+verified S1–S4 semantic improvement. The authoritative gate state is
 `RESEARCH_GATE_AUDIT_20261020.json`.
