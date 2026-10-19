@@ -1,0 +1,19 @@
+{
+  "phase": 55,
+  "title": "Internal validation tracker completed",
+  "status": "TRACKER_SUCCEEDED_INTERNAL_EVAL_TREE_PREPARED",
+  "tracker_manifest": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/assets/pretrained/common_tracker/sambamotr_dab_refersports_internal_val_20261019/TRACKER_RUN_MANIFEST.json",
+  "tracker": {
+    "status": "SUCCEEDED",
+    "sequence_count": 5,
+    "physical_gpu": 2,
+    "used_ground_truth": false,
+    "split": "sports-val-internal-5-videos"
+  },
+  "gt_manifest_root": "runs/refer_sports_mot_gt_internal_val_20261019",
+  "gt_expression_count": 45,
+  "flexhook_eval_root": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_internal_val_eval_20261019",
+  "flexhook_eval_status": "PREPARED_NO_MODEL_RUN",
+  "running_yestrack_interpretation": "full_22_training_historical_comparison_only",
+  "internal_metrics_claimed": false
+}
