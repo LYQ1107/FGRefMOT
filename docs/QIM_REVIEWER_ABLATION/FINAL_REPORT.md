@@ -106,3 +106,13 @@ power-meter measurements; 20k/60k/120k fields remain missing until their actual
 checkpoints and logs exist. No ETA or extrapolated cost is presented as a
 measured result.
 
+## Long-run no-gradient handling
+
+The live long-run logs currently expose explicit QIM-only no-gradient batches at
+Standard steps 1535, 3316, and 13539, and Original Mamba steps 3624 and 12472.
+These are the intentional `NO_GRAD_STEP` branch in `engine.py`: the loss has no
+trainable QIM path for that batch, so the optimizer step is skipped rather than
+calling backward on a scalar without an autograd graph. They are recorded in
+`training_cost_20261019.json` and are not treated as crashes or fabricated
+metrics.
+
