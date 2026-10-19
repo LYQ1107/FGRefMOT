@@ -8,6 +8,9 @@ SambaMOTR control.  It records pretraining, Sports training, physical tracker,
 referring model, checkpoint path, and the requested HOTA/DetA/AssA/IDF1/IDSW,
 Ref-F1 and FPS fields.
 
+It also records `evaluation_split`, so historical 19-video comparison values
+cannot be mistaken for the internal selection validation set.
+
 The builder is conservative by design: it emits `NOT_RUN` until a completed
 formal-evaluation manifest exists.  It never converts training loss, an
 internal referring score, or the earlier FlexHook training F1 into a formal

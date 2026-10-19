@@ -15,6 +15,7 @@
     "SambaMOTR common-tracker-control"
   ],
   "metric_fields": [
+    "evaluation_split",
     "validation_hota",
     "validation_deta",
     "validation_assa",

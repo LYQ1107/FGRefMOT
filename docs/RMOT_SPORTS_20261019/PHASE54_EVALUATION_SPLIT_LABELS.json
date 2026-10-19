@@ -1,0 +1,18 @@
+{
+  "phase": 54,
+  "title": "Explicit evaluation-split labels",
+  "status": "READY_FOR_UNAMBIGUOUS_METRIC_REPORTING",
+  "baseline_table_change": {
+    "new_column": "evaluation_split",
+    "historical_formal_eval_label": "HISTORICAL_TEST_19",
+    "paper_row_label": "PAPER_REPORTED",
+    "internal_selection_label": "SPORTS_VAL_INTERNAL_5"
+  },
+  "metric_policy": "successful_formal_trackeval_manifests_only",
+  "test_tuning_from_historical_19_video_set": false,
+  "validation": {
+    "targeted_tests": "6 passed",
+    "py_compile": "passed",
+    "git_diff_check": "passed"
+  }
+}
