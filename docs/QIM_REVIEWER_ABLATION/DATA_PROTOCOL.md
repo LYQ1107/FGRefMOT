@@ -10,9 +10,9 @@ Verified archive facts:
 - Expression IDs use the global `labels_with_ids` namespace.
 - Positive annotations are `TRUE`; absent/outside-interval states are `UNKNOWN`, not explicit negatives.
 
-The development protocol is intended to split the 22 Train videos by source video or match group. The final historical protocol retrains the selected configuration on all 22 Train videos and evaluates once on the fixed 19-video historical Test split. Thresholds and checkpoint selection must be frozen before Test evaluation.
+The development protocol uses the fixed video split in `DEV_SPLIT_TRAIN.txt` (18 videos) and `DEV_SPLIT_VAL.txt` (4 videos), selected deterministically from the 22 manifest Train videos. The final historical protocol retrains the selected configuration on all 22 Train videos and evaluates once on the fixed 19-video historical Test split. Thresholds and checkpoint selection must be frozen before Test evaluation.
 
-This branch updates `datasets/refer_kitti.py` so legal clip starts are built per source video and cannot cross a video boundary. The original binary `is_ref` behavior is preserved for compatibility; the Sports manifest's `UNKNOWN` semantics still require a future Sports adapter/loss mask before formal training.
+`datasets/refer_sports.py` converts MOT-style SportsMOT images and global `labels_with_ids` into the original FGRefMOT clip interface. It enforces same-video clips, deterministic expression selection per epoch/sample, and stable video-offset track IDs. `sports_ref_protocol=unknown_mask` marks only explicitly positive expression IDs as valid referring targets; absent IDs remain UNKNOWN and are excluded from the referring loss. `legacy_binary` is available only as a separately recorded compatibility control.
 
-Current blocker: the manifest's image root and labels are not mounted locally, so neither the development nor final protocol can be executed yet.
+The test image tree is present, but the published test split has no local GT labels. Formal development metrics can therefore run on the fixed four-video development validation split; final historical Test tracking metrics remain blocked until the corresponding GT is supplied.
 

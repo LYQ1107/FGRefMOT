@@ -44,7 +44,14 @@ class CheckpointFunction(torch.autograd.Function):
         for i in range(len(ctx.input_tensors)):
             if ctx.input_tensors[i].requires_grad:
                 to_autograd.append(ctx.input_tensors[i])
-        output_tensors, output_grads = zip(*filter(lambda t: t[0].requires_grad, zip(output_tensors, output_grads)))
+        grad_pairs = [(tensor, grad) for tensor, grad in zip(output_tensors, output_grads)
+                      if tensor.requires_grad]
+        # A frozen-prefix frame can legitimately have no differentiable
+        # output in QIM-only/partial-freeze training.  The original helper
+        # raised on zip() here instead of returning an all-None gradient.
+        if not grad_pairs:
+            return (None, None) + (None,) * (len(ctx.input_tensors) + len(ctx.input_params))
+        output_tensors, output_grads = zip(*grad_pairs)
         input_grads = torch.autograd.grad(output_tensors, to_autograd + ctx.input_params, output_grads, allow_unused=True)
         input_grads = list(input_grads)
         for i in range(len(ctx.input_tensors)):

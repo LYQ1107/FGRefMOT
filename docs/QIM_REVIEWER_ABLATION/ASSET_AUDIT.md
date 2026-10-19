@@ -21,9 +21,9 @@ Audit date: 2026-10-19 (UTC). Study branch: `research/qim-reviewer-ablation-2026
 
 ## NAS and data state
 
-The active mount is `Valadmin@127.0.0.1:/home/A100` at `/data1/liuyeqiang/nas/A100`. The known archive contains the original TempMam trees and the separate Sports baseline audit, but not a local SportsMOT image/label tree.
+The active mount is `Valadmin@127.0.0.1:/home/A100` at `/data1/liuyeqiang/nas/A100`. The usable local SportsMOT publish tree is `/data/DATASETS/TRACKING/JDE/SportsMOT/sportsmot_publish` (about 35 GB), with images, `gt/gt.txt`, `seqinfo.ini`, and the global `labels_with_ids` tree. Expressions are at `/data1/liuyeqiang/SportsMOT/expression`.
 
-The local `/data1/liuyeqiang/SportsMOT` contains 41 expression directories and 323 JSON expressions, but zero image files and zero `labels_with_ids` files. The canonical manifest points to `/data3/liuyeqiang/datasets/SportsMOT/sportsmot_publish/dataset`, which is absent on this server. The strong-baseline audit also marks target task checkpoints and a provenance-complete common SportsMOT tracker as missing.
+The local audit now verifies 45/45 train, 45/45 val, and 150/150 test video directories; 323/323 expression JSONs and 323/323 manifest IDs match; all 169,354 positive expression frames checked against `labels_with_ids` match their requested global IDs. The canonical manifest still records 22 historical Train videos/181 expressions and 19 historical Test videos/142 expressions.
 
-Decision: no Refer-Sports tracking training or final evaluation was started, and no HOTA/DetA/AssA/IDF1/IDSW value is fabricated.
+The published test split has images but no local ground-truth label files. Therefore development training/validation uses the 22 manifest Train videos, while historical Test inference can be generated but cannot honestly receive HOTA/DetA/AssA/IDF1/IDSW without a matching GT release. The detailed audit is `reports/qim_ablation/sportsmot_audit_20261019.json`.
 

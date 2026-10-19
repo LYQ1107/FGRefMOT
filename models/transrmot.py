@@ -185,11 +185,18 @@ class ClipMatcher(SetCriterion):
         return losses
 
     def loss_refers(self,  outputs, gt_instances: List[Instances], indices: List[tuple], num_boxes):
-
         filtered_idx = []
-        for src_per_img, tgt_per_img in indices:
+        for gt_per_img, (src_per_img, tgt_per_img) in zip(gt_instances, indices):
             keep = tgt_per_img != -1
-            filtered_idx.append((src_per_img[keep], tgt_per_img[keep]))
+            src_per_img = src_per_img[keep]
+            tgt_per_img = tgt_per_img[keep]
+            if gt_per_img.has('is_ref_valid'):
+                valid = gt_per_img.is_ref_valid[tgt_per_img].bool()
+                src_per_img = src_per_img[valid]
+                tgt_per_img = tgt_per_img[valid]
+            filtered_idx.append((src_per_img, tgt_per_img))
+        if not any(len(src) for src, _ in filtered_idx):
+            return {'loss_refer': outputs['pred_refers'].sum() * 0.0}
         indices = filtered_idx
         idx = self._get_src_permutation_idx(indices)
         src_refs = outputs['pred_refers'][idx]
@@ -201,7 +208,7 @@ class ClipMatcher(SetCriterion):
                                          gt_labels_target.flatten(1),
                                          alpha=0.25,
                                          gamma=2,
-                                         num_boxes=num_boxes, mean_in_dim1=False)
+                                         num_boxes=max(int(target_refs.numel()), 1), mean_in_dim1=False)
             loss_ce = loss_ce.sum()
         else:
             loss_ce = F.cross_entropy(src_refs.transpose(1, 2), gt_labels_target, self.empty_weight)

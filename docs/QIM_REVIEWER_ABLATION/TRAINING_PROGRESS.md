@@ -10,9 +10,12 @@
 | Original Mamba strict load | PASS | `test_checkpoint_loading.py` and full-model probe |
 | QIM-only latency | COMPLETE | `qim_latency_20261019.json` |
 | Full-model engineering probe | COMPLETE | `full_model_probe_active20_20261019.json` |
-| 200-step full FGRefMOT training | NOT RUN | Refer-Sports image/label root unavailable |
-| 5k/20k/60k/120k training nodes | NOT RUN | Same external asset blocker |
-| Refer-Sports validation/test HOTA/DetA/AssA/IDF1/IDSW | NOT RUN | Same external asset blocker |
+| SportsMOT + expression audit | PASS | `sportsmot_audit_20261019.json`; 169,354 positive frames matched |
+| 1-step real SportsMOT full-model smoke | PASS | QIM-only Standard; 2.293 s/step; 4.72 GB peak allocated |
+| 200-step QIM-only four-way runs | COMPLETE | V100 GPUs 2–5; fixed 4-frame clips; all four step-200 checkpoints present |
+| Step-200 development smoke | COMPLETE | fixed 4-video split, 30 frames/video, one expression/video; JSON results committed beside this report |
+| 5k/20k/60k/120k training nodes | RUNNING | all four variants resumed exactly from step 200; milestone saves requested at 5k/20k/60k/120k |
+| Historical Test HOTA/DetA/AssA/IDF1/IDSW | BLOCKED | test images exist, corresponding local GT labels do not |
 
-No training result is marked `FAIR_RETRAINED` or `FINAL_TEST` in this snapshot. The code and step-based controls are ready for activation after the data and provenance-complete tracker assets are supplied.
+The four 200-step benchmark logs and checkpoints are under `/data1/liuyeqiang/fg_v2_runs/qim_ablation_sports_20261019/`. No result is marked `FINAL_TEST`; the long-run checkpoints will be promoted only after their actual logs and validation outputs are preserved.
 

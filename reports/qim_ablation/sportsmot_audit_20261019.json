@@ -1,0 +1,46 @@
+{
+  "sportsmot_root": "/data/DATASETS/TRACKING/JDE/SportsMOT/sportsmot_publish",
+  "expression_root": "/data1/liuyeqiang/SportsMOT/expression",
+  "manifest": "/data1/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/metadata/datasets/refer_sports_manifest_global_ids_rev2.json",
+  "split_summary": {
+    "train": {
+      "listed_videos": 45,
+      "video_dirs": 45,
+      "image_files": 28574,
+      "gt_txt_files": 45
+    },
+    "val": {
+      "listed_videos": 45,
+      "video_dirs": 45,
+      "image_files": 26970,
+      "gt_txt_files": 45
+    },
+    "test": {
+      "listed_videos": 150,
+      "video_dirs": 150,
+      "image_files": 94835,
+      "gt_txt_files": 0
+    }
+  },
+  "manifest_records": 323,
+  "manifest_videos": 41,
+  "manifest_split_counts": {
+    "train": 181,
+    "test": 142
+  },
+  "local_expression_files": 323,
+  "local_expression_videos": 41,
+  "expression_ids_missing_locally": [],
+  "local_expression_ids_not_in_manifest": [],
+  "positive_label_checks": {
+    "matched_frames": 169354,
+    "labelled_frames": 169354
+  },
+  "missing_expression_files": [],
+  "missing_global_label_dirs": [],
+  "missing_global_label_frames_count": 0,
+  "missing_global_label_frames_examples": [],
+  "positive_id_mismatches_count": 0,
+  "positive_id_mismatch_examples": [],
+  "protocol_note": "The expression manifest defines positive target IDs; absent IDs are UNKNOWN. The global labels_with_ids namespace is required for expression ID matching. The published test split has images but no local GT labels, so it is not a supervised training or HOTA ground-truth source."
+}

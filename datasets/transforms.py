@@ -38,6 +38,8 @@ def crop_mot(image, target, region):
 
     if 'is_ref' in target:
         fields.append('is_ref')
+    if 'is_ref_valid' in target:
+        fields.append('is_ref_valid')
 
     if "boxes" in target:
         boxes = target["boxes"]
@@ -85,6 +87,8 @@ def random_shift(image, target, region, sizes):
 
     if 'is_ref' in target:
         fields.append('is_ref')
+    if 'is_ref_valid' in target:
+        fields.append('is_ref_valid')
 
     if "boxes" in target:
         boxes = target["boxes"]

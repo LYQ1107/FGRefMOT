@@ -159,6 +159,17 @@ def get_args_parser():
 
     # end-to-end rmot settings.
     parser.add_argument('--rmot_path', default='/data_2/zyn/refer-kitti-v2', type=str)
+    parser.add_argument('--sportsmot_root', default='/data/DATASETS/TRACKING/JDE/SportsMOT/sportsmot_publish', type=str)
+    parser.add_argument('--sports_expression_root', default='/data1/liuyeqiang/SportsMOT/expression', type=str)
+    parser.add_argument('--sports_split', default='train', choices=('train', 'val', 'test'), type=str)
+    parser.add_argument('--sports_video_list', default=None, type=str,
+                        help='optional deterministic subset of video IDs for development validation')
+    parser.add_argument('--sports_ref_protocol', default='unknown_mask',
+                        choices=('unknown_mask', 'legacy_binary'), type=str,
+                        help='Refer-Sports positive-only UNKNOWN handling or historical binary compatibility')
+    parser.add_argument('--sports_manifest',
+                        default='/data1/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/metadata/datasets/refer_sports_manifest_global_ids_rev2.json',
+                        type=str)
     parser.add_argument('--input_video', default='figs/demo.mp4', type=str)
     parser.add_argument('--data_txt_path_train',
                         default='./datasets/data_path/refer-kitti.train', type=str,
@@ -208,6 +219,8 @@ def get_args_parser():
     parser.add_argument('--max_train_steps', default=0, type=int)
     parser.add_argument('--eval_every_steps', default=0, type=int)
     parser.add_argument('--save_every_steps', default=0, type=int)
+    parser.add_argument('--save_steps', default=[], type=int, nargs='*',
+                        help='explicit cumulative steps to checkpoint; overrides save_every_steps when non-empty')
     parser.add_argument('--resume_exact', default='', type=str,
                         help='resume the exact same experiment including optimizer and RNG state')
     parser.add_argument('--benchmark_train', action='store_true', default=False)
@@ -379,7 +392,7 @@ def main(args):
 
     batch_sampler_train = torch.utils.data.BatchSampler(
         sampler_train, args.batch_size, drop_last=True)
-    if args.dataset_file in ['e2e_rmot','e2e_dance']:
+    if args.dataset_file in ['e2e_rmot', 'e2e_rmot_sports', 'e2e_dance']:
         collate_fn = utils.mot_collate_fn
     else:
         collate_fn = utils.collate_fn
@@ -497,7 +510,7 @@ def main(args):
     writer = SummaryWriter(writer_name)
 
     train_func = train_one_epoch
-    if args.dataset_file in ['e2e_rmot','e2e_dance']:
+    if args.dataset_file in ['e2e_rmot', 'e2e_rmot_sports', 'e2e_dance']:
         train_func = train_one_epoch_rmot
         dataset_train.set_epoch(args.start_epoch)
     global_step = 0 if exact_resume is None else int(exact_resume.get('global_step', 0))
@@ -505,9 +518,12 @@ def main(args):
     max_train_steps = args.max_train_steps if args.max_train_steps > 0 else None
 
     def save_step_checkpoint(step, step_in_epoch):
-        if not has_output_dir or args.save_every_steps <= 0:
+        if not has_output_dir or (not args.save_steps and args.save_every_steps <= 0):
             return
-        if step % args.save_every_steps != 0:
+        if args.save_steps:
+            if step not in set(args.save_steps):
+                return
+        elif step % args.save_every_steps != 0:
             return
         utils.save_on_master({
             'model': model_without_ddp.state_dict(),
@@ -558,7 +574,7 @@ def main(args):
                     'args': args,
                 }, checkpoint_path)
 
-        if args.dataset_file in ['e2e_rmot','e2e_dance']:
+        if args.dataset_file in ['e2e_rmot', 'e2e_rmot_sports', 'e2e_dance']:
             dataset_train.step_epoch()
         if max_train_steps is not None and global_step >= max_train_steps:
             print('Reached max_train_steps:', max_train_steps)

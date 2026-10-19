@@ -13,6 +13,7 @@ import torchvision
 
 from .torchvision_datasets import CocoDetection
 from .refer_kitti import build as build_rmot
+from .refer_sports import build as build_sports_rmot
 
 
 def get_coco_api_from_dataset(dataset):
@@ -29,5 +30,7 @@ def build_dataset(image_set, args):
     if args.dataset_file == 'e2e_rmot':
         return build_rmot(image_set, args)
         # return build_rmot_plus(image_set, args)
+    if args.dataset_file == 'e2e_rmot_sports':
+        return build_sports_rmot(image_set, args)
         
     raise ValueError(f'dataset {args.dataset_file} not supported')

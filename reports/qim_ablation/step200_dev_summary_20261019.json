@@ -1,0 +1,57 @@
+{
+  "date": "2026-10-19",
+  "protocol": {
+    "dataset": "SportsMOT",
+    "split": "fixed development validation",
+    "video_list": "docs/QIM_REVIEWER_ABLATION/DEV_SPLIT_VAL.txt",
+    "videos": 4,
+    "frames_per_video": 30,
+    "expressions_per_video": 1,
+    "ref_protocol": "unknown_mask",
+    "metrics": "TrackEval HOTA/CLEAR/Identity plus positive-only referring F1",
+    "note": "Smoke evaluation only; not a final full development or historical Test table."
+  },
+  "runs": {
+    "standard": {
+      "checkpoint": "/data1/liuyeqiang/fg_v2_runs/qim_ablation_sports_20261019/standard/checkpoint_step00000200.pth",
+      "hota": 0.21182747419934073,
+      "hota_05": 0.2213368221639171,
+      "deta": 0.06165328909560803,
+      "assa": 0.7317906519377296,
+      "idf1": 0.11020426421846852,
+      "idsw": 11.5,
+      "referring_f1": 0.08011155425392574
+    },
+    "lstm": {
+      "checkpoint": "/data1/liuyeqiang/fg_v2_runs/qim_ablation_sports_20261019/lstm/checkpoint_step00000200.pth",
+      "hota": 0.12996345995366404,
+      "hota_05": 0.14640520662738127,
+      "deta": 0.09780827776008325,
+      "assa": 0.1741079633837892,
+      "idf1": 0.07766048454209912,
+      "idsw": 41.5,
+      "referring_f1": 0.14136746201826955
+    },
+    "temporal_attention": {
+      "checkpoint": "/data1/liuyeqiang/fg_v2_runs/qim_ablation_sports_20261019/temporal_attention/checkpoint_step00000200.pth",
+      "hota": 0.9077145644820124,
+      "hota_05": 0.9494963126093512,
+      "deta": 0.8723066551543837,
+      "assa": 0.9479683480680847,
+      "idf1": 0.95294270158154,
+      "idsw": 0.0,
+      "referring_f1": 0.47388059701492535
+    },
+    "mamba": {
+      "checkpoint": "/data1/liuyeqiang/fg_v2_runs/qim_ablation_sports_20261019/mamba/checkpoint_step00000200.pth",
+      "hota": 0.9338129676257898,
+      "hota_05": 0.9786637182685949,
+      "deta": 0.9236994350621943,
+      "assa": 0.9444591157265065,
+      "idf1": 0.9854576955635266,
+      "idsw": 0.0,
+      "referring_f1": 0.4942396313364055,
+      "no_grad_steps": 1
+    }
+  }
+}

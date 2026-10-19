@@ -134,6 +134,7 @@ def train_one_epoch_rmot(model: torch.nn.Module, criterion: torch.nn.Module,
     data_times = []
     forward_times = []
     backward_times = []
+    no_grad_steps = 0
     previous_step_end = time.perf_counter()
     for data_dict in metric_logger.log_every(data_loader, print_freq, header):
         if skip_steps > 0:
@@ -178,14 +179,26 @@ def train_one_epoch_rmot(model: torch.nn.Module, criterion: torch.nn.Module,
             sys.exit(1)
 
         optimizer.zero_grad(set_to_none=True)
-        backward_start = time.perf_counter()
-        losses.backward()
-        backward_times.append(time.perf_counter() - backward_start)
-        if max_norm > 0:
-            grad_total_norm = torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm)
+        if losses.requires_grad:
+            backward_start = time.perf_counter()
+            losses.backward()
+            backward_times.append(time.perf_counter() - backward_start)
+            if max_norm > 0:
+                grad_total_norm = torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm)
+            else:
+                grad_total_norm = utils.get_total_grad_norm(model.parameters(), max_norm)
+            optimizer.step()
         else:
-            grad_total_norm = utils.get_total_grad_norm(model.parameters(), max_norm)
-        optimizer.step()
+            # QIM-only/partial-freeze training can produce a valid batch with
+            # no active track reaching the trainable module.  Count it as a
+            # no-op cumulative step instead of calling backward on a scalar
+            # without an autograd graph.
+            no_grad_steps += 1
+            backward_times.append(0.0)
+            grad_total_norm = torch.zeros((), device=losses.device)
+            if no_grad_steps <= 3:
+                print('NO_GRAD_STEP', global_step + iter_id + 1,
+                      'loss has no trainable QIM path; optimizer step skipped')
         if step_callback is not None:
             step_callback(global_step + iter_id + 1, iter_id + 1)
 
@@ -238,6 +251,7 @@ def train_one_epoch_rmot(model: torch.nn.Module, criterion: torch.nn.Module,
     print("Averaged stats:", metric_logger)
     stats = {k: meter.global_avg for k, meter in metric_logger.meters.items()}
     stats['_steps'] = iter_id
+    stats['_no_grad_steps'] = no_grad_steps
     if benchmark and step_times:
         step_array = np.asarray(step_times, dtype=np.float64)
         data_array = np.asarray(data_times, dtype=np.float64)
@@ -245,6 +259,7 @@ def train_one_epoch_rmot(model: torch.nn.Module, criterion: torch.nn.Module,
         backward_array = np.asarray(backward_times, dtype=np.float64)
         benchmark_stats = {
             'steps': int(iter_id),
+            'no_grad_steps': int(no_grad_steps),
             'step_mean_ms': float(step_array.mean() * 1000.0),
             'step_median_ms': float(np.median(step_array) * 1000.0),
             'step_p95_ms': float(np.percentile(step_array, 95) * 1000.0),
