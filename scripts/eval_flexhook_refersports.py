@@ -300,6 +300,7 @@ def write_predictions(
     manifest: dict[str, Any],
     tracker_root: Path,
     output_root: Path,
+    save_scores: bool = False,
 ) -> int:
     records = manifest["records"]
     # Keep records as a list: one video can contain duplicate expression text
@@ -319,6 +320,9 @@ def write_predictions(
         prediction_rows: dict[str, list[list[float | int]]] = {
             expression: [] for expression in expression_names
         }
+        score_rows: dict[str, list[list[float | int]]] = {
+            expression: [] for expression in expression_names
+        }
         for object_id, frame_map in video_scores.items():
             for frame_id, expression_scores in frame_map.items():
                 try:
@@ -331,28 +335,58 @@ def write_predictions(
                     continue
                 for expression, score in expression_scores.items():
                     expression_name = str(expression)
-                    if expression_name not in prediction_rows or int(np.argmax(np.asarray(score))) <= 0:
+                    if expression_name not in prediction_rows:
                         continue
-                    prediction_rows[expression_name].append(
-                        [
-                            frame_key,
-                            object_key,
-                            float(track_row[2]),
-                            float(track_row[3]),
-                            float(track_row[4]),
-                            float(track_row[5]),
-                            1,
-                            1,
-                            1,
-                            1,
-                        ]
+                    values = np.asarray(score, dtype=np.float64).reshape(-1)
+                    if values.size < 2:
+                        raise ValueError("FlexHook score must contain at least two class logits")
+                    positive_probability = float(
+                        np.exp(values[1] - np.max(values))
+                        / np.exp(values - np.max(values)).sum()
                     )
+                    score_row = [
+                        frame_key,
+                        object_key,
+                        float(track_row[2]),
+                        float(track_row[3]),
+                        float(track_row[4]),
+                        float(track_row[5]),
+                        positive_probability,
+                        1,
+                        1,
+                        1,
+                    ]
+                    score_rows[expression_name].append(score_row)
+                    if int(np.argmax(values)) > 0:
+                        prediction_rows[expression_name].append(
+                            [
+                                frame_key,
+                                object_key,
+                                float(track_row[2]),
+                                float(track_row[3]),
+                                float(track_row[4]),
+                                float(track_row[5]),
+                                1,
+                                1,
+                                1,
+                                1,
+                            ]
+                        )
         for record in video_records:
             expression = record["expression"]
             values = prediction_rows[expression]
             values.sort(key=lambda row: (int(row[0]), int(row[1])))
             _write_rows(output_root / video / record["expression_dir"] / "predict.txt", values)
+            if save_scores:
+                all_scores = score_rows[expression]
+                all_scores.sort(key=lambda row: (int(row[0]), int(row[1])))
+                _write_rows(
+                    output_root / video / record["expression_dir"] / "predict_scores.txt",
+                    all_scores,
+                )
             record["prediction_rows"] = len(values)
+            if save_scores:
+                record["score_rows"] = len(score_rows[expression])
             written += len(values)
     manifest["status"] = "PREDICTIONS_WRITTEN"
     manifest["prediction_rows"] = written
@@ -373,6 +407,7 @@ def run_flexhook_inference(
     workers: int,
     gpu: int,
     manifest: dict[str, Any],
+    save_scores: bool = False,
 ) -> dict[str, Any]:
     """Run upstream FlexHook inference in test mode on the fixed tracks."""
 
@@ -457,6 +492,7 @@ def run_flexhook_inference(
         manifest=manifest,
         tracker_root=tracker_root,
         output_root=output_root,
+        save_scores=save_scores,
     )
     result = {
         "dataset_count": len(dataset_val),
@@ -464,6 +500,7 @@ def run_flexhook_inference(
         "prediction_rows": written,
         "checkpoint": str(checkpoint),
         "checkpoint_sha256": sha256_file(checkpoint),
+        "save_scores": bool(save_scores),
     }
     dist.destroy_process_group()
     return result
@@ -537,6 +574,11 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--workers", type=int, default=4)
     parser.add_argument("--prepare-only", action="store_true")
     parser.add_argument("--overwrite", action="store_true")
+    parser.add_argument(
+        "--save-scores",
+        action="store_true",
+        help="Also write per-candidate positive probabilities to predict_scores.txt.",
+    )
     parser.add_argument("--json", action="store_true")
     return parser.parse_args(argv)
 
@@ -576,6 +618,7 @@ def main(argv: list[str] | None = None) -> int:
         workers=args.workers,
         gpu=args.gpu,
         manifest=manifest,
+        save_scores=args.save_scores,
     )
     trackeval_result = run_trackeval(manifest=manifest, output_root=output_root)
     payload = {"run": run_result, "trackeval": trackeval_result, "manifest": str(output_root / "FLEXHOOK_EVAL_MANIFEST.json")}

@@ -1,0 +1,18 @@
+{
+  "phase": 62,
+  "title": "causal YesTrack score controls",
+  "status": "IMPLEMENTED_CPU_TESTED_WAIT_FOR_BASELINE",
+  "module": "adapters/temporal_score_control.py",
+  "directory_adapter": "scripts/apply_temporal_score_variant.py",
+  "variants": ["YB0", "YB1", "YB2", "YB3", "YB4", "YB5", "YB6"],
+  "policy": {
+    "ground_truth_read": false,
+    "labels_read": false,
+    "future_frames": false,
+    "expression_namespace": true,
+    "track_gap_reset": true
+  },
+  "test_command": "python -m pytest -q tests/test_temporal_score_variant.py tests/test_temporal_score_control.py",
+  "test_result": "6 passed",
+  "research_metrics": "NOT_RUN_WAIT_FOR_YESTRACK_BASELINE"
+}

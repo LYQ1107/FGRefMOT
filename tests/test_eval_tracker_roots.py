@@ -119,3 +119,30 @@ def test_flexhook_predictions_preserve_duplicate_expressions(tmp_path: Path) -> 
     assert (tmp_path / "out/video/basketball-players__2/predict.txt").read_text() == (
         "1,7,10.0,20.0,30.0,40.0,1,1,1,1\n"
     )
+
+
+def test_flexhook_can_archive_candidate_probabilities_without_changing_binary_rows(tmp_path: Path) -> None:
+    module = _load_script("eval_flexhook_refersports.py")
+    tracker = tmp_path / "video.txt"
+    tracker.write_text("1,7,10,20,30,40,1,1,1,1\n", encoding="utf-8")
+    manifest = {
+        "records": [
+            {"video": "video", "expression": "blue jersey", "expression_dir": "blue-jersey", "tracker_path": str(tracker)},
+        ]
+    }
+    cls_dict = {"video": {"7": {"1": {"blue jersey": [0.2, 1.2]}}}}
+
+    module.write_predictions(
+        cls_dict=cls_dict,
+        manifest=manifest,
+        tracker_root=tmp_path,
+        output_root=tmp_path / "out",
+        save_scores=True,
+    )
+
+    assert (tmp_path / "out/video/blue-jersey/predict.txt").read_text() == (
+        "1,7,10.0,20.0,30.0,40.0,1,1,1,1\n"
+    )
+    score = (tmp_path / "out/video/blue-jersey/predict_scores.txt").read_text()
+    assert score.startswith("1,7,10.0,20.0,30.0,40.0,")
+    assert float(score.split(",")[6]) > 0.7
