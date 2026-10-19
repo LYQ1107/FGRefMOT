@@ -16,6 +16,11 @@ the local run directory stores the manifest and log. The launch manifest and
 contract record the exact source checkout, layout, tracker policy, seed and
 hyperparameters.
 
-This phase has no checkpoint or metric claim yet. The next required evidence is
-a completed training manifest followed by an internal-validation evaluation
-that selects a checkpoint without reading historical test ground truth.
+An observed epoch-6 internal validation reached `F1=71.575` on the reserved
+5-video/45-expression split, and candidate checkpoint
+`ckpt_epoch_best_2.pth` was hashed as
+`9f54677eb8eab677801720c2c9949d9f6e9c9b17a88cfdde13f2f65c179f080c`. This is
+an in-training diagnostic candidate, not the final selected checkpoint or a
+historical-test claim; training is continuing at epoch 7/25. The next required
+evidence is a completed training manifest followed by final internal selection
+without reading historical test ground truth.

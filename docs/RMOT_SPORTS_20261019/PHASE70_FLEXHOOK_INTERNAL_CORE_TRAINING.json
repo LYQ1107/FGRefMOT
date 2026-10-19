@@ -51,10 +51,26 @@
     "storage_policy": "NAS direct through SSHFS; local code/runtime only"
   },
   "result_boundary": {
-    "checkpoint_created": false,
-    "internal_validation_completed": false,
+    "checkpoint_created": true,
+    "internal_validation_completed": true,
     "historical_test_evaluated": false,
-    "metrics_claimed": false
+    "metrics_claimed": false,
+    "selection_finalized": false
+  },
+  "observed_progress": {
+    "observed_at": "2026-10-19T23:55:52+08:00",
+    "epoch_completed": 6,
+    "training_epoch_in_progress": 7,
+    "internal_validation": {
+      "split": "5-video/45-expression internal validation",
+      "f1": 71.575,
+      "acc1": 80.608,
+      "policy": "diagnostic checkpoint candidate only; final selection remains pending"
+    },
+    "checkpoint_candidate": {
+      "path": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_f1_internal_core_seed42/ckpt_epoch_best_2.pth",
+      "sha256": "9f54677eb8eab677801720c2c9949d9f6e9c9b17a88cfdde13f2f65c179f080c"
+    }
   },
   "next_gate": "complete core training, select checkpoint on the 5-video internal validation split, then archive the selected checkpoint hash"
 }
