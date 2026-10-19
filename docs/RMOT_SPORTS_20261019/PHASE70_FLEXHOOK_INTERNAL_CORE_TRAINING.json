@@ -58,17 +58,26 @@
     "selection_finalized": false
   },
   "observed_progress": {
-    "observed_at": "2026-10-20T00:22:06+08:00",
-    "epoch_completed": 11,
-    "training_epoch_in_progress": 12,
+    "observed_at": "2026-10-20T00:32:42+08:00",
+    "epoch_completed": 13,
+    "training_epoch_in_progress": 14,
     "internal_validation": {
       "split": "5-video/45-expression internal validation",
-      "f1": 71.200,
-      "acc1": 79.436,
-      "precision": 57.622,
-      "recall": 93.149,
+      "epoch": 13,
+      "f1": 72.863,
+      "acc1": 81.752,
+      "precision": 61.313,
+      "recall": 89.775,
       "policy": "diagnostic checkpoint candidate only; final selection remains pending"
     },
+    "validation_history": [
+      {"epoch": 8, "f1": 73.702, "acc1": 82.338, "precision": 62.071, "recall": 90.695},
+      {"epoch": 9, "f1": 72.339, "acc1": 80.497, "precision": 59.006, "recall": 93.456},
+      {"epoch": 10, "f1": 72.126, "acc1": 80.720, "precision": 59.560, "recall": 91.411},
+      {"epoch": 11, "f1": 71.200, "acc1": 79.436, "precision": 57.622, "recall": 93.149},
+      {"epoch": 12, "f1": 72.893, "acc1": 81.696, "precision": 61.165, "recall": 90.184},
+      {"epoch": 13, "f1": 72.863, "acc1": 81.752, "precision": 61.313, "recall": 89.775}
+    ],
     "best_internal_validation": {
       "epoch": 8,
       "f1": 73.702,
@@ -79,7 +88,7 @@
     },
     "checkpoint_candidate": {
       "path": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_f1_internal_core_seed42/ckpt_epoch_best_0.pth",
-      "sha256": "af56903c9a6da854b01fd6b0b6c5b4f25f1a263ed9309d13bb99d5ccc1199e8a"
+    "sha256": "af56903c9a6da854b01fd6b0b6c5b4f25f1a263ed9309d13bb99d5ccc1199e8a"
     }
   },
   "next_gate": "complete core training, select checkpoint on the 5-video internal validation split, then archive the selected checkpoint hash"
