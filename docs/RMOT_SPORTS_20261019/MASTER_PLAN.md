@@ -36,6 +36,8 @@ ablations. The learned temporal module package now has a CPU-tested causal
 sequence adapter, Phase 69 verified the real F1 checkpoint hook interface, and
 Phase 71 adds the reproducible train-core/internal-val feature archive command
 with frozen visual and pooled language representations.
+Phase 72 adds the causal temporal-head training command and keeps its real
+metric gate closed until the strict core archives exist.
 The temporal head has not yet been trained or attached to a proposed
 checkpoint, so it has no claimed metric.
 

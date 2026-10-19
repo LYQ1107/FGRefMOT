@@ -1,0 +1,24 @@
+{
+  "schema_version": "rmot-sports-phase-0.1",
+  "phase": 72,
+  "title": "FlexHook causal temporal-head training tooling",
+  "status": "IMPLEMENTED_NOT_RUN",
+  "script": "scripts/train_flexhook_temporal.py",
+  "tests": {
+    "test_file": "tests/test_train_flexhook_temporal.py",
+    "result": "2 passed"
+  },
+  "protocol": {
+    "training_split": "train_core",
+    "selection_split": "internal_val",
+    "historical_test": "offline_only_and_rejected_as_feature_archive_input",
+    "labels": "training_targets_only",
+    "upstream_flexhook": "frozen"
+  },
+  "result_boundary": {
+    "real_archive_consumed": false,
+    "temporal_checkpoint_trained": false,
+    "metrics_claimed": false
+  },
+  "next_gate": "finish strict core training, archive train_core/internal_val features, then train and select the temporal head"
+}
