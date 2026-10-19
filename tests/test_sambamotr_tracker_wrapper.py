@@ -1,6 +1,7 @@
 from pathlib import Path
 
 from scripts.run_sambamotr_refersports_tracker import (
+    parse_args,
     prepare_image_only_view,
     read_sequence_list,
 )
@@ -33,3 +34,8 @@ def test_sequence_list_rejects_duplicates(tmp_path: Path):
         assert "unique" in str(exc)
     else:  # pragma: no cover - defensive assertion for the policy gate
         raise AssertionError("duplicate sequence names must be rejected")
+
+
+def test_tracker_split_label_is_recorded_in_cli_contract():
+    args = parse_args(["--source-root", "/src", "--model-root", "/model", "--dataset-root", "/data", "--staging-root", "/stage", "--output-root", "/out", "--split-label", "sports-val-5-videos"])
+    assert args.split_label == "sports-val-5-videos"

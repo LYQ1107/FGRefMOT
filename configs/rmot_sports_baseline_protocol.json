@@ -12,6 +12,18 @@
     "gt_or_labels_as_tracker_input": "REJECTED",
     "evaluation_thresholds": [0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8]
   },
+  "internal_selection_protocol": {
+    "purpose": "checkpoint_and_threshold_selection_without_historical_test_tuning",
+    "train_split": "SPORTS_TRAIN_CORE",
+    "evaluation_split": "SPORTS_VAL",
+    "train_video_count": 17,
+    "evaluation_video_count": 5,
+    "train_list": "configs/internal_split_20261019/sports_train_core_images.txt",
+    "evaluation_expression_list": "configs/internal_split_20261019/sports_val_expressions.txt",
+    "evaluation_video_list": "configs/internal_split_20261019/sports_val_videos.txt",
+    "selection_policy": "fixed_video_disjoint_holdout; stratified_by_sport; historical_19_video_set_untouched",
+    "historical_comparison_split": "the archive's 19-video evaluation layout is reserved for final comparison after the matrix is frozen"
+  },
   "flexhook": {
     "upstream_source": "third_party/FlexHook",
     "loader": "data.mydataloader_mix.RMOT_Dataset_mix",
@@ -113,7 +125,7 @@
     "checkpoint_policy": "the task LoRA checkpoint is evaluated only with its matching verified Qwen base model"
   },
   "baseline_matrix": {
-    "selection_rule": "Select checkpoints and thresholds on SPORTS_VAL only; the historical 19-video test split remains untouched until the matrix is frozen.",
+    "selection_rule": "Select checkpoints and thresholds only on configs/internal_split_20261019 SPORTS_VAL; the historical 19-video test split remains untouched until the matrix is frozen.",
     "flexhook": {
       "f0_zero_shot": {
         "training": false,

@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-"""Generate a fixed SambaMOTR tracker set for the Refer-Sports videos.
+"""Generate a fixed SambaMOTR tracker set for a Refer-Sports video list.
 
 The official SambaMOTR release contains outputs for the 150 official
-SportsMOT test sequences.  Refer-Sports evaluates a separate 19-video subset
-from the SportsMOT train tree, so those release files cannot be reused.  This
-launcher runs the pinned SambaMOTR DAB-D-DETR checkpoint on exactly the
-Refer-Sports sequence list, with a staging view containing images only.  The
-staging view deliberately omits ``gt`` and label files.
+SportsMOT test sequences. Refer-Sports uses sequences from the SportsMOT train
+tree, so those release files cannot be reused. This launcher runs the pinned
+SambaMOTR DAB-D-DETR checkpoint on exactly the requested sequence list, with a
+staging view containing images only. The staging view deliberately omits
+``gt`` and label files.
 
 The upstream checkout remains untouched by this project.  Its CUDA operator is
 expected to be built in the NAS checkout after the documented PyTorch API
@@ -206,6 +206,7 @@ def run_tracker(
     physical_gpu: int,
     python_executable: str,
     run: bool,
+    split_label: str = "refer-sports-eval-19-videos",
 ) -> dict[str, Any]:
     names = read_sequence_list(sequence_list)
     stage_manifest = prepare_image_only_view(dataset_root, names, staging_root)
@@ -253,7 +254,7 @@ def run_tracker(
     result: dict[str, Any] = {
         "schema_version": "refer-sports-common-tracker-run-0.1",
         "dataset": "SportsMOT",
-        "split": "refer-sports-eval-19-videos",
+        "split": split_label,
         "sequence_count": len(names),
         "sequence_names": names,
         "used_ground_truth": False,
@@ -325,6 +326,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--output-root", required=True)
     parser.add_argument("--gpu", type=int, default=1)
     parser.add_argument("--python", default=sys.executable)
+    parser.add_argument("--split-label", default="refer-sports-eval-19-videos")
     parser.add_argument("--run", action="store_true", help="launch GPU inference after preparing the view")
     parser.add_argument("--json", action="store_true")
     return parser.parse_args(argv)
@@ -341,6 +343,7 @@ def main(argv: list[str] | None = None) -> int:
         output_root=Path(args.output_root).expanduser().resolve(),
         physical_gpu=args.gpu,
         python_executable=args.python,
+        split_label=args.split_label,
         run=args.run,
     )
     if args.json:

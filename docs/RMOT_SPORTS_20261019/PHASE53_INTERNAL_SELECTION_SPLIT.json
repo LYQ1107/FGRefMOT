@@ -1,0 +1,52 @@
+{
+  "phase": 53,
+  "title": "Internal video-disjoint selection split",
+  "status": "READY_INTERNAL_SPLIT_AND_TRACKER_PREPARED",
+  "historical_archive": {
+    "train_videos": 22,
+    "held_out_videos": 19,
+    "current_yestrack_v2_training_interpretation": "full_22_training_layout",
+    "current_19_video_eval_interpretation": "historical_comparison_only"
+  },
+  "internal_selection": {
+    "train_split": "SPORTS_TRAIN_CORE",
+    "validation_split": "SPORTS_VAL",
+    "train_core_videos": 17,
+    "validation_videos": 5,
+    "train_core_expressions": 136,
+    "validation_expressions": 45,
+    "train_core_frames": 11482,
+    "validation_frames": 3268,
+    "sport_counts": {
+      "train_core": {"basketball": 5, "soccer": 6, "volleyball": 6},
+      "validation": {"basketball": 2, "soccer": 1, "volleyball": 2}
+    },
+    "source_manifest_sha256": "88e0ba5cfcf522887237af7fd4be075b7d0ad4cbac373ab56fbcd8fda21e25a3",
+    "lists": {
+      "train_core_images": "configs/internal_split_20261019/sports_train_core_images.txt",
+      "train_core_images_sha256": "ed7dbabf82bdd0dcb5b3fd838e937ca38f7799ef47230a44f77f48bb883a0da5",
+      "validation_expressions": "configs/internal_split_20261019/sports_val_expressions.txt",
+      "validation_expressions_sha256": "1bbb07d81150f6a65312ee81d0e89662c07e078eea9e1529572eb74635dec914",
+      "validation_videos": "configs/internal_split_20261019/sports_val_videos.txt",
+      "validation_videos_sha256": "7ae4b021f5fff97056b138a219b2a5c8a4c9e7dbaa45cc7482f7bf99d055f38f"
+    }
+  },
+  "layouts": {
+    "flexhook": "runs/flexhook_sports_layout_internal_20261019",
+    "yestrack": "runs/yestrack_sports_layout_internal_20261019",
+    "frame_policy": "symlink_to_raw_dataset",
+    "tracker_input_policy": "image_only; GT_and_labels_omitted"
+  },
+  "internal_tracker": {
+    "manifest": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/assets/pretrained/common_tracker/sambamotr_dab_refersports_internal_val_20261019/TRACKER_RUN_MANIFEST.json",
+    "split_label": "sports-val-internal-5-videos",
+    "status": "PREPARED_NO_GPU_RUN",
+    "used_ground_truth": false
+  },
+  "validation": {
+    "project_tests": "31 passed",
+    "py_compile": "passed",
+    "git_diff_check": "passed",
+    "metrics_claimed": false
+  }
+}

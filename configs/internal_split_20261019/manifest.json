@@ -1,0 +1,64 @@
+{
+  "expression_count": {
+    "train_core": 136,
+    "val": 45
+  },
+  "frame_count": {
+    "train_core": 11482,
+    "val": 3268
+  },
+  "lists": {
+    "sports_train_core_images": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/configs/internal_split_20261019/sports_train_core_images.txt",
+    "sports_train_core_images_sha256": "ed7dbabf82bdd0dcb5b3fd838e937ca38f7799ef47230a44f77f48bb883a0da5",
+    "sports_val_expressions": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/configs/internal_split_20261019/sports_val_expressions.txt",
+    "sports_val_expressions_sha256": "1bbb07d81150f6a65312ee81d0e89662c07e078eea9e1529572eb74635dec914",
+    "sports_val_videos": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/configs/internal_split_20261019/sports_val_videos.txt",
+    "sports_val_videos_sha256": "7ae4b021f5fff97056b138a219b2a5c8a4c9e7dbaa45cc7482f7bf99d055f38f"
+  },
+  "schema_version": "refer-sports-internal-split-0.1",
+  "selection_policy": "fixed_video_disjoint_holdout; stratified_by_sport; no_test_video_used",
+  "source_manifest": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/data/refer_sports_manifest.json",
+  "source_manifest_sha256": "88e0ba5cfcf522887237af7fd4be075b7d0ad4cbac373ab56fbcd8fda21e25a3",
+  "sport_count": {
+    "train_core": {
+      "basketball": 5,
+      "soccer": 6,
+      "volleyball": 6
+    },
+    "val": {
+      "basketball": 2,
+      "soccer": 1,
+      "volleyball": 2
+    }
+  },
+  "sports_train_core_videos": [
+    "v_-6Os86HzwCs_c003",
+    "v_1LwtoLPw2TU_c012",
+    "v_1yHWGw8DH4A_c047",
+    "v_1yHWGw8DH4A_c077",
+    "v_2j7kLB-vEEk_c001",
+    "v_2j7kLB-vEEk_c002",
+    "v_4LXTUim5anY_c002",
+    "v_4LXTUim5anY_c003",
+    "v_ApPxnw_Jffg_c002",
+    "v_ApPxnw_Jffg_c009",
+    "v_CW0mQbgYIF4_c004",
+    "v_CW0mQbgYIF4_c006",
+    "v_Dk3EpDDa3o0_c002",
+    "v_HdiyOtliFiw_c003",
+    "v_HdiyOtliFiw_c004",
+    "v_gQNyhv8y0QY_c003",
+    "v_gQNyhv8y0QY_c012"
+  ],
+  "sports_val_videos": [
+    "v_-6Os86HzwCs_c001",
+    "v_1LwtoLPw2TU_c006",
+    "v_1yHWGw8DH4A_c029",
+    "v_2j7kLB-vEEk_c005",
+    "v_ApPxnw_Jffg_c001"
+  ],
+  "video_count": {
+    "train_core": 17,
+    "val": 5
+  }
+}
