@@ -43,3 +43,10 @@ def test_gap_resets_track_id_memory() -> None:
     update = controller.update("expr", _obs(4, 3, 0.0))
     assert update.identity_score == pytest.approx(0.0)
     assert update.wrote_identity
+
+
+def test_flexhook_score_controls_have_independent_outputs() -> None:
+    for variant in [f"H{i}" for i in range(9)]:
+        controller = TemporalScoreController(variant=variant)
+        update = controller.update("expr", _obs(0, 1, 0.7))
+        assert 0.0 <= update.score <= 1.0

@@ -1,0 +1,20 @@
+{
+  "phase": 63,
+  "title": "FlexHook score-level ablation bridge",
+  "status": "IMPLEMENTED_CPU_TESTED_WAIT_FOR_SCORE_ARCHIVE",
+  "variants": {
+    "H0": "pass-through",
+    "H1": "pass-through capacity control",
+    "H2": "causal EMA",
+    "H3": "causal adaptive interval",
+    "H4": "identity score read",
+    "H5": "dynamic score history",
+    "H6": "separated identity and dynamic history",
+    "H7": "reliability-controlled memory write",
+    "H8": "combined causal control"
+  },
+  "checkpoint_policy": "frozen Sports-trained FlexHook; no learned temporal head claimed",
+  "ground_truth_read": false,
+  "gate": "raw probability archive must finish before H metrics",
+  "metrics": "NOT_RUN"
+}

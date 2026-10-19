@@ -21,7 +21,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT))
 
 from adapters.temporal_score_control import (
-    TEMPORAL_VARIANTS,
+    ALL_VARIANTS,
     ScoreObservation,
     TemporalScoreController,
 )
@@ -120,8 +120,8 @@ def apply_variant(
     max_verification_interval: int = 8,
     max_track_gap: int = 60,
 ) -> dict[str, Any]:
-    if variant not in TEMPORAL_VARIANTS:
-        raise ValueError(f"variant must be one of {TEMPORAL_VARIANTS}, got {variant}")
+    if variant not in ALL_VARIANTS:
+        raise ValueError(f"variant must be one of {ALL_VARIANTS}, got {variant}")
     input_root = input_root.expanduser().resolve()
     output_root = output_root.expanduser().resolve()
     if not input_root.is_dir():
@@ -179,7 +179,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--input-root", required=True)
     parser.add_argument("--output-root", required=True)
-    parser.add_argument("--variant", choices=TEMPORAL_VARIANTS, required=True)
+    parser.add_argument("--variant", choices=ALL_VARIANTS, required=True)
     parser.add_argument("--filename", default="predict_with_conf.txt")
     parser.add_argument("--min-score", type=float)
     parser.add_argument("--dynamic-window", type=int, default=4)

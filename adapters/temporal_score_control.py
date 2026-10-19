@@ -19,7 +19,12 @@ from typing import Iterable, Literal, Sequence
 
 
 TEMPORAL_VARIANTS = ("YB0", "YB1", "YB2", "YB3", "YB4", "YB5", "YB6")
-Variant = Literal["YB0", "YB1", "YB2", "YB3", "YB4", "YB5", "YB6"]
+FLEXHOOK_SCORE_VARIANTS = ("H0", "H1", "H2", "H3", "H4", "H5", "H6", "H7", "H8")
+ALL_VARIANTS = TEMPORAL_VARIANTS + FLEXHOOK_SCORE_VARIANTS
+Variant = Literal[
+    "YB0", "YB1", "YB2", "YB3", "YB4", "YB5", "YB6",
+    "H0", "H1", "H2", "H3", "H4", "H5", "H6", "H7", "H8",
+]
 
 
 @dataclass(frozen=True)
@@ -95,7 +100,7 @@ class TemporalScoreController:
         max_verification_interval: int = 8,
         max_track_gap: int = 60,
     ) -> None:
-        if variant not in TEMPORAL_VARIANTS:
+        if variant not in ALL_VARIANTS:
             raise ValueError(f"unknown temporal score variant: {variant}")
         if dynamic_window <= 0:
             raise ValueError("dynamic_window must be positive")
@@ -108,6 +113,17 @@ class TemporalScoreController:
         if max_verification_interval <= 0 or max_track_gap <= 0:
             raise ValueError("intervals must be positive")
         self.variant = variant
+        self._effective_variant = {
+            "H0": "YB0",
+            "H1": "YB0",  # capacity-matched score head control is pass-through here
+            "H2": "YB3",  # ordinary history EMA
+            "H3": "YB2",  # adaptive temporal interval
+            "H4": "YB5",  # stable identity evidence read
+            "H5": "H5",
+            "H6": "H6",
+            "H7": "YB4",  # reliability-controlled memory write
+            "H8": "YB6",
+        }.get(variant, variant)
         self.dynamic_window = int(dynamic_window)
         self.identity_momentum = float(identity_momentum)
         self.ema_alpha = float(ema_alpha)
@@ -195,7 +211,7 @@ class TemporalScoreController:
         state.identity_score = _clamp(identity)
 
         interval = 1
-        if self.variant in {"YB2", "YB6"}:
+        if self._effective_variant in {"YB2", "YB6"}:
             uncertainty = 1.0 - abs(2.0 * score - 1.0)
             interval = 1 + int(round((1.0 - uncertainty) * (self.max_verification_interval - 1)))
             if state.last_verified_frame is None or state.last_verified_score is None:
@@ -207,14 +223,18 @@ class TemporalScoreController:
             else:
                 score = state.last_verified_score
 
-        if self.variant in {"YB3"}:
+        if self._effective_variant in {"YB3"}:
             output = score if previous is None else self.ema_alpha * score + (1.0 - self.ema_alpha) * previous
-        elif self.variant in {"YB4"}:
+        elif self._effective_variant in {"YB4"}:
             memory = state.identity_score if previous is None else previous
             output = reliability * score + (1.0 - reliability) * memory
-        elif self.variant in {"YB5"}:
+        elif self._effective_variant in {"YB5"}:
             output = 0.6 * score + 0.4 * state.identity_score
-        elif self.variant in {"YB6"}:
+        elif self._effective_variant == "H5":
+            output = 0.5 * score + 0.5 * dynamic
+        elif self._effective_variant == "H6":
+            output = 0.5 * score + 0.25 * state.identity_score + 0.25 * dynamic
+        elif self._effective_variant in {"YB6"}:
             output = 0.45 * score + 0.30 * state.identity_score + 0.25 * dynamic
             output = reliability * output + (1.0 - reliability) * (state.identity_score if previous is None else previous)
         else:
@@ -255,4 +275,11 @@ class TemporalScoreController:
         return outputs
 
 
-__all__ = ["TEMPORAL_VARIANTS", "ScoreObservation", "ScoreUpdate", "TemporalScoreController"]
+__all__ = [
+    "ALL_VARIANTS",
+    "FLEXHOOK_SCORE_VARIANTS",
+    "TEMPORAL_VARIANTS",
+    "ScoreObservation",
+    "ScoreUpdate",
+    "TemporalScoreController",
+]
