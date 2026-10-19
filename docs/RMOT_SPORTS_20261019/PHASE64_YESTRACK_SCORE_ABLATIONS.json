@@ -5,6 +5,8 @@
   "script": "scripts/eval_yestrack_score_variant.py",
   "variants": ["YB2", "YB3", "YB4", "YB5", "YB6"],
   "thresholds": [0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8],
+  "comparison_threshold": 0.8,
+  "threshold_policy": "0.8 selected on seed42 internal validation; grid values are retained as diagnostics and are not test-tuned",
   "model_inference": "NOT_RUN; frozen Y1 prediction archive",
   "gt_for_score_transform": false,
   "gt_for_metrics": "offline TrackEval only",

@@ -7,11 +7,11 @@ diagnostic evidence. A separate idempotent watcher now waits for the full
 YesTrack Y1 historical evaluation manifest to become `SUCCEEDED`. Only then it
 will rerun the registered causal score controls H0–H8 from the frozen
 Sports-trained FlexHook score archive, using the same 19-video/142-expression
-historical split and threshold 0.5. It never feeds GT or labels into score
+historical split and the seed42 internal-selection threshold `0.8`. It never feeds GT or labels into score
 transformation and does not reserve or modify a GPU.
 
-The watcher writes `runs/gpu/postbaseline_flexhook_h0_h8_watch.log` and uses
-versioned output roots `flexhook_h{variant}_common_eval_20261019_v2`. Existing
+The watcher writes `runs/gpu/postbaseline_flexhook_h0_h8_watch_v2.log` and uses
+versioned output roots `flexhook_h{variant}_common_eval_20261019_v3`. Existing
 successful outputs are skipped, so a restart cannot duplicate completed
 variants. The prebaseline reference remains
 `docs/RMOT_SPORTS_20261019/PHASE67_FLEXHOOK_SCORE_ABLATIONS.json`; no postbaseline
