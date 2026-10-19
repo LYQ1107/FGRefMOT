@@ -1,0 +1,37 @@
+{
+  "schema_version": "rmot-sports-phase-0.1",
+  "phase": 69,
+  "title": "FlexHook real-checkpoint temporal feature hook smoke",
+  "status": "COMPLETED_ONE_BATCH_SMOKE",
+  "script": "scripts/flexhook_feature_hook_smoke.py",
+  "protocol": {
+    "checkpoint": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_f1_sports_trained_seed42/ckpt_epoch_best_0.pth",
+    "checkpoint_sha256": "3fdc471d1fa17405ce8d57516bc6de74ba93b29f3760344bb1f0f30529818c7b",
+    "config": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_f1_sports_trained_seed42/config.json",
+    "config_sha256": "00500abd027a10cb598ecdc65127eeae6b45ba6a81a2608689ebb5e7f911032f",
+    "fixed_tracker_only": true,
+    "gt_usage": "none_as_model_or_tracker_input",
+    "upstream_checkout_modified": false
+  },
+  "dataset": {
+    "layout_root": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/runs/flexhook_sports_layout_20261019_v2",
+    "loader_count": 155748,
+    "smoke_batch_size": 1,
+    "sample_video": "v_-6Os86HzwCs_c007",
+    "sample_object": "0",
+    "sample_frame_id": "1"
+  },
+  "observed_shapes": {
+    "hook_module": "model.output_ca_qkv[-1]",
+    "hook_feature": "[1,8,768]",
+    "model_output": "[1,4,8,2]",
+    "regularizer": "scalar"
+  },
+  "result_boundary": {
+    "feature_interface_verified": true,
+    "full_feature_archive_created": false,
+    "learned_temporal_checkpoint_trained": false,
+    "metrics_claimed": false
+  },
+  "next_gate": "capture_internal_train_and_internal_val_feature_records_after_yestrack_baseline_gate"
+}
