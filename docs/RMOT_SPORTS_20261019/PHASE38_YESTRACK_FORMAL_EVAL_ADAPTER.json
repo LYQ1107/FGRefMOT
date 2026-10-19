@@ -1,0 +1,31 @@
+{
+  "schema_version": "rmot-sports-phase-38-0.1",
+  "phase": 38,
+  "status": "PREPARED_GPU_EVAL_PENDING",
+  "branch": "research/sports-rmot-strong-baselines-20261019",
+  "adapter": "scripts/eval_yestrack_refersports.py",
+  "upstream_policy": "VENDORED_YESTRACK_UNMODIFIED",
+  "sequence_count": 19,
+  "expression_count": 142,
+  "thresholds": [0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8],
+  "frame_policy": {
+    "tracker_input_frame_start": 1,
+    "yestrack_image_frame_start": 0,
+    "inference_frame_offset": -1,
+    "metric_output_frame_start": 1
+  },
+  "tracker_input_policy": "FIXED_COMMON_SAMBAMOTR_OUTPUTS_ONLY",
+  "gt_or_labels_as_tracker_input": "REJECTED",
+  "validation": {
+    "py_compile": "PASS",
+    "synthetic_one_sequence_trackeval": "PASS",
+    "gpu_inference": "NOT_RUN",
+    "real_tracker_outputs": "PENDING"
+  },
+  "real_evaluation": {
+    "base_model": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/assets/pretrained/yestrack/Qwen3-VL-2B-Instruct",
+    "layout_root": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/runs/yestrack_sports_layout_20261019_v1/val",
+    "tracker_root": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/assets/pretrained/common_tracker/sambamotr_dab_refersports_train_20261019/tracker_outputs",
+    "run_condition": "AFTER_YESTRACK_Y1_AND_COMMON_TRACKER_GPU_RUN"
+  }
+}
