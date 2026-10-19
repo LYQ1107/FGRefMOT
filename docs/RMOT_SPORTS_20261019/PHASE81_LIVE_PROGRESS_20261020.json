@@ -1,0 +1,45 @@
+{
+  "schema_version": "rmot-sports-phase-0.1",
+  "phase": 81,
+  "title": "Live YesTrack progress and checkpoint-boundary checkpoint",
+  "status": "TRAINING_AND_FORMAL_TEST_IN_PROGRESS",
+  "observed_at": "2026-10-20T06:24:21+08:00",
+  "training": [
+    {
+      "run_id": "yestrack_y1_sports_lora_seed43_v2",
+      "seed": 43,
+      "gpu": 2,
+      "status": "RUNNING",
+      "optimizer_steps_observed": 1924,
+      "planned_steps_from_live_tqdm": 90523,
+      "checkpoint_state": "NO_EPOCH_CHECKPOINT_YET",
+      "manifest": "runs/gpu/yestrack_y1_sports_lora_seed43_v2/RUN_MANIFEST.json"
+    },
+    {
+      "run_id": "yestrack_y1_sports_lora_seed44_v2",
+      "seed": 44,
+      "gpu": 3,
+      "status": "RUNNING",
+      "optimizer_steps_observed": 1974,
+      "planned_steps_from_live_tqdm": 90528,
+      "checkpoint_state": "NO_EPOCH_CHECKPOINT_YET",
+      "manifest": "runs/gpu/yestrack_y1_sports_lora_seed44_v2/RUN_MANIFEST.json"
+    }
+  ],
+  "formal_test": {
+    "run_id": "yestrack_y1_common_eval_20261019_v3",
+    "gpu": 1,
+    "completed_prediction_files_observed": 54,
+    "expected_expression_count": 142,
+    "manifest_status": "ABSENT",
+    "claim_boundary": "Partial prediction files are progress evidence only; no historical-test metric is claimed."
+  },
+  "selection_boundary": {
+    "training_split": "SPORTS_TRAIN_FULL_22_VIDEOS_181_EXPRESSIONS",
+    "internal_selection": "INTERNAL_VAL_5_ONLY_AFTER_TRAINING",
+    "historical_test": "untouched_for_selection",
+    "selected_threshold": 0.8,
+    "checkpoint_policy": "internal watchers wait for terminal training manifests and lora_epoch_0"
+  },
+  "next_step": "Wait for both terminal training manifests and the formal test manifest; then run fixed-threshold internal validation and registered postbaseline watchers."
+}
