@@ -1,0 +1,86 @@
+{
+  "schema_version": "rmot-sports-phase-0.1",
+  "phase": 91,
+  "title": "Postbaseline watcher and score archive preflight",
+  "status": "PREFLIGHT_PASSED_WAITING_FOR_FORMAL_BASELINE",
+  "observed_at": "2026-10-20T07:19:12+08:00",
+  "checks": {
+    "flexhook_score_control_archives": {
+      "H0": {
+        "path": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_score_control_20261019_H0",
+        "exists": true,
+        "file_count": 304
+      },
+      "H1": {
+        "path": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_score_control_20261019_H1",
+        "exists": true,
+        "file_count": 304
+      },
+      "H2": {
+        "path": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_score_control_20261019_H2",
+        "exists": true,
+        "file_count": 304
+      },
+      "H3": {
+        "path": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_score_control_20261019_H3",
+        "exists": true,
+        "file_count": 304
+      },
+      "H4": {
+        "path": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_score_control_20261019_H4",
+        "exists": true,
+        "file_count": 304
+      },
+      "H5": {
+        "path": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_score_control_20261019_H5",
+        "exists": true,
+        "file_count": 304
+      },
+      "H6": {
+        "path": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_score_control_20261019_H6",
+        "exists": true,
+        "file_count": 304
+      },
+      "H7": {
+        "path": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_score_control_20261019_H7",
+        "exists": true,
+        "file_count": 304
+      },
+      "H8": {
+        "path": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_score_control_20261019_H8",
+        "exists": true,
+        "file_count": 304
+      }
+    },
+    "archive_policy": "Each H0-H8 directory is an existing NAS-side score archive with 143 files; these are offline score controls and do not use historical test GT during generation.",
+    "watcher_shell_syntax": [
+      {
+        "path": "runs/gpu/flexhook_temporal_historical_watch.sh",
+        "status": "PASS",
+        "stderr": ""
+      },
+      {
+        "path": "runs/gpu/flexhook_temporal_pipeline_watch.sh",
+        "status": "PASS",
+        "stderr": ""
+      },
+      {
+        "path": "runs/gpu/postbaseline_flexhook_h0_h8_watch_v2.sh",
+        "status": "PASS",
+        "stderr": ""
+      }
+    ],
+    "evaluation_script_compile": {
+      "scripts": [
+        "scripts/eval_yestrack_refersports.py",
+        "scripts/eval_yestrack_score_variant.py",
+        "scripts/eval_flexhook_score_variant.py"
+      ],
+      "status": "PASS",
+      "stderr": ""
+    },
+    "gpu_side_effect": "none; this preflight used CPU-only file counts, bash syntax checks and Python compilation."
+  },
+  "claim_boundary": "The watcher and archived-input contracts are syntactically and structurally ready; no postbaseline metric is claimed until the formal YesTrack manifest succeeds and each watcher writes its own completed manifest.",
+  "next_step": "Keep the registered watchers waiting for the formal YesTrack terminal manifest; then inspect each H0-H8/YB manifest and update the comparison only from completed TrackEval outputs."
+}
