@@ -31,3 +31,10 @@ large false-positive counts on the four-video split, so they are real
 diagnostic results rather than accepted accuracy claims. Their checkpoints
 and reports are retained while score calibration/track lifecycle behavior is
 diagnosed.
+
+The matched step-5000 checkpoints and full development evaluations are now
+complete for all three variants. Every report covers the same four videos and
+2,621 frames under the same `unknown_mask` protocol; the exact metrics are
+recorded in `STEP5000_RESULTS.md` and the JSON reports. These are valid
+development measurements, not test-set claims. The three processes remain
+active and continue toward step 20,000.
