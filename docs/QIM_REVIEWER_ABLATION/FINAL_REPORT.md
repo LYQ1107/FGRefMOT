@@ -96,7 +96,13 @@ measurements, not additional accuracy claims.
 | Original Mamba | 130.99 / 152.51 | 7.63 | 173.35 / 197.21 | 5.77 | 1.925 |
 
 The machine-readable benchmark is
-`reports/qim_ablation/real_sportsmot_benchmark_step200.json`. The long-run
-training-cost fields will be filled from the actual 5k/20k/60k/120k completion
-logs; no extrapolated cost is presented as measured cost.
+`reports/qim_ablation/real_sportsmot_benchmark_step200.json`. Long-run
+training-cost evidence is tracked in
+`reports/qim_ablation/training_cost_20261019.json`. At the current snapshot, the
+step-5000 checkpoint wall-clock observed from the step-200 checkpoint is 1.713,
+1.772, 1.760, and 1.845 GPU-hours for Standard, LSTM, Temporal Attention, and
+Original Mamba respectively. These are checkpoint-timestamp observations, not
+power-meter measurements; 20k/60k/120k fields remain missing until their actual
+checkpoints and logs exist. No ETA or extrapolated cost is presented as a
+measured result.
 
