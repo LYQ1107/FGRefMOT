@@ -2,7 +2,7 @@
   "schema_version": 1,
   "phase": 23,
   "audit_date": "2026-10-19",
-  "status": "CANDIDATE_ACQUIRED_TRACKER_READY_OVERALL_BASELINE_PENDING",
+  "status": "CANDIDATE_ACQUIRED_OFFICIAL_TEST_ONLY_REFER_SPORTS_COVERAGE_CORRECTED",
   "gpu_jobs_started": false,
   "workspace": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019",
   "branch": "research/sports-rmot-strong-baselines-20261019",
@@ -46,18 +46,19 @@
     "track_id_max": 73,
     "used_ground_truth": false,
     "generated_from_frames_without_ground_truth": true,
+    "refer_sports_eval_sequence_overlap_count": 0,
     "per_file_sha256_and_source_oid_recorded_in": "tracker_manifest.json"
   },
   "refer_sports_mapping": {
     "expression_manifest_test_video_count": 19,
     "expression_manifest_test_expression_count": 142,
-    "mapping": "Refer-Sports evaluation videos are a filename-matching subset of the 150 SportsMOT test outputs.",
+    "mapping": "INCORRECT_AND_SUPERSEDED: Refer-Sports evaluation videos are from the SportsMOT train tree and have zero overlap with these official test outputs.",
     "offline_gt_used_for_mapping": false
   },
   "preflight": {
     "command": "python3 scripts/preflight_baseline_assets.py --flexhook-layout runs/flexhook_sports_layout_20261019_v2 --yestrack-layout runs/yestrack_sports_layout_20261019_v1 --tracker-root /data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/assets/pretrained/common_tracker/sambamotr_sportsmot_dab --hash-files --json --output runs/baseline_asset_preflight_20261019/phase23_tracker_preflight.json",
     "common_sports_tracker": {
-      "status": "READY",
+      "status": "READY_FOR_OFFICIAL_SPORTSMOT_TEST_ONLY",
       "declared_output_count": 150,
       "verified_output_count": 150,
       "reasons": []
@@ -83,5 +84,5 @@
     "compatibility_note": "The current gate uses detector_outputs; this candidate is explicitly recorded as an integrated end-to-end detector-plus-tracker release and is not claimed to be an external-detector-plus-ByteTrack run.",
     "activation_requirement": "After protocol review, keep this exact fixed output root for every referring method and record any gate/schema revision before evaluation."
   },
-  "next_action": "Rerun full preflight with the acquired pretrained paths, resolve the missing official task/LoRA checkpoints, and decide whether the integrated tracker candidate satisfies the common-tracker protocol before any GPU launch."
+  "next_action": "Generate a pinned SambaMOTR tracker output set for the 19 Refer-Sports evaluation videos, validate it without GT/labels as tracker input, then replace the common-tracker gate before referring evaluation."
 }

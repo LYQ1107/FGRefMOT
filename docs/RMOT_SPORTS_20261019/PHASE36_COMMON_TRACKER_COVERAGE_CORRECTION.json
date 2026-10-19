@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "phase": 36,
+  "audit_date": "2026-10-19",
+  "status": "CORRECTED_GENERATION_PREPARED_GPU_INFERENCE_PENDING",
+  "workspace": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019",
+  "official_candidate": {
+    "path": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/assets/pretrained/common_tracker/sambamotr_sportsmot_dab",
+    "split": "SportsMOT dataset/test",
+    "output_count": 150,
+    "refer_sports_eval_overlap_count": 0,
+    "coverage_status": "OFFICIAL_TEST_ONLY_NOT_REFER_SPORTS_EVAL_INPUT"
+  },
+  "refer_sports_eval": {
+    "split_source": "SportsMOT dataset/train",
+    "sequence_count": 19,
+    "sequence_list": "configs/refer_sports_eval_sequences_20261019.txt",
+    "ground_truth_as_tracker_input": "REJECTED"
+  },
+  "source": {
+    "repository": "https://github.com/mattiasegu/sambamotr",
+    "commit": "f1c139a653c00a55c0873a64d7c59a67d7dbad44",
+    "nas_checkout": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/assets/source/sambamotr",
+    "compatibility_patch_sha256": "3de2dd43a96f7fe106dac985efce1a88dc5c49f8372d2b8c5fd86fdcebf3905e",
+    "operator_sha256": "9924ebe74085def9643cac54d684972bd2d5fb71532e28fe98d6b50fbbc19147"
+  },
+  "prepared_run": {
+    "root": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/assets/pretrained/common_tracker/sambamotr_dab_refersports_train_20261019",
+    "manifest": "TRACKER_RUN_MANIFEST.json",
+    "manifest_sha256": "d9cddc3fdf9f237edf4a33bc6af0cadc9440b1501bc2953fec0f9cbc3711d05a",
+    "staging_root": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/runs/common_tracker_refersports_staging_20261019",
+    "staging_policy": "IMAGE_ONLY_STAGING; GT_AND_LABEL_FILES_OMITTED",
+    "physical_gpu": 1,
+    "status": "PREPARED_NO_GPU_RUN"
+  },
+  "next_action": "Run the prepared fixed tracker after GPU 1 is free; validate all 19 output files and update common-tracker contracts before referring evaluation."
+}
