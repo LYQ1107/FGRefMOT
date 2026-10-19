@@ -25,7 +25,7 @@
   },
   "current_runs": {
     "flexhook_f1_internal_core_seed42": {
-      "status": "RUNNING",
+      "status": "SUCCEEDED",
       "patch_applied_before_launch": false,
       "claim_boundary": "Its checkpoints remain evaluation artifacts; this already-running job is not claimed as a patched resume run."
     },
