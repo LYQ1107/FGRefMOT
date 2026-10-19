@@ -20,8 +20,9 @@ LLM result was started by this preflight.
 
 The Y1 launch contract was refreshed after Phase 31 and is
 `runs/contracts_20261019/yestrack_y1_sports_lora_seed42.json` with SHA-256
-`34f06e1bbd8c486072b92f4ed36b30411dcfa5864a06293b8365fe3049c05595`. The contract sets `every_steps=0`, so no GT-based in-training evaluation is
-run. The launch
+`81f478b1ac800786c7f62826dae4a0a2cfb8a8ca1712a5f652a833b3c85c47cf`. The contract sets `every_steps=0`, so no GT-based in-training evaluation is
+run; the adapter owns `--eval_sequence` and the launch command does not pass it
+to the upstream parser. The launch
 gate now passes against the restored NAS-backed Qwen base and common tracker
 manifest (`contract: READY — hashes and policy verified`). GPU 1 is free, so the
 authorized Y1 launch can proceed with the same no-GT-as-tracker policy.
