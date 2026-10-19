@@ -1,6 +1,6 @@
 # Phase 63 — FlexHook score-level ablation bridge
 
-Status: `IMPLEMENTED_CPU_TESTED_WAIT_FOR_SCORE_ARCHIVE`
+Status: `COMPLETED_PREBASELINE_DIAGNOSTIC — see Phase 67 for the metrics`
 
 The causal score controller now also exposes H0–H8 aliases for a reproducible
 FlexHook post-inference ablation. The mappings are deliberately explicit:
@@ -18,6 +18,8 @@ These are score-level controls over a frozen Sports-trained checkpoint. They
 are useful for isolating temporal effects without changing the fixed tracker
 or the model checkpoint, but they are not being reported as a learned
 FlexHook temporal head. The separate `adapters/flexhook_temporal/` package
-remains the learned-head integration scaffold. The H runs are gated on the
-raw per-candidate probability archive and will use the same historical test
-TrackEval tree once that archive finishes.
+remains the learned-head integration scaffold. The archive and all H0–H8
+results completed successfully as a prebaseline diagnostic; they remain gated
+from final proposed-method selection until the YesTrack baseline exists. The
+evidence table is recorded in
+`PHASE67_FLEXHOOK_SCORE_ABLATIONS.md`.

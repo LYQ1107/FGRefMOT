@@ -1,7 +1,7 @@
 {
   "phase": 63,
   "title": "FlexHook score-level ablation bridge",
-  "status": "IMPLEMENTED_CPU_TESTED_WAIT_FOR_SCORE_ARCHIVE",
+  "status": "COMPLETED_PREBASELINE_DIAGNOSTIC",
   "variants": {
     "H0": "pass-through",
     "H1": "pass-through capacity control",
@@ -15,6 +15,7 @@
   },
   "checkpoint_policy": "frozen Sports-trained FlexHook; no learned temporal head claimed",
   "ground_truth_read": false,
-  "gate": "raw probability archive must finish before H metrics",
-  "metrics": "NOT_RUN"
+  "gate": "COMPLETED_PHASE67_DIAGNOSTIC",
+  "metrics": "SEE_PHASE67",
+  "completion_report": "docs/RMOT_SPORTS_20261019/PHASE67_FLEXHOOK_SCORE_ABLATIONS.json"
 }

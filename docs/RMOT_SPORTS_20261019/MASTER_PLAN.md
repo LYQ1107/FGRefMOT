@@ -24,18 +24,20 @@ from its successful manifest; these are historical-test values and are not
 internal validation values.
 
 Active work is recorded in `EXPERIMENT_REGISTRY.csv`. The full and internal
-YesTrack Sports-LoRA runs and the FlexHook score archive are live jobs. The
-FlexHook F1 internal validation is complete and recorded in Phase 66. Watchers
+YesTrack Sports-LoRA runs are live jobs. The FlexHook F1 internal validation
+and the frozen-checkpoint H0–H8 prebaseline diagnostic replay are complete and
+recorded in Phases 66–67. The H0–H8 metrics are evidence only; the proposed
+method gate remains closed until the formal YesTrack baseline exists. Watchers
 are registered for the YesTrack post-training evaluations and score-level
-ablations. The learned temporal
-module package is CPU-tested but has not yet been attached to a trained
-checkpoint, so it has no claimed metric.
+ablations. The learned temporal module package is CPU-tested but has not yet
+been attached to a trained checkpoint, so it has no claimed metric.
 
 The remaining gates are YesTrack training and formal/internal evaluation,
-H0–H8/YB score and learned-method ablations,
+formal H0–H8/YB score and learned-method ablations after the baseline gate,
 multi-seed confirmation, efficiency measurements, and the final reviewer
-report. Phase 65 has registered candidate diagnostic subsets, but their
-metrics remain blocked by the manifest's UNKNOWN negative/event labels. F0/Y0 remain `NOT_RUN/BLOCKED` because no eligible
+report. Phase 65 has registered candidate
+diagnostic subsets, but their metrics remain blocked by the manifest's UNKNOWN
+negative/event labels. F0/Y0 remain `NOT_RUN/BLOCKED` because no eligible
 official task checkpoint or YesTrack LoRA checkpoint is present on NAS.
 
 Each completed gate must update the relevant phase report, preserve its real

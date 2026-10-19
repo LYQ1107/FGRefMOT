@@ -1,0 +1,201 @@
+{
+  "schema_version": "rmot-sports-phase-0.1",
+  "phase": 67,
+  "title": "FlexHook frozen-score H0-H8 historical-test ablation",
+  "status": "COMPLETED",
+  "archive_root": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_f1_common_eval_scores_20261019_v1",
+  "archive_manifest": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_f1_common_eval_scores_20261019_v1/FLEXHOOK_EVAL_MANIFEST.json",
+  "protocol": {
+    "split": "HISTORICAL_TEST_19",
+    "videos": 19,
+    "expressions": 142,
+    "model_input": "archived Sports-trained FlexHook candidate probabilities",
+    "fixed_tracker": "common SambaMOTR",
+    "checkpoint": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_f1_sports_trained_seed42/ckpt_epoch_best_0.pth",
+    "checkpoint_sha256": "3fdc471d1fa17405ce8d57516bc6de74ba93b29f3760344bb1f0f30529818c7b",
+    "threshold": 0.5,
+    "causal_state": "current_and_past_frames_only",
+    "gt_usage": "offline_trackeval_tree_only",
+    "test_gt_used_for_model_or_tracker": false
+  },
+  "archive": {
+    "status": "SUCCEEDED",
+    "prediction_rows": 497473,
+    "records": 142,
+    "policy": {
+      "gt_or_labels_as_tracker_input": "REJECTED",
+      "gt_usage": "offline_evaluation_tree_only",
+      "model_input": "fixed_tracker_outputs_only"
+    }
+  },
+  "variants": {
+    "H0": {
+      "description": "pass-through control",
+      "status": "SUCCEEDED",
+      "score_root": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_score_control_20261019_H0",
+      "eval_root": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_h0_common_eval_20261019_v1",
+      "manifest": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_h0_common_eval_20261019_v1/FLEXHOOK_EVAL_MANIFEST.json",
+      "threshold": 0.5,
+      "prediction_rows": 497473,
+      "score_rows": 930115,
+      "metrics_percent": {
+        "HOTA": 68.385415,
+        "DetA": 59.317842,
+        "AssA": 78.842302,
+        "IDF1": 66.627791
+      },
+      "IDSW": 409
+    },
+    "H1": {
+      "description": "pass-through capacity control",
+      "status": "SUCCEEDED",
+      "score_root": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_score_control_20261019_H1",
+      "eval_root": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_h1_common_eval_20261019_v1",
+      "manifest": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_h1_common_eval_20261019_v1/FLEXHOOK_EVAL_MANIFEST.json",
+      "threshold": 0.5,
+      "prediction_rows": 497473,
+      "score_rows": 930115,
+      "metrics_percent": {
+        "HOTA": 68.385415,
+        "DetA": 59.317842,
+        "AssA": 78.842302,
+        "IDF1": 66.627791
+      },
+      "IDSW": 409
+    },
+    "H2": {
+      "description": "causal EMA",
+      "status": "SUCCEEDED",
+      "score_root": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_score_control_20261019_H2",
+      "eval_root": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_h2_common_eval_20261019_v1",
+      "manifest": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_h2_common_eval_20261019_v1/FLEXHOOK_EVAL_MANIFEST.json",
+      "threshold": 0.5,
+      "prediction_rows": 496013,
+      "score_rows": 930115,
+      "metrics_percent": {
+        "HOTA": 68.512428,
+        "DetA": 59.466877,
+        "AssA": 78.937101,
+        "IDF1": 66.749697
+      },
+      "IDSW": 382
+    },
+    "H3": {
+      "description": "causal adaptive interval",
+      "status": "SUCCEEDED",
+      "score_root": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_score_control_20261019_H3",
+      "eval_root": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_h3_common_eval_20261019_v1",
+      "manifest": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_h3_common_eval_20261019_v1/FLEXHOOK_EVAL_MANIFEST.json",
+      "threshold": 0.5,
+      "prediction_rows": 500278,
+      "score_rows": 930115,
+      "metrics_percent": {
+        "HOTA": 68.063179,
+        "DetA": 58.931499,
+        "AssA": 78.613175,
+        "IDF1": 66.337556
+      },
+      "IDSW": 426
+    },
+    "H4": {
+      "description": "stable identity score read",
+      "status": "SUCCEEDED",
+      "score_root": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_score_control_20261019_H4",
+      "eval_root": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_h4_common_eval_20261019_v1",
+      "manifest": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_h4_common_eval_20261019_v1/FLEXHOOK_EVAL_MANIFEST.json",
+      "threshold": 0.5,
+      "prediction_rows": 495020,
+      "score_rows": 930115,
+      "metrics_percent": {
+        "HOTA": 68.604619,
+        "DetA": 59.571474,
+        "AssA": 79.010717,
+        "IDF1": 66.829675
+      },
+      "IDSW": 375
+    },
+    "H5": {
+      "description": "short dynamic score history",
+      "status": "SUCCEEDED",
+      "score_root": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_score_control_20261019_H5",
+      "eval_root": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_h5_common_eval_20261019_v1",
+      "manifest": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_h5_common_eval_20261019_v1/FLEXHOOK_EVAL_MANIFEST.json",
+      "threshold": 0.5,
+      "prediction_rows": 496244,
+      "score_rows": 930115,
+      "metrics_percent": {
+        "HOTA": 68.491772,
+        "DetA": 59.441031,
+        "AssA": 78.923806,
+        "IDF1": 66.729259
+      },
+      "IDSW": 390
+    },
+    "H6": {
+      "description": "separated identity and dynamic score histories",
+      "status": "SUCCEEDED",
+      "score_root": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_score_control_20261019_H6",
+      "eval_root": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_h6_common_eval_20261019_v1",
+      "manifest": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_h6_common_eval_20261019_v1/FLEXHOOK_EVAL_MANIFEST.json",
+      "threshold": 0.5,
+      "prediction_rows": 495400,
+      "score_rows": 930115,
+      "metrics_percent": {
+        "HOTA": 68.570292,
+        "DetA": 59.5284,
+        "AssA": 78.988776,
+        "IDF1": 66.798313
+      },
+      "IDSW": 378
+    },
+    "H7": {
+      "description": "reliability-controlled memory write",
+      "status": "SUCCEEDED",
+      "score_root": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_score_control_20261019_H7",
+      "eval_root": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_h7_common_eval_20261019_v1",
+      "manifest": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_h7_common_eval_20261019_v1/FLEXHOOK_EVAL_MANIFEST.json",
+      "threshold": 0.5,
+      "prediction_rows": 497376,
+      "score_rows": 930115,
+      "metrics_percent": {
+        "HOTA": 68.3917,
+        "DetA": 59.325979,
+        "AssA": 78.845975,
+        "IDF1": 66.633793
+      },
+      "IDSW": 404
+    },
+    "H8": {
+      "description": "combined causal control",
+      "status": "SUCCEEDED",
+      "score_root": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_score_control_20261019_H8",
+      "eval_root": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_h8_common_eval_20261019_v1",
+      "manifest": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_h8_common_eval_20261019_v1/FLEXHOOK_EVAL_MANIFEST.json",
+      "threshold": 0.5,
+      "prediction_rows": 494916,
+      "score_rows": 930115,
+      "metrics_percent": {
+        "HOTA": 68.632825,
+        "DetA": 59.603905,
+        "AssA": 79.032668,
+        "IDF1": 66.85791
+      },
+      "IDSW": 370
+    }
+  },
+  "conclusion": {
+    "best_hota": "H8",
+    "best_idf1": "H8",
+    "lowest_idsw": "H8",
+    "pass_through_reproduction": [
+      "H0",
+      "H1"
+    ],
+    "claim_boundary": "score-level controls over a frozen checkpoint; no learned temporal head is claimed"
+  },
+  "validation": {
+    "all_variant_manifests_succeeded": true,
+    "historical_test_untouched_during_training": true,
+    "test_gt_used_for_checkpoint_selection_or_tuning": false
+  }
+}
