@@ -1,0 +1,27 @@
+{
+  "schema_version": "rmot-sports-phase-0.1",
+  "phase": 98,
+  "title": "Partial YesTrack formal-output integrity audit",
+  "status": "PARTIAL_OUTPUT_FORMAT_VALIDATED_TERMINAL_METRICS_PENDING",
+  "observed_at": "2026-10-20T07:57:14+08:00",
+  "run_id": "yestrack_y1_common_eval_20261019_v3",
+  "results_root": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/yestrack_y1_common_eval_20261019_v3/results",
+  "manifest": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/yestrack_y1_common_eval_20261019_v3/YESTRACK_EVAL_MANIFEST.json",
+  "manifest_status": "ABSENT",
+  "observed_output": {
+    "prediction_files": 66,
+    "nonempty_rows": 447950,
+    "unique_frame_ids_across_observed_files": 1825,
+    "maximum_frame_id": 1825,
+    "unique_track_ids_across_observed_files": 35,
+    "format_issues": 0
+  },
+  "checks": [
+    "Every non-empty prediction row has at least seven comma-separated fields.",
+    "Frame and track identifiers parse as numeric values; frame identifiers are one-based and track identifiers are non-negative.",
+    "Bounding-box coordinates and confidence values are finite numbers.",
+    "No prediction file was modified by this audit."
+  ],
+  "claim_boundary": "This is a partial-output format audit only. It does not score incomplete historical test output or claim any formal metric.",
+  "next_step": "Wait for a SUCCEEDED YESTRACK_EVAL_MANIFEST.json covering all 142 historical-test expressions, then parse and publish terminal TrackEval metrics."
+}
