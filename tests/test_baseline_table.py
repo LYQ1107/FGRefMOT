@@ -56,6 +56,31 @@ def test_formal_metrics_uses_preregistered_yestrack_threshold() -> None:
     assert module.formal_metrics(payload)["formal_hota"] == "65.000000"
 
 
+def test_formal_metrics_uses_internal_selected_yestrack_threshold() -> None:
+    module = _load_builder()
+    payload = {
+        "evaluations": [
+            {"threshold": 0.5, "results": _trackeval_payload(0.6)},
+            {"threshold": 0.8, "results": _trackeval_payload(0.7)},
+        ]
+    }
+
+    assert module.formal_metrics(payload, selected_threshold=0.8)["formal_hota"] == "75.000000"
+
+
+def test_manifest_selected_threshold_is_used_for_validation_metrics() -> None:
+    module = _load_builder()
+    payload = {
+        "selected_threshold": 0.8,
+        "evaluations": [
+            {"threshold": 0.5, "results": _trackeval_payload(0.6)},
+            {"threshold": 0.8, "results": _trackeval_payload(0.7)},
+        ],
+    }
+
+    assert module.validation_metrics(payload)["validation_hota"] == "75.000000"
+
+
 def test_validation_metrics_use_validation_namespace() -> None:
     module = _load_builder()
     metrics = module.validation_metrics({"trackeval_results": _trackeval_payload(0.4)})

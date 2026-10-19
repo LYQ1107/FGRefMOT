@@ -73,15 +73,16 @@
         0.8
       ],
       "selected_threshold": 0.8,
-      "hota": 0.7936402559280396,
-      "deta": 0.806831419467926,
-      "assa": 0.7806647419929504,
+      "hota": 0.7465245127677917,
+      "deta": 0.7568361014127731,
+      "assa": 0.7363719250026503,
       "mota": 0.7779810429791564,
       "clear_f1": 0.8908724771472532,
       "idf1": 0.7830233505294597,
       "idsw": 126,
       "manifest": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/yestrack_y1_internal_eval_20261019_v5/YESTRACK_EVAL_MANIFEST.json",
-      "manifest_sha256": "b4a729d8a82d3c32e17d815e19f4cbc5f54166432d2cafad789e93e0934123c6"
+      "metric_aggregation": "mean over TrackEval HOTA alpha thresholds",
+      "manifest_sha256": "33ffa81651def7d71d74e2c291dd05b42692839ef04ca56bc99d9a91db0f7822"
     }
   },
   "sequence_lists": {

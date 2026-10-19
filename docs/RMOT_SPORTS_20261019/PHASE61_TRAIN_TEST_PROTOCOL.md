@@ -14,11 +14,13 @@ The full 22-video YesTrack Sports-LoRA run finished successfully with 90,559
 optimizer steps and exit code 0. The separate 17-video internal training run
 also finished successfully, and its fixed five-video validation evaluation
 selected threshold 0.8 from the registered grid. The successful internal
-manifest reports HOTA `0.793640`, DetA `0.806831`, AssA `0.780665`, MOTA
+manifest reports mean-over-alpha HOTA `0.746525`, DetA `0.756836`, AssA
+`0.736372`, MOTA
 `0.777981`, CLEAR-F1 `0.890872`, IDF1 `0.783023`, and IDSW `126`. The formal
 historical evaluation has started from the full-run adapter and is recorded
 under the registered output root; no full-run YesTrack test metric is claimed
-until its evaluation manifest is `SUCCEEDED`.
+until its evaluation manifest is `SUCCEEDED`. TrackEval HOTA, DetA, and AssA
+above use the mean over alpha thresholds, matching the baseline table.
 
 The selected FlexHook H8 temporal head was trained on the 17-video core and
 selected on the five-video internal split. Its internal TrackEval completed with

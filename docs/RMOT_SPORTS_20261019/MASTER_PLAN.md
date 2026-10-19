@@ -26,7 +26,8 @@ internal validation values.
 Active work is recorded in `EXPERIMENT_REGISTRY.csv`. The full and internal
 YesTrack Sports-LoRA trainings have succeeded. The separate internal
 YesTrack validation evaluation has also succeeded, selecting threshold 0.8
-from internal HOTA (0.793640); its 19-video formal evaluation remains live.
+from internal mean-over-alpha HOTA (0.746525); its 19-video formal evaluation
+remains live.
 The strict FlexHook core-only training
 run has completed on GPU3: it used 17 train videos/136 expressions, selected
 the checkpoint on the reserved 5 videos/45 expressions, and wrote its

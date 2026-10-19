@@ -34,6 +34,7 @@ FORMAL_METRIC_FIELDS = (
     "formal_ref_f1",
 )
 METRIC_FIELDS = (*VALIDATION_METRIC_FIELDS, *FORMAL_METRIC_FIELDS, "fps")
+DEFAULT_YESTRACK_THRESHOLD = 0.5
 TABLE_FIELDS = (
     "method",
     "variant",
@@ -166,18 +167,42 @@ def _find_combined_results(value: Any) -> dict[str, Any] | None:
     return None
 
 
-def _selected_trackeval_results(payload: dict[str, Any]) -> Any:
-    """Return the registered TrackEval result from a manifest payload."""
+def _manifest_threshold(payload: dict[str, Any], fallback: float = DEFAULT_YESTRACK_THRESHOLD) -> float:
+    """Return a manifest's preselected threshold, with a compatibility fallback."""
+
+    value = payload.get("selected_threshold")
+    try:
+        return float(value) if value is not None else float(fallback)
+    except (TypeError, ValueError):
+        return float(fallback)
+
+
+def _selected_trackeval_results(
+    payload: dict[str, Any], selected_threshold: float | None = None
+) -> Any:
+    """Return the registered TrackEval result from a manifest payload.
+
+    A direct ``trackeval_results`` payload is already selected. For manifests
+    containing a threshold grid, use the threshold selected on internal
+    validation. Older manifests lack that metadata and retain the registered
+    0.50 compatibility fallback.
+    """
 
     results: Any = payload.get("trackeval_results")
     if results is None:
         evaluations = payload.get("evaluations")
         if isinstance(evaluations, list):
+            threshold = (
+                _manifest_threshold(payload)
+                if selected_threshold is None
+                else float(selected_threshold)
+            )
             selected = next(
                 (
                     item.get("results")
                     for item in evaluations
-                    if isinstance(item, dict) and abs(float(item.get("threshold", -1.0)) - 0.5) < 1e-9
+                    if isinstance(item, dict)
+                    and abs(float(item.get("threshold", -1.0)) - threshold) < 1e-9
                 ),
                 None,
             )
@@ -185,8 +210,12 @@ def _selected_trackeval_results(payload: dict[str, Any]) -> Any:
     return results
 
 
-def _metrics(payload: dict[str, Any], prefix: str) -> dict[str, str]:
-    combined = _find_combined_results(_selected_trackeval_results(payload))
+def _metrics(
+    payload: dict[str, Any], prefix: str, selected_threshold: float | None = None
+) -> dict[str, str]:
+    combined = _find_combined_results(
+        _selected_trackeval_results(payload, selected_threshold=selected_threshold)
+    )
     fields = VALIDATION_METRIC_FIELDS if prefix == "validation" else FORMAL_METRIC_FIELDS
     if not isinstance(combined, dict):
         return {field: "NOT_RUN" for field in fields}
@@ -203,10 +232,12 @@ def _metrics(payload: dict[str, Any], prefix: str) -> dict[str, str]:
     }
 
 
-def formal_metrics(payload: dict[str, Any]) -> dict[str, str]:
+def formal_metrics(
+    payload: dict[str, Any], selected_threshold: float | None = None
+) -> dict[str, str]:
     """Extract registered metrics from a completed formal test manifest."""
 
-    values = _metrics(payload, "formal")
+    values = _metrics(payload, "formal", selected_threshold=selected_threshold)
     values["fps"] = str(payload.get("fps", "NOT_RUN"))
     return values
 
@@ -275,6 +306,11 @@ def build_rows(project: Path, nas_root: Path) -> list[dict[str, str]]:
     y1_eval_data = manifest_payload(y1_eval_manifest)
     y1_validation_status = manifest_status(y1_validation_manifest)
     y1_validation_data = manifest_payload(y1_validation_manifest)
+    y1_selected_threshold = (
+        _manifest_threshold(y1_validation_data)
+        if y1_validation_status == "SUCCEEDED"
+        else DEFAULT_YESTRACK_THRESHOLD
+    )
     y1_status = manifest_status(y1_manifest)
     if y1_status.startswith("RUNNING"):
         y1_status = "TRAINING_RUNNING"
@@ -303,7 +339,7 @@ def build_rows(project: Path, nas_root: Path) -> list[dict[str, str]]:
     if y1_validation_status == "SUCCEEDED":
         y1_metrics.update(validation_metrics(y1_validation_data))
     if y1_eval_status == "SUCCEEDED":
-        y1_metrics.update(formal_metrics(y1_eval_data))
+        y1_metrics.update(formal_metrics(y1_eval_data, selected_threshold=y1_selected_threshold))
     return [
         row(
             method="FGRefMOT",
