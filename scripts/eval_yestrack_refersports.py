@@ -237,28 +237,27 @@ def run_yestrack_inference(
 def _count_frame_units(
     *,
     data_root: Path,
-    gt_manifest_root: Path,
     sequence_names: list[str],
 ) -> tuple[int, int]:
     """Return unique video frames and expression-video-frame pairs."""
 
-    manifest = json.loads((gt_manifest_root / "manifest.json").read_text(encoding="utf-8"))
+    # The generated YesTrack layout manifest contains frame and expression
+    # counts without boxes or labels.  Efficiency accounting must not inspect
+    # the offline TrackEval GT tree.
+    manifest = json.loads((data_root / "manifest.json").read_text(encoding="utf-8"))
     wanted = set(sequence_names)
     records = [record for record in manifest["metadata"] if record["video_id"] in wanted]
-    by_video = {record["video_id"] for record in records}
-    frame_counts: dict[str, int] = {}
-    for video in by_video:
-        image_dir = data_root / "KITTI" / "training" / "image_02" / video
-        frame_counts[video] = len([path for path in image_dir.iterdir() if path.is_file()])
-    video_frames = sum(frame_counts.values())
-    expression_frames = sum(frame_counts[record["video_id"]] for record in records)
+    video_frames = sum(int(record["frame_count"]) for record in records)
+    expression_frames = sum(
+        int(record["frame_count"]) * int(record.get("expression_count", 0))
+        for record in records
+    )
     return video_frames, expression_frames
 
 
 def _efficiency_record(
     *,
     data_root: Path,
-    gt_manifest_root: Path,
     sequence_names: list[str],
     inference: dict[str, Any] | None,
 ) -> dict[str, Any]:
@@ -275,7 +274,6 @@ def _efficiency_record(
         seconds = None
     video_frames, expression_frames = _count_frame_units(
         data_root=data_root,
-        gt_manifest_root=gt_manifest_root,
         sequence_names=sequence_names,
     )
     return {
@@ -488,7 +486,6 @@ def main(argv: list[str] | None = None) -> int:
         )
     payload["efficiency"] = _efficiency_record(
         data_root=Path(args.data_root).expanduser().resolve(),
-        gt_manifest_root=Path(args.gt_manifest_root).expanduser().resolve(),
         sequence_names=sequence_names,
         inference=payload.get("inference"),
     )
