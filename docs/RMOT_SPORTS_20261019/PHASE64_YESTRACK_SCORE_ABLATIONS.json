@@ -1,0 +1,12 @@
+{
+  "phase": 64,
+  "title": "YesTrack score-level ablation pipeline",
+  "status": "REGISTERED_WAIT_FOR_Y1_FORMAL_EVAL",
+  "script": "scripts/eval_yestrack_score_variant.py",
+  "variants": ["YB2", "YB3", "YB4", "YB5", "YB6"],
+  "thresholds": [0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8],
+  "model_inference": "NOT_RUN; frozen Y1 prediction archive",
+  "gt_for_score_transform": false,
+  "gt_for_metrics": "offline TrackEval only",
+  "gate": "full historical Y1 formal evaluation must succeed"
+}
