@@ -97,3 +97,8 @@ Phase 87 records the 07:08:00 health check: the formal YesTrack evaluator was
 still alive after producing 60/142 prediction files, while seed43 and seed44
 were actively training at 9,048/90,523 and 8,875/90,528 optimizer steps.
 Neither partial output nor nonterminal training state is used as a metric.
+
+Phase 88 records the 07:11:03 non-GPU regression check: the repository test
+suite completed with 78 passed tests and two known deprecation warnings. This
+verification does not change any live GPU run or convert partial outputs into
+metrics.

@@ -1,6 +1,6 @@
 {
   "schema_version": "rmot-sports-gate-audit-0.1",
-  "observed_at": "2026-10-20T07:08:00+08:00",
+  "observed_at": "2026-10-20T07:11:03+08:00",
   "status": "IN_PROGRESS",
   "workspace": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019",
   "branch": "research/sports-rmot-strong-baselines-20261019",
@@ -125,7 +125,8 @@
         "docs/RMOT_SPORTS_20261019/PHASE78_FINAL_REPORT_ENTRYPOINTS.json",
         "docs/RMOT_SPORTS_20261019/FINAL_RESEARCH_REPORT.md",
         "GitHub branch research/sports-rmot-strong-baselines-20261019",
-        "docs/RMOT_SPORTS_20261019/PHASE84_STORAGE_SNAPSHOT_20261020.json"
+        "docs/RMOT_SPORTS_20261019/PHASE84_STORAGE_SNAPSHOT_20261020.json",
+        "docs/RMOT_SPORTS_20261019/PHASE88_REGRESSION_TEST_20261020.json"
       ],
       "claim_boundary": "The required final-report entrypoints and evidence ledger exist and are remotely synchronized; the final reviewer conclusion and remaining formal comparisons are not complete."
     }
