@@ -1,6 +1,6 @@
 {
   "schema_version": "rmot-sports-gate-audit-0.1",
-  "observed_at": "2026-10-20T07:20:19+08:00",
+  "observed_at": "2026-10-20T07:21:25+08:00",
   "status": "IN_PROGRESS",
   "workspace": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019",
   "branch": "research/sports-rmot-strong-baselines-20261019",
@@ -70,7 +70,8 @@
         "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_temporal_h8_internal_core_20261019/TEMPORAL_TRAINING_MANIFEST.json",
         "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_temporal_h8_internal_eval_20261019_v1/FLEXHOOK_EVAL_MANIFEST.json",
         "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_temporal_h8_common_eval_20261019_v1/FLEXHOOK_EVAL_MANIFEST.json",
-        "docs/RMOT_SPORTS_20261019/PHASE91_POSTBASELINE_WATCHER_PREFLIGHT_20261020.json"
+        "docs/RMOT_SPORTS_20261019/PHASE91_POSTBASELINE_WATCHER_PREFLIGHT_20261020.json",
+        "docs/RMOT_SPORTS_20261019/PHASE93_YESTRACK_SCORE_CONTROL_TEST_20261020.json"
       ],
       "claim_boundary": "The H8 causal temporal checkpoint was trained on train_core, selected using internal_val, and completed both internal and 19-video historical TrackEval. Its historical metrics are recorded, but no learned improvement or proposed-method claim is made before the formal baseline and ablation gate."
     },
@@ -135,7 +136,8 @@
         "docs/RMOT_SPORTS_20261019/PHASE89_BASELINE_TABLE_READINESS_20261020.json",
         "docs/RMOT_SPORTS_20261019/PHASE90_LIVE_HEALTH_20261020.json",
         "docs/RMOT_SPORTS_20261019/PHASE91_POSTBASELINE_WATCHER_PREFLIGHT_20261020.json",
-        "docs/RMOT_SPORTS_20261019/PHASE92_RUN_REPRODUCIBILITY_AUDIT_20261020.json"
+        "docs/RMOT_SPORTS_20261019/PHASE92_RUN_REPRODUCIBILITY_AUDIT_20261020.json",
+        "docs/RMOT_SPORTS_20261019/PHASE93_YESTRACK_SCORE_CONTROL_TEST_20261020.json"
       ],
       "claim_boundary": "The required final-report entrypoints and evidence ledger exist and are remotely synchronized; the final reviewer conclusion and remaining formal comparisons are not complete."
     }
