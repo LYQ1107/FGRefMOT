@@ -24,6 +24,7 @@ def test_flexhook_resolves_nested_tracker_outputs(tmp_path: Path) -> None:
     track.write_text("1,7,10,20,30,40,1,1,1,1\n", encoding="utf-8")
 
     assert module.resolve_tracker_file(tmp_path, "video") == track
+    assert module.resolve_tracker_input_root(tmp_path, ["video"]) == nested
 
 
 def test_yestrack_prefers_root_then_nested_tracker_outputs(tmp_path: Path) -> None:

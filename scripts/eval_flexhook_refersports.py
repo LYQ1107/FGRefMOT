@@ -18,6 +18,7 @@ import logging
 import os
 import shutil
 import sys
+import tempfile
 import time
 from pathlib import Path
 from typing import Any
@@ -91,6 +92,21 @@ def resolve_tracker_file(tracker_root: Path, video: str) -> Path:
         f"tracker output missing for {video}; checked: "
         + ", ".join(str(path) for path in candidates)
     )
+
+
+def resolve_tracker_input_root(tracker_root: Path, sequence_names: list[str]) -> Path:
+    """Return the directory expected by the upstream FlexHook loader."""
+
+    if all((tracker_root / f"{video}.txt").is_file() for video in sequence_names):
+        return tracker_root
+    nested = tracker_root / "tracker_outputs"
+    if all((nested / f"{video}.txt").is_file() for video in sequence_names):
+        return nested
+    # Keep the detailed per-video error from resolve_tracker_file for callers
+    # that need to diagnose a partial tracker tree.
+    if sequence_names:
+        resolve_tracker_file(tracker_root, sequence_names[0])
+    raise FileNotFoundError(f"no complete tracker input root under {tracker_root}")
 
 
 def _write_rows(path: Path, rows: list[list[float | int]]) -> None:
@@ -332,7 +348,22 @@ def run_flexhook_inference(
     dist.init_process_group(backend="nccl", init_method="env://")
     cfg = _C.clone()
     cfg.defrost()
-    cfg.merge_from_file(str(config_path))
+    # The upstream launcher writes a YAML document to ``config.json``.  YACS
+    # dispatches on the suffix before parsing, so use a temporary YAML-named
+    # view while preserving the immutable training artifact and its hash.
+    merge_config_path = config_path
+    temporary_config: Path | None = None
+    if config_path.suffix.lower() not in {".yaml", ".yml", ".py"}:
+        fd, temporary_name = tempfile.mkstemp(prefix="flexhook_eval_config_", suffix=".yaml")
+        os.close(fd)
+        temporary_config = Path(temporary_name)
+        shutil.copyfile(config_path, temporary_config)
+        merge_config_path = temporary_config
+    try:
+        cfg.merge_from_file(str(merge_config_path))
+    finally:
+        if temporary_config is not None:
+            temporary_config.unlink(missing_ok=True)
     cfg.DATA.DATASET = "mix"
     cfg.DATA.TRAIN = "SportsMOT"
     cfg.DATA.TEST = "SportsMOT"
@@ -345,7 +376,7 @@ def run_flexhook_inference(
     cfg.OUTPUT = str(output_root)
     cfg.data_root = str(layout_root)
     cfg.val_data_root = str(layout_root)
-    cfg.track_root = str(tracker_root)
+    cfg.track_root = str(resolve_tracker_input_root(tracker_root, manifest["sequence_names"]))
     cfg.freeze()
     logger = create_logger(str(output_root), dist_rank=0, name="flexhook_refersports_eval")
     flexhook_main.logger = logger

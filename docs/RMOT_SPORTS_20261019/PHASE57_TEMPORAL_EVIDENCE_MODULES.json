@@ -1,0 +1,37 @@
+{
+  "phase": 57,
+  "title": "Causal temporal evidence module implementation",
+  "status": "IMPLEMENTED_CPU_TESTED_WAIT_FOR_BASELINES",
+  "package": "adapters/flexhook_temporal",
+  "components": [
+    "evidence_buffer",
+    "reliability_gate",
+    "temporal_referring"
+  ],
+  "variants": [
+    "H0",
+    "H1",
+    "H2",
+    "H3",
+    "H4",
+    "H5",
+    "H6",
+    "H7",
+    "H8"
+  ],
+  "properties": {
+    "causal_frame_order_enforced": true,
+    "expression_scoped_memory": true,
+    "identity_and_dynamic_evidence_separated": true,
+    "reliability_gate_uses_referring_score": false,
+    "multi_label_candidate_logits": true,
+    "upstream_checkout_modified": false
+  },
+  "tests": {
+    "path": "tests/test_flexhook_temporal.py",
+    "count": 4,
+    "status": "PASS"
+  },
+  "metrics_claimed": false,
+  "integration_gate": "FORMAL_FLEXHOOK_BASELINE_REQUIRED"
+}
