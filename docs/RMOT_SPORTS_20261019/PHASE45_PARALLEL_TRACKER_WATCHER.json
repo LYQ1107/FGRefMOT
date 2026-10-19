@@ -1,0 +1,38 @@
+{
+  "schema_version": "rmot-sports-phase-45-0.1",
+  "phase": 45,
+  "status": "TRACKER_GPU0_RUNNING_YESTRACK_GPU1_RUNNING",
+  "training": {
+    "variant": "Y1",
+    "physical_gpu": 1,
+    "run_manifest": "runs/gpu/yestrack_y1_sports_lora_seed42/RUN_MANIFEST.json",
+    "log": "runs/gpu/yestrack_y1_sports_lora_seed42/yestrack_y1_sports_lora_seed42.log",
+    "policy": "existing_run_not_restarted"
+  },
+  "tracker": {
+    "variant": "common-SambaMOTR-DAB-D-DETR",
+    "physical_gpu": 0,
+    "manifest": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/assets/pretrained/common_tracker/sambamotr_dab_refersports_train_20261019/TRACKER_RUN_MANIFEST.json",
+    "staging_policy": "IMAGE_ONLY_STAGING; GT_AND_LABEL_FILES_OMITTED",
+    "sequence_count": 19,
+    "launch_log": "runs/gpu/common_tracker_refersports_20261019.log",
+    "status_at_registration": "RUNNING_OR_NAS_CHECKPOINT_READ"
+  },
+  "evaluation_watcher": {
+    "script": "scripts/post_tracker_eval_watch.py",
+    "training_log_gate": true,
+    "checkpoint_wait": "lora_epoch_0",
+    "status_at_registration": "WAITING_FOR_TRACKER_AND_LORA"
+  },
+  "policy": {
+    "gt_or_labels_as_tracker_input": "REJECTED",
+    "test_gt_tuning_or_checkpoint_selection": "REJECTED",
+    "other_gpu_jobs_untouched": true,
+    "metrics_claimed": false
+  },
+  "validation": {
+    "py_compile": "PASS",
+    "git_diff_check": "PASS",
+    "focused_tests": "6 passed"
+  }
+}

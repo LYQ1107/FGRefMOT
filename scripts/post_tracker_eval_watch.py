@@ -70,6 +70,10 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--project", default=str(Path(__file__).resolve().parents[1]))
     parser.add_argument("--tracker-manifest", required=True)
     parser.add_argument("--lora-root", required=True)
+    parser.add_argument(
+        "--training-log",
+        help="Optional YesTrack wrapper log used to distinguish an active run from a failed run.",
+    )
     parser.add_argument("--model-name", required=True)
     parser.add_argument("--data-root", required=True)
     parser.add_argument("--tracker-root", required=True)
@@ -108,13 +112,25 @@ def main(argv: list[str] | None = None) -> int:
                 return 2
         time.sleep(args.poll_seconds)
 
-    lora_candidates = sorted(
-        (path for path in Path(args.lora_root).expanduser().resolve().glob("**/lora_epoch_0") if path.is_dir()),
-        key=lambda path: path.stat().st_mtime,
+    lora_root = Path(args.lora_root).expanduser().resolve()
+    training_log = (
+        Path(args.training_log).expanduser().resolve() if args.training_log else None
     )
-    if not lora_candidates:
-        log("lora_epoch_0_not_found")
-        return 3
+    while True:
+        lora_candidates = sorted(
+            (path for path in lora_root.glob("**/lora_epoch_0") if path.is_dir()),
+            key=lambda path: path.stat().st_mtime,
+        )
+        if lora_candidates:
+            break
+        if training_log and training_log.is_file():
+            text = training_log.read_text(encoding="utf-8", errors="replace")
+            exit_markers = [line for line in text.splitlines() if "__YESTRACK_EXIT__=" in line]
+            if exit_markers and not exit_markers[-1].endswith("__YESTRACK_EXIT__=0"):
+                log(f"training_failed_before_lora={exit_markers[-1]}")
+                return 3
+        log("waiting_for_lora_epoch_0")
+        time.sleep(args.poll_seconds)
     lora_path = lora_candidates[-1]
     log(f"lora_path={lora_path}")
 
