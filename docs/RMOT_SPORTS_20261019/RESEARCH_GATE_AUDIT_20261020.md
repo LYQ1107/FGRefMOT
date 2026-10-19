@@ -28,9 +28,10 @@ evaluation also succeeded; threshold 0.8 was selected on internal HOTA
 The FlexHook frozen-score H0-H8 replay is a diagnostic control over a frozen
 checkpoint; it is not a learned temporal-head result.
 
-The following gates remain open: YesTrack formal evaluation, proposed-method
-and baseline ablations, multi-seed stability, complete online efficiency,
-final-test evidence for the remaining variants, and the final reviewer report.
+The following gates remain open: YesTrack formal evaluation and timing,
+proposed-method and baseline ablations, multi-seed stability, remaining
+efficiency evidence, final-test evidence for the remaining variants, and the
+final reviewer report.
 The internal YesTrack metric and the selected H8 historical metric are recorded
 as split-specific evidence; they must not be presented as a completed full
 baseline comparison or a learned-method improvement claim. Phase 76 has
@@ -84,3 +85,10 @@ Phase 85 records the 06:53:48 increment: the formal evaluator reached 59/142
 prediction files, the timed tracker reached 10/19 sequence files, and seed43 /
 seed44 reached 6,744/6,690 steps. These remain progress evidence only until
 terminal manifests succeed.
+
+Phase 86 records the 07:06:25 completion of the timed common tracker and its
+efficiency join. All 19 historical-test sequences produced 11,900 frames in
+1,580.706636 seconds (7.5283 tracker FPS). Joining that terminal tracker
+manifest with the selected FlexHook H8 historical evaluation gives 1.9088 FPS
+for the complete tracker-plus-referring pipeline. YesTrack historical timing
+and the remaining method-comparison gates are still open.

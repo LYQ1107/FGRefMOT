@@ -1,0 +1,41 @@
+{
+  "schema_version": "rmot-sports-phase-0.1",
+  "phase": 86,
+  "title": "Timed common-tracker and FlexHook H8 historical efficiency join",
+  "status": "COMPLETE_FOR_FLEXHOOK_H8_HISTORICAL",
+  "observed_at": "2026-10-20T07:06:25+08:00",
+  "protocol": {
+    "train": "22 videos / 181 expressions; the H8 checkpoint was trained on the registered 17-video train-core",
+    "internal_selection": "5 internal-val videos / 45 expressions used for checkpoint selection",
+    "historical_test": "19 videos / 142 expressions; test ground truth is offline TrackEval input only after selection"
+  },
+  "tracker": {
+    "run_id": "common_tracker_refersports_timed_20261020",
+    "manifest": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/common_tracker_refersports_timed_20261020/TRACKER_RUN_MANIFEST.json",
+    "status": "SUCCEEDED",
+    "sequence_count": 19,
+    "frame_count": 11900,
+    "wall_seconds": 1580.7066358999873,
+    "tracker_fps": 7.5282786380058715,
+    "gpu": 0
+  },
+  "referring_module": {
+    "run_id": "flexhook_temporal_h8_common_eval_20261019_v1",
+    "manifest": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_temporal_h8_common_eval_20261019_v1/FLEXHOOK_EVAL_MANIFEST.json",
+    "expression_frame_count": 85166,
+    "video_frame_count": 11900,
+    "inference_seconds": 4653.554734754987,
+    "referring_module_fps": 18.30127823874925,
+    "video_frame_fps": 2.5571849216954665,
+    "model_loading_seconds": 323.6163459949894,
+    "peak_gpu_memory_mib": 12976.0
+  },
+  "complete_pipeline": {
+    "output": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/efficiency_flexhook_h8_historical_timed_20261020.json",
+    "formula": "unique_video_frames / (tracker_wall_seconds + referring_inference_seconds)",
+    "frame_count": 11900,
+    "wall_seconds": 6234.261370654975,
+    "complete_pipeline_fps": 1.9088067202337684
+  },
+  "claim_boundary": "This is a measured FlexHook H8 historical complete-pipeline timing result. It is not a YesTrack timing result and does not establish a proposed-method gain."
+}
