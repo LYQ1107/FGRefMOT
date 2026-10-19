@@ -38,3 +38,10 @@ def test_yestrack_prefers_root_then_nested_tracker_outputs(tmp_path: Path) -> No
     root_track = tmp_path / "other.txt"
     root_track.write_text("1,8,1,2,3,4,1\n", encoding="utf-8")
     assert module.resolve_tracker_input_root(tmp_path) == tmp_path
+
+
+def test_yestrack_expression_dirs_suffix_duplicate_sentences() -> None:
+    module = _load_script("eval_yestrack_refersports.py")
+    records = [{"sentence": "Basketball players"}, {"sentence": "basketball players"}]
+
+    assert module._expression_dirnames(records) == ["basketball-players", "basketball-players__2"]

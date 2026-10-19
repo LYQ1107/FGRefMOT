@@ -52,6 +52,19 @@ def _dirname_from_sentence(sentence: str) -> str:
     return value or "expr"
 
 
+def _expression_dirnames(records: list[dict[str, Any]]) -> list[str]:
+    """Match the upstream evaluator's stable suffix for duplicate sentences."""
+
+    used: dict[str, int] = {}
+    names: list[str] = []
+    for record in records:
+        base = _dirname_from_sentence(record["sentence"])
+        count = used.get(base, 0)
+        used[base] = count + 1
+        names.append(base if count == 0 else f"{base}__{count + 1}")
+    return names
+
+
 def _load_rows(path: Path) -> list[list[str]]:
     if not path.is_file():
         raise FileNotFoundError(f"YesTrack output missing: {path}")
@@ -194,8 +207,7 @@ def evaluate_threshold(
         if not image_dir.is_dir():
             raise FileNotFoundError(f"YesTrack image directory missing: {image_dir}")
         frame_count = len([path for path in image_dir.iterdir() if path.is_file()])
-        for record in video_records:
-            expression_dir = _dirname_from_sentence(record["sentence"])
+        for record, expression_dir in zip(video_records, _expression_dirnames(video_records)):
             sequence = record["name"]
             seq_info[sequence] = frame_count
             gt_source = gt_manifest_root / "gt" / sequence / "gt.txt"

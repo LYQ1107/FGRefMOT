@@ -1,0 +1,18 @@
+{
+  "phase": 51,
+  "title": "YesTrack duplicate-expression output mapping",
+  "status": "FIXED_TESTED_TRAINING_RUNNING",
+  "affected_video": "v_4LXTUim5anY_c010",
+  "duplicate_sentence": "basketball players",
+  "upstream_directory_rule": "base name then base name__2",
+  "adapter_change": "reconstruct per-video expression directories with stable duplicate suffixes",
+  "validation": {
+    "project_tests": "27 passed",
+    "git_diff_check": "passed",
+    "metrics_claimed": false
+  },
+  "run_state": {
+    "yestrack_training": "RUNNING",
+    "formal_evaluation": "PENDING_VALID_CHECKPOINT"
+  }
+}
