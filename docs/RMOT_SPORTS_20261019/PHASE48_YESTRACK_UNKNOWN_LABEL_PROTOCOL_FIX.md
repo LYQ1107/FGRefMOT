@@ -1,6 +1,6 @@
 # Phase 48 — YesTrack unknown-frame label protocol fix
 
-Status: `CORRECTED_RUN_READY`
+Status: `RUNNING`
 
 The first YesTrack Y1 attempt is retained as an invalidated audit artifact. It
 was stopped at approximately 10,392 optimizer steps after the protocol audit
@@ -27,6 +27,11 @@ The interrupted attempt measured roughly 2.4–2.7 steps/second on the available
 A100. The corrected one-epoch run is therefore expected to take about 9.5–10.5
 hours of training, or 10–12 hours including startup and checkpoint finalization.
 This is an estimate; the corrected run remains the source of truth.
+
+The corrected run `yestrack_y1_sports_lora_seed42_v2` started at
+`2026-10-19T17:55:41+08:00` on physical GPU 1. Its project-facing run directory
+is `runs/gpu/yestrack_y1_sports_lora_seed42_v2`; the upstream `runs/` link points
+directly to `/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs`.
 
 Validation performed before launch:
 

@@ -1,7 +1,15 @@
 {
   "phase": 48,
   "title": "YesTrack unknown-frame label protocol fix",
-  "status": "CORRECTED_RUN_READY",
+  "status": "RUNNING",
+  "corrected_run": {
+    "run_id": "yestrack_y1_sports_lora_seed42_v2",
+    "started_at": "2026-10-19T17:55:41+08:00",
+    "project_run_root": "runs/gpu/yestrack_y1_sports_lora_seed42_v2",
+    "nas_run_root": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs",
+    "physical_gpu": 1,
+    "protocol_valid": true
+  },
   "invalidated_attempt": {
     "run_id": "yestrack_y1_sports_lora_seed42",
     "status": "INTERRUPTED_PROTOCOL_INVALID",
