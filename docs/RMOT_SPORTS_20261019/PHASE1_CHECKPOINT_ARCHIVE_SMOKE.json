@@ -1,0 +1,13 @@
+{
+  "phase": 1,
+  "title": "checkpoint archive and restore smoke",
+  "status": "SYNTHETIC_ARCHIVE_RESTORE_PASS_MODEL_RESUME_NOT_RUN",
+  "source_size_bytes": 4194304,
+  "destination_filesystem": "/data3/liuyeqiang/nas/A100",
+  "complete_marker_verified": true,
+  "source_sha256": "f7ff53b035be35e2320b580670939ce2d2a206d227bae982f4e19d9bb6026527",
+  "restored_sha256": "f7ff53b035be35e2320b580670939ce2d2a206d227bae982f4e19d9bb6026527",
+  "hash_match": true,
+  "temporary_directories_removed": true,
+  "real_model_checkpoint_resumed": false
+}

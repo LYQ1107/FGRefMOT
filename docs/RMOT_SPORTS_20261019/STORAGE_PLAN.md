@@ -43,6 +43,9 @@ are compared and a `.complete.json` marker is atomically published.
 file-level archive/restore with hash verification. `nas_sync.sh` transfers to a
 temporary NAS path through SCP/SFTP and publishes by rename; it never deletes
 remote data. These scripts refuse path traversal and do not embed a password.
+The synthetic archive/restore smoke is recorded in
+`PHASE1_CHECKPOINT_ARCHIVE_SMOKE.md`; a real model checkpoint and optimizer
+resume remains a required later gate.
 
 ## Required run fields
 
