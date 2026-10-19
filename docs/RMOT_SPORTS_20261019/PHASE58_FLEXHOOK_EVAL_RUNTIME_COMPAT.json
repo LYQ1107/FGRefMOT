@@ -1,7 +1,7 @@
 {
   "phase": 58,
   "title": "FlexHook formal-evaluation runtime compatibility",
-  "status": "EVALUATION_RUNNING_NO_METRICS_CLAIMED",
+  "status": "COMPLETED",
   "adapter": "scripts/eval_flexhook_refersports.py",
   "eval_root": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_f1_common_eval_20261019_v7",
   "sequence_count": 19,
@@ -24,10 +24,12 @@
     "upstream_checkout_modified": false
   },
   "validation": {
-    "project_tests": "37 passed",
+    "project_tests": "40 passed",
     "evaluator_compile": "PASS",
-    "inference_progress_at_report": "250/4868",
-    "metrics_claimed": false
+    "inference_progress_at_report": "4868/4868",
+    "metrics_claimed": true,
+    "final_manifest_status": "SUCCEEDED",
+    "final_manifest_prediction_rows": 497473
   },
-  "next_gate": "FLEXHOOK_EVAL_MANIFEST_STATUS_SUCCEEDED"
+  "next_gate": "BASELINE_TABLE_UPDATED"
 }

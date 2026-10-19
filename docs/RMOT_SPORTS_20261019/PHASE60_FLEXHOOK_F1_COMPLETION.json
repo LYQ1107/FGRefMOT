@@ -1,0 +1,30 @@
+{
+  "schema_version": "rmot-sports-phase-0.1",
+  "phase": 60,
+  "title": "FlexHook F1 formal baseline completion",
+  "status": "COMPLETED",
+  "eval_root": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_f1_common_eval_20261019_v7",
+  "manifest": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_f1_common_eval_20261019_v7/FLEXHOOK_EVAL_MANIFEST.json",
+  "protocol": {
+    "split": "HISTORICAL_TEST_19",
+    "videos": 19,
+    "expressions": 142,
+    "model_input": "fixed_common_sambamotr_outputs_only",
+    "gt_usage": "offline_trackeval_tree_only",
+    "upstream_checkout_modified": false
+  },
+  "metrics_percent": {
+    "HOTA": 68.385415,
+    "DetA": 59.317842,
+    "AssA": 78.842302,
+    "IDF1": 66.627791
+  },
+  "IDSW": 409,
+  "prediction_rows": 497473,
+  "repair": "preserved duplicate expression records and repaired one missing prediction file without rerunning GPU inference",
+  "validation": {
+    "tests": "40 passed",
+    "evaluator_compile": "PASS",
+    "manifest_status": "SUCCEEDED"
+  }
+}

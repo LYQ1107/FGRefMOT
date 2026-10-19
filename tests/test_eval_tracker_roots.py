@@ -91,3 +91,31 @@ def test_flexhook_eval_moves_only_text_fields_to_cuda() -> None:
     assert len(wrapped) == 1
     assert values[0][4] is expid and values[0][5] is expma
     assert expid.moved and expma.moved
+
+
+def test_flexhook_predictions_preserve_duplicate_expressions(tmp_path: Path) -> None:
+    module = _load_script("eval_flexhook_refersports.py")
+    tracker = tmp_path / "video.txt"
+    tracker.write_text("1,7,10,20,30,40,1,1,1,1\n", encoding="utf-8")
+    manifest = {
+        "records": [
+            {"video": "video", "expression": "basketball players", "expression_dir": "basketball-players", "tracker_path": str(tracker)},
+            {"video": "video", "expression": "basketball players", "expression_dir": "basketball-players__2", "tracker_path": str(tracker)},
+        ]
+    }
+    cls_dict = {"video": {"7": {"1": {"basketball players": [0.1, 0.9]}}}}
+
+    written = module.write_predictions(
+        cls_dict=cls_dict,
+        manifest=manifest,
+        tracker_root=tmp_path,
+        output_root=tmp_path / "out",
+    )
+
+    assert written == 2
+    assert (tmp_path / "out/video/basketball-players/predict.txt").read_text() == (
+        "1,7,10.0,20.0,30.0,40.0,1,1,1,1\n"
+    )
+    assert (tmp_path / "out/video/basketball-players__2/predict.txt").read_text() == (
+        "1,7,10.0,20.0,30.0,40.0,1,1,1,1\n"
+    )

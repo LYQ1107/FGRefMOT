@@ -1,6 +1,6 @@
 # Phase 58 — FlexHook formal-evaluation runtime compatibility
 
-Status: `EVALUATION_RUNNING_NO_METRICS_CLAIMED`
+Status: `COMPLETED`
 
 The first real FlexHook SportsMOT evaluation reached the model but exposed
 runtime differences between the pinned upstream code and the current
@@ -19,17 +19,17 @@ handles those differences at the evaluation boundary:
 - evaluation sets `sample_frame_len=sample_frame_num=4`, preventing the
   upstream 8-frame sampling pool from indexing past short fixed tracks.
 
-The current real run is on physical GPU3:
+The real run used physical GPU3:
 
 `/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_f1_common_eval_20261019_v7`
 
 It uses 19 historical test videos, 142 expressions, batch size 32, four
 workers, and the fixed image-only SambaMOTR tracker outputs. Ground truth is
 created only in the offline TrackEval tree and is never supplied to the model.
-At the time of this report the run has entered inference (`Test: [250/4868]`);
-the manifest remains non-success until prediction writing and TrackEval both
-finish. No metric is reported from an incomplete run.
+Inference and TrackEval completed successfully after one output-tree repair
+recorded in Phase 60. The final metrics are recorded only in the successful
+v7 manifest and the Phase 60 completion report.
 
-Validation before this run: project tests `37 passed`; the evaluator compiles;
-the pinned FlexHook checkout is unmodified. The checkpoint and all prediction
-artifacts remain on NAS.
+Validation: project tests `40 passed`; the evaluator compiles; the pinned
+FlexHook checkout is unmodified. The checkpoint and all prediction artifacts
+remain on NAS.

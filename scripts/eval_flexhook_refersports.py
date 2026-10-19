@@ -302,17 +302,22 @@ def write_predictions(
     output_root: Path,
 ) -> int:
     records = manifest["records"]
-    by_video: dict[str, dict[str, Any]] = {}
+    # Keep records as a list: one video can contain duplicate expression text
+    # (for example two separately annotated "basketball players" entries).
+    # A dict keyed only by the text silently overwrites one output directory,
+    # leaving TrackEval with a missing prediction file.
+    by_video: dict[str, list[dict[str, Any]]] = {}
     for record in records:
-        by_video.setdefault(record["video"], {})[record["expression"]] = record
+        by_video.setdefault(record["video"], []).append(record)
     written = 0
-    for video, expression_map in by_video.items():
-        record_tracker_path = Path(next(iter(expression_map.values()))["tracker_path"])
+    for video, video_records in by_video.items():
+        record_tracker_path = Path(video_records[0]["tracker_path"])
         rows = _load_mot_rows(record_tracker_path)
         tracks = {(int(row[0]), int(row[1])): row for row in rows}
         video_scores = cls_dict.get(video, {})
+        expression_names = {record["expression"] for record in video_records}
         prediction_rows: dict[str, list[list[float | int]]] = {
-            expression: [] for expression in expression_map
+            expression: [] for expression in expression_names
         }
         for object_id, frame_map in video_scores.items():
             for frame_id, expression_scores in frame_map.items():
@@ -325,10 +330,10 @@ def write_predictions(
                 if track_row is None:
                     continue
                 for expression, score in expression_scores.items():
-                    record = expression_map.get(str(expression))
-                    if record is None or int(np.argmax(np.asarray(score))) <= 0:
+                    expression_name = str(expression)
+                    if expression_name not in prediction_rows or int(np.argmax(np.asarray(score))) <= 0:
                         continue
-                    prediction_rows[str(expression)].append(
+                    prediction_rows[expression_name].append(
                         [
                             frame_key,
                             object_key,
@@ -342,7 +347,8 @@ def write_predictions(
                             1,
                         ]
                     )
-        for expression, record in expression_map.items():
+        for record in video_records:
+            expression = record["expression"]
             values = prediction_rows[expression]
             values.sort(key=lambda row: (int(row[0]), int(row[1])))
             _write_rows(output_root / video / record["expression_dir"] / "predict.txt", values)
