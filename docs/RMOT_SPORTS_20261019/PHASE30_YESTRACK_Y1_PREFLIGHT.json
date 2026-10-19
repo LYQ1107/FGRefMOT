@@ -20,13 +20,15 @@
   "branch": "research/sports-rmot-strong-baselines-20261019",
   "contract": {
     "adapter_owned_eval_sequence": true,
+    "batch_size": 8,
     "code_clean": true,
     "code_head": "34e323b32d11288995a21814e4ef349945452441",
     "every_steps": 0,
     "gpu_launch": "DEFERRED_UNTIL_NAS_TUNNEL_AND_QWEN_ASSET_RECHECK",
     "path": "runs/contracts_20261019/yestrack_y1_sports_lora_seed42.json",
     "refreshed_after_phase31": true,
-    "sha256": "81f478b1ac800786c7f62826dae4a0a2cfb8a8ca1712a5f652a833b3c85c47cf",
+    "resource_adjustment": "batch 2 -> 8 on A100 headroom; one-epoch sample budget unchanged",
+    "sha256": "6d5ee7837a01485461dfb098f3fc078279222bfdb94961bcf787ea64e31885fc",
     "training_eval": "DISABLED; every_steps=0 to prevent GT-based in-training evaluation"
   },
   "environment": {
@@ -45,7 +47,7 @@
     "mounted_path_status": "I/O_ERROR",
     "reverse_forward": "127.0.0.1:24557 connection refused"
   },
-  "next_action": "Launch corrected Y1 command without --eval_sequence passthrough; formal common-tracker evaluation follows training.",
+  "next_action": "Launch corrected Y1 batch=8 command on free GPU 6; formal common-tracker evaluation follows training.",
   "phase": 30,
   "schema_version": 1,
   "status": "Y1_CPU_IMPORT_AND_ADAPTER_PASS_GPU_LAUNCH_PENDING_NAS_TUNNEL",
