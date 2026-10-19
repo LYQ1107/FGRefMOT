@@ -1,7 +1,7 @@
 # Phase 29 — FlexHook F1 SportsMOT baseline completion
 
 Audit date: 2026-10-19  
-Status: **SUCCEEDED LOCALLY / NAS ARTIFACT PUBLICATION PENDING TUNNEL RETRY**
+Status: **SUCCEEDED / NAS ARTIFACTS PUBLISHED AND HASH-VERIFIED**
 
 The corrected single-GPU F1 run completed all 25 training epochs and exited with
 code 0 under `set -o pipefail`. It used the pinned FlexHook checkout, the
@@ -52,7 +52,7 @@ rotating top-five files are ordered by the final best list
 
 The run manifest is
 `runs/gpu/flexhook_f1_sports_trained_seed42/RUN_MANIFEST.json` with SHA-256
-`9752e58d889adbe48a2da419d815463abb21b403a4364b95c65a570dfefbe0f1`. It records
+`025d1621e00b0cf5ebaa97be27db44eed410bfd704bd641c6275ecc4673105a8`. It records
 the exact command, contract SHA
 `ea5384746c416514352946d60cf7250754de6fc97bbc0dfc4ce6099cdef99c93`, launcher
 SHA `4b58ff965e597c19cf92289a514b09745c3d7bba961f6c36104bd3771aab1776`,
@@ -66,10 +66,13 @@ Local artifacts were hashed after completion:
 * final config — `00500abd027a10cb598ecdc65127eeae6b45ba6a81a2608689ebb5e7f911032f`;
 * result checkpoint (`best_0`) — `3fdc471d1fa17405ce8d57516bc6de74ba93b29f3760344bb1f0f30529818c7b`.
 
-The NAS reverse-forward port `127.0.0.1:24557` currently accepts TCP but does
-not return an SSH banner, so the atomic `scripts/nas_sync.sh` publication of the
-run directory is pending. Once the Windows reverse tunnel is re-established,
-the manifest and all F1 artifacts will be copied to
-`/home/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_f1_sports_trained_seed42`
-and the manifest will be updated with the publication hash. The next experiment
-is Y1 YesTrack, after its contract and GPU availability are rechecked.
+After the Windows reverse tunnel was restored, the complete run directory was
+published to NAS at
+`/home/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_f1_sports_trained_seed42`.
+The old placeholder target was preserved as
+`.flexhook_f1_sports_trained_seed42.previous.20261019151924`; the refreshed
+manifest was uploaded atomically and its local and remote SHA-256 both equal
+`025d1621e00b0cf5ebaa97be27db44eed410bfd704bd641c6275ecc4673105a8`.
+Every checkpoint, log, config, TensorBoard event file, and the manifest was
+verified by remote `sha256sum`; no partial directory remains. The next
+experiment is Y1 YesTrack, after its contract and GPU availability are rechecked.

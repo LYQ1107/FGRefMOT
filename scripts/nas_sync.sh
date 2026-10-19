@@ -39,6 +39,7 @@ base=$(basename "$remote")
 token=".${base}.partial.$$.${RANDOM}"
 remote_tmp="${remote_dir}/${token}"
 remote_item="${remote_tmp}/${base}"
+remote_backup=""
 
 # The project root and its planned subdirectories already exist, but create
 # each path component idempotently so a new report subdirectory is safe too.
@@ -53,6 +54,16 @@ printf '%b' "${mkdir_batch}mkdir ${remote_tmp}\nquit\n" | \
   sftp "${sftp_opts[@]}" "${NAS_USER}@${NAS_TUNNEL_HOST}" >/dev/null 2>&1
 
 cleanup() {
+  # If promotion failed after moving an existing target aside, restore that
+  # target before removing the temporary upload.  This keeps a failed refresh
+  # from leaving the published path absent.
+  if [[ -n "$remote_backup" ]]; then
+    if ! printf 'ls %s\nquit\n' "$remote" | \
+      sftp -b - "${sftp_opts[@]}" "${NAS_USER}@${NAS_TUNNEL_HOST}" >/dev/null 2>&1; then
+      printf 'rename %s %s\nquit\n' "$remote_backup" "$remote" | \
+        sftp -b - "${sftp_opts[@]}" "${NAS_USER}@${NAS_TUNNEL_HOST}" >/dev/null 2>&1 || true
+    fi
+  fi
   printf 'rm %s\nrmdir %s\nquit\n' "$remote_item" "$remote_tmp" | \
     sftp "${sftp_opts[@]}" "${NAS_USER}@${NAS_TUNNEL_HOST}" >/dev/null 2>&1 || true
 }
@@ -67,14 +78,48 @@ else
   scp "${scp_opts[@]}" "$source_path" "${NAS_USER}@${NAS_TUNNEL_HOST}:${remote_item}"
 fi
 
-printf 'rename %s %s\nrmdir %s\nquit\n' "$remote_item" "$remote" "$remote_tmp" | \
-  sftp "${sftp_opts[@]}" "${NAS_USER}@${NAS_TUNNEL_HOST}" >/dev/null
+# SFTP reports a command failure only in batch mode.  The old implementation
+# used an interactive session here, so a rename over an existing target could
+# fail while the shell still continued and falsely announced a publication.
+# Preserve an existing target, then promote the complete temporary item.
+if printf 'ls %s\nquit\n' "$remote" | \
+  sftp -b - "${sftp_opts[@]}" "${NAS_USER}@${NAS_TUNNEL_HOST}" >/dev/null 2>&1; then
+  remote_backup="${remote}.previous.$$.${RANDOM}"
+  if ! printf 'rename %s %s\nquit\n' "$remote" "$remote_backup" | \
+    sftp -b - "${sftp_opts[@]}" "${NAS_USER}@${NAS_TUNNEL_HOST}" >/dev/null 2>&1; then
+    echo "nas_sync: failed to preserve existing destination: ${remote}" >&2
+    exit 74
+  fi
+fi
+if ! printf 'rename %s %s\nquit\n' "$remote_item" "$remote" | \
+  sftp -b - "${sftp_opts[@]}" "${NAS_USER}@${NAS_TUNNEL_HOST}" >/dev/null 2>&1; then
+  echo "nas_sync: failed to publish temporary item: ${remote_item}" >&2
+  exit 74
+fi
+if ! printf 'rmdir %s\nquit\n' "$remote_tmp" | \
+  sftp -b - "${sftp_opts[@]}" "${NAS_USER}@${NAS_TUNNEL_HOST}" >/dev/null 2>&1; then
+  echo "nas_sync: failed to remove temporary directory: ${remote_tmp}" >&2
+  exit 74
+fi
 trap - EXIT
 
 # Translate the SFTP path to the login-shell path for an end-to-end hash check.
 shell_remote=${remote/#\/home\/A100/\/home\/Valadmin\/A100}
-ssh "-p" "$NAS_TUNNEL_PORT" -i "$NAS_IDENTITY_FILE" -o IdentitiesOnly=yes \
-  -o BatchMode=yes -o StrictHostKeyChecking=yes -o HostKeyAlias=nas-readonly \
-  -o UserKnownHostsFile="$NAS_KNOWN_HOSTS" -o ConnectTimeout=15 \
-  "${NAS_USER}@${NAS_TUNNEL_HOST}" "if test -f '$shell_remote'; then sha256sum -- '$shell_remote'; else stat -c '%s %n' '$shell_remote'; fi"
+if [[ -d "$source_path" ]]; then
+  ssh "-p" "$NAS_TUNNEL_PORT" -i "$NAS_IDENTITY_FILE" -o IdentitiesOnly=yes \
+    -o BatchMode=yes -o StrictHostKeyChecking=yes -o HostKeyAlias=nas-readonly \
+    -o UserKnownHostsFile="$NAS_KNOWN_HOSTS" -o ConnectTimeout=15 \
+    "${NAS_USER}@${NAS_TUNNEL_HOST}" "test -d '$shell_remote' && test ! -e '${shell_remote}.partial' && stat -c '%s %n' '$shell_remote'"
+else
+  local_sha=$(sha256sum -- "$source_path" | awk '{print $1}')
+  remote_sha=$(ssh "-p" "$NAS_TUNNEL_PORT" -i "$NAS_IDENTITY_FILE" -o IdentitiesOnly=yes \
+    -o BatchMode=yes -o StrictHostKeyChecking=yes -o HostKeyAlias=nas-readonly \
+    -o UserKnownHostsFile="$NAS_KNOWN_HOSTS" -o ConnectTimeout=15 \
+    "${NAS_USER}@${NAS_TUNNEL_HOST}" "sha256sum -- '$shell_remote'" | awk '{print $1}')
+  [[ "$local_sha" == "$remote_sha" ]] || {
+    echo "nas_sync: hash mismatch after publication: ${remote}" >&2
+    exit 74
+  }
+  printf '%s  %s\n' "$remote_sha" "$shell_remote"
+fi
 echo "nas_sync: published ${remote}"

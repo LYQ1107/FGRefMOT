@@ -1,30 +1,13 @@
 {
-  "schema_version": 1,
-  "phase": 26,
   "audit_date": "2026-10-19",
-  "status": "FLEXHOOK_ENTRYPOINT_IMPORT_READY_F1_GPU_JOB_NOT_STARTED",
-  "gpu_jobs_started": false,
-  "workspace": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019",
   "branch": "research/sports-rmot-strong-baselines-20261019",
-  "environment": {
-    "python": "/data3/liuyeqiang/.venvs/fgrefmot-rmot-sports-20261019/bin/python",
-    "pip_check": "passed",
-    "installed_packages": {
-      "tensorboardX": "2.6.2.2",
-      "protobuf": "5.29.3",
-      "info-nce-pytorch": "0.1.4"
-    },
-    "imported_modules": {
-      "tensorboardX": "2.6.2.2",
-      "info_nce": "imported; package_version_not_exposed",
-      "google.protobuf": "5.29.3"
-    }
-  },
+  "current_run_manifest_sha256": "025d1621e00b0cf5ebaa97be27db44eed410bfd704bd641c6275ecc4673105a8",
+  "current_run_status": "SUCCEEDED; see PHASE29_FLEXHOOK_F1_COMPLETION",
   "entrypoint_smoke": {
     "command": "CUDA_VISIBLE_DEVICES='' python scripts/launch_flexhook.py --runtime-root runs/flexhook_runtime_20261019 -- python /data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/third_party/FlexHook/main.py --help",
-    "status": "PASS_AFTER_DEPENDENCY_REPAIR",
-    "policy": "IMPORT_ONLY; NO_GPU; NO_PREDICTION_OUTPUT",
     "launcher_sha256": "4b58ff965e597c19cf92289a514b09745c3d7bba961f6c36104bd3771aab1776",
+    "policy": "IMPORT_ONLY; NO_GPU; NO_PREDICTION_OUTPUT",
+    "status": "PASS_AFTER_DEPENDENCY_REPAIR",
     "upstream_files": [
       {
         "path": "third_party/FlexHook/main.py",
@@ -36,17 +19,34 @@
       }
     ]
   },
+  "environment": {
+    "imported_modules": {
+      "google.protobuf": "5.29.3",
+      "info_nce": "imported; package_version_not_exposed",
+      "tensorboardX": "2.6.2.2"
+    },
+    "installed_packages": {
+      "info-nce-pytorch": "0.1.4",
+      "protobuf": "5.29.3",
+      "tensorboardX": "2.6.2.2"
+    },
+    "pip_check": "passed",
+    "python": "/data3/liuyeqiang/.venvs/fgrefmot-rmot-sports-20261019/bin/python"
+  },
+  "gpu_jobs_started": false,
+  "phase": 26,
+  "policy": {
+    "next_gpu": 1,
+    "other_gpu_processes_modified": false,
+    "vendored_checkout_modified": false
+  },
   "run_manifest": {
     "path": "runs/gpu/flexhook_f1_sports_trained_seed42/RUN_MANIFEST.json",
-    "sha256": "2028e6cb3bf7f5d22ca3ebe0932b14992d00402eeffe8c01a0c2337d9e00a2f9",
-    "published_to_nas_before_launch": true
+    "published_to_nas_before_launch": true,
+    "sha256": "2028e6cb3bf7f5d22ca3ebe0932b14992d00402eeffe8c01a0c2337d9e00a2f9"
   },
-  "policy": {
-    "vendored_checkout_modified": false,
-    "other_gpu_processes_modified": false,
-    "next_gpu": 1
-  },
+  "schema_version": 1,
+  "status": "FLEXHOOK_ENTRYPOINT_IMPORT_READY_F1_GPU_JOB_NOT_STARTED",
   "superseded_by_phase": 29,
-  "current_run_manifest_sha256": "9752e58d889adbe48a2da419d815463abb21b403a4364b95c65a570dfefbe0f1",
-  "current_run_status": "SUCCEEDED; see PHASE29_FLEXHOOK_F1_COMPLETION"
+  "workspace": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019"
 }
