@@ -1,0 +1,30 @@
+{
+  "schema_version": "rmot-sports-phase-43-0.1",
+  "phase": 43,
+  "status": "SCHEMA_READY_METRICS_PENDING",
+  "builder": "scripts/build_baseline_table.py",
+  "rows": [
+    "FGRefMOT historical-paper",
+    "FGRefMOT current-checkpoint",
+    "FlexHook F0",
+    "FlexHook F1",
+    "YesTrack Y0",
+    "YesTrack Y1",
+    "YesTrack Y2",
+    "YesTrack Y3",
+    "SambaMOTR common-tracker-control"
+  ],
+  "metric_fields": [
+    "validation_hota",
+    "validation_deta",
+    "validation_assa",
+    "validation_idf1",
+    "validation_idsw",
+    "validation_ref_f1",
+    "fps"
+  ],
+  "missing_metric_value": "NOT_RUN",
+  "historical_protocol_mixing": false,
+  "formal_metrics_from_training_loss": false,
+  "real_metrics": "PENDING_TRAINING_TRACKER_AND_EVAL_COMPLETION"
+}
