@@ -24,7 +24,7 @@ selected checkpoint's one-time 19-video historical evaluation also succeeded
 finished successfully and its formal historical evaluation has started. The
 separate 17-video internal YesTrack training and fixed five-video validation
 evaluation also succeeded; threshold 0.8 was selected on internal HOTA
-00.7465, mean over the TrackEval alpha grid).
+(0.7465, mean over the TrackEval alpha grid).
 The FlexHook frozen-score H0-H8 replay is a diagnostic control over a frozen
 checkpoint; it is not a learned temporal-head result.
 
@@ -36,6 +36,11 @@ as split-specific evidence; they must not be presented as a completed full
 baseline comparison or a learned-method improvement claim. Phase 76 has
 registered a postbaseline H0–H8 watcher that remains idle until the full
 YesTrack historical manifest succeeds.
+
+Phase 78 added the plan-required final report entrypoints and reviewer evidence
+ledger. They intentionally retain `NOT_RUN` and `IN_PROGRESS` fields for the
+live YesTrack historical evaluation, postbaseline controls, multi-seed runs,
+complete online efficiency, and final comparison.
 
 The machine-readable gate states, evidence paths, live manifests and next
 gates are in `RESEARCH_GATE_AUDIT_20261020.json`. This report intentionally

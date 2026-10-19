@@ -1,0 +1,31 @@
+{
+  "schema_version": "rmot-sports-phase-0.1",
+  "phase": 78,
+  "title": "Final report entrypoints and evidence ledger",
+  "status": "IN_PROGRESS_ENTRYPOINTS_CREATED",
+  "created_at": "2026-10-20T05:58:45+08:00",
+  "documents": [
+    "ASSET_MANIFEST.md",
+    "DATASET_AUDIT.md",
+    "SPLIT_AUDIT.md",
+    "COMMON_TRACKER.md",
+    "FLEXHOOK_BASELINE.md",
+    "YESTRACK_BASELINE.md",
+    "BASELINE_COMPARISON.md",
+    "FLEXHOOK_ABLATIONS.md",
+    "YESTRACK_ABLATIONS.md",
+    "SPORTS_SUBSETS.md",
+    "SPEED_MEMORY_REPORT.md",
+    "REVIEWER_EVIDENCE.md",
+    "FINAL_RESEARCH_REPORT.md"
+  ],
+  "validation": {
+    "pytest": "78 passed, 2 deprecation warnings",
+    "experiment_matrix": "VALID; 18 variants",
+    "git_diff_check": "PASS",
+    "local_commit": "0eeb82c121972a83cdce9ae9710a78c8ce52e2b1",
+    "remote_branch_commit": "472b8246820165e0120c25e5a7c086cea2ae57a6"
+  },
+  "claim_boundary": "The required report files now exist and explicitly mark pending metrics as NOT_RUN or IN_PROGRESS. They are not a final research conclusion until the YesTrack historical evaluation, proposed ablations, multi-seed validation, complete online efficiency, and final audit finish.",
+  "next_gate": "update these reports from successful manifests after the live evaluations complete"
+}
