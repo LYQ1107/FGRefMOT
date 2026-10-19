@@ -74,3 +74,8 @@ with 58/142 outputs, the timed tracker had written six sequence files, and both
 seed43/seed44 logs were updating near 5,900 steps. The observed CPU/GPU activity
 and fresh output mtimes support healthy long-running jobs; no restart or metric
 inference is justified.
+
+Phase 84 adds a read-only storage snapshot at 06:49:52: local `/data3` had
+61G available, the NAS had 3.7T available, the local workspace used 6.5G, and
+the NAS project used 23G in runs plus 5.4G in assets. This is interim evidence;
+final accounting will be repeated after live jobs terminate.

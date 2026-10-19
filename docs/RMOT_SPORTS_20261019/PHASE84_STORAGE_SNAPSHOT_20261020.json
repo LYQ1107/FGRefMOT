@@ -1,0 +1,38 @@
+{
+  "schema_version": "rmot-sports-phase-0.1",
+  "phase": 84,
+  "title": "Read-only local and NAS storage snapshot",
+  "status": "SNAPSHOT_COMPLETE_LIVE_JOBS_CONTINUE",
+  "observed_at": "2026-10-20T06:49:52+08:00",
+  "policy": "read-only du/df; no run directories or artifacts changed",
+  "filesystems": {
+    "local_data3": {
+      "mount": "/data3/liuyeqiang",
+      "size": "1007G",
+      "used": "896G",
+      "available": "61G",
+      "use_percent": 94
+    },
+    "nas_a100": {
+      "mount": "/data3/liuyeqiang/nas/A100",
+      "size": "11T",
+      "used": "7.2T",
+      "available": "3.7T",
+      "use_percent": 66
+    }
+  },
+  "project_usage": {
+    "local_workspace": "6.5G",
+    "local_project_venv": "386M",
+    "nas_project_runs": "23G",
+    "nas_project_assets": "5.4G",
+    "local_gpu_runs": "5.7G"
+  },
+  "largest_local_project_components": [
+    ["runs/gpu", "5.7G"],
+    ["runs/vendor_src", "234M"],
+    ["runs/yestrack_sports_layout_20261019_v1", "223M"],
+    ["runs/flexhook_sports_layout_20261019_v2", "89M"]
+  ],
+  "claim_boundary": "This is a time-stamped storage snapshot while training/evaluation jobs are live; final accounting must be repeated after terminal runs."
+}
