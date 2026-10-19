@@ -232,6 +232,126 @@ def _valid_sha256(value: Any) -> bool:
     return isinstance(value, str) and bool(_SHA256_RE.fullmatch(value))
 
 
+def _resolved_under(path: Path, root: Path) -> bool:
+    """Return whether ``path`` resolves inside ``root`` without traversal."""
+
+    try:
+        path.resolve().relative_to(root.resolve())
+    except ValueError:
+        return False
+    return True
+
+
+def _check_tracker_run_manifest(
+    root: Path,
+    manifest_path: Path,
+    manifest: dict[str, Any],
+    *,
+    hash_files: bool,
+) -> dict[str, Any]:
+    """Validate the run manifest emitted by the image-only tracker launcher.
+
+    The launcher intentionally uses an uppercase ``TRACKER_RUN_MANIFEST.json``
+    and records absolute provenance paths, while the older downloaded-asset
+    manifest uses a lowercase name and relative paths.  Both describe the same
+    fixed detector-output policy, so the preflight must validate either schema
+    instead of rejecting a complete run because of filename casing.
+    """
+
+    reasons: list[str] = []
+    if manifest.get("schema_version") != "refer-sports-common-tracker-run-0.1":
+        reasons.append("tracker_run_manifest_schema_version_missing")
+    if manifest.get("dataset") != "SportsMOT":
+        reasons.append("tracker_run_manifest_dataset_must_equal_SportsMOT")
+    if manifest.get("generated_from_frames_without_ground_truth") is not True:
+        reasons.append("tracker_run_manifest_must_declare_image_only_generation")
+    staging = manifest.get("data_staging")
+    if not isinstance(staging, dict) or "GT_AND_LABEL_FILES_OMITTED" not in str(staging.get("policy", "")):
+        reasons.append("tracker_run_manifest_missing_image_only_staging_policy")
+
+    root_resolved = root.resolve()
+
+    def provenance_file(path_key: str, hash_key: str) -> None:
+        value = manifest.get(path_key)
+        if not isinstance(value, str) or not value.strip():
+            reasons.append(f"tracker_run_manifest_{path_key}_missing")
+            return
+        candidate = Path(value).expanduser()
+        if not candidate.is_absolute():
+            candidate = root / candidate
+        if _contains_forbidden_part(value):
+            reasons.append(f"tracker_run_manifest_{path_key}_looks_like_annotation:{value}")
+        if not candidate.is_file() or candidate.stat().st_size == 0:
+            reasons.append(f"tracker_run_manifest_{path_key}_file_missing_or_empty:{value}")
+            return
+        declared = manifest.get(hash_key)
+        if not _valid_sha256(declared):
+            reasons.append(f"tracker_run_manifest_{hash_key}_missing_or_invalid")
+        elif hash_files and _file_sha256(candidate) != declared:
+            reasons.append(f"tracker_run_manifest_{path_key}_hash_mismatch:{value}")
+
+    provenance_file("checkpoint_path", "checkpoint_sha256")
+    provenance_file("config_path", "config_sha256")
+    provenance_file("operator_path", "operator_sha256")
+
+    outputs = manifest.get("outputs")
+    if not isinstance(outputs, list) or not outputs:
+        reasons.append("tracker_run_manifest_outputs_empty")
+        outputs = []
+    declared_count = manifest.get("output_count")
+    if not isinstance(declared_count, int) or declared_count != len(outputs):
+        reasons.append("tracker_run_manifest_output_count_mismatch")
+
+    checked_outputs: list[dict[str, Any]] = []
+    for entry in outputs:
+        if not isinstance(entry, dict) or not isinstance(entry.get("path"), str):
+            reasons.append("tracker_run_manifest_output_entry_invalid")
+            continue
+        raw_path = entry["path"]
+        output_path = Path(raw_path).expanduser()
+        if not output_path.is_absolute():
+            output_path = root / output_path
+        if not _resolved_under(output_path, root):
+            reasons.append(f"tracker_run_manifest_output_outside_root:{raw_path}")
+            continue
+        if _contains_forbidden_part(raw_path):
+            reasons.append(f"output_path_rejected:{raw_path}")
+            continue
+        if not output_path.is_file() or output_path.stat().st_size == 0:
+            reasons.append(f"output_file_missing_or_empty:{raw_path}")
+            continue
+        declared_hash = entry.get("sha256")
+        if not _valid_sha256(declared_hash):
+            reasons.append(f"output_hash_missing_or_invalid:{raw_path}")
+            continue
+        if hash_files and _file_sha256(output_path) != declared_hash:
+            reasons.append(f"output_hash_mismatch:{raw_path}")
+            continue
+        relative = output_path.relative_to(root_resolved).as_posix()
+        info = _file_info(output_path, hash_files)
+        info["relative_path"] = relative
+        checked_outputs.append(info)
+
+    result = {
+        "manifest": {
+            "path": str(manifest_path),
+            "output_count": len(checked_outputs),
+            "declared_output_count": len(outputs),
+            "split": manifest.get("split") or staging.get("split") if isinstance(staging, dict) else manifest.get("split"),
+        },
+        "outputs": checked_outputs,
+        "reasons": reasons,
+    }
+    if reasons:
+        result["status"] = INVALID
+    elif not hash_files:
+        result["status"] = UNVERIFIED
+        result["reasons"].append("run_with_hash_files_to_verify_tracker_hashes")
+    else:
+        result["status"] = READY
+    return result
+
+
 def check_tracker_root(
     name: str,
     path_value: str | Path | None,
@@ -272,8 +392,12 @@ def check_tracker_root(
         return result
 
     manifest_path = root / "tracker_manifest.json"
+    run_manifest = False
     if not manifest_path.is_file():
-        result["reasons"].append("tracker_manifest.json_missing")
+        manifest_path = root / "TRACKER_RUN_MANIFEST.json"
+        run_manifest = manifest_path.is_file()
+    if not manifest_path.is_file():
+        result["reasons"].append("tracker_manifest.json_or_TRACKER_RUN_MANIFEST.json_missing")
         return result
     try:
         manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
@@ -284,6 +408,14 @@ def check_tracker_root(
     if not isinstance(manifest, dict):
         result["status"] = INVALID
         result["reasons"].append("tracker_manifest_not_an_object")
+        return result
+
+    if run_manifest:
+        alternate = _check_tracker_run_manifest(root, manifest_path, manifest, hash_files=hash_files)
+        result["manifest"] = alternate["manifest"]
+        result["outputs"] = alternate["outputs"]
+        result["reasons"].extend(alternate["reasons"])
+        result["status"] = alternate["status"]
         return result
 
     expected = {

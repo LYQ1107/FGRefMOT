@@ -84,6 +84,42 @@ class BaselineAssetPreflightTest(unittest.TestCase):
             self.assertEqual(result["status"], READY)
             self.assertEqual(result["manifest"]["output_count"], 1)
 
+    def test_tracker_run_manifest_accepts_uppercase_image_only_schema(self):
+        with tempfile.TemporaryDirectory() as raw:
+            root = Path(raw)
+            checkpoint = root / "detector.pth"
+            config = root / "tracker.yaml"
+            operator = root / "operator.so"
+            output = root / "tracker_outputs" / "video_001.txt"
+            output.parent.mkdir()
+            checkpoint.write_bytes(b"detector")
+            config.write_text("tracker: sambamotr\n", encoding="utf-8")
+            operator.write_bytes(b"operator")
+            output.write_text("1,1,2,3,4,0.9\n", encoding="utf-8")
+
+            def digest(path: Path) -> str:
+                return hashlib.sha256(path.read_bytes()).hexdigest()
+
+            manifest = {
+                "schema_version": "refer-sports-common-tracker-run-0.1",
+                "dataset": "SportsMOT",
+                "split": "refer-sports-eval-1-video",
+                "generated_from_frames_without_ground_truth": True,
+                "checkpoint_path": str(checkpoint),
+                "checkpoint_sha256": digest(checkpoint),
+                "config_path": str(config),
+                "config_sha256": digest(config),
+                "operator_path": str(operator),
+                "operator_sha256": digest(operator),
+                "data_staging": {"policy": "IMAGE_ONLY_STAGING; GT_AND_LABEL_FILES_OMITTED"},
+                "output_count": 1,
+                "outputs": [{"path": str(output), "sha256": digest(output)}],
+            }
+            (root / "TRACKER_RUN_MANIFEST.json").write_text(json.dumps(manifest), encoding="utf-8")
+            result = check_tracker_root("common_sports_tracker", root, hash_files=True)
+            self.assertEqual(result["status"], READY)
+            self.assertEqual(result["manifest"]["output_count"], 1)
+
 
 if __name__ == "__main__":
     unittest.main()
