@@ -9,6 +9,7 @@
     "result": "4 passed"
   },
   "archive_contract": {
+    "schema_version": "flexhook-feature-archive-0.2",
     "allowed_splits": [
       "train_core",
       "internal_val"

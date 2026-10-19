@@ -129,7 +129,7 @@ def _write_shard(output_root: Path, shard_index: int, batches: list[dict[str, An
     if not batches:
         raise ValueError("cannot write an empty feature shard")
     payload: dict[str, Any] = {
-        "schema_version": "flexhook-feature-shard-0.1",
+        "schema_version": "flexhook-feature-shard-0.2",
         "features": torch.cat([item["features"] for item in batches], dim=0).float(),
         "language": torch.cat([item["language"] for item in batches], dim=0).float(),
         "logits": torch.cat([item["logits"] for item in batches], dim=0).float(),
@@ -272,7 +272,7 @@ def archive_features(
         handle = model.output_ca_qkv[-1].register_forward_hook(capture)
         language_handle = model.text_encoder.register_forward_hook(capture_language)
         manifest: dict[str, Any] = {
-            "schema_version": "flexhook-feature-archive-0.1",
+            "schema_version": "flexhook-feature-archive-0.2",
             "status": "RUNNING",
             "split": split,
             "policy": "LABELS_ARE_TRAINING_TARGETS_ONLY; NO_GT_AS_MODEL_OR_TRACKER_INPUT",
