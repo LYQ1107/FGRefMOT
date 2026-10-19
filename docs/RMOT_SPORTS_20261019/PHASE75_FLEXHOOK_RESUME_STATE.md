@@ -1,26 +1,35 @@
-# Phase 75 — FlexHook resume-state patch
+# Phase 75 — FlexHook resume-state patch and real smoke-run verification
 
-The pinned FlexHook source currently commented out optimizer and AMP-scaler
-serialization in its checkpoint writer. It also did not preserve Python,
-NumPy, Torch, or CUDA random state, and current PyTorch defaults require an
-explicit `weights_only=False` when restoring the serialized configuration.
+The pinned FlexHook source previously saved only model weights. The tracked
+resume patch now stores the optimizer, scheduler, AMP scaler, epoch, and
+Python/NumPy/Torch/CUDA random state, and restores them with an explicit
+`weights_only=False`. The launcher applies the patch to the ignored vendor
+checkout before each in-process launch and fails closed if the patch or marker
+does not match. The runtime manifest records both tracked launch patches.
 
-The symlink-only runtime manifest records the tracked launch patch, and the
-research launcher applies `patches/flexhook_resume_state.patch` to the ignored
-FlexHook checkout before each future in-process launch. The patch is idempotent
-and fails closed if the vendor file or marker does not match. A patched checkpoint contains model,
-optimizer, scheduler, AMP scaler, epoch, and per-process random state. The
-registered one-GPU path is verified; worker-local sampler state is represented
-by the existing deterministic `set_epoch(seed)` policy and is not separately
-serialized.
+A real one-GPU recovery run is complete. The first two-epoch smoke run produced
+the source checkpoint at
+`/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_resume_smoke_seed42/ckpt_epoch_best_0.pth`.
+The resumed run loaded that checkpoint with the log message `loaded
+successfully ... (epoch 1)`, entered `Train: [2/3]`, completed epoch 2, measured
+validation F1 68.721, saved `ckpt_epoch_best_0.pth`, and exited with code 0.
+The NAS checkpoint hash was not computed because a direct read timed out; the
+manifest records that limitation instead of inventing a digest.
 
-The currently running strict FlexHook core job started before this patch was
-added. Its checkpoints remain valid evaluation artifacts, but this phase makes
-no real resume claim for that job. A future patched run must produce a real
-checkpoint and resume it before the recovery gate can close. This is recorded
-as `PATCH_READY_REAL_RUN_PENDING` in the JSON companion.
+The first resumed attempt is retained as an infrastructure record: it loaded
+epoch 1 and then hit a legacy validation tuple mismatch. Another legacy
+postprocess path reached a seqmap list/string type error. For the successful
+smoke recovery only, `FGREFMOT_SKIP_FLEXHOOK_POSTPROCESS=1` bypassed that pinned
+postprocess block so the training loop could exercise restore, continued
+training, validation, and checkpoint save. This bypass is opt-in and is not a
+claim that the legacy historical-evaluation postprocess is repaired.
 
-Validation: the patch applies to an isolated copy, is idempotent, writes all
-required state fields, and restores the Python/NumPy/Torch random streams;
-both targeted tests passed. The full project suite also passes: 74 tests,
-with two unrelated deprecation warnings.
+The strict FlexHook core job started before the patch and remains a normal
+evaluation artifact; it is not claimed as a patched resume run. Multi-GPU
+recovery and worker-local state serialization remain unverified. The smoke F1
+is a recovery-sanity observation, not a final baseline or improvement result.
+
+Validation includes the three targeted resume tests, the full project suite
+(75 passed, two unrelated deprecation warnings), Python compilation, and
+whitespace checks. The machine-readable evidence and run manifests are in the
+JSON companion.

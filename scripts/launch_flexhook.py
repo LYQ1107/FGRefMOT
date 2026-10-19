@@ -18,6 +18,9 @@ from pathlib import Path
 
 
 RESUME_PATCH = Path(__file__).resolve().parents[1] / "patches" / "flexhook_resume_state.patch"
+RESUME_SMOKE_POSTPROCESS_PATCH = (
+    Path(__file__).resolve().parents[1] / "patches" / "flexhook_resume_smoke_postprocess.patch"
+)
 
 
 def _apply_flexhook_resume_patch(upstream_root: Path) -> None:
@@ -47,6 +50,32 @@ def _apply_flexhook_resume_patch(upstream_root: Path) -> None:
         raise RuntimeError(f"could not apply FlexHook resume patch: {detail}")
 
 
+def _apply_flexhook_resume_smoke_postprocess_patch(upstream_root: Path) -> None:
+    """Install the opt-in smoke-only postprocess bypass in the ignored checkout."""
+
+    target = upstream_root / "main.py"
+    marker = "FGREFMOT_SKIP_FLEXHOOK_POSTPROCESS"
+    text = target.read_text(encoding="utf-8")
+    if marker in text:
+        return
+    if not RESUME_SMOKE_POSTPROCESS_PATCH.is_file():
+        raise FileNotFoundError(
+            f"FlexHook resume smoke patch missing: {RESUME_SMOKE_POSTPROCESS_PATCH}"
+        )
+    result = subprocess.run(
+        ["patch", "-p1", "--forward", "--silent"],
+        cwd=upstream_root,
+        input=RESUME_SMOKE_POSTPROCESS_PATCH.read_bytes(),
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        check=False,
+    )
+    patched = target.read_text(encoding="utf-8")
+    if result.returncode != 0 or marker not in patched:
+        detail = (result.stderr or result.stdout).decode("utf-8", errors="replace")
+        raise RuntimeError(f"could not apply FlexHook resume smoke patch: {detail}")
+
+
 def _run_flexhook_in_process(command: list[str], runtime_root: Path) -> int | None:
     """Run the pinned FlexHook script after installing the Transformers shim.
 
@@ -71,6 +100,7 @@ def _run_flexhook_in_process(command: list[str], runtime_root: Path) -> int | No
     from scripts.transformers_compat import install_legacy_tokenizer_alias
 
     _apply_flexhook_resume_patch(upstream_root)
+    _apply_flexhook_resume_smoke_postprocess_patch(upstream_root)
     install_legacy_tokenizer_alias()
     os.chdir(runtime_root)
     sys.argv = [str(script), *command[2:]]

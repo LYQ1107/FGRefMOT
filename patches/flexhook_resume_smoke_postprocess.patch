@@ -1,0 +1,9 @@
+--- a/main.py
++++ b/main.py
+@@ -190,7 +190,7 @@
+             if dist.get_rank() == 0:
+                 CLS_DICT = json.load(open(output_path))
+         dist.barrier()
+-        if dist.get_rank() == 0:
++        if dist.get_rank() == 0 and os.environ.get("FGREFMOT_SKIP_FLEXHOOK_POSTPROCESS") != "1":
+             SAVE_DIR = os.path.abspath(os.path.join(config.OUTPUT, 'results'))

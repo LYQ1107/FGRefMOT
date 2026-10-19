@@ -6,7 +6,10 @@ import importlib.util
 import numpy as np
 import torch
 
-from scripts.launch_flexhook import _apply_flexhook_resume_patch
+from scripts.launch_flexhook import (
+    _apply_flexhook_resume_patch,
+    _apply_flexhook_resume_smoke_postprocess_patch,
+)
 
 
 def test_flexhook_resume_patch_is_idempotent(tmp_path):
@@ -85,3 +88,24 @@ def test_flexhook_resume_payload_restores_training_state(tmp_path):
     restored = (random.random(), float(np.random.rand()), float(torch.rand(1)))
     assert restored == expected
     assert config.TRAIN.START_EPOCH == 5
+
+
+def test_flexhook_resume_smoke_postprocess_patch_is_idempotent(tmp_path):
+    source = Path(__file__).parents[1] / "third_party" / "FlexHook" / "main.py"
+    upstream = tmp_path / "FlexHook"
+    upstream.mkdir()
+    source_text = source.read_text(encoding="utf-8")
+    source_text = source_text.replace(
+        'if dist.get_rank() == 0 and os.environ.get("FGREFMOT_SKIP_FLEXHOOK_POSTPROCESS") != "1":',
+        "if dist.get_rank() == 0:",
+    )
+    (upstream / "main.py").write_text(source_text, encoding="utf-8")
+
+    _apply_flexhook_resume_smoke_postprocess_patch(upstream)
+    first = (upstream / "main.py").read_text(encoding="utf-8")
+    assert "FGREFMOT_SKIP_FLEXHOOK_POSTPROCESS" in first
+    assert "if dist.get_rank() == 0 and os.environ.get" in first
+
+    _apply_flexhook_resume_smoke_postprocess_patch(upstream)
+    second = (upstream / "main.py").read_text(encoding="utf-8")
+    assert second == first

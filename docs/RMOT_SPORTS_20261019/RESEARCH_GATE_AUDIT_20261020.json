@@ -1,6 +1,6 @@
 {
   "schema_version": "rmot-sports-gate-audit-0.1",
-  "observed_at": "2026-10-20T00:38:46+08:00",
+  "observed_at": "2026-10-20T02:04:58+08:00",
   "status": "IN_PROGRESS",
   "workspace": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019",
   "branch": "research/sports-rmot-strong-baselines-20261019",
@@ -79,7 +79,7 @@
     },
     {
       "id": "H_EFFICIENCY_AND_RECOVERY",
-      "status": "PARTIAL",
+      "status": "PARTIAL_REAL_RECOVERY_VERIFIED",
       "evidence": [
         "docs/STORAGE_PLAN.md",
         "docs/RMOT_SPORTS_20261019/PHASE1_CHECKPOINT_ARCHIVE_SMOKE.json",
@@ -87,7 +87,7 @@
         "docs/RMOT_SPORTS_20261019/PHASE74_EFFICIENCY_PROTOCOL.json",
         "docs/RMOT_SPORTS_20261019/PHASE75_FLEXHOOK_RESUME_STATE.json"
       ],
-      "claim_boundary": "NAS-direct artifact storage and synthetic archive checks are recorded; measurement tooling and a fail-closed resume patch are ready, but final online FPS, peak-memory comparison and a real patched strict-run resume remain outstanding."
+      "claim_boundary": "NAS-direct artifact storage, synthetic archive checks, read-only measurement tooling, and a real patched one-GPU FlexHook smoke resume are recorded. Final online FPS, peak-memory comparison, multi-GPU recovery, and resuming the already-running strict core job remain outstanding."
     },
     {
       "id": "I_REPORT_AND_REMOTE_SYNC",
@@ -125,6 +125,6 @@
     "complete YesTrack full and internal training, then validate before historical test",
     "archive real FlexHook train-core/internal-val features and train/select the causal temporal head",
     "run registered proposed-method and baseline ablations after the baseline gate",
-    "complete multi-seed, efficiency, recovery, final-test and reviewer-report evidence"
+    "complete multi-seed, efficiency, final-test and reviewer-report evidence"
   ]
 }

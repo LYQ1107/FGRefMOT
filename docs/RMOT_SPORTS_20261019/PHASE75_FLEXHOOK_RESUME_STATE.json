@@ -1,11 +1,12 @@
 {
   "schema_version": "rmot-sports-flexhook-resume-state-0.1",
   "phase": 75,
-  "title": "FlexHook resume-state patch and verification",
-  "observed_at": "2026-10-20T00:38:46+08:00",
-  "status": "PATCH_READY_REAL_RUN_PENDING",
+  "title": "FlexHook resume-state patch and real smoke-run verification",
+  "observed_at": "2026-10-20T02:04:58+08:00",
+  "status": "REAL_RUN_RESUME_SUCCEEDED",
   "scope": "isolated FlexHook checkout launched by this research workspace",
   "source_patch": "patches/flexhook_resume_state.patch",
+  "smoke_postprocess_patch": "patches/flexhook_resume_smoke_postprocess.patch",
   "runtime_hook": "scripts/launch_flexhook.py",
   "runtime_manifest_policy": "SYMLINK_ONLY; TRACKED_PATCH_AT_LAUNCH; VENDORED_CHECKOUT_IGNORED",
   "saved_state": [
@@ -26,18 +27,50 @@
     "flexhook_f1_internal_core_seed42": {
       "status": "RUNNING",
       "patch_applied_before_launch": false,
-      "claim_boundary": "Its checkpoints remain evaluation artifacts; no real resume claim is made for this already-running job."
+      "claim_boundary": "Its checkpoints remain evaluation artifacts; this already-running job is not claimed as a patched resume run."
+    },
+    "flexhook_resume_smoke_seed42": {
+      "status": "SUCCEEDED",
+      "patch_applied_before_launch": true,
+      "purpose": "Produced a patched checkpoint containing optimizer, scheduler, scaler, epoch and RNG state for the recovery test."
+    },
+    "flexhook_resume_smoke_seed42_resumed_v2": {
+      "status": "SUCCEEDED",
+      "patch_applied_before_launch": true,
+      "purpose": "Loaded the smoke checkpoint and completed epoch 2 on one GPU."
+    },
+    "flexhook_resume_smoke_seed42_resumed": {
+      "status": "FAILED_INFRASTRUCTURE_COMPATIBILITY",
+      "claim_boundary": "The source checkpoint loaded at epoch 1 before the legacy internal-validation tuple mismatch stopped the attempt; this is retained as an attempt record, not a resume failure."
     },
     "future_flexhook_runs": {
       "patch_applied_before_launch": true,
-      "claim_boundary": "The launcher fails closed if the tracked patch cannot be applied or verified."
+      "claim_boundary": "The launcher fails closed if either tracked patch cannot be applied or verified."
     }
   },
   "verification": {
     "patch_idempotence_test": "tests/test_flexhook_resume_patch.py::test_flexhook_resume_patch_is_idempotent",
     "payload_restore_test": "tests/test_flexhook_resume_patch.py::test_flexhook_resume_payload_restores_training_state",
-    "result": "2 passed",
-    "real_training_checkpoint_resume": "PENDING_NEXT_PATCHED_FLEXHOOK_RUN"
+    "smoke_postprocess_patch_test": "tests/test_flexhook_resume_patch.py::test_flexhook_resume_smoke_postprocess_patch_is_idempotent",
+    "result": "3 targeted tests passed; full project suite passes",
+    "real_training_checkpoint_resume": {
+      "status": "SUCCEEDED",
+      "source_run_manifest": "runs/gpu/flexhook_resume_smoke_seed42/RUN_MANIFEST.json",
+      "resumed_run_manifest": "runs/gpu/flexhook_resume_smoke_seed42_resumed_v2/RUN_MANIFEST.json",
+      "source_checkpoint": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_resume_smoke_seed42/ckpt_epoch_best_0.pth",
+      "source_checkpoint_sha256": null,
+      "source_checkpoint_hash_status": "NOT_COMPUTED_NAS_READ_TIMEOUT",
+      "loaded_epoch": 1,
+      "training_epoch_started_after_resume": 2,
+      "validation_f1_after_resume": 68.721,
+      "checkpoint_save_evidence": "ckpt_epoch_best_0.pth saved !!!",
+      "exit_code": 0,
+      "postprocess_bypass": "FGREFMOT_SKIP_FLEXHOOK_POSTPROCESS=1 was used only for this smoke recovery because the pinned legacy postprocess expects an incompatible validation tuple/seqmap path."
+    },
+    "legacy_postprocess_compatibility_attempts": [
+      "The first resumed attempt loaded epoch 1, then failed because legacy inference expected 10 values but received 6.",
+      "A subsequent legacy postprocess path reached a seqmap list/string TypeError; the opt-in smoke bypass allowed training and checkpoint save to proceed."
+    ]
   },
-  "claim_boundary": "This phase closes the code and unit-test gap, but does not claim real-run recovery until a patched FlexHook checkpoint is produced and resumed."
+  "claim_boundary": "A real patched one-GPU checkpoint resume is verified: the source loaded at epoch 1, training continued at epoch 2, validation and checkpoint save completed, and the wrapper exited 0. The smoke F1 is a recovery-sanity observation, not a final baseline or improvement claim. Multi-GPU recovery and resuming the already-running strict core job remain unverified."
 }

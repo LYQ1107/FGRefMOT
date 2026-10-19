@@ -38,7 +38,10 @@ def prepare(runtime_root: Path, roberta_dir: Path, swin_dir: Path) -> dict:
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "runtime_root": str(runtime_root),
         "policy": "SYMLINK_ONLY; TRACKED_PATCH_AT_LAUNCH; VENDORED_CHECKOUT_IGNORED",
-        "tracked_launch_patches": ["patches/flexhook_resume_state.patch"],
+        "tracked_launch_patches": [
+            "patches/flexhook_resume_state.patch",
+            "patches/flexhook_resume_smoke_postprocess.patch",
+        ],
         "links": {
             "pretrained/roberta-base": {
                 "target": str(roberta_dir.expanduser().resolve()),
