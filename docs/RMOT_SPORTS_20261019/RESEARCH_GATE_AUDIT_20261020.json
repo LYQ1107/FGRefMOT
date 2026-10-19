@@ -1,6 +1,6 @@
 {
   "schema_version": "rmot-sports-gate-audit-0.1",
-  "observed_at": "2026-10-20T07:26:11+08:00",
+  "observed_at": "2026-10-20T07:39:47+08:00",
   "status": "IN_PROGRESS",
   "workspace": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019",
   "branch": "research/sports-rmot-strong-baselines-20261019",
@@ -141,7 +141,11 @@
         "docs/RMOT_SPORTS_20261019/PHASE92_RUN_REPRODUCIBILITY_AUDIT_20261020.json",
         "docs/RMOT_SPORTS_20261019/PHASE93_YESTRACK_SCORE_CONTROL_TEST_20261020.json",
         "docs/RMOT_SPORTS_20261019/PHASE94_FORMAL_EVALUATOR_ACTIVITY_20261020.json",
-        "docs/RMOT_SPORTS_20261019/PHASE95_BASELINE_PARAMETER_METADATA_20261020.json"
+        "docs/RMOT_SPORTS_20261019/PHASE95_BASELINE_PARAMETER_METADATA_20261020.json",
+        "docs/RMOT_SPORTS_20261019/PHASE96_CURRENT_RUN_CONTRACTS_20261020.json",
+        "docs/RMOT_SPORTS_20261019/FLEXHOOK_F1_RUN_CONTRACT_20261020.json",
+        "docs/RMOT_SPORTS_20261019/YESTRACK_Y1_RUN_CONTRACT_20261020.json",
+        "runs/baseline_asset_preflight_20261020/current_report.json"
       ],
       "claim_boundary": "The required final-report entrypoints and evidence ledger exist and are remotely synchronized; the final reviewer conclusion and remaining formal comparisons are not complete."
     }

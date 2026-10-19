@@ -1,0 +1,57 @@
+{
+  "phase": 96,
+  "observed_at": "2026-10-20T07:39:47+08:00",
+  "status": "CURRENT_PREFLIGHT_AND_F1_Y1_CONTRACTS_READY",
+  "purpose": "Replace the pre-asset placeholder launch contracts with source-backed contracts for the variants actually run in the study.",
+  "workspace": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019",
+  "branch": "research/sports-rmot-strong-baselines-20261019",
+  "preflight": {
+    "path": "runs/baseline_asset_preflight_20261020/current_report.json",
+    "sha256": "bc435152516b688445f2cd63dc4ce876968556d73937b49753bac3bc5821cae3",
+    "overall_status": "PENDING",
+    "ready_assets": [
+      "flexhook_layout",
+      "yestrack_layout",
+      "roberta_base",
+      "rope_swin_tiny",
+      "yestrack_base_model",
+      "common_sports_tracker"
+    ],
+    "pending_optional_assets": [
+      "flexhook_task_checkpoint",
+      "yestrack_lora_checkpoint"
+    ],
+    "policy": "The aggregate preflight remains pending only for optional zero-shot/task-checkpoint assets; the selected F1 and Y1 variant contracts require only the ready assets."
+  },
+  "contracts": [
+    {
+      "variant": "flexhook_f1_sports_trained",
+      "path": "docs/RMOT_SPORTS_20261019/FLEXHOOK_F1_RUN_CONTRACT_20261020.json",
+      "sha256": "a7aa1dbdb0d49154aa56781de2890aee47d50b550d5d97931af21b13101a306d",
+      "status": "READY",
+      "ready_to_launch": true,
+      "training_split": "SPORTS_TRAIN_CORE",
+      "selection_split": "SPORTS_VAL",
+      "seed": 42,
+      "tracker_policy": "common_physical_tracker_detector_outputs"
+    },
+    {
+      "variant": "yestrack_y1_sports_lora",
+      "path": "docs/RMOT_SPORTS_20261019/YESTRACK_Y1_RUN_CONTRACT_20261020.json",
+      "sha256": "fb36e5b452d62c69d34558bb812856d52c4439441470222156cba04597cfe09f",
+      "status": "READY",
+      "ready_to_launch": true,
+      "training_split": "SPORTS_TRAIN_CORE",
+      "selection_split": "SPORTS_VAL",
+      "seed": 42,
+      "tracker_policy": "common_physical_tracker_detector_outputs"
+    }
+  ],
+  "verification": {
+    "preflight_command": "venv/bin/python scripts/preflight_baseline_assets.py --hash-files --output runs/baseline_asset_preflight_20261020/current_report.json",
+    "contract_gate": "venv/bin/python scripts/run_contract.py --check <contract> --require-ready",
+    "gpu_jobs_changed": false,
+    "test_gt_used_as_model_or_tracker_input": false,
+    "claim_boundary": "This phase records reproducible launch metadata and does not add or revise any metric claim. Formal test metrics still require successful evaluator manifests."
+  }
+}

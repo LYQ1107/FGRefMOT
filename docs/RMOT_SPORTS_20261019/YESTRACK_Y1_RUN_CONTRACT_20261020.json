@@ -1,0 +1,330 @@
+{
+  "blocking_reasons": [],
+  "code": {
+    "git": {
+      "branch": "research/sports-rmot-strong-baselines-20261019",
+      "clean": false,
+      "head": "601b4c978750572bd6bb5e9d3189a4840de6e19f",
+      "status": "?? docs/RMOT_SPORTS_20261019/FLEXHOOK_F1_RUN_CONTRACT_20261020.json",
+      "workspace": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019"
+    },
+    "official_source_commits": {
+      "FLEXHOOK_COMMIT": "bd1acc38634b28525d54dc6e0fcb38335f0029f9",
+      "YESTRACK_COMMIT": "ed42b8315b28c94dc595d83b0d49bf57002bb281"
+    },
+    "source_files": {
+      "configs/official_sources.env.example": {
+        "path": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/configs/official_sources.env.example",
+        "sha256": "5fed05ac82cb21cfcba8bffa4d76db153d15f0377b453b61335074e2d22b48a4",
+        "size_bytes": 627
+      },
+      "scripts/preflight_baseline_assets.py": {
+        "path": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/scripts/preflight_baseline_assets.py",
+        "sha256": "9787b8edd7c259a4a6345421ff4f00d205d407e92c5b67ee68a8c306b11bb413",
+        "size_bytes": 24010
+      },
+      "scripts/run_contract.py": {
+        "path": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/scripts/run_contract.py",
+        "sha256": "ea3990ade2ba0de27fd34d5854b92e41f1da8598e94edd6948291418dfb230a5",
+        "size_bytes": 21228
+      },
+      "scripts/yestrack_sportsmot_adapter.py": {
+        "path": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/scripts/yestrack_sportsmot_adapter.py",
+        "sha256": "da263bf870d4858a00910eccb14e24001abb9ac3c105143564ba7153bbec3c91",
+        "size_bytes": 12780
+      }
+    }
+  },
+  "contract_id": "yestrack_y1_sports_lora_seed42_current",
+  "environment": {
+    "cuda_visible_devices": "",
+    "nvidia_visible_devices": "",
+    "platform": "Linux-7.0.0-38-generic-x86_64-with-glibc2.39",
+    "python_executable": "/data3/liuyeqiang/.venvs/fgrefmot-rmot-sports-20261019/bin/python",
+    "python_version": "3.10.21"
+  },
+  "generated_at": "2026-10-19T23:39:37.018988+00:00",
+  "inputs": {
+    "assets": {
+      "common_sports_tracker": {
+        "kind": "physical_tracker_outputs",
+        "manifest": {
+          "declared_output_count": 19,
+          "output_count": 19,
+          "path": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/assets/pretrained/common_tracker/sambamotr_dab_refersports_train_20261019/TRACKER_RUN_MANIFEST.json",
+          "split": "refer-sports-eval-19-videos"
+        },
+        "name": "common_sports_tracker",
+        "outputs": [
+          {
+            "path": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/assets/pretrained/common_tracker/sambamotr_dab_refersports_train_20261019/tracker_outputs/v_-6Os86HzwCs_c007.txt",
+            "relative_path": "tracker_outputs/v_-6Os86HzwCs_c007.txt",
+            "sha256": "20ecc3d53aa9662c072ea7ee7102d9d1f6513a1cb1529fbf9ae017fbfd739c59",
+            "size_bytes": 461801
+          },
+          {
+            "path": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/assets/pretrained/common_tracker/sambamotr_dab_refersports_train_20261019/tracker_outputs/v_-6Os86HzwCs_c009.txt",
+            "relative_path": "tracker_outputs/v_-6Os86HzwCs_c009.txt",
+            "sha256": "dab3a37f20e5316f1f412956194fb0d319cd89cf5c286f35b071914f11f898b4",
+            "size_bytes": 440573
+          },
+          {
+            "path": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/assets/pretrained/common_tracker/sambamotr_dab_refersports_train_20261019/tracker_outputs/v_1LwtoLPw2TU_c014.txt",
+            "relative_path": "tracker_outputs/v_1LwtoLPw2TU_c014.txt",
+            "sha256": "1692de779fe6b78aa2556cb7938ac7cbfa0dac0b1f344815549526fd77934a8f",
+            "size_bytes": 574637
+          },
+          {
+            "path": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/assets/pretrained/common_tracker/sambamotr_dab_refersports_train_20261019/tracker_outputs/v_1LwtoLPw2TU_c016.txt",
+            "relative_path": "tracker_outputs/v_1LwtoLPw2TU_c016.txt",
+            "sha256": "c3c892df63d255cbaf73913a5cb6c9c5278579215f56b03588315576e45efba7",
+            "size_bytes": 299940
+          },
+          {
+            "path": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/assets/pretrained/common_tracker/sambamotr_dab_refersports_train_20261019/tracker_outputs/v_1yHWGw8DH4A_c601.txt",
+            "relative_path": "tracker_outputs/v_1yHWGw8DH4A_c601.txt",
+            "sha256": "d86712b260968d21a32e4910b4935d4e9470eb4a5dfe962b91f413ca6382514f",
+            "size_bytes": 600563
+          },
+          {
+            "path": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/assets/pretrained/common_tracker/sambamotr_dab_refersports_train_20261019/tracker_outputs/v_1yHWGw8DH4A_c609.txt",
+            "relative_path": "tracker_outputs/v_1yHWGw8DH4A_c609.txt",
+            "sha256": "81f0fbf727cb994be4675b1dcdce98df1e2f25c182b1a3972646ed2c887470b2",
+            "size_bytes": 644500
+          },
+          {
+            "path": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/assets/pretrained/common_tracker/sambamotr_dab_refersports_train_20261019/tracker_outputs/v_1yHWGw8DH4A_c610.txt",
+            "relative_path": "tracker_outputs/v_1yHWGw8DH4A_c610.txt",
+            "sha256": "77d878b25420f135162fcf0b731e4c5a1dc0db686503ac1a66ce0456b46db2f5",
+            "size_bytes": 637280
+          },
+          {
+            "path": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/assets/pretrained/common_tracker/sambamotr_dab_refersports_train_20261019/tracker_outputs/v_2j7kLB-vEEk_c007.txt",
+            "relative_path": "tracker_outputs/v_2j7kLB-vEEk_c007.txt",
+            "sha256": "274e98dc06e7f4e5eaabcce679444c6e20f705ee11d55776d15dbf65dd715654",
+            "size_bytes": 558198
+          },
+          {
+            "path": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/assets/pretrained/common_tracker/sambamotr_dab_refersports_train_20261019/tracker_outputs/v_2j7kLB-vEEk_c009.txt",
+            "relative_path": "tracker_outputs/v_2j7kLB-vEEk_c009.txt",
+            "sha256": "5fed7bfc06eebeb281f74012734fed64155f65d35c5c0c09f51fae0dd354f85c",
+            "size_bytes": 1350502
+          },
+          {
+            "path": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/assets/pretrained/common_tracker/sambamotr_dab_refersports_train_20261019/tracker_outputs/v_2j7kLB-vEEk_c010.txt",
+            "relative_path": "tracker_outputs/v_2j7kLB-vEEk_c010.txt",
+            "sha256": "7f010ccc32af159ed9974cd0840f8fe42ff2f4237f28d7c4379f1604b193358d",
+            "size_bytes": 506850
+          },
+          {
+            "path": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/assets/pretrained/common_tracker/sambamotr_dab_refersports_train_20261019/tracker_outputs/v_4LXTUim5anY_c010.txt",
+            "relative_path": "tracker_outputs/v_4LXTUim5anY_c010.txt",
+            "sha256": "cd6c8950e7de684d265252906087b6ea3a5aa8402786b0fa92cb25e08be06be7",
+            "size_bytes": 426225
+          },
+          {
+            "path": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/assets/pretrained/common_tracker/sambamotr_dab_refersports_train_20261019/tracker_outputs/v_4LXTUim5anY_c012.txt",
+            "relative_path": "tracker_outputs/v_4LXTUim5anY_c012.txt",
+            "sha256": "16b0718dbb910a6ef5f0cdb2e8566d5b2ec184c46b066c395b44cf040c2919ac",
+            "size_bytes": 605704
+          },
+          {
+            "path": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/assets/pretrained/common_tracker/sambamotr_dab_refersports_train_20261019/tracker_outputs/v_ApPxnw_Jffg_c015.txt",
+            "relative_path": "tracker_outputs/v_ApPxnw_Jffg_c015.txt",
+            "sha256": "10492ee92420f4904a00244867b681ecfd8e9cb5fa3dce349a89828e5642b2a0",
+            "size_bytes": 212505
+          },
+          {
+            "path": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/assets/pretrained/common_tracker/sambamotr_dab_refersports_train_20261019/tracker_outputs/v_ApPxnw_Jffg_c016.txt",
+            "relative_path": "tracker_outputs/v_ApPxnw_Jffg_c016.txt",
+            "sha256": "b574af455e56881c2b7d0d2c8634ccb56d9b0fb6247df6217f4f73708c19f238",
+            "size_bytes": 346188
+          },
+          {
+            "path": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/assets/pretrained/common_tracker/sambamotr_dab_refersports_train_20261019/tracker_outputs/v_CW0mQbgYIF4_c005.txt",
+            "relative_path": "tracker_outputs/v_CW0mQbgYIF4_c005.txt",
+            "sha256": "185375b5d1ba911c6538a7634a4440d2d4c7d6a335e20337cd1ba6ab9abf2321",
+            "size_bytes": 481395
+          },
+          {
+            "path": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/assets/pretrained/common_tracker/sambamotr_dab_refersports_train_20261019/tracker_outputs/v_Dk3EpDDa3o0_c007.txt",
+            "relative_path": "tracker_outputs/v_Dk3EpDDa3o0_c007.txt",
+            "sha256": "c3d5b56501cd67b78d1c7b31e4b2ae188956d091f1b75cd7426c8688871580ba",
+            "size_bytes": 464721
+          },
+          {
+            "path": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/assets/pretrained/common_tracker/sambamotr_dab_refersports_train_20261019/tracker_outputs/v_HdiyOtliFiw_c008.txt",
+            "relative_path": "tracker_outputs/v_HdiyOtliFiw_c008.txt",
+            "sha256": "4fde472b9f4aa6e0716822dd8357ab8a9b8d26dc46d473c8158141bc1a053a8f",
+            "size_bytes": 689735
+          },
+          {
+            "path": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/assets/pretrained/common_tracker/sambamotr_dab_refersports_train_20261019/tracker_outputs/v_HdiyOtliFiw_c010.txt",
+            "relative_path": "tracker_outputs/v_HdiyOtliFiw_c010.txt",
+            "sha256": "e7ee74fd7d1eee2248e3a0198b7bc8166afdcaec557c6bbfaff74e0b1582e68c",
+            "size_bytes": 1220246
+          },
+          {
+            "path": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/assets/pretrained/common_tracker/sambamotr_dab_refersports_train_20261019/tracker_outputs/v_gQNyhv8y0QY_c013.txt",
+            "relative_path": "tracker_outputs/v_gQNyhv8y0QY_c013.txt",
+            "sha256": "3dfa28195fee7b0ac41de3465aeac8fc86e7fa54c8b99a64cffcc161c6fdb093",
+            "size_bytes": 921351
+          }
+        ],
+        "path": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/assets/pretrained/common_tracker/sambamotr_dab_refersports_train_20261019",
+        "reasons": [],
+        "required_for_training": true,
+        "status": "READY"
+      },
+      "yestrack_base_model": {
+        "files": [
+          {
+            "path": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/assets/pretrained/yestrack/Qwen3-VL-2B-Instruct/config.json",
+            "sha256": "bec4b3d446efa05807365c9e1cec03ac590836879d02f3a6da879971154bdd3b",
+            "size_bytes": 1505
+          },
+          {
+            "path": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/assets/pretrained/yestrack/Qwen3-VL-2B-Instruct/preprocessor_config.json",
+            "sha256": "27225450ac9c6529872ee1924fcb0962ff5634834f817040f444118116f4e516",
+            "size_bytes": 390
+          },
+          {
+            "path": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/assets/pretrained/yestrack/Qwen3-VL-2B-Instruct/tokenizer_config.json",
+            "sha256": "c2da771801886ad9ae98181793ffd3dfb7f1af30f6f7c6a4e15d7dbba52e2399",
+            "size_bytes": 10868
+          }
+        ],
+        "kind": "base_model_directory",
+        "name": "yestrack_base_model",
+        "path": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/assets/pretrained/yestrack/Qwen3-VL-2B-Instruct",
+        "reasons": [],
+        "required_for_training": true,
+        "status": "READY",
+        "weight_files": [
+          {
+            "path": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/assets/pretrained/yestrack/Qwen3-VL-2B-Instruct/model.safetensors",
+            "sha256": "7de1838c87a5349b016c26a1c3f7d2bc400a3d485f95ef39a7059ffd734977a0",
+            "size_bytes": 4255140312
+          }
+        ]
+      }
+    },
+    "dataset_manifest": {
+      "path": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/data/refer_sports_manifest.json",
+      "sha256": "88e0ba5cfcf522887237af7fd4be075b7d0ad4cbac373ab56fbcd8fda21e25a3",
+      "size_bytes": 1006229
+    },
+    "layout": {
+      "check_name": "yestrack_layout",
+      "record": {
+        "path": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/runs/yestrack_sports_layout_20261019_v1/manifest.json",
+        "sha256": "3ccf91f155155401c61e8afbc56bfe784f997783f2653a8007d7668109da3846",
+        "size_bytes": 17636
+      }
+    },
+    "preflight": {
+      "overall_status": "PENDING",
+      "pending_checks": [
+        "flexhook_task_checkpoint",
+        "yestrack_lora_checkpoint"
+      ],
+      "record": {
+        "path": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/runs/baseline_asset_preflight_20261020/current_report.json",
+        "sha256": "bc435152516b688445f2cd63dc4ce876968556d73937b49753bac3bc5821cae3",
+        "size_bytes": 14045
+      }
+    },
+    "required_assets": [
+      "yestrack_base_model",
+      "common_sports_tracker"
+    ]
+  },
+  "method": "yestrack",
+  "policy": {
+    "external_asset_substitution": "REJECTED",
+    "gpu_job_started_by_contract_builder": false,
+    "gt_or_labels_as_tracker_input": "REJECTED",
+    "tracker_outputs_must_be_common_across_methods": true
+  },
+  "protocol": {
+    "evaluation_split": "SPORTS_VAL",
+    "hyperparameters": {
+      "batch_size": 8,
+      "epochs": 1,
+      "eval_sequence": "all",
+      "eval_threshold": [
+        0.2,
+        0.3,
+        0.4,
+        0.5,
+        0.6,
+        0.7,
+        0.8
+      ],
+      "every_steps": 0,
+      "layout_root": "runs/yestrack_sports_layout_20261019_v1",
+      "lr": 5e-06,
+      "model_name": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/assets/pretrained/yestrack/Qwen3-VL-2B-Instruct",
+      "negative_downsample": 0.5,
+      "re_refer_lower": 0.2,
+      "re_refer_thresh": 0.8,
+      "seed": 42
+    },
+    "launch_command": [
+      "/data3/liuyeqiang/.venvs/fgrefmot-rmot-sports-20261019/bin/python",
+      "scripts/yestrack_sportsmot_adapter.py",
+      "--layout-root",
+      "runs/yestrack_sports_layout_20261019_v1",
+      "--model_name",
+      "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/assets/pretrained/yestrack/Qwen3-VL-2B-Instruct",
+      "--batch_size",
+      "8",
+      "--epochs",
+      "1",
+      "--every_steps",
+      "0",
+      "--lr",
+      "5e-6",
+      "--seed",
+      "42",
+      "--negative_downsample",
+      "0.5",
+      "--eval_threshold",
+      "0.2",
+      "0.3",
+      "0.4",
+      "0.5",
+      "0.6",
+      "0.7",
+      "0.8",
+      "--re_refer_lower",
+      "0.2",
+      "--re_refer_thresh",
+      "0.8"
+    ],
+    "seed": 42,
+    "thresholds": {
+      "association": "re_refer_lower=0.2,re_refer_thresh=0.8",
+      "detector_score": [
+        0.2,
+        0.3,
+        0.4,
+        0.5,
+        0.6,
+        0.7,
+        0.8
+      ]
+    },
+    "tracker_policy": "common_physical_tracker_detector_outputs",
+    "train_split": "SPORTS_TRAIN_CORE"
+  },
+  "ready_to_launch": true,
+  "schema_version": 1,
+  "status": "READY",
+  "validation": {
+    "layout_policy_checked": true,
+    "preflight_reused_without_mutation": true,
+    "protocol_complete": true
+  },
+  "variant": "y1_sports_lora"
+}
