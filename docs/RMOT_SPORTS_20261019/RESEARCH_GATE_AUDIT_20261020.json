@@ -1,6 +1,6 @@
 {
   "schema_version": "rmot-sports-gate-audit-0.1",
-  "observed_at": "2026-10-20T03:18:59+08:00",
+  "observed_at": "2026-10-20T03:40:36+08:00",
   "status": "IN_PROGRESS",
   "workspace": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019",
   "branch": "research/sports-rmot-strong-baselines-20261019",
@@ -52,14 +52,15 @@
     },
     {
       "id": "E_LEARNED_IMPROVEMENT_AND_ABLATIONS",
-      "status": "NOT_RUN_LEARNED_METHOD",
+      "status": "TEMPORAL_HEAD_TRAINED_INTERNAL_EVALUATION_IN_PROGRESS",
       "evidence": [
         "docs/RMOT_SPORTS_20261019/PHASE67_FLEXHOOK_SCORE_ABLATIONS.json",
         "docs/RMOT_SPORTS_20261019/PHASE71_FLEXHOOK_FEATURE_ARCHIVE_TOOLING.json",
         "docs/RMOT_SPORTS_20261019/PHASE72_FLEXHOOK_TEMPORAL_TRAINING_TOOLING.json",
-        "docs/RMOT_SPORTS_20261019/PHASE73_FLEXHOOK_TEMPORAL_EVAL_TOOLING.json"
+        "docs/RMOT_SPORTS_20261019/PHASE73_FLEXHOOK_TEMPORAL_EVAL_TOOLING.json",
+        "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_temporal_h8_internal_core_20261019/TEMPORAL_TRAINING_MANIFEST.json"
       ],
-      "claim_boundary": "Frozen-score H0-H8 diagnostics are evidence only; no learned temporal checkpoint or proposed-method metric exists yet."
+      "claim_boundary": "The H8 causal temporal checkpoint was trained on train_core and selected using internal_val; internal TrackEval is in progress. No learned-method metric or historical-test result is claimed yet."
     },
     {
       "id": "F_COMPLETE_ONLINE_GAIN",
@@ -117,7 +118,7 @@
   ],
   "next_gates": [
     "complete YesTrack internal validation and formal historical evaluation manifests",
-    "finish causal temporal-head training/selection and evaluation",
+    "finish causal temporal-head internal TrackEval and historical evaluation",
     "run registered proposed-method and baseline ablations after the baseline gate",
     "complete multi-seed, efficiency, final-test and reviewer-report evidence"
   ]
