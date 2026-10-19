@@ -107,12 +107,33 @@ def frame_ids_for_key(dataset: Any, data_key: str, sample_indices: Iterable[int]
     return frame_ids
 
 
+def _sample_indices_for_key(dataset: Any, data_key: str) -> Any:
+    """Look up a validation sample in flat or mixed-dataset storage.
+
+    ``RMOT_Dataset_mix`` keeps ``sample_dict`` and ``data`` nested by dataset
+    name, while the public ``data_keys`` list contains the flattened keys.
+    Single-dataset loaders expose the same mapping flat.  The archive only
+    needs the sampled indices, so support both layouts without changing the
+    upstream dataset or loader ordering.
+    """
+
+    sample_dict = getattr(dataset, "sample_dict", None)
+    if not isinstance(sample_dict, dict):
+        raise ValueError("FlexHook dataset has no sample_dict mapping")
+    if data_key in sample_dict:
+        return sample_dict[data_key]
+    for nested in sample_dict.values():
+        if isinstance(nested, dict) and data_key in nested:
+            return nested[data_key]
+    raise KeyError(data_key)
+
+
 def _val_batch_metadata(dataset: Any, start: int, batch_size: int) -> tuple[list[str], list[list[int]], list[list[str]]]:
     keys = list(dataset.data_keys[start : start + batch_size])
     frame_ids: list[list[int]] = []
     expressions: list[list[str]] = []
     for key in keys:
-        indices = dataset.sample_dict[key]
+        indices = _sample_indices_for_key(dataset, key)
         frame_ids.append(frame_ids_for_key(dataset, "#".join(str(key).split("#")[:2]), indices))
         expressions.append(str(key).split("#")[-1].split("+"))
     return [str(key) for key in keys], frame_ids, expressions
