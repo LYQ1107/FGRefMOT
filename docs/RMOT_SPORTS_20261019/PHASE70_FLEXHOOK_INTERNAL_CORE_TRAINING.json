@@ -1,0 +1,60 @@
+{
+  "schema_version": "rmot-sports-phase-0.1",
+  "phase": 70,
+  "title": "FlexHook strict internal-core training launch",
+  "status": "RUNNING",
+  "run_id": "flexhook_f1_internal_core_seed42",
+  "run_manifest": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/runs/gpu/flexhook_f1_internal_core_seed42/RUN_MANIFEST.json",
+  "contract": {
+    "path": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/runs/contracts_20261019/flexhook_f1_internal_core_seed42.json",
+    "sha256": "da06203b5336debd9075f2d5a3cc89489365909ba88647ff0362d00b87249c7d",
+    "status": "READY",
+    "check": "contract: READY — hashes and policy verified"
+  },
+  "dataset": {
+    "layout_root": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/runs/flexhook_sports_layout_internal_20261019",
+    "layout_manifest_sha256": "081570859b4446e7118ac6d9f31f367f09a932e0656581af0248e7197bad01e4",
+    "train": {
+      "videos": 17,
+      "expressions": 136,
+      "policy": "model training only"
+    },
+    "internal_validation": {
+      "videos": 5,
+      "expressions": 45,
+      "policy": "checkpoint selection and diagnostics only"
+    },
+    "historical_test": {
+      "videos": 19,
+      "expressions": 142,
+      "policy": "offline TrackEval after all selection; no model/tracker input"
+    }
+  },
+  "protocol": {
+    "seed": 42,
+    "visual": "rope-swin-tiny",
+    "text": "roberta",
+    "epochs": 25,
+    "batch_size": 10,
+    "val_batch_size": 40,
+    "sample_frame_stride": [30],
+    "val_sample_frame_stride": [24],
+    "val_set_scale": [5],
+    "tracker_policy": "common fixed SambaMOTR DAB-DETR outputs",
+    "gt_usage": "none as model input, tracker input, checkpoint selector or threshold tuner"
+  },
+  "runtime": {
+    "cuda_visible_devices": "3",
+    "physical_gpu": 3,
+    "started_at": "2026-10-19T23:07:28+08:00",
+    "output_root": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_f1_internal_core_seed42",
+    "storage_policy": "NAS direct through SSHFS; local code/runtime only"
+  },
+  "result_boundary": {
+    "checkpoint_created": false,
+    "internal_validation_completed": false,
+    "historical_test_evaluated": false,
+    "metrics_claimed": false
+  },
+  "next_gate": "complete core training, select checkpoint on the 5-video internal validation split, then archive the selected checkpoint hash"
+}

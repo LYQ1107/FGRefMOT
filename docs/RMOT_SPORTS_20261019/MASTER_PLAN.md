@@ -24,11 +24,14 @@ from its successful manifest; these are historical-test values and are not
 internal validation values.
 
 Active work is recorded in `EXPERIMENT_REGISTRY.csv`. The full and internal
-YesTrack Sports-LoRA runs are live jobs. The FlexHook F1 internal validation
-and the frozen-checkpoint H0–H8 prebaseline diagnostic replay are complete and
-recorded in Phases 66–67. The H0–H8 metrics are evidence only; the proposed
-method gate remains closed until the formal YesTrack baseline exists. Watchers
-are registered for the YesTrack post-training evaluations and score-level
+YesTrack Sports-LoRA runs are live jobs. A strict FlexHook core-only training
+run is also live on GPU3: it uses 17 train videos/136 expressions, reserves
+5 videos/45 expressions for internal checkpoint selection, and writes its
+artifacts directly to NAS. The earlier FlexHook F1 internal validation and the
+frozen-checkpoint H0–H8 prebaseline diagnostic replay are complete and recorded
+in Phases 66–67. The H0–H8 metrics are evidence only; the proposed-method gate
+remains closed until the formal YesTrack baseline exists. Watchers are
+registered for the YesTrack post-training evaluations and score-level
 ablations. The learned temporal module package now has a CPU-tested causal
 sequence adapter, and Phase 69 verified the real F1 checkpoint hook interface.
 It has not yet been trained or attached to a proposed checkpoint, so it has no
