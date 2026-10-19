@@ -21,10 +21,12 @@
   "contract": {
     "code_clean": true,
     "code_head": "34e323b32d11288995a21814e4ef349945452441",
+    "every_steps": 0,
     "gpu_launch": "DEFERRED_UNTIL_NAS_TUNNEL_AND_QWEN_ASSET_RECHECK",
     "path": "runs/contracts_20261019/yestrack_y1_sports_lora_seed42.json",
     "refreshed_after_phase31": true,
-    "sha256": "ecae2a3f649a132927ce046d96ca5e214d92e7a443d561112c788d0ea62ff357"
+    "sha256": "34f06e1bbd8c486072b92f4ed36b30411dcfa5864a06293b8365fe3049c05595",
+    "training_eval": "DISABLED; every_steps=0 to prevent GT-based in-training evaluation"
   },
   "environment": {
     "accelerate": "1.10.1",
@@ -42,7 +44,7 @@
     "mounted_path_status": "I/O_ERROR",
     "reverse_forward": "127.0.0.1:24557 connection refused"
   },
-  "next_action": "Launch the authorized Y1 baseline after the contract check passes (it now passes with restored NAS assets).",
+  "next_action": "Launch the authorized Y1 baseline with every_steps=0; run formal common-tracker evaluation only after training.",
   "phase": 30,
   "schema_version": 1,
   "status": "Y1_CPU_IMPORT_AND_ADAPTER_PASS_GPU_LAUNCH_PENDING_NAS_TUNNEL",
