@@ -16,11 +16,12 @@ the local run directory stores the manifest and log. The launch manifest and
 contract record the exact source checkout, layout, tracker policy, seed and
 hyperparameters.
 
-An observed epoch-6 internal validation reached `F1=71.575` on the reserved
-5-video/45-expression split, and candidate checkpoint
-`ckpt_epoch_best_2.pth` was hashed as
-`9f54677eb8eab677801720c2c9949d9f6e9c9b17a88cfdde13f2f65c179f080c`. This is
+An observed epoch-7 internal validation reached `F1=73.181` (`Acc@1=82.003`,
+precision `61.668`, recall `89.980`) on the reserved 5-video/45-expression
+split. The corresponding candidate checkpoint `ckpt_epoch_best_0.pth` was
+hashed as
+`875b37af0d2480405b23787c31df4b319c59d2f4e426bccfea8300bee7fa9029`. This is
 an in-training diagnostic candidate, not the final selected checkpoint or a
-historical-test claim; training is continuing at epoch 7/25. The next required
+historical-test claim; training is continuing at epoch 8/25. The next required
 evidence is a completed training manifest followed by final internal selection
 without reading historical test ground truth.
