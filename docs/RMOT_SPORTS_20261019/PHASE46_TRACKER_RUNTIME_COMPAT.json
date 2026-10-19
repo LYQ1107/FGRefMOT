@@ -1,0 +1,51 @@
+{
+  "schema_version": "rmot-sports-phase-46-0.1",
+  "phase": 46,
+  "status": "TRACKER_RUNNING_AFTER_RUNTIME_COMPAT_FIX",
+  "tracker": {
+    "variant": "common-SambaMOTR-DAB-D-DETR",
+    "physical_gpu": 0,
+    "launcher_pid": 2225078,
+    "child_pid_at_snapshot": 2226557,
+    "launch_started_at": "2026-10-19T17:18:07+08:00",
+    "manifest": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/assets/pretrained/common_tracker/sambamotr_dab_refersports_train_20261019/TRACKER_RUN_MANIFEST.json",
+    "launch_log": "runs/gpu/common_tracker_refersports_20261019.log",
+    "sequence_count": 19,
+    "staging_policy": "IMAGE_ONLY_STAGING; GT_AND_LABEL_FILES_OMITTED",
+    "used_ground_truth": false,
+    "source_commit": "f1c139a653c00a55c0873a64d7c59a67d7dbad44",
+    "source_compatibility_patch_sha256": "5409c1241655e518c03c91da9122d67b42caeaa4a4a6bef486716c40c50049f7",
+    "runtime_patch_file": "patches/sambamotr_runtime_compat.patch",
+    "runtime_patch_file_sha256": "49ea6f9d0299967748ad752dd8cbf109936e2463f9b335b33875a4be79285533",
+    "environment_overrides": {
+      "SAMBAMOTR_OFFLINE_WEIGHTS": "1",
+      "tensorboard_fallback": "tensorboardX==2.6.2.2"
+    },
+    "status_at_snapshot": "RUNNING"
+  },
+  "training_snapshot": {
+    "variant": "YesTrack-Y1",
+    "physical_gpu": 1,
+    "run_manifest": "runs/gpu/yestrack_y1_sports_lora_seed42/RUN_MANIFEST.json",
+    "steps": 8066,
+    "total_steps": 103988,
+    "status_at_snapshot": "RUNNING",
+    "policy": "existing_run_not_restarted"
+  },
+  "blockers_resolved": [
+    "missing optional tensorboard package",
+    "torchvision online ResNet-50 weight request"
+  ],
+  "policy": {
+    "gt_or_labels_as_tracker_input": "REJECTED",
+    "test_gt_tuning_or_checkpoint_selection": "REJECTED",
+    "other_gpu_jobs_untouched": true,
+    "metrics_claimed": false
+  },
+  "validation": {
+    "offline_backbone_smoke_test": "PASS",
+    "tracker_runtime_gates": "PASS; RUNNING",
+    "final_tracker_manifest": "PENDING",
+    "formal_evaluation": "PENDING"
+  }
+}

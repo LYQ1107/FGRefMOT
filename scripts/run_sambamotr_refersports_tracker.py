@@ -93,7 +93,19 @@ def prepare_image_only_view(
 def _source_patch_sha(source_root: Path) -> str | None:
     try:
         patch = subprocess.check_output(
-            ["git", "-C", str(source_root), "diff", "--binary", "--", "models/ops/src/cuda/ms_deform_attn_cuda.cu"],
+            [
+                "git",
+                "-C",
+                str(source_root),
+                "diff",
+                "--binary",
+                "--",
+                "models/ops/src/cuda/ms_deform_attn_cuda.cu",
+                "train_engine.py",
+                "eval_engine.py",
+                "log/logger.py",
+                "models/backbone.py",
+            ],
             text=False,
         )
     except (OSError, subprocess.CalledProcessError):
@@ -253,6 +265,10 @@ def run_tracker(
     if run:
         env = os.environ.copy()
         env["CUDA_VISIBLE_DEVICES"] = str(physical_gpu)
+        # The released tracker checkpoint contains the complete backbone.  Do
+        # not let torchvision try an online ImageNet download while the model
+        # is being constructed; the NAS job must be reproducible offline.
+        env["SAMBAMOTR_OFFLINE_WEIGHTS"] = "1"
         env["PYTHONPATH"] = os.pathsep.join(
             [str(source_root / "models" / "ops"), str(source_root), env.get("PYTHONPATH", "")]
         )

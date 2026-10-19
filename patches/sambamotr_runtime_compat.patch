@@ -1,0 +1,76 @@
+diff --git a/eval_engine.py b/eval_engine.py
+index 5158ce0..c565269 100644
+--- a/eval_engine.py
++++ b/eval_engine.py
+@@ -1,7 +1,13 @@
+ import os
+ import yaml
+ 
+-from torch.utils import tensorboard as tb
++try:
++    from torch.utils import tensorboard as tb
++except (ImportError, ModuleNotFoundError):
++    # The dedicated research environment ships tensorboardX but not the
++    # optional TensorBoard package; its SummaryWriter API is sufficient for
++    # SambaMOTR's scalar logging and keeps inference independent of logging.
++    import tensorboardX as tb
+ 
+ from utils.utils import yaml_to_dict
+ 
+diff --git a/log/logger.py b/log/logger.py
+index e121ab0..d726d13 100644
+--- a/log/logger.py
++++ b/log/logger.py
+@@ -5,7 +5,13 @@ import yaml
+ 
+ from tqdm import tqdm
+ from typing import List, Any
+-from torch.utils import tensorboard as tb
++try:
++    from torch.utils import tensorboard as tb
++except (ImportError, ModuleNotFoundError):
++    # The dedicated research environment ships tensorboardX but not the
++    # optional TensorBoard package; its SummaryWriter API is sufficient for
++    # SambaMOTR's scalar logging and keeps inference independent of logging.
++    import tensorboardX as tb
+ 
+ from log.log import MetricLog
+ from utils.utils import is_main_process
+diff --git a/models/backbone.py b/models/backbone.py
+index 1caf37c..946c7a4 100644
+--- a/models/backbone.py
++++ b/models/backbone.py
+@@ -1,3 +1,4 @@
++import os
+ import torch
+ import torch.nn as nn
+ import torch.nn.functional as F
+@@ -64,7 +65,8 @@ class Backbone(nn.Module):
+         """
+         super(Backbone, self).__init__()
+         assert backbone_name == "resnet50", f"Backbone do not support '{backbone_name}'."
+-        backbone = resnet50(weights=ResNet50_Weights.DEFAULT, norm_layer=FrozenBatchNorm2d)
++        weights = None if os.environ.get("SAMBAMOTR_OFFLINE_WEIGHTS") == "1" else ResNet50_Weights.DEFAULT
++        backbone = resnet50(weights=weights, norm_layer=FrozenBatchNorm2d)
+ 
+         for name, parameter in backbone.named_parameters():
+             if not train_backbone or ("layer2" not in name and "layer3" not in name and "layer4" not in name):
+diff --git a/train_engine.py b/train_engine.py
+index 0c4b82a..7de9280 100644
+--- a/train_engine.py
++++ b/train_engine.py
+@@ -18,7 +18,13 @@ from models.criterion import build as build_criterion, ClipCriterion
+ from models.utils import get_model, save_checkpoint, load_checkpoint, link_checkpoint
+ from torch.optim import Adam, AdamW
+ from torch.optim.lr_scheduler import MultiStepLR, CosineAnnealingLR
+-from torch.utils import tensorboard as tb
++try:
++    from torch.utils import tensorboard as tb
++except (ImportError, ModuleNotFoundError):
++    # The dedicated research environment ships tensorboardX but not the
++    # optional TensorBoard package; its SummaryWriter API is sufficient for
++    # SambaMOTR's scalar logging and keeps inference independent of logging.
++    import tensorboardX as tb
+ from log.logger import Logger, ProgressLogger
+ from log.log import MetricLog
+ from models.utils import load_pretrained_model
