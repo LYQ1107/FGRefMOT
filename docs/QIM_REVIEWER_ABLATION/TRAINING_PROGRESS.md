@@ -15,7 +15,7 @@
 | 200-step QIM-only four-way runs | COMPLETE | V100 GPUs 2–5; fixed 4-frame clips; all four step-200 checkpoints present |
 | Step-200 development smoke | COMPLETE | fixed 4-video split, 30 frames/video, one expression/video; JSON results committed beside this report |
 | Step-200 full development evaluation | COMPLETE | fixed 4-video split, all 2,621 frames, one expression/video; four JSON results committed and pushed |
-| Real SportsMOT image benchmark | RUNNING | launched after Mamba step-200 evaluation; records decode/transform and prepared-GPU latency |
+| Real SportsMOT image benchmark | COMPLETE | 60-frame real clip, 5 warmup + 55 timed frames; `real_sportsmot_benchmark_step200.json` |
 | 5k/20k/60k/120k training nodes | RUNNING | all four variants resumed exactly from step 200; milestone saves requested at 5k/20k/60k/120k |
 | Historical Test HOTA/DetA/AssA/IDF1/IDSW | BLOCKED | test images exist, corresponding local GT labels do not |
 

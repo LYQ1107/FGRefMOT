@@ -12,6 +12,15 @@ The original module receives `[1, N_active, 256]` after the active tracks are se
 
 On the current V100 engineering probe, original Mamba QIM latency at 20 active tracks was 10.95 ms, compared with 2.26 ms for Standard, 4.62 ms for LSTM, and 5.74 ms for Temporal Attention. The full-model synthetic 360x640 probe produced 11.75 prepared-tensor FPS for Mamba, versus 11.23/12.02/11.94 for the three alternatives. These values are hardware- and probe-specific, not Refer-Sports paper results. Mamba's parameter count alone does not establish end-to-end FPS superiority.
 
+The separate real-image step-200 benchmark used 60 native frames from
+`v_-6Os86HzwCs_c001` (5 warmup, 55 timed, FP32, Tesla V100). Including decode
+and validation transform, wall FPS was 5.64/5.55/5.94/5.77 for
+Standard/LSTM/Temporal Attention/Original Mamba respectively; prepared-GPU FPS
+was 7.54/7.26/7.93/7.63. Peak allocated memory was 2.244/1.985/1.919/1.925
+GB. This is a single-clip engineering measurement, not a paper-wide speed
+claim; the exact p95 values and protocol are in
+`reports/qim_ablation/real_sportsmot_benchmark_step200.json`.
+
 ## What cannot be claimed yet?
 
 The local SportsMOT image tree, `labels_with_ids`, expressions, and global-ID
@@ -27,6 +36,8 @@ The published Test images still have no matching local ground-truth labels;
 therefore historical Test HOTA/AssA/IDF1/IDSW, a reproducible 0.29-HOTA
 attribution, and a final paper conclusion must not be claimed until the Test
 GT/protocol is supplied. The real-image efficiency benchmark is reported
-separately from the synthetic engineering probe and is still running.
+separately from the synthetic engineering probe and is now complete for the
+documented single clip; long-run training cost is still being measured from
+actual checkpoint logs.
 
 

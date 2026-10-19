@@ -1,6 +1,6 @@
 # FGRefMOT original QIM ablation — current report
 
-Status: **STEP-200 FULL DEVELOPMENT EVALUATION COMPLETE / LONG RUN IN PROGRESS / HISTORICAL TEST GT STILL MISSING**.
+Status: **STEP-200 FULL DEVELOPMENT EVALUATION AND REAL-IMAGE BENCHMARK COMPLETE / LONG RUN IN PROGRESS / HISTORICAL TEST GT STILL MISSING**.
 
 Completed in this snapshot:
 
@@ -24,7 +24,7 @@ Completed in this snapshot:
 Still in progress or blocked:
 
 - completion of the 5k/20k/60k/120k checkpoints (four nodes are running continuously);
-- the real SportsMOT image benchmark (decode/transform plus prepared-GPU latency);
+- multi-clip paper-level efficiency and training-cost aggregation;
 - historical Test HOTA/DetA/AssA/IDF1/IDSW, because the local Test tree has no matching GT;
 - multi-seed/partial-unfreeze experiments;
 - formal paper-level Full-model FPS on real SportsMOT clips.
@@ -58,5 +58,25 @@ historical Test results; the local Test tree still has no matching ground truth.
 
 The exact per-sequence results are stored in
 `reports/qim_ablation/{standard,lstm,temporal_attention,mamba}_step200_dev_full.json`.
+
+## Step-200 real SportsMOT image benchmark
+
+This is a full-model engineering benchmark on native images from
+`v_-6Os86HzwCs_c001`, with 60 frames total, 5 warmup frames, and 55 timed
+frames on a Tesla V100-DGXS-32GB in FP32. `prepared GPU` excludes image
+decode/validation transform; `wall` includes them. These are speed and memory
+measurements, not additional accuracy claims.
+
+| QIM | Prepared GPU mean / p95 (ms) | Prepared GPU FPS | Wall mean / p95 (ms) | Wall FPS | Peak allocated (GB) |
+|---|---:|---:|---:|---:|---:|
+| Standard | 132.58 / 151.02 | 7.54 | 177.38 / 203.41 | 5.64 | 2.244 |
+| LSTM | 137.70 / 161.03 | 7.26 | 180.32 / 215.36 | 5.55 | 1.985 |
+| Temporal Attention | 126.05 / 142.10 | 7.93 | 168.38 / 192.81 | 5.94 | 1.919 |
+| Original Mamba | 130.99 / 152.51 | 7.63 | 173.35 / 197.21 | 5.77 | 1.925 |
+
+The machine-readable benchmark is
+`reports/qim_ablation/real_sportsmot_benchmark_step200.json`. The long-run
+training-cost fields will be filled from the actual 5k/20k/60k/120k completion
+logs; no extrapolated cost is presented as measured cost.
 
 
