@@ -58,6 +58,9 @@ Until a real training run supplies the last five values, they remain
 
 `PHASE1_STORAGE_LAYOUT: COMPLETE` for directory creation and tooling.
 
-`PHASE1_IO_BENCHMARK: NOT_RUN`; no benchmark or model transfer is started until
-the baseline environment is fixed and a GPU is explicitly selected without
-interfering with other jobs.
+`PHASE1_IO_BENCHMARK: COMPLETE_SYNTHETIC_SMOKE` is recorded in
+`PHASE1_STORAGE_IO_BENCHMARK.md` and its JSON companion. The 16 MiB smoke test
+shows the mounted NAS is appropriate for durable artifacts but much slower for
+random reads than local storage, so it is not treated as a local NVMe cache.
+The benchmark deliberately does not claim that a real checkpoint was archived
+or restored; that remains a separate hash-verified archive/restore gate.

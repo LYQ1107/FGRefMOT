@@ -1,0 +1,33 @@
+{
+  "phase": 1,
+  "title": "storage I/O smoke benchmark",
+  "status": "COMPLETE_SYNTHETIC_SMOKE_CHECKPOINT_TRANSFER_NOT_RUN",
+  "generated_at": "2026-10-19T13:01:38.539660+00:00",
+  "benchmark": "synthetic_temporary_file",
+  "size_mib": 16,
+  "random_reads": 32,
+  "temporary_files_removed": true,
+  "checkpoint_transfer_tested": false,
+  "results": [
+    {
+      "path": "/data3/liuyeqiang",
+      "sequential_write_mib_s": 64.952,
+      "sequential_read_mib_s": 221.14,
+      "random_read_ms": 0.162,
+      "random_reads": 32,
+      "random_bytes": 131072,
+      "sha256": "bb63a19be8c15da713b946c0a02cea5365825bc3b5b973b217e8f395339a0780",
+      "temporary_file_bytes": 16777216
+    },
+    {
+      "path": "/data3/liuyeqiang/nas/A100",
+      "sequential_write_mib_s": 7.741,
+      "sequential_read_mib_s": 8.04,
+      "random_read_ms": 313.456,
+      "random_reads": 32,
+      "random_bytes": 131072,
+      "sha256": "bb63a19be8c15da713b946c0a02cea5365825bc3b5b973b217e8f395339a0780",
+      "temporary_file_bytes": 16777216
+    }
+  ]
+}
