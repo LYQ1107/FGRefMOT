@@ -2,7 +2,7 @@
   "schema_version": "rmot-sports-phase-0.1",
   "phase": 72,
   "title": "FlexHook causal temporal-head training tooling",
-  "status": "IMPLEMENTED_NOT_RUN",
+  "status": "REAL_TRAINING_SUCCEEDED_INTERNAL_CHECKPOINT_SELECTED",
   "script": "scripts/train_flexhook_temporal.py",
   "tests": {
     "test_file": "tests/test_train_flexhook_temporal.py",
@@ -16,9 +16,26 @@
     "upstream_flexhook": "frozen"
   },
   "result_boundary": {
-    "real_archive_consumed": false,
-    "temporal_checkpoint_trained": false,
+    "real_archive_consumed": true,
+    "temporal_checkpoint_trained": true,
     "metrics_claimed": false
   },
-  "next_gate": "finish strict core training, archive train_core/internal_val features, then train and select the temporal head"
+  "run": {
+    "status": "SUCCEEDED",
+    "manifest": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_temporal_h8_internal_core_20261019/TEMPORAL_TRAINING_MANIFEST.json",
+    "manifest_sha256": "c9d7cc84917354d0c2bb5d6110f9ceb6e9996be614f319e6f085500ad847ee91",
+    "checkpoint": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_temporal_h8_internal_core_20261019/temporal_head_best.pt",
+    "checkpoint_sha256": "5c3d5c39115f786390e23e86dd96763eac5d77028d43347f00f03c550d2008b9",
+    "variant": "H8",
+    "seed": 42,
+    "device": "cuda",
+    "epochs": 8,
+    "best_epoch": 5,
+    "best_val_loss": 0.2843093469826403,
+    "train_sequence_count": 10319,
+    "internal_val_sequence_count": 614,
+    "train_archive_sha256": "e27bbfbe3e21e19892525b1d078f1bc9012c89986d7ee7e429bb9fbda916d7f3",
+    "internal_val_archive_sha256": "524503491f4a419b94afeb82712b0a41f5be5c7bf2f9d58ae9516f3a32720372"
+  },
+  "next_gate": "finish internal TrackEval for the selected checkpoint; historical test remains blocked until internal selection is recorded"
 }
