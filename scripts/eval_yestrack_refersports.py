@@ -68,6 +68,21 @@ def _load_rows(path: Path) -> list[list[str]]:
     return rows
 
 
+def resolve_tracker_input_root(tracker_root: Path) -> Path:
+    """Return the directory containing ``{sequence}.txt`` tracker files."""
+
+    direct_files = sorted(path for path in tracker_root.glob("*.txt") if path.is_file())
+    if direct_files:
+        return tracker_root
+    nested_root = tracker_root / "tracker_outputs"
+    nested_files = sorted(path for path in nested_root.glob("*.txt") if path.is_file())
+    if nested_files:
+        return nested_root
+    raise FileNotFoundError(
+        f"no tracker .txt files found under {tracker_root} or {nested_root}"
+    )
+
+
 def _jsonable(value: Any) -> Any:
     if isinstance(value, dict):
         return {str(key): _jsonable(item) for key, item in value.items()}
@@ -95,6 +110,7 @@ def run_yestrack_inference(
     frame_offset: int,
 ) -> dict[str, Any]:
     results_root.mkdir(parents=True, exist_ok=True)
+    tracker_input_root = resolve_tracker_input_root(tracker_root)
     command = [
         str(python),
         str(REPO_ROOT / "third_party" / "YesTrack" / "refer_llm" / "llm_eval_from_mot.py"),
@@ -107,7 +123,7 @@ def run_yestrack_inference(
         "--mot_input_type",
         "bytetrack",
         "--bytetrack_dir",
-        str(tracker_root),
+        str(tracker_input_root),
         "--image_frame_start_one",
         "0",
         "--mot_frame_start_one",
@@ -138,6 +154,7 @@ def run_yestrack_inference(
         "command": command,
         "exit_code": completed.returncode,
         "results_root": str(results_root),
+        "tracker_input_root": str(tracker_input_root),
     }
 
 

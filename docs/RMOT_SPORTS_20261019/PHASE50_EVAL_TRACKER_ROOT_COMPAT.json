@@ -1,0 +1,27 @@
+{
+  "phase": 50,
+  "title": "Formal-evaluation tracker-root compatibility",
+  "status": "FIXED_TESTED_TRAINING_RUNNING",
+  "trigger": {
+    "failure": "FlexHook preflight rejected the completed common tracker because files were stored under tracker_outputs/",
+    "scope": "evaluation adapter preflight only",
+    "model_inference_started": false
+  },
+  "changes": {
+    "flexhook": "resolve each sequence MOT file at tracker root or tracker_outputs/ and reuse the resolved path",
+    "yestrack": "pass the directory containing MOT files to the upstream evaluator and record it",
+    "tracker_files_copied": false,
+    "gt_as_tracker_input": false
+  },
+  "validation": {
+    "project_tests": "26 passed",
+    "py_compile": "passed",
+    "git_diff_check": "passed",
+    "bare_pytest": "not_project_scoped; collects vendored tests with missing optional fixtures"
+  },
+  "run_state": {
+    "yestrack_training": "RUNNING",
+    "formal_metrics_claimed": false,
+    "dependency_gate": "WAITING_FOR_YESTRACK_CHECKPOINT"
+  }
+}

@@ -72,6 +72,27 @@ def _load_mot_rows(path: Path) -> np.ndarray:
     return rows
 
 
+def resolve_tracker_file(tracker_root: Path, video: str) -> Path:
+    """Resolve a common-tracker file from either supported output layout.
+
+    The tracker wrapper keeps its formal files in ``tracker_outputs/`` while
+    older callers pass a directory whose ``{video}.txt`` files are at the
+    root.  Evaluation must accept both without copying or rewriting tracks.
+    """
+
+    candidates = (
+        tracker_root / f"{video}.txt",
+        tracker_root / "tracker_outputs" / f"{video}.txt",
+    )
+    for candidate in candidates:
+        if candidate.is_file():
+            return candidate
+    raise FileNotFoundError(
+        f"tracker output missing for {video}; checked: "
+        + ", ".join(str(path) for path in candidates)
+    )
+
+
 def _write_rows(path: Path, rows: list[list[float | int]]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8") as handle:
@@ -117,7 +138,7 @@ def prepare_eval_tree(
     for video in sequence_names:
         if video not in labels:
             raise KeyError(f"sequence missing from FlexHook labels: {video}")
-        tracker_path = tracker_root / f"{video}.txt"
+        tracker_path = resolve_tracker_file(tracker_root, video)
         tracker_rows = _load_mot_rows(tracker_path)
         if tracker_rows.shape[0] == 0:
             raise ValueError(f"tracker output is empty: {tracker_path}")
@@ -222,7 +243,8 @@ def write_predictions(
         by_video.setdefault(record["video"], {})[record["expression"]] = record
     written = 0
     for video, expression_map in by_video.items():
-        rows = _load_mot_rows(tracker_root / f"{video}.txt")
+        record_tracker_path = Path(next(iter(expression_map.values()))["tracker_path"])
+        rows = _load_mot_rows(record_tracker_path)
         tracks = {(int(row[0]), int(row[1])): row for row in rows}
         video_scores = cls_dict.get(video, {})
         prediction_rows: dict[str, list[list[float | int]]] = {
