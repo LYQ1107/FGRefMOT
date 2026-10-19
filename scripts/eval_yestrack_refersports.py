@@ -121,6 +121,12 @@ def run_yestrack_inference(
     re_refer_thresh: float,
     infer_every_n_frames: int,
     frame_offset: int,
+    stability_enable: bool = False,
+    stability_window: int = 6,
+    stability_thresh: float = 0.4,
+    stability_boost: float = 0.3,
+    enable_video_mode: bool = False,
+    video_n_frames: int = 4,
 ) -> dict[str, Any]:
     results_root.mkdir(parents=True, exist_ok=True)
     tracker_input_root = resolve_tracker_input_root(tracker_root)
@@ -155,6 +161,20 @@ def run_yestrack_inference(
         str(results_root),
         "--resume",
     ]
+    if stability_enable:
+        command.extend(
+            [
+                "--stability_enable",
+                "--stability_window",
+                str(stability_window),
+                "--stability_thresh",
+                str(stability_thresh),
+                "--stability_boost",
+                str(stability_boost),
+            ]
+        )
+    if enable_video_mode:
+        command.extend(["--enable_video_mode", "--video_n_frames", str(video_n_frames)])
     env = os.environ.copy()
     env["CUDA_VISIBLE_DEVICES"] = str(gpu)
     env["PYTHONPATH"] = os.pathsep.join(
@@ -297,6 +317,12 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--infer-every-n-frames", type=int, default=1)
     parser.add_argument("--re-refer-lower", type=float, default=0.2)
     parser.add_argument("--re-refer-thresh", type=float, default=0.8)
+    parser.add_argument("--stability-enable", action="store_true")
+    parser.add_argument("--stability-window", type=int, default=6)
+    parser.add_argument("--stability-thresh", type=float, default=0.4)
+    parser.add_argument("--stability-boost", type=float, default=0.3)
+    parser.add_argument("--enable-video-mode", action="store_true")
+    parser.add_argument("--video-n-frames", type=int, default=4)
     parser.add_argument("--run-inference", action="store_true")
     parser.add_argument("--json", action="store_true")
     return parser.parse_args(argv)
@@ -314,6 +340,17 @@ def main(argv: list[str] | None = None) -> int:
         "sequence_names": sequence_names,
         "sequence_count": len(sequence_names),
         "thresholds": args.thresholds,
+        "inference_policy": {
+            "infer_every_n_frames": int(args.infer_every_n_frames),
+            "re_refer_lower": float(args.re_refer_lower),
+            "re_refer_thresh": float(args.re_refer_thresh),
+            "stability_enable": bool(args.stability_enable),
+            "stability_window": int(args.stability_window),
+            "stability_thresh": float(args.stability_thresh),
+            "stability_boost": float(args.stability_boost),
+            "enable_video_mode": bool(args.enable_video_mode),
+            "video_n_frames": int(args.video_n_frames),
+        },
         "tracker_root": str(Path(args.tracker_root).expanduser().resolve()),
         "results_root": str(results_root),
         "gt_manifest_root": str(Path(args.gt_manifest_root).expanduser().resolve()),
@@ -336,6 +373,12 @@ def main(argv: list[str] | None = None) -> int:
             re_refer_thresh=args.re_refer_thresh,
             infer_every_n_frames=args.infer_every_n_frames,
             frame_offset=args.frame_offset,
+            stability_enable=args.stability_enable,
+            stability_window=args.stability_window,
+            stability_thresh=args.stability_thresh,
+            stability_boost=args.stability_boost,
+            enable_video_mode=args.enable_video_mode,
+            video_n_frames=args.video_n_frames,
         )
     evaluations = []
     for threshold in args.thresholds:
