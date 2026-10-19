@@ -54,3 +54,14 @@ def test_formal_metrics_uses_preregistered_yestrack_threshold() -> None:
     }
 
     assert module.formal_metrics(payload)["validation_hota"] == "65.000000"
+
+
+def test_resolve_flexhook_eval_manifest_prefers_latest_success(tmp_path: Path) -> None:
+    module = _load_builder()
+    old = tmp_path / "runs/gpu/flexhook_f1_common_eval_20261019_v2/FLEXHOOK_EVAL_MANIFEST.json"
+    new = tmp_path / "runs/gpu/flexhook_f1_common_eval_20261019_v7/FLEXHOOK_EVAL_MANIFEST.json"
+    old.parent.mkdir(parents=True)
+    new.parent.mkdir(parents=True)
+    old.write_text('{"status":"PREPARED_NO_MODEL_RUN"}\n', encoding="utf-8")
+    new.write_text('{"status":"SUCCEEDED"}\n', encoding="utf-8")
+    assert module.resolve_flexhook_eval_manifest(tmp_path) == new

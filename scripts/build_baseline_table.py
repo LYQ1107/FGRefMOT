@@ -61,6 +61,23 @@ def manifest_payload(path: Path) -> dict[str, Any]:
     return value if isinstance(value, dict) else {}
 
 
+def resolve_flexhook_eval_manifest(nas_root: Path) -> Path:
+    """Select the newest FlexHook formal-evaluation manifest.
+
+    Compatibility retries use versioned output roots (``v2``, ``v3``, ...)
+    so a failed run is never deleted on NAS.  Prefer the newest successful
+    manifest; while no run has succeeded yet, expose the newest run's status
+    instead of silently falling back to an older directory.
+    """
+
+    pattern = "runs/gpu/flexhook_f1_common_eval_20261019_v*/FLEXHOOK_EVAL_MANIFEST.json"
+    candidates = sorted(nas_root.glob(pattern), key=lambda path: path.stat().st_mtime)
+    if not candidates:
+        return nas_root / "runs/gpu/flexhook_f1_common_eval_20261019_v2/FLEXHOOK_EVAL_MANIFEST.json"
+    successful = [path for path in candidates if manifest_status(path) == "SUCCEEDED"]
+    return (successful or candidates)[-1]
+
+
 def _mean_percent(value: Any) -> str:
     """Format TrackEval's unit-scale scalar/array as a percentage."""
 
@@ -179,7 +196,7 @@ def build_rows(project: Path, nas_root: Path) -> list[dict[str, str]]:
     )
     y1_eval_manifest = nas_root / "runs/gpu/yestrack_y1_common_eval_20261019_v2/YESTRACK_EVAL_MANIFEST.json"
     f1_checkpoint = nas_root / "runs/gpu/flexhook_f1_sports_trained_seed42/ckpt_epoch_best_0.pth"
-    f1_eval_manifest = nas_root / "runs/gpu/flexhook_f1_common_eval_20261019_v2/FLEXHOOK_EVAL_MANIFEST.json"
+    f1_eval_manifest = resolve_flexhook_eval_manifest(nas_root)
 
     y1_eval_status = manifest_status(y1_eval_manifest)
     y1_eval_data = manifest_payload(y1_eval_manifest)
