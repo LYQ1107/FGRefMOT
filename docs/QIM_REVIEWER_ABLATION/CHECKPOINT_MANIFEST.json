@@ -22,8 +22,7 @@
     "test_videos": 19
   },
   "missing_assets": [
-    "SportsMOT image tree",
-    "SportsMOT labels_with_ids tree",
+    "historical SportsMOT test ground-truth labels",
     "verified common physical tracker manifest/output",
     "verified Refer-Sports task checkpoint"
   ]
