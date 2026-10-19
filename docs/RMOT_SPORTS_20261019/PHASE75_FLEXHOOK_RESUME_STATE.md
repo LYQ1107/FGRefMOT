@@ -22,5 +22,5 @@ as `PATCH_READY_REAL_RUN_PENDING` in the JSON companion.
 
 Validation: the patch applies to an isolated copy, is idempotent, writes all
 required state fields, and restores the Python/NumPy/Torch random streams;
-both targeted tests passed. The full project suite remains the next combined
-verification step after this change.
+both targeted tests passed. The full project suite also passes: 74 tests,
+with two unrelated deprecation warnings.
