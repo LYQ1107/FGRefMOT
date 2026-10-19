@@ -37,9 +37,15 @@
     "epochs": 25,
     "batch_size": 10,
     "val_batch_size": 40,
-    "sample_frame_stride": [30],
-    "val_sample_frame_stride": [24],
-    "val_set_scale": [5],
+    "sample_frame_stride": [
+      30
+    ],
+    "val_sample_frame_stride": [
+      24
+    ],
+    "val_set_scale": [
+      5
+    ],
     "tracker_policy": "common fixed SambaMOTR DAB-DETR outputs",
     "gt_usage": "none as model input, tracker input, checkpoint selector or threshold tuner"
   },
@@ -71,28 +77,130 @@
       "epoch": 14,
       "f1": 73.615,
       "acc1": 82.059,
-      "precision": 61.480,
+      "precision": 61.48,
       "recall": 91.718,
       "policy": "diagnostic checkpoint candidate only; final selection remains pending"
     },
     "validation_history": [
-      {"epoch": 8, "f1": 73.702, "acc1": 82.338, "precision": 62.071, "recall": 90.695},
-      {"epoch": 9, "f1": 72.339, "acc1": 80.497, "precision": 59.006, "recall": 93.456},
-      {"epoch": 10, "f1": 72.126, "acc1": 80.720, "precision": 59.560, "recall": 91.411},
-      {"epoch": 11, "f1": 71.200, "acc1": 79.436, "precision": 57.622, "recall": 93.149},
-      {"epoch": 12, "f1": 72.893, "acc1": 81.696, "precision": 61.165, "recall": 90.184},
-      {"epoch": 13, "f1": 72.863, "acc1": 81.752, "precision": 61.313, "recall": 89.775},
-      {"epoch": 14, "f1": 73.615, "acc1": 82.059, "precision": 61.480, "recall": 91.718},
-      {"epoch": 15, "f1": 72.830, "acc1": 81.222, "precision": 60.173, "recall": 92.229},
-      {"epoch": 16, "f1": 73.169, "acc1": 81.808, "precision": 61.226, "recall": 90.900},
-      {"epoch": 17, "f1": 72.756, "acc1": 81.027, "precision": 59.816, "recall": 92.843},
-      {"epoch": 18, "f1": 72.150, "acc1": 80.915, "precision": 59.946, "recall": 90.593},
-      {"epoch": 19, "f1": 72.622, "acc1": 81.445, "precision": 60.786, "recall": 90.184},
-      {"epoch": 20, "f1": 72.809, "acc1": 81.390, "precision": 60.542, "recall": 91.309},
-      {"epoch": 21, "f1": 72.890, "acc1": 81.445, "precision": 60.610, "recall": 91.411},
-      {"epoch": 22, "f1": 73.033, "acc1": 81.641, "precision": 60.944, "recall": 91.104},
-      {"epoch": 23, "f1": 72.987, "acc1": 81.557, "precision": 60.790, "recall": 91.309},
-      {"epoch": 24, "f1": 73.103, "acc1": 81.501, "precision": 60.592, "recall": 92.127}
+      {
+        "epoch": 8,
+        "f1": 73.702,
+        "acc1": 82.338,
+        "precision": 62.071,
+        "recall": 90.695
+      },
+      {
+        "epoch": 9,
+        "f1": 72.339,
+        "acc1": 80.497,
+        "precision": 59.006,
+        "recall": 93.456
+      },
+      {
+        "epoch": 10,
+        "f1": 72.126,
+        "acc1": 80.72,
+        "precision": 59.56,
+        "recall": 91.411
+      },
+      {
+        "epoch": 11,
+        "f1": 71.2,
+        "acc1": 79.436,
+        "precision": 57.622,
+        "recall": 93.149
+      },
+      {
+        "epoch": 12,
+        "f1": 72.893,
+        "acc1": 81.696,
+        "precision": 61.165,
+        "recall": 90.184
+      },
+      {
+        "epoch": 13,
+        "f1": 72.863,
+        "acc1": 81.752,
+        "precision": 61.313,
+        "recall": 89.775
+      },
+      {
+        "epoch": 14,
+        "f1": 73.615,
+        "acc1": 82.059,
+        "precision": 61.48,
+        "recall": 91.718
+      },
+      {
+        "epoch": 15,
+        "f1": 72.83,
+        "acc1": 81.222,
+        "precision": 60.173,
+        "recall": 92.229
+      },
+      {
+        "epoch": 16,
+        "f1": 73.169,
+        "acc1": 81.808,
+        "precision": 61.226,
+        "recall": 90.9
+      },
+      {
+        "epoch": 17,
+        "f1": 72.756,
+        "acc1": 81.027,
+        "precision": 59.816,
+        "recall": 92.843
+      },
+      {
+        "epoch": 18,
+        "f1": 72.15,
+        "acc1": 80.915,
+        "precision": 59.946,
+        "recall": 90.593
+      },
+      {
+        "epoch": 19,
+        "f1": 72.622,
+        "acc1": 81.445,
+        "precision": 60.786,
+        "recall": 90.184
+      },
+      {
+        "epoch": 20,
+        "f1": 72.809,
+        "acc1": 81.39,
+        "precision": 60.542,
+        "recall": 91.309
+      },
+      {
+        "epoch": 21,
+        "f1": 72.89,
+        "acc1": 81.445,
+        "precision": 60.61,
+        "recall": 91.411
+      },
+      {
+        "epoch": 22,
+        "f1": 73.033,
+        "acc1": 81.641,
+        "precision": 60.944,
+        "recall": 91.104
+      },
+      {
+        "epoch": 23,
+        "f1": 72.987,
+        "acc1": 81.557,
+        "precision": 60.79,
+        "recall": 91.309
+      },
+      {
+        "epoch": 24,
+        "f1": 73.103,
+        "acc1": 81.501,
+        "precision": 60.592,
+        "recall": 92.127
+      }
     ],
     "best_internal_validation": {
       "epoch": 8,
@@ -118,7 +226,7 @@
         "HOTA": 0.7278355873,
         "CLEAR_F1": 0.7844204682,
         "MOTA": 0.4981648964,
-        "IDF1": 0.6958417830,
+        "IDF1": 0.695841783,
         "TP": 79683,
         "FP": 36020,
         "FN": 7778
@@ -128,5 +236,5 @@
       "peak_gpu_memory_mib": 12952.0
     }
   },
-  "next_gate": "archive train-core and internal-val features, then train and select the registered temporal head; historical test remains blocked until method selection is complete"
+  "next_gate": "the selected H8 temporal head completed internal TrackEval; its 19-video historical evaluation is in progress, while this strict-core checkpoint remains an internal-selection artifact"
 }

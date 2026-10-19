@@ -1,6 +1,6 @@
 # Phase 52 — Conservative baseline metric extraction
 
-Status: `READY_FOR_FORMAL_MANIFESTS`
+Status: `READY_FOR_SUCCESSFUL_FORMAL_MANIFESTS`
 
 The baseline-table builder now reads TrackEval's combined result only from a
 successful formal evaluation manifest. It extracts HOTA, DetA, AssA, IDF1 and
@@ -14,5 +14,6 @@ not populate metric cells. A regression fixture covers both FlexHook's direct
 TrackEval payload and YesTrack's threshold list.
 
 Validation: explicit project tests `tests/*.py` — **29 passed**; syntax and
-whitespace checks passed. Current real baseline metrics remain unclaimed while
-YesTrack training and formal evaluation are pending.
+whitespace checks passed. YesTrack training has succeeded, but both its internal
+and historical evaluation manifests are still running, so real YesTrack metric
+cells remain unclaimed.

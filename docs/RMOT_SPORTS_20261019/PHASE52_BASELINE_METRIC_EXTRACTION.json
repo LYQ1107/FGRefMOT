@@ -1,18 +1,26 @@
 {
   "phase": 52,
   "title": "Conservative baseline metric extraction",
-  "status": "READY_FOR_FORMAL_MANIFESTS",
+  "status": "READY_FOR_SUCCESSFUL_FORMAL_MANIFESTS",
   "metric_policy": {
     "source": "successful formal TrackEval manifests only",
     "yestrack_threshold": 0.5,
     "best_threshold_selection": false,
     "missing_ref_f1_and_fps": "NOT_RUN"
   },
-  "fields": ["HOTA", "DetA", "AssA", "IDF1", "IDSW", "Ref-F1", "FPS"],
+  "fields": [
+    "HOTA",
+    "DetA",
+    "AssA",
+    "IDF1",
+    "IDSW",
+    "Ref-F1",
+    "FPS"
+  ],
   "validation": {
     "project_tests": "29 passed",
     "git_diff_check": "passed"
   },
   "real_metrics_claimed": false,
-  "run_state": "YESTRACK_TRAINING_RUNNING"
+  "run_state": "YESTRACK_EVALUATIONS_IN_PROGRESS"
 }

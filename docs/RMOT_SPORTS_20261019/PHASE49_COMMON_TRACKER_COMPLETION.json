@@ -1,7 +1,7 @@
 {
   "phase": 49,
   "title": "Common Refer-Sports tracker completion",
-  "status": "TRACKER_SUCCEEDED_Y1_TRAINING_RUNNING",
+  "status": "TRACKER_SUCCEEDED_YESTRACK_EVALUATIONS_IN_PROGRESS",
   "tracker": {
     "status": "SUCCEEDED",
     "exit_code": 0,
@@ -14,15 +14,17 @@
   },
   "yestrack": {
     "run_id": "yestrack_y1_sports_lora_seed42_v2",
-    "status": "RUNNING",
+    "status": "TRAINING_SUCCEEDED_EVALUATIONS_IN_PROGRESS",
     "physical_gpu": 1,
     "optimizer_steps": 90559,
     "protocol_valid": true,
-    "run_root": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/20261019_180459"
+    "run_root": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/20261019_180459",
+    "internal_training_status": "SUCCEEDED_EXIT_0",
+    "internal_evaluation": "IN_PROGRESS"
   },
   "formal_evaluation": {
-    "dependency_gate": "WAITING_FOR_YESTRACK_CHECKPOINT",
-    "yestrack_manifest": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/yestrack_y1_common_eval_20261019_v2/YESTRACK_EVAL_MANIFEST.json",
+    "dependency_gate": "YESTRACK_CHECKPOINT_READY_EVALUATION_IN_PROGRESS",
+    "yestrack_manifest": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/yestrack_y1_common_eval_20261019_v3/YESTRACK_EVAL_MANIFEST.json",
     "flexhook_manifest": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_f1_common_eval_20261019_v2/FLEXHOOK_EVAL_MANIFEST.json",
     "metrics_claimed": false
   },

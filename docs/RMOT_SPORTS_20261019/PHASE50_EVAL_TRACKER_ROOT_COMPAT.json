@@ -1,7 +1,7 @@
 {
   "phase": 50,
   "title": "Formal-evaluation tracker-root compatibility",
-  "status": "FIXED_TESTED_TRAINING_RUNNING",
+  "status": "FIXED_TESTED_YESTRACK_EVALUATIONS_IN_PROGRESS",
   "trigger": {
     "failure": "FlexHook preflight rejected the completed common tracker because files were stored under tracker_outputs/",
     "scope": "evaluation adapter preflight only",
@@ -20,8 +20,8 @@
     "bare_pytest": "not_project_scoped; collects vendored tests with missing optional fixtures"
   },
   "run_state": {
-    "yestrack_training": "RUNNING",
+    "yestrack_training": "SUCCEEDED_EXIT_0",
     "formal_metrics_claimed": false,
-    "dependency_gate": "WAITING_FOR_YESTRACK_CHECKPOINT"
+    "dependency_gate": "EVALUATION_MANIFESTS_IN_PROGRESS"
   }
 }

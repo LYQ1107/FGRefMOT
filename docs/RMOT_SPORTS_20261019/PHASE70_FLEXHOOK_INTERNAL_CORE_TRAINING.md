@@ -31,6 +31,6 @@ frames/s at `12,952 MiB` peak GPU memory; complete pipeline FPS still requires
 tracker wall-time measurement. These are internal-selection diagnostics, not
 historical-test results or a learned-method improvement claim.
 
-The next gate is the already registered feature archive and temporal-head
-pipeline. Historical test evaluation remains blocked until the method and
-checkpoint selection gates are complete.
+The selected H8 temporal head has completed internal TrackEval. Its one-time
+19-video historical evaluation is in progress; this strict-core checkpoint
+itself remains an internal-selection artifact.
