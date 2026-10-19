@@ -1,6 +1,6 @@
-# Phase 56 — Internal YesTrack core training running
+# Phase 56 — Internal YesTrack core training and validation
 
-Status: `TRAINING_RUNNING`
+Status: `TRAINING_SUCCEEDED_EVALUATION_IN_PROGRESS`
 
 The corrected YesTrack Y1 baseline has been started on the fixed 17-video
 internal core split. This run is separate from the historical 22-video
@@ -19,9 +19,15 @@ including 236,561 explicit negatives and 163,091 unknown-frame samples
 skipped; missing expression-frame keys are never treated as No labels.
 
 The launcher started at 2026-10-19 18:38:38 CST with batch size 8, one epoch,
-seed 42, learning rate 5e-6, and negative downsample 0.5. The preflight
-estimate is 71,145 optimizer steps and about 6.8–7.5 hours of training; the
-actual YesTrack progress total remains authoritative.
+seed 42, learning rate 5e-6, and negative downsample 0.5. It finished with
+exit code 0 at 2026-10-20 02:15:00 CST. The resulting LoRA adapter is
+`runs/20261019_184604/train/lora_epoch_0` on NAS with SHA-256
+`0f67a3e5673357c4bb9341db23b94bba5fff437bb0d2caf5117e0d0d67d20d81`.
 
-No checkpoint or internal metric is claimed until this run finishes and the
-checkpoint is evaluated on the fixed five-video internal validation split.
+The fixed common tracker and the five-video internal validation split are now
+being evaluated. The first automatic attempt stopped before inference because
+the child process resolved the venv Python symlink to the shared base
+interpreter; the tracked evaluator now preserves the venv path, and the
+efficiency instrumentation resets CUDA peak accounting on the current device.
+The retry is using the same completed adapter. No internal metric is claimed
+until its evaluation manifest is `SUCCEEDED`.

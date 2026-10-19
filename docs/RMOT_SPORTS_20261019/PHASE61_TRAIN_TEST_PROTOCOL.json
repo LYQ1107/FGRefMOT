@@ -1,7 +1,7 @@
 {
   "phase": 61,
   "title": "train/validation/test protocol",
-  "status": "YES_TRACK_TRAINING_IN_PROGRESS_FLEXHOOK_INTERNAL_AND_SCORE_ABLATIONS_VALIDATED",
+  "status": "YES_TRACK_FULL_TRAINING_IN_PROGRESS_INTERNAL_TRAINING_SUCCEEDED_EVAL_IN_PROGRESS",
   "dataset": "Refer-Sports",
   "splits": {
     "sports_train": {
@@ -53,8 +53,9 @@
   },
   "yestrack": {
     "full_training_status": "RUNNING",
-    "internal_training_status": "RUNNING",
-    "formal_eval": "scheduled on checkpoint appearance"
+    "internal_training_status": "SUCCEEDED_EXIT_0",
+    "internal_eval_status": "IN_PROGRESS",
+    "formal_eval": "blocked until full training and internal selection complete"
   },
   "sequence_lists": {
     "historical_test": "configs/refer_sports_eval_sequences_20261019.txt",

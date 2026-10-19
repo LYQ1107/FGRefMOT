@@ -1,6 +1,6 @@
 {
   "schema_version": "rmot-sports-gate-audit-0.1",
-  "observed_at": "2026-10-20T02:13:07+08:00",
+  "observed_at": "2026-10-20T02:26:00+08:00",
   "status": "IN_PROGRESS",
   "workspace": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019",
   "branch": "research/sports-rmot-strong-baselines-20261019",
@@ -42,12 +42,13 @@
     },
     {
       "id": "D_YESTRACK_NATIVE_BASELINE",
-      "status": "TRAINING_IN_PROGRESS",
+      "status": "FULL_TRAINING_IN_PROGRESS_INTERNAL_TRAINING_COMPLETE_EVAL_IN_PROGRESS",
       "evidence": [
         "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/runs/gpu/yestrack_y1_sports_lora_seed42_v2/RUN_MANIFEST.json",
-        "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/runs/gpu/yestrack_y1_sports_core_lora_seed42/RUN_MANIFEST.json"
+        "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/runs/gpu/yestrack_y1_sports_core_lora_seed42/RUN_MANIFEST.json",
+        "docs/RMOT_SPORTS_20261019/PHASE56_INTERNAL_YESTRACK_RUNNING.json"
       ],
-      "claim_boundary": "No YesTrack validation or historical-test metric is claimed while either training manifest is RUNNING."
+      "claim_boundary": "The full 22-video training manifest remains RUNNING. The 17-video internal training manifest succeeded, but its fixed five-video validation evaluation is still in progress; no YesTrack metric or historical-test result is claimed."
     },
     {
       "id": "E_LEARNED_IMPROVEMENT_AND_ABLATIONS",
@@ -103,7 +104,7 @@
   "live_jobs_at_observation": [
     {
       "run_id": "yestrack_y1_sports_lora_seed42_v2",
-      "status": "RUNNING",
+      "status": "TRAINING_SUCCEEDED_EVALUATION_IN_PROGRESS",
       "manifest": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/runs/gpu/yestrack_y1_sports_lora_seed42_v2/RUN_MANIFEST.json",
       "log": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/runs/gpu/yestrack_y1_sports_lora_seed42_v2/yestrack_y1_sports_lora_seed42_v2.log"
     },

@@ -1,7 +1,7 @@
 {
   "phase": 56,
-  "title": "Internal YesTrack core training running",
-  "status": "TRAINING_RUNNING",
+  "title": "Internal YesTrack core training and validation",
+  "status": "TRAINING_SUCCEEDED_EVALUATION_IN_PROGRESS",
   "run_id": "yestrack_y1_sports_core_lora_seed42",
   "run_manifest": "runs/gpu/yestrack_y1_sports_core_lora_seed42/RUN_MANIFEST.json",
   "launcher_started_at": "2026-10-19T18:38:38+08:00",
@@ -30,6 +30,19 @@
   "estimate": {
     "training_hours": "6.8-7.5",
     "end_to_end_hours": "7-8"
+  },
+  "completion": {
+    "exit_code": 0,
+    "finished_at": "2026-10-20T02:15:00+08:00",
+    "lora_path": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/20261019_184604/train/lora_epoch_0",
+    "lora_adapter_sha256": "0f67a3e5673357c4bb9341db23b94bba5fff437bb0d2caf5117e0d0d67d20d81"
+  },
+  "evaluation": {
+    "status": "IN_PROGRESS",
+    "split": "internal_selection_val_5_videos",
+    "tracker_policy": "common_fixed_sambamotr_dab_detr_outputs",
+    "metric_claimed": false,
+    "first_attempt_issue": "The evaluator inherited the resolved shared Python target and failed before inference because transformers was unavailable; the tracked wrapper now preserves the venv symlink and the efficiency patch initializes CUDA peak accounting without a device argument."
   },
   "storage": {
     "mode": "NAS_DIRECT_THROUGH_SSHFS_MOUNT",
