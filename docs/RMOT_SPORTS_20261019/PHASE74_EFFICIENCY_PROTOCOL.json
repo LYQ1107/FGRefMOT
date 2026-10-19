@@ -1,7 +1,7 @@
 {
   "phase": 74,
   "title": "reproducible efficiency and memory measurement",
-  "status": "TOOLING_IMPLEMENTED_WAIT_FOR_STRICT_EVALUATIONS",
+  "status": "PARTIAL_INTERNAL_TEMPORAL_MEASURED_EVALUATIONS_IN_PROGRESS",
   "schema_version": "rmot-efficiency-0.1",
   "policy": {
     "measurement_is_read_only": true,
@@ -41,12 +41,22 @@
   "current_evidence_boundary": {
     "existing_flexhook_f1_formal": "legacy manifest predates this instrumentation; no efficiency number is claimed",
     "existing_common_tracker_outputs": "legacy manifests have incomplete timing metadata; no tracker or pipeline FPS is claimed",
-    "strict_runs": "instrumentation is ready before their post-training evaluation watchers launch",
-    "status": "no fabricated efficiency result"
+    "strict_runs": "The strict FlexHook core and selected temporal-head internal evaluations record model-loading time, inference time, frame-rate units and peak memory; YesTrack internal/formal manifests and complete-pipeline joins remain pending.",
+    "status": "internal temporal efficiency measured; complete tracker-plus-referring and YesTrack efficiency pending"
   },
   "validation": {
     "tests": "tests/test_efficiency.py and related adapter/tracker tests",
     "result": "18 passed",
     "compile_check": "all modified Python files compile in the project environment"
+  },
+  "measured_internal_temporal": {
+    "manifest": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_temporal_h8_internal_eval_20261019_v1/FLEXHOOK_EVAL_MANIFEST.json",
+    "split": "INTERNAL_VAL_5",
+    "inference_seconds": 1719.1791590990033,
+    "model_loading_seconds": 334.91813907399774,
+    "referring_module_fps": 15.333480434822986,
+    "video_frame_fps": 1.9009071757900504,
+    "peak_gpu_memory_mib": 12966.0,
+    "complete_pipeline_fps": "pending tracker wall-time join"
   }
 }
