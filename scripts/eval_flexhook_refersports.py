@@ -436,6 +436,12 @@ def run_flexhook_inference(
     os.environ.setdefault("RANK", "0")
     os.environ.setdefault("WORLD_SIZE", "1")
     os.environ.setdefault("LOCAL_RANK", "0")
+    manifest["status"] = "RUNNING"
+    manifest["gpu"] = int(gpu)
+    manifest["master_addr"] = os.environ["MASTER_ADDR"]
+    manifest["master_port"] = int(os.environ["MASTER_PORT"])
+    manifest_path = output_root / "FLEXHOOK_EVAL_MANIFEST.json"
+    manifest_path.write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n")
 
     import torch
     import torch.distributed as dist
