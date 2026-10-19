@@ -46,6 +46,10 @@ therefore historical Test HOTA/AssA/IDF1/IDSW, a reproducible 0.29-HOTA
 attribution, and a final paper conclusion must not be claimed until the Test
 GT/protocol is supplied. The real-image efficiency benchmark is reported
 separately from the synthetic engineering probe and is now complete for the
-documented single clip; long-run training cost is still being measured from
-actual checkpoint logs.
+documented single clip; long-run training cost is being measured from actual
+checkpoint logs. The first measured checkpoint-cost record is available for
+step 5000 (1.713/1.772/1.760/1.845 observed GPU-hours for
+Standard/LSTM/Temporal Attention/Original Mamba, measured from the step-200
+checkpoint timestamp); later milestone fields remain explicitly missing until
+their checkpoints are written.
 
