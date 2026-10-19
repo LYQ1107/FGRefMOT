@@ -269,7 +269,11 @@ def main():
             'deta': mean('deta'),
             'assa': mean('assa'),
             'idf1': mean('idf1'),
-            'idsw': mean('idsw'),
+            # Keep both conventions explicit.  TrackEval reports IDSW per
+            # sequence; the mean is useful for comparing fixed-length
+            # development sequences, while the sum is the unambiguous total.
+            'idsw_sum': int(sum(int(r['idsw']) for r in results)),
+            'idsw_mean_per_sequence': mean('idsw'),
             'referring_f1': mean('referring_f1'),
         },
         'sequences': results,

@@ -14,5 +14,11 @@ On the current V100 engineering probe, original Mamba QIM latency at 20 active t
 
 ## What cannot be claimed yet?
 
-The recovered checkpoint is not verified as the paper's final Refer-Sports checkpoint, and the local server lacks the SportsMOT image/label root. Therefore there is currently no honest HOTA/AssA/IDF1/IDSW comparison, no reproducible 0.29-HOTA attribution, and no final paper conclusion. The branch contains the reproducible code, tests, manifests, and activation commands needed once those assets are supplied.
+The local SportsMOT image tree, `labels_with_ids`, expressions, and global-ID
+manifest have now been audited and agree, so a fixed development comparison is
+being evaluated on real data. The published Test images still have no matching
+local ground-truth labels; therefore historical Test HOTA/AssA/IDF1/IDSW, a
+reproducible 0.29-HOTA attribution, and a final paper conclusion must not be
+claimed until the Test GT/protocol is supplied. Development results will be
+reported with their exact split and frame coverage.
 

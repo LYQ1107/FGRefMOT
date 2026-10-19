@@ -17,7 +17,7 @@ These are QIM-only measurements, not full-model FPS.
 
 ## Full-model engineering probe
 
-The original Backbone, TAM/deepfuse, visual-language fusion, deformable decoder, STReasoner, RuntimeTracker, and selected QIM were executed at 360x640 for two synthetic frames. After frame 1, 20 returned slots were marked active solely to exercise the QIM path. The probe uses the checkpoint's full RoBERTa weights with an offline fixed-token adapter; image decode/resize and SportsMOT files are not included. It is an engineering measurement, not a Refer-Sports result.
+The original Backbone, TAM/deepfuse, visual-language fusion, deformable decoder, STReasoner, RuntimeTracker, and selected QIM were executed at 360x640 for two synthetic frames. After frame 1, 20 returned slots were marked active solely to exercise the QIM path. The probe uses the checkpoint's full RoBERTa weights with an offline fixed-token adapter; image decode/resize and SportsMOT file access are intentionally excluded. It is an engineering measurement, not a Refer-Sports result. Real SportsMOT accuracy is measured separately by the fixed development evaluator.
 
 | Variant | Full params | frame mean ms | prepared-tensor FPS | peak allocated GB |
 |---|---:|---:|---:|---:|

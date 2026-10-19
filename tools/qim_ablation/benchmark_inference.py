@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 """Measure full original-FGRefMOT inference with each QIM.
 
-The current server has the Refer-Sports expression/label manifest but no local
-SportsMOT image tree.  This tool therefore supports a fixed synthetic image
-probe for engineering latency only.  Its output says so explicitly and must
-not be used as a Refer-Sports accuracy result.
+This tool intentionally uses a fixed synthetic tensor probe for engineering
+latency only, even though the server now has the local SportsMOT image,
+label-with-ID, and expression assets used by the separate accuracy evaluator.
+Its output must not be used as a Refer-Sports accuracy result.
 """
 
 import argparse
