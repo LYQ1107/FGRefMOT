@@ -74,5 +74,26 @@
     "idsw": 370,
     "eligibility": "prebaseline_diagnostic_only",
     "test_metrics_used_for_selection": false
+  },
+  "flexhook_temporal_h8": {
+    "status": "INTERNAL_EVAL_SUCCEEDED_HISTORICAL_EVAL_IN_PROGRESS",
+    "training_split": "INTERNAL_TRAIN_17",
+    "selection_split": "INTERNAL_VAL_5",
+    "historical_test_split": "HISTORICAL_TEST_19",
+    "internal_validation": {
+      "hota": 0.7563164568219571,
+      "deta": 0.7212400259270021,
+      "assa": 0.7930987775179491,
+      "mota": 0.7125575971004219,
+      "clear_f1": 0.8372938579405272,
+      "idf1": 0.7243474873393065,
+      "idsw": 80,
+      "manifest": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_temporal_h8_internal_eval_20261019_v1/FLEXHOOK_EVAL_MANIFEST.json"
+    },
+    "historical_evaluation": {
+      "status": "IN_PROGRESS",
+      "output_root": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_temporal_h8_common_eval_20261019_v1",
+      "metric_claimed": false
+    }
   }
 }

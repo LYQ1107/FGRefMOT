@@ -18,4 +18,9 @@ started from the full-run adapter and is recorded under the registered output
 root; no YesTrack metric is claimed until its evaluation manifest is
 `SUCCEEDED`.
 
+The selected FlexHook H8 temporal head was trained on the 17-video core and
+selected on the five-video internal split. Its internal TrackEval completed with
+HOTA `0.756316`, MOTA `0.712558`, CLEAR-F1 `0.837294`, IDF1 `0.724347`, and
+IDSW `80`; its one-time 19-video historical evaluation is running separately.
+
 The exact sequence lists are versioned in `configs/refer_sports_eval_sequences_20261019.txt` and `configs/refer_sports_internal_val_sequences_20261019.txt`. The protocol does not use test annotations during training or model selection.
