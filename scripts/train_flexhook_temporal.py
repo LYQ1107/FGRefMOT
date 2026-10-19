@@ -31,7 +31,7 @@ from adapters.flexhook_temporal.adapter import TemporalEvidenceAdapter, run_caus
 class Sequence:
     """One chronological physical-track/expression sequence."""
 
-    key: tuple[str, str, int]
+    key: tuple[str, str, str]
     frames: Tensor
     features: Tensor
     language: Tensor
@@ -107,7 +107,7 @@ def build_sequences(
 ) -> list[Sequence]:
     """Flatten archive samples and group them causally by track/expression."""
 
-    grouped: dict[tuple[str, str, int], list[tuple[int, Tensor, Tensor, Tensor, Tensor, Tensor]]] = defaultdict(list)
+    grouped: dict[tuple[str, str, str], list[tuple[int, Tensor, Tensor, Tensor, Tensor, Tensor]]] = defaultdict(list)
     feature_dim: int | None = None
     language_dim: int | None = None
     for payload in shards:
@@ -144,7 +144,10 @@ def build_sequences(
             if len(expressions) != candidates:
                 raise ValueError("archive expression count does not match candidate count")
             for candidate in range(candidates):
-                key = (video, track, candidate)
+                expression = str(expressions[candidate])
+                if not expression:
+                    raise ValueError("archive contains an empty expression")
+                key = (video, track, expression)
                 grouped[key].append(
                     (
                         frame,
