@@ -60,6 +60,78 @@ def manifest_payload(path: Path) -> dict[str, Any]:
     return value if isinstance(value, dict) else {}
 
 
+def _mean_percent(value: Any) -> str:
+    """Format TrackEval's unit-scale scalar/array as a percentage."""
+
+    if isinstance(value, (list, tuple)):
+        values = [float(item) for item in value]
+        value = sum(values) / len(values) if values else None
+    if value is None:
+        return "NOT_RUN"
+    return f"{100.0 * float(value):.6f}"
+
+
+def _find_combined_results(value: Any) -> dict[str, Any] | None:
+    """Find the TrackEval combined sequence/class result in nested JSON."""
+
+    if isinstance(value, dict):
+        if isinstance(value.get("COMBINED_SEQ"), dict):
+            combined = value["COMBINED_SEQ"]
+            if isinstance(combined.get("all"), dict):
+                return combined["all"]
+            for candidate in combined.values():
+                if isinstance(candidate, dict):
+                    return candidate
+        for candidate in value.values():
+            found = _find_combined_results(candidate)
+            if found is not None:
+                return found
+    elif isinstance(value, list):
+        for candidate in value:
+            found = _find_combined_results(candidate)
+            if found is not None:
+                return found
+    return None
+
+
+def formal_metrics(payload: dict[str, Any]) -> dict[str, str]:
+    """Extract only metrics explicitly emitted by a successful TrackEval run.
+
+    YesTrack emits one result per requested score threshold.  The pre-registered
+    0.50 threshold is selected here; choosing the best threshold from the
+    historical test set would be test tuning.
+    """
+
+    results: Any = payload.get("trackeval_results")
+    if results is None:
+        evaluations = payload.get("evaluations")
+        if isinstance(evaluations, list):
+            selected = next(
+                (
+                    item.get("results")
+                    for item in evaluations
+                    if isinstance(item, dict) and abs(float(item.get("threshold", -1.0)) - 0.5) < 1e-9
+                ),
+                None,
+            )
+            results = selected
+    combined = _find_combined_results(results)
+    if not isinstance(combined, dict):
+        return {field: "NOT_RUN" for field in METRIC_FIELDS}
+    hota = combined.get("HOTA", {})
+    clear = combined.get("CLEAR", {})
+    identity = combined.get("Identity", {})
+    return {
+        "validation_hota": _mean_percent(hota.get("HOTA")) if isinstance(hota, dict) else "NOT_RUN",
+        "validation_deta": _mean_percent(hota.get("DetA")) if isinstance(hota, dict) else "NOT_RUN",
+        "validation_assa": _mean_percent(hota.get("AssA")) if isinstance(hota, dict) else "NOT_RUN",
+        "validation_idf1": _mean_percent(identity.get("IDF1")) if isinstance(identity, dict) else "NOT_RUN",
+        "validation_idsw": str(int(clear["IDSW"])) if isinstance(clear, dict) and "IDSW" in clear else "NOT_RUN",
+        "validation_ref_f1": str(payload.get("ref_f1", "NOT_RUN")),
+        "fps": str(payload.get("fps", "NOT_RUN")),
+    }
+
+
 def row(
     *,
     method: str,
@@ -71,6 +143,7 @@ def row(
     status: str,
     checkpoint_path: str = "NOT_RUN",
     source_manifest: str = "NOT_RUN",
+    metrics: dict[str, str] | None = None,
 ) -> dict[str, str]:
     values = {
         "method": method,
@@ -85,6 +158,8 @@ def row(
         "source_manifest": source_manifest,
     }
     values.update({field: "NOT_RUN" for field in METRIC_FIELDS})
+    if metrics:
+        values.update({field: str(metrics.get(field, "NOT_RUN")) for field in METRIC_FIELDS})
     return values
 
 
@@ -103,14 +178,20 @@ def build_rows(project: Path, nas_root: Path) -> list[dict[str, str]]:
     f1_checkpoint = nas_root / "runs/gpu/flexhook_f1_sports_trained_seed42/ckpt_epoch_best_0.pth"
     f1_eval_manifest = nas_root / "runs/gpu/flexhook_f1_common_eval_20261019_v2/FLEXHOOK_EVAL_MANIFEST.json"
 
+    y1_eval_status = manifest_status(y1_eval_manifest)
+    y1_eval_data = manifest_payload(y1_eval_manifest)
     y1_status = manifest_status(y1_manifest)
     if y1_status.startswith("RUNNING"):
         y1_status = "TRAINING_RUNNING"
+    if y1_eval_status == "SUCCEEDED":
+        y1_status = "FORMAL_EVAL_SUCCEEDED"
     elif y1_status == "SUCCEEDED" and y1_data.get("protocol_valid", True):
         y1_status = "TRAINING_SUCCEEDED_FORMAL_EVAL_PENDING"
     elif y1_status == "SUCCEEDED":
         y1_status = "PROTOCOL_INVALID"
-    f1_status = "FORMAL_EVAL_SUCCEEDED" if manifest_status(f1_eval_manifest) == "SUCCEEDED" else (
+    f1_eval_status = manifest_status(f1_eval_manifest)
+    f1_eval_data = manifest_payload(f1_eval_manifest)
+    f1_status = "FORMAL_EVAL_SUCCEEDED" if f1_eval_status == "SUCCEEDED" else (
         "CHECKPOINT_READY_FORMAL_EVAL_PENDING" if f1_checkpoint.is_file() else "NOT_RUN"
     )
     tracker_status = manifest_status(tracker_manifest)
@@ -155,6 +236,7 @@ def build_rows(project: Path, nas_root: Path) -> list[dict[str, str]]:
             status=f1_status,
             checkpoint_path=str(f1_checkpoint) if f1_checkpoint.is_file() else "NOT_RUN",
             source_manifest=str(f1_eval_manifest),
+            metrics=formal_metrics(f1_eval_data) if f1_eval_status == "SUCCEEDED" else None,
         ),
         row(
             method="YesTrack",
@@ -175,6 +257,7 @@ def build_rows(project: Path, nas_root: Path) -> list[dict[str, str]]:
             status=y1_status,
             checkpoint_path=str(y1_checkpoint_root) if y1_checkpoint_root and y1_checkpoint_root.is_dir() else "NOT_RUN",
             source_manifest=str(y1_eval_manifest),
+            metrics=formal_metrics(y1_eval_data) if y1_eval_status == "SUCCEEDED" else None,
         ),
         row(
             method="YesTrack",
