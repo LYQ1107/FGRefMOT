@@ -17,7 +17,7 @@
     {"id": "FGREF_HISTORICAL", "family": "FGRefMOT", "stage": "reference", "status": "HISTORICAL_SEPARATE_PROTOCOL"},
     {"id": "FGREF_CURRENT", "family": "FGRefMOT", "stage": "reference", "status": "NOT_RUN"},
     {"id": "FLEXHOOK_F0", "family": "FlexHook", "stage": "baseline", "status": "NOT_RUN", "training": "zero_shot"},
-    {"id": "FLEXHOOK_F1", "family": "FlexHook", "stage": "baseline", "status": "RUNNING_OR_FORMAL_EVAL_PENDING", "training": "Sports_trained"},
+    {"id": "FLEXHOOK_F1", "family": "FlexHook", "stage": "baseline", "status": "CHECKPOINT_READY_FORMAL_EVAL_PENDING", "training": "Sports_trained"},
     {"id": "FLEXHOOK_F2", "family": "FlexHook", "stage": "baseline", "status": "NOT_RUN", "training": "Sports_fine_tuned"},
     {"id": "YESTRACK_Y0", "family": "YesTrack", "stage": "baseline", "status": "NOT_RUN", "training": "zero_shot"},
     {"id": "YESTRACK_Y1", "family": "YesTrack", "stage": "baseline", "status": "RUNNING", "training": "Sports_LoRA"},
