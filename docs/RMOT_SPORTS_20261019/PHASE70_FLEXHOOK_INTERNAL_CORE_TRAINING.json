@@ -58,16 +58,16 @@
     "selection_finalized": false
   },
   "observed_progress": {
-    "observed_at": "2026-10-20T00:32:42+08:00",
-    "epoch_completed": 13,
-    "training_epoch_in_progress": 14,
+    "observed_at": "2026-10-20T00:40:12+08:00",
+    "epoch_completed": 14,
+    "training_epoch_in_progress": 15,
     "internal_validation": {
       "split": "5-video/45-expression internal validation",
-      "epoch": 13,
-      "f1": 72.863,
-      "acc1": 81.752,
-      "precision": 61.313,
-      "recall": 89.775,
+      "epoch": 14,
+      "f1": 73.615,
+      "acc1": 82.059,
+      "precision": 61.480,
+      "recall": 91.718,
       "policy": "diagnostic checkpoint candidate only; final selection remains pending"
     },
     "validation_history": [
@@ -76,7 +76,8 @@
       {"epoch": 10, "f1": 72.126, "acc1": 80.720, "precision": 59.560, "recall": 91.411},
       {"epoch": 11, "f1": 71.200, "acc1": 79.436, "precision": 57.622, "recall": 93.149},
       {"epoch": 12, "f1": 72.893, "acc1": 81.696, "precision": 61.165, "recall": 90.184},
-      {"epoch": 13, "f1": 72.863, "acc1": 81.752, "precision": 61.313, "recall": 89.775}
+      {"epoch": 13, "f1": 72.863, "acc1": 81.752, "precision": 61.313, "recall": 89.775},
+      {"epoch": 14, "f1": 73.615, "acc1": 82.059, "precision": 61.480, "recall": 91.718}
     ],
     "best_internal_validation": {
       "epoch": 8,
