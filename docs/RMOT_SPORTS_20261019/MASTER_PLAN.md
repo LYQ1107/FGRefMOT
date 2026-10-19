@@ -53,7 +53,9 @@ not by itself establish a learned improvement.
 The remaining gates are the YesTrack formal evaluation,
 formal H0–H8/YB score and learned-method ablations after the baseline gate,
 multi-seed confirmation, efficiency measurements, and the final reviewer
-report. Phase 65 has registered candidate
+report. Phase 76 registers an idempotent postbaseline H0–H8 watcher that waits
+for the full YesTrack manifest before rerunning the causal score controls.
+Phase 65 has registered candidate
 diagnostic subsets, but their metrics remain blocked by the manifest's UNKNOWN
 negative/event labels. F0/Y0 remain `NOT_RUN/BLOCKED` because no eligible
 official task checkpoint or YesTrack LoRA checkpoint is present on NAS.

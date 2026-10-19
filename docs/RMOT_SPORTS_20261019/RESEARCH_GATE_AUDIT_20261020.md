@@ -33,7 +33,9 @@ and baseline ablations, multi-seed stability, complete online efficiency,
 final-test evidence for the remaining variants, and the final reviewer report.
 The internal YesTrack metric and the selected H8 historical metric are recorded
 as split-specific evidence; they must not be presented as a completed full
-baseline comparison or a learned-method improvement claim.
+baseline comparison or a learned-method improvement claim. Phase 76 has
+registered a postbaseline H0–H8 watcher that remains idle until the full
+YesTrack historical manifest succeeds.
 
 The machine-readable gate states, evidence paths, live manifests and next
 gates are in `RESEARCH_GATE_AUDIT_20261020.json`. This report intentionally

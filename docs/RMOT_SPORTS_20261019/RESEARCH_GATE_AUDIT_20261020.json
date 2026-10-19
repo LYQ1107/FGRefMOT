@@ -59,6 +59,7 @@
         "docs/RMOT_SPORTS_20261019/PHASE71_FLEXHOOK_FEATURE_ARCHIVE_TOOLING.json",
         "docs/RMOT_SPORTS_20261019/PHASE72_FLEXHOOK_TEMPORAL_TRAINING_TOOLING.json",
         "docs/RMOT_SPORTS_20261019/PHASE73_FLEXHOOK_TEMPORAL_EVAL_TOOLING.json",
+        "docs/RMOT_SPORTS_20261019/PHASE76_POSTBASELINE_ABLATION_WATCH.json",
         "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_temporal_h8_internal_core_20261019/TEMPORAL_TRAINING_MANIFEST.json",
         "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_temporal_h8_internal_eval_20261019_v1/FLEXHOOK_EVAL_MANIFEST.json",
         "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_temporal_h8_common_eval_20261019_v1/FLEXHOOK_EVAL_MANIFEST.json"

@@ -1,0 +1,23 @@
+{
+  "schema_version": "rmot-sports-phase-0.1",
+  "phase": 76,
+  "title": "Post-baseline FlexHook H0-H8 ablation watch",
+  "status": "WAITING_FOR_Y1_FORMAL_MANIFEST",
+  "watch_log": "runs/gpu/postbaseline_flexhook_h0_h8_watch.log",
+  "wait_manifest": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/yestrack_y1_common_eval_20261019_v3/YESTRACK_EVAL_MANIFEST.json",
+  "archive_root": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_f1_common_eval_scores_20261019_v1",
+  "protocol": {
+    "split": "HISTORICAL_TEST_19",
+    "videos": 19,
+    "expressions": 142,
+    "threshold": 0.5,
+    "model_input": "frozen_archived_Sports_trained_FlexHook_scores",
+    "future_frames": "REJECTED",
+    "gt_usage": "offline_TrackEval_tree_only",
+    "baseline_gate": "wait for successful full YesTrack Y1 historical manifest"
+  },
+  "variants": ["H0", "H1", "H2", "H3", "H4", "H5", "H6", "H7", "H8"],
+  "output_pattern": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_h{variant}_common_eval_20261019_v2",
+  "prebaseline_reference": "docs/RMOT_SPORTS_20261019/PHASE67_FLEXHOOK_SCORE_ABLATIONS.json",
+  "claim_boundary": "The earlier H0-H8 replay is retained as prebaseline diagnostic evidence; no postbaseline ablation claim is made until this watcher completes."
+}
