@@ -18,11 +18,15 @@ import math
 from pathlib import Path
 import random
 import shutil
+import sys
 from typing import Any, Iterable
 
 import torch
 from torch import Tensor
 import torch.nn.functional as F
+
+REPO_ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(REPO_ROOT))
 
 from adapters.flexhook_temporal.adapter import TemporalEvidenceAdapter, run_causal_sequence
 
