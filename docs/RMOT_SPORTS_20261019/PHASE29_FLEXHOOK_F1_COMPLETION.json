@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "phase": 29,
+  "audit_date": "2026-10-19",
+  "status": "F1_SUCCEEDED_LOCAL_NAS_PUBLICATION_PENDING_TUNNEL_RETRY",
+  "workspace": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019",
+  "branch": "research/sports-rmot-strong-baselines-20261019",
+  "run": {
+    "run_id": "flexhook_f1_sports_trained_seed42",
+    "variant": "F1",
+    "method": "FlexHook",
+    "status": "SUCCEEDED",
+    "exit_code": 0,
+    "epochs_completed": 25,
+    "training_time": "2:24:32",
+    "physical_gpu": 1,
+    "cuda_visible_devices": "1",
+    "tracker_policy": "common_fixed_sambamotr_dab_detr_outputs",
+    "gt_or_labels_as_tracker_input": "REJECTED",
+    "contract": {
+      "path": "runs/contracts_20261019/flexhook_f1_sports_trained_seed42.json",
+      "sha256": "ea5384746c416514352946d60cf7250754de6fc97bbc0dfc4ce6099cdef99c93",
+      "check": "contract: READY — hashes and policy verified"
+    },
+    "launcher": {
+      "path": "scripts/launch_flexhook.py",
+      "sha256": "4b58ff965e597c19cf92289a514b09745c3d7bba961f6c36104bd3771aab1776",
+      "compatibility": "install_legacy_tokenizer_alias before in-process FlexHook main.py"
+    },
+    "source_commit": "bd1acc38634b28525d54dc6e0fcb38335f0029f9",
+    "environment": {
+      "python": "/data3/liuyeqiang/.venvs/fgrefmot-rmot-sports-20261019/bin/python",
+      "python_version": "3.10.21",
+      "torch": "2.6.0+cu118",
+      "transformers": "5.2.0",
+      "pip_check": "passed"
+    },
+    "attempts": [
+      {"attempt": 0, "status": "BLOCKED_BEFORE_MODEL_INIT", "reason": "YACS list/scalar type mismatch for DATA.TRAIN"},
+      {"attempt": 1, "status": "BLOCKED_IN_FIRST_DATA_BATCH", "reason": "RobertaTokenizerFast missing batch_encode_plus under Transformers 5.2.0"},
+      {"attempt": 2, "status": "SUCCEEDED", "pipefail": true, "epochs_completed": 25, "metrics_produced": true}
+    ],
+    "final_attempt_traceback_detected": false
+  },
+  "metrics": {
+    "best_epoch": 17,
+    "best_f1": 74.87940979003906,
+    "best_precision": 62.50580596923828,
+    "best_recall": 93.36109161376953,
+    "final_epoch": 24,
+    "final_epoch_f1_logged": 74.374,
+    "best_list_epochs": [17, 11, 14, 5, 21],
+    "best_list_f1": [74.87940979003906, 74.84199523925781, 74.7256851196289, 74.61581420898438, 74.6094741821289],
+    "per_epoch_logged_f1": [71.100, 71.678, 73.381, 73.532, 73.339, 74.616, 73.995, 74.345, 74.221, 74.444, 74.604, 74.842, 73.976, 74.583, 74.726, 74.098, 74.220, 74.879, 74.534, 74.261, 74.044, 74.609, 74.259, 74.271, 74.374]
+  },
+  "run_manifest": {
+    "path": "runs/gpu/flexhook_f1_sports_trained_seed42/RUN_MANIFEST.json",
+    "sha256": "9752e58d889adbe48a2da419d815463abb21b403a4364b95c65a570dfefbe0f1"
+  },
+  "artifacts": {
+    "log_sha256": "40598dd21bd7d69d805c841ac7df538cbd847c53bc645837b856e0cf98efd344",
+    "rank0_log_sha256": "729d048d36d0bf273df0e8159cbed5f41801ec771b8d7689da366d766b454643",
+    "config_sha256": "00500abd027a10cb598ecdc65127eeae6b45ba6a81a2608689ebb5e7f911032f",
+    "result_checkpoint": "runs/gpu/flexhook_f1_sports_trained_seed42/ckpt_epoch_best_0.pth",
+    "result_checkpoint_sha256": "3fdc471d1fa17405ce8d57516bc6de74ba93b29f3760344bb1f0f30529818c7b"
+  },
+  "nas_publication": {
+    "status": "PENDING_TUNNEL_RETRY",
+    "project_root": "/home/A100/FGREF_RMOT_SPORTS_20261019",
+    "relative_destination": "runs/gpu/flexhook_f1_sports_trained_seed42",
+    "reason": "127.0.0.1:24557 accepts TCP but reverse-forwarded SSH banner currently times out"
+  },
+  "next_action": "Re-establish the Windows reverse tunnel, publish the complete F1 run directory to NAS, then recheck and launch Y1 YesTrack."
+}

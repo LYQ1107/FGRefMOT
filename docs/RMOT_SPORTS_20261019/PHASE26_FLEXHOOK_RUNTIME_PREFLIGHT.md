@@ -36,3 +36,10 @@ The vendored source remains unchanged. The pinned entrypoint hashes are:
 
 The next action is the already-authorized F1 single-GPU launch on the freshly
 rechecked physical GPU 1. The other project processes remain out of scope.
+
+## Historical status clarification
+
+Phase 26 recorded the pre-launch manifest hash that was valid at that point in
+time. The same run directory was later updated through the corrected retry and
+completed successfully; the completion and final manifest are recorded in
+[Phase 29](PHASE29_FLEXHOOK_F1_COMPLETION.md).

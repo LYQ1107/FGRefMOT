@@ -45,5 +45,8 @@
     "vendored_checkout_modified": false,
     "other_gpu_processes_modified": false,
     "next_gpu": 1
-  }
+  },
+  "superseded_by_phase": 29,
+  "current_run_manifest_sha256": "9752e58d889adbe48a2da419d815463abb21b403a4364b95c65a570dfefbe0f1",
+  "current_run_status": "SUCCEEDED; see PHASE29_FLEXHOOK_F1_COMPLETION"
 }
