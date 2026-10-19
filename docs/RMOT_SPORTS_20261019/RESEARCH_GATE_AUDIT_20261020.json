@@ -1,6 +1,6 @@
 {
   "schema_version": "rmot-sports-gate-audit-0.1",
-  "observed_at": "2026-10-20T07:21:25+08:00",
+  "observed_at": "2026-10-20T07:24:14+08:00",
   "status": "IN_PROGRESS",
   "workspace": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019",
   "branch": "research/sports-rmot-strong-baselines-20261019",
@@ -54,7 +54,8 @@
         "docs/RMOT_SPORTS_20261019/PHASE83_LIVE_HEALTH_20261020.json",
         "docs/RMOT_SPORTS_20261019/PHASE85_LIVE_PROGRESS_20261020.json",
         "docs/RMOT_SPORTS_20261019/PHASE87_LIVE_HEALTH_20261020.json",
-        "docs/RMOT_SPORTS_20261019/PHASE90_LIVE_HEALTH_20261020.json"
+        "docs/RMOT_SPORTS_20261019/PHASE90_LIVE_HEALTH_20261020.json",
+        "docs/RMOT_SPORTS_20261019/PHASE94_FORMAL_EVALUATOR_ACTIVITY_20261020.json"
       ],
       "claim_boundary": "The full 22-video training manifest succeeded and its formal historical evaluation is running. The 17-video internal training and fixed five-video validation evaluation also succeeded; threshold 0.8 was selected on internal HOTA. The internal metric is selection evidence, while no full historical-test result is claimed until the formal manifest succeeds."
     },
@@ -118,7 +119,8 @@
         "docs/RMOT_SPORTS_20261019/PHASE86_EFFICIENCY_JOIN_20261020.json",
         "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/common_tracker_refersports_timed_20261020/TRACKER_RUN_MANIFEST.json",
         "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/efficiency_flexhook_h8_historical_timed_20261020.json",
-        "docs/RMOT_SPORTS_20261019/PHASE92_RUN_REPRODUCIBILITY_AUDIT_20261020.json"
+        "docs/RMOT_SPORTS_20261019/PHASE92_RUN_REPRODUCIBILITY_AUDIT_20261020.json",
+        "docs/RMOT_SPORTS_20261019/PHASE94_FORMAL_EVALUATOR_ACTIVITY_20261020.json"
       ],
       "claim_boundary": "NAS-direct artifact storage, synthetic archive checks, read-only measurement tooling, and a real patched one-GPU FlexHook smoke resume are recorded. The timed common tracker and H8 historical complete-pipeline join are complete (1.9088 FPS); YesTrack historical timing, complete peak-memory comparison, and multi-GPU recovery remain outstanding. The completed strict core job was launched before the resume patch."
     },
@@ -137,7 +139,8 @@
         "docs/RMOT_SPORTS_20261019/PHASE90_LIVE_HEALTH_20261020.json",
         "docs/RMOT_SPORTS_20261019/PHASE91_POSTBASELINE_WATCHER_PREFLIGHT_20261020.json",
         "docs/RMOT_SPORTS_20261019/PHASE92_RUN_REPRODUCIBILITY_AUDIT_20261020.json",
-        "docs/RMOT_SPORTS_20261019/PHASE93_YESTRACK_SCORE_CONTROL_TEST_20261020.json"
+        "docs/RMOT_SPORTS_20261019/PHASE93_YESTRACK_SCORE_CONTROL_TEST_20261020.json",
+        "docs/RMOT_SPORTS_20261019/PHASE94_FORMAL_EVALUATOR_ACTIVITY_20261020.json"
       ],
       "claim_boundary": "The required final-report entrypoints and evidence ledger exist and are remotely synchronized; the final reviewer conclusion and remaining formal comparisons are not complete."
     }

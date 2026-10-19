@@ -1,0 +1,43 @@
+{
+  "schema_version": "rmot-sports-phase-0.1",
+  "phase": 94,
+  "title": "Formal YesTrack evaluator activity probe",
+  "status": "FORMAL_EVALUATOR_ACTIVE_PARTIAL_OUTPUT_PENDING",
+  "observed_at": "2026-10-20T07:24:14+08:00",
+  "probe": {
+    "pid": 2708884,
+    "window_seconds": 3,
+    "before": {
+      "rchar": 23906442328,
+      "wchar": 22365387,
+      "syscr": 662451,
+      "syscw": 1599,
+      "read_bytes": 3624960,
+      "write_bytes": 22374424,
+      "cancelled_write_bytes": 4096,
+      "ps": "Rl+   346    04:05:52"
+    },
+    "after": {
+      "rchar": 23912113181,
+      "wchar": 22365387,
+      "syscr": 662619,
+      "syscw": 1599,
+      "read_bytes": 3624960,
+      "write_bytes": 22374424,
+      "cancelled_write_bytes": 4096,
+      "ps": "Rl+   346    04:05:55"
+    },
+    "delta_rchar": 5670853,
+    "delta_syscr": 168,
+    "delta_write_bytes": 0
+  },
+  "authoritative_outputs": {
+    "manifest": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/yestrack_y1_common_eval_20261019_v3/YESTRACK_EVAL_MANIFEST.json",
+    "manifest_exists": false,
+    "prediction_file_count": 61,
+    "expected_prediction_file_count": 142
+  },
+  "interpretation": "The evaluator remained in running state and read input during the probe (rchar and syscall counters increased; CPU state remained Rl+). This is activity evidence only, not a metric or completion signal.",
+  "claim_boundary": "Formal YesTrack metrics remain NOT_RUN until the evaluator writes a successful YESTRACK_EVAL_MANIFEST.json.",
+  "next_step": "Wait for the terminal formal manifest; then parse its completed metrics and let the registered postbaseline watchers proceed."
+}
