@@ -23,6 +23,10 @@ from typing import Any
 
 import torch
 
+REPO_ROOT = Path(__file__).resolve().parents[1]
+DEFAULT_SEQUENCE_LIST = REPO_ROOT / "configs" / "refer_sports_eval_sequences_20261019.txt"
+sys.path.insert(0, str(REPO_ROOT))
+
 from adapters.flexhook_temporal.adapter import TemporalEvidenceAdapter, run_causal_sequence
 from scripts.flexhook_feature_archive import split_data_key
 from scripts.eval_flexhook_refersports import (
@@ -38,10 +42,6 @@ from scripts.eval_flexhook_refersports import (
     sha256_file,
     write_predictions,
 )
-
-
-REPO_ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_SEQUENCE_LIST = REPO_ROOT / "configs" / "refer_sports_eval_sequences_20261019.txt"
 
 
 def _normalize_eval_expressions(value: Any, batch_size: int) -> list[list[str]]:
