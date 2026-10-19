@@ -50,6 +50,16 @@ def manifest_status(path: Path) -> str:
     return str(value or "STATUS_UNKNOWN")
 
 
+def manifest_payload(path: Path) -> dict[str, Any]:
+    if not path.is_file():
+        return {}
+    try:
+        value = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return {}
+    return value if isinstance(value, dict) else {}
+
+
 def row(
     *,
     method: str,
@@ -80,17 +90,26 @@ def row(
 
 def build_rows(project: Path, nas_root: Path) -> list[dict[str, str]]:
     tracker_manifest = nas_root / "assets/pretrained/common_tracker/sambamotr_dab_refersports_train_20261019/TRACKER_RUN_MANIFEST.json"
-    y1_manifest = project / "runs/gpu/yestrack_y1_sports_lora_seed42/RUN_MANIFEST.json"
-    y1_checkpoint_root = nas_root / "runs/20261019_161037"
-    y1_eval_manifest = nas_root / "runs/gpu/yestrack_y1_common_eval_20261019/YESTRACK_EVAL_MANIFEST.json"
+    # The first Y1 attempt was invalidated by the UNKNOWN-frame audit.  Only
+    # the corrected v2 run is eligible for the baseline table.
+    y1_manifest = project / "runs/gpu/yestrack_y1_sports_lora_seed42_v2/RUN_MANIFEST.json"
+    y1_data = manifest_payload(y1_manifest)
+    y1_checkpoint_root = (
+        Path(y1_data["outputs"]["run_root_mount"])
+        if y1_data.get("outputs", {}).get("run_root_mount")
+        else None
+    )
+    y1_eval_manifest = nas_root / "runs/gpu/yestrack_y1_common_eval_20261019_v2/YESTRACK_EVAL_MANIFEST.json"
     f1_checkpoint = nas_root / "runs/gpu/flexhook_f1_sports_trained_seed42/ckpt_epoch_best_0.pth"
-    f1_eval_manifest = nas_root / "runs/gpu/flexhook_f1_common_eval_20261019/FLEXHOOK_EVAL_MANIFEST.json"
+    f1_eval_manifest = nas_root / "runs/gpu/flexhook_f1_common_eval_20261019_v2/FLEXHOOK_EVAL_MANIFEST.json"
 
     y1_status = manifest_status(y1_manifest)
     if y1_status.startswith("RUNNING"):
         y1_status = "TRAINING_RUNNING"
-    elif y1_status == "SUCCEEDED":
+    elif y1_status == "SUCCEEDED" and y1_data.get("protocol_valid", True):
         y1_status = "TRAINING_SUCCEEDED_FORMAL_EVAL_PENDING"
+    elif y1_status == "SUCCEEDED":
+        y1_status = "PROTOCOL_INVALID"
     f1_status = "FORMAL_EVAL_SUCCEEDED" if manifest_status(f1_eval_manifest) == "SUCCEEDED" else (
         "CHECKPOINT_READY_FORMAL_EVAL_PENDING" if f1_checkpoint.is_file() else "NOT_RUN"
     )
@@ -154,7 +173,7 @@ def build_rows(project: Path, nas_root: Path) -> list[dict[str, str]]:
             physical_tracker="fixed-common-SambaMOTR",
             referring_model="YesTrack",
             status=y1_status,
-            checkpoint_path=str(y1_checkpoint_root) if y1_checkpoint_root.is_dir() else "NOT_RUN",
+            checkpoint_path=str(y1_checkpoint_root) if y1_checkpoint_root and y1_checkpoint_root.is_dir() else "NOT_RUN",
             source_manifest=str(y1_eval_manifest),
         ),
         row(

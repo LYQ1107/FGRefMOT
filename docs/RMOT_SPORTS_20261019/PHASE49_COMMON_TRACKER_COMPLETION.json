@@ -1,0 +1,37 @@
+{
+  "phase": 49,
+  "title": "Common Refer-Sports tracker completion",
+  "status": "TRACKER_SUCCEEDED_Y1_TRAINING_RUNNING",
+  "tracker": {
+    "status": "SUCCEEDED",
+    "exit_code": 0,
+    "physical_gpu": 0,
+    "sequence_count": 19,
+    "output_count": 19,
+    "used_ground_truth": false,
+    "manifest": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/assets/pretrained/common_tracker/sambamotr_dab_refersports_train_20261019/TRACKER_RUN_MANIFEST.json",
+    "split": "refer-sports-eval-19-videos"
+  },
+  "yestrack": {
+    "run_id": "yestrack_y1_sports_lora_seed42_v2",
+    "status": "RUNNING",
+    "physical_gpu": 1,
+    "optimizer_steps": 90559,
+    "protocol_valid": true,
+    "run_root": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/20261019_180459"
+  },
+  "formal_evaluation": {
+    "dependency_gate": "WAITING_FOR_YESTRACK_CHECKPOINT",
+    "yestrack_manifest": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/yestrack_y1_common_eval_20261019_v2/YESTRACK_EVAL_MANIFEST.json",
+    "flexhook_manifest": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_f1_common_eval_20261019_v2/FLEXHOOK_EVAL_MANIFEST.json",
+    "metrics_claimed": false
+  },
+  "baseline_table": {
+    "path": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/reports/intermediate/baselines_20261019",
+    "metric_policy": "ONLY_COMPLETED_FORMAL_MANIFESTS; OTHERWISE_NOT_RUN"
+  },
+  "policy": {
+    "gt_or_labels_as_tracker_input": "REJECTED",
+    "other_gpu_jobs_untouched": true
+  }
+}
