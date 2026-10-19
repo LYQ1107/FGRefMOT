@@ -16,10 +16,11 @@ resume-state patch have evidence in the cited phase reports. The strict
 FlexHook core training and five-video internal TrackEval selection are now
 complete, and a real patched one-GPU resume smoke run also completed: it loaded
 epoch 1, continued at epoch 2, saved a checkpoint, and exited successfully.
-The feature archive/temporal pipeline and the full 22-video YesTrack training
-are still active. The separate 17-video internal YesTrack training succeeded;
-its fixed five-video validation evaluation is running against the completed
-adapter.
+The feature archives are complete and the temporal pipeline is training the
+causal head. The full 22-video YesTrack training also finished successfully;
+its formal historical evaluation has started. The separate 17-video internal
+YesTrack training succeeded, and its fixed five-video validation evaluation is
+still running against the completed adapter.
 The FlexHook frozen-score H0-H8 replay is a diagnostic control over a frozen
 checkpoint; it is not a learned temporal-head result.
 
