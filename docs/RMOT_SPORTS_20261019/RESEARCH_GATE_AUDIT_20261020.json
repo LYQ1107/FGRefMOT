@@ -1,6 +1,6 @@
 {
   "schema_version": "rmot-sports-gate-audit-0.1",
-  "observed_at": "2026-10-20T03:40:36+08:00",
+  "observed_at": "2026-10-20T04:08:00+08:00",
   "status": "IN_PROGRESS",
   "workspace": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019",
   "branch": "research/sports-rmot-strong-baselines-20261019",
@@ -52,15 +52,16 @@
     },
     {
       "id": "E_LEARNED_IMPROVEMENT_AND_ABLATIONS",
-      "status": "TEMPORAL_HEAD_TRAINED_INTERNAL_EVALUATION_IN_PROGRESS",
+      "status": "TEMPORAL_INTERNAL_EVALUATION_SUCCEEDED_HISTORICAL_EVALUATION_IN_PROGRESS",
       "evidence": [
         "docs/RMOT_SPORTS_20261019/PHASE67_FLEXHOOK_SCORE_ABLATIONS.json",
         "docs/RMOT_SPORTS_20261019/PHASE71_FLEXHOOK_FEATURE_ARCHIVE_TOOLING.json",
         "docs/RMOT_SPORTS_20261019/PHASE72_FLEXHOOK_TEMPORAL_TRAINING_TOOLING.json",
         "docs/RMOT_SPORTS_20261019/PHASE73_FLEXHOOK_TEMPORAL_EVAL_TOOLING.json",
-        "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_temporal_h8_internal_core_20261019/TEMPORAL_TRAINING_MANIFEST.json"
+        "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_temporal_h8_internal_core_20261019/TEMPORAL_TRAINING_MANIFEST.json",
+        "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_temporal_h8_internal_eval_20261019_v1/FLEXHOOK_EVAL_MANIFEST.json"
       ],
-      "claim_boundary": "The H8 causal temporal checkpoint was trained on train_core and selected using internal_val; internal TrackEval is in progress. No learned-method metric or historical-test result is claimed yet."
+      "claim_boundary": "The H8 causal temporal checkpoint was trained on train_core, selected using internal_val, and completed internal TrackEval. Its 19-video historical evaluation is in progress; no historical-test metric is claimed until that manifest succeeds."
     },
     {
       "id": "F_COMPLETE_ONLINE_GAIN",
@@ -118,7 +119,7 @@
   ],
   "next_gates": [
     "complete YesTrack internal validation and formal historical evaluation manifests",
-    "finish causal temporal-head internal TrackEval and historical evaluation",
+    "finish the selected temporal-head historical evaluation",
     "run registered proposed-method and baseline ablations after the baseline gate",
     "complete multi-seed, efficiency, final-test and reviewer-report evidence"
   ]

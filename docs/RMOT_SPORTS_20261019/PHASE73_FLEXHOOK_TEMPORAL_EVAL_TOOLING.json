@@ -2,7 +2,7 @@
   "schema_version": "rmot-sports-phase-0.1",
   "phase": 73,
   "title": "FlexHook temporal-head evaluation adapter",
-  "status": "IMPLEMENTED_NOT_RUN",
+  "status": "INTERNAL_EVALUATION_SUCCEEDED_HISTORICAL_EVALUATION_IN_PROGRESS",
   "script": "scripts/eval_flexhook_temporal.py",
   "tests": {
     "test_file": "tests/test_eval_flexhook_temporal.py",
@@ -15,8 +15,41 @@
     "gt_usage": "TrackEval_tree_only"
   },
   "result_boundary": {
-    "internal_metric": false,
+    "internal_metric": true,
     "historical_test_metric": false
   },
-  "next_gate": "run after Phase 72 produces a selected temporal checkpoint"
+  "internal_evaluation": {
+    "status": "SUCCEEDED",
+    "split": "INTERNAL_VAL_5",
+    "videos": 5,
+    "expressions": 45,
+    "prediction_rows": 66559,
+    "manifest": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_temporal_h8_internal_eval_20261019_v1/FLEXHOOK_EVAL_MANIFEST.json",
+    "manifest_sha256": "98b9686ed60bc8efa6d34baf314957c54a3ee3fc8a2320673735798320a60c6b",
+    "temporal_checkpoint_sha256": "5c3d5c39115f786390e23e86dd96763eac5d77028d43347f00f03c550d2008b9",
+    "trackeval": {
+      "HOTA": 0.7563164568219571,
+      "DetA": 0.7212400259270021,
+      "AssA": 0.7930987775179491,
+      "MOTA": 0.7125575971004219,
+      "CLR_F1": 0.8372938579405272,
+      "IDF1": 0.7243474873393065,
+      "IDSW": 80
+    },
+    "efficiency": {
+      "inference_seconds": 1719.1791590990033,
+      "model_loading_seconds": 334.91813907399774,
+      "referring_module_fps": 15.333480434822986,
+      "video_frame_fps": 1.9009071757900504,
+      "peak_gpu_memory_mib": 12966.0
+    }
+  },
+  "historical_evaluation": {
+    "status": "IN_PROGRESS",
+    "split": "HISTORICAL_TEST_19",
+    "output_root": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_temporal_h8_common_eval_20261019_v1",
+    "sequence_list": "configs/refer_sports_eval_sequences_20261019.txt",
+    "policy": "offline TrackEval after internal checkpoint selection; historical GT is never model or tracker input"
+  },
+  "next_gate": "finish the selected-checkpoint historical test evaluation; no historical metric is claimed until its manifest succeeds"
 }

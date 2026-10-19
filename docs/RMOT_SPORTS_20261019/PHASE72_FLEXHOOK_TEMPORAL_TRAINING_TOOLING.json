@@ -37,5 +37,5 @@
     "train_archive_sha256": "e27bbfbe3e21e19892525b1d078f1bc9012c89986d7ee7e429bb9fbda916d7f3",
     "internal_val_archive_sha256": "524503491f4a419b94afeb82712b0a41f5be5c7bf2f9d58ae9516f3a32720372"
   },
-  "next_gate": "finish internal TrackEval for the selected checkpoint; historical test remains blocked until internal selection is recorded"
+  "next_gate": "historical test evaluation of the selected checkpoint; internal TrackEval selection is complete and historical GT remains offline-only"
 }
