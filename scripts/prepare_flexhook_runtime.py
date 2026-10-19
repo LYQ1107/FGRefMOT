@@ -3,8 +3,9 @@
 
 FlexHook's pinned visual loader resolves ``pretrained/...`` relative to the
 process working directory.  This staging directory supplies those paths as
-symlinks to the hash-audited NAS assets without editing the vendored checkout
-or copying multi-gigabyte weights into the repository.
+symlinks to the hash-audited NAS assets.  The launcher may then apply a
+tracked, idempotent compatibility patch to the ignored vendor checkout; no
+vendor change is committed as source.
 """
 
 from __future__ import annotations
@@ -36,7 +37,8 @@ def prepare(runtime_root: Path, roberta_dir: Path, swin_dir: Path) -> dict:
         "schema_version": 1,
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "runtime_root": str(runtime_root),
-        "policy": "SYMLINK_ONLY; VENDORED_CHECKOUT_UNMODIFIED",
+        "policy": "SYMLINK_ONLY; TRACKED_PATCH_AT_LAUNCH; VENDORED_CHECKOUT_IGNORED",
+        "tracked_launch_patches": ["patches/flexhook_resume_state.patch"],
         "links": {
             "pretrained/roberta-base": {
                 "target": str(roberta_dir.expanduser().resolve()),

@@ -7,6 +7,7 @@
   "scope": "isolated FlexHook checkout launched by this research workspace",
   "source_patch": "patches/flexhook_resume_state.patch",
   "runtime_hook": "scripts/launch_flexhook.py",
+  "runtime_manifest_policy": "SYMLINK_ONLY; TRACKED_PATCH_AT_LAUNCH; VENDORED_CHECKOUT_IGNORED",
   "saved_state": [
     "model",
     "optimizer",

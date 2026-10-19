@@ -5,10 +5,10 @@ serialization in its checkpoint writer. It also did not preserve Python,
 NumPy, Torch, or CUDA random state, and current PyTorch defaults require an
 explicit `weights_only=False` when restoring the serialized configuration.
 
-The research launcher now applies the tracked
-`patches/flexhook_resume_state.patch` to the ignored FlexHook checkout before
-each future in-process launch. The patch is idempotent and fails closed if the
-vendor file or marker does not match. A patched checkpoint contains model,
+The symlink-only runtime manifest records the tracked launch patch, and the
+research launcher applies `patches/flexhook_resume_state.patch` to the ignored
+FlexHook checkout before each future in-process launch. The patch is idempotent
+and fails closed if the vendor file or marker does not match. A patched checkpoint contains model,
 optimizer, scheduler, AMP scaler, epoch, and per-process random state. The
 registered one-GPU path is verified; worker-local sampler state is represented
 by the existing deterministic `set_epoch(seed)` policy and is not separately
