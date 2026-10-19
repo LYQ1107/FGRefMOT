@@ -421,12 +421,18 @@ def run_flexhook_inference(
     gpu: int,
     manifest: dict[str, Any],
     save_scores: bool = False,
+    master_port: int | None = None,
 ) -> dict[str, Any]:
     """Run upstream FlexHook inference in test mode on the fixed tracks."""
 
     os.environ["CUDA_VISIBLE_DEVICES"] = str(gpu)
     os.environ.setdefault("MASTER_ADDR", "127.0.0.1")
-    os.environ.setdefault("MASTER_PORT", "29591")
+    if master_port is not None:
+        if not 1 <= int(master_port) <= 65535:
+            raise ValueError("master_port must be between 1 and 65535")
+        os.environ["MASTER_PORT"] = str(int(master_port))
+    else:
+        os.environ.setdefault("MASTER_PORT", "29591")
     os.environ.setdefault("RANK", "0")
     os.environ.setdefault("WORLD_SIZE", "1")
     os.environ.setdefault("LOCAL_RANK", "0")
@@ -596,6 +602,12 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--output-root", required=True)
     parser.add_argument("--sequence-list", default=str(DEFAULT_SEQUENCE_LIST))
     parser.add_argument("--gpu", type=int, default=1)
+    parser.add_argument(
+        "--master-port",
+        type=int,
+        default=None,
+        help="TCP port for the single-process distributed initializer (default: env or 29591).",
+    )
     parser.add_argument("--batch-size", type=int, default=32)
     parser.add_argument("--workers", type=int, default=4)
     parser.add_argument("--prepare-only", action="store_true")
@@ -645,6 +657,7 @@ def main(argv: list[str] | None = None) -> int:
         gpu=args.gpu,
         manifest=manifest,
         save_scores=args.save_scores,
+        master_port=args.master_port,
     )
     trackeval_result = run_trackeval(manifest=manifest, output_root=output_root)
     payload = {"run": run_result, "trackeval": trackeval_result, "manifest": str(output_root / "FLEXHOOK_EVAL_MANIFEST.json")}

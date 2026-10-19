@@ -28,6 +28,22 @@ def test_flexhook_resolves_nested_tracker_outputs(tmp_path: Path) -> None:
     assert module.resolve_tracker_input_root(tmp_path, ["video"]) == nested
 
 
+def test_flexhook_master_port_override_is_exposed() -> None:
+    module = _load_script("eval_flexhook_refersports.py")
+    args = module.parse_args(
+        [
+            "--config", "config.yaml",
+            "--layout-root", "layout",
+            "--tracker-root", "tracker",
+            "--checkpoint", "checkpoint.pth",
+            "--output-root", "output",
+            "--master-port", "29604",
+        ]
+    )
+
+    assert args.master_port == 29604
+
+
 def test_yestrack_prefers_root_then_nested_tracker_outputs(tmp_path: Path) -> None:
     module = _load_script("eval_yestrack_refersports.py")
     nested = tmp_path / "tracker_outputs"
