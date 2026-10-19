@@ -218,6 +218,7 @@ def archive_features(
     torch.manual_seed(seed)
     dist.init_process_group(backend="gloo", init_method="env://", rank=0, world_size=1)
     try:
+        runtime_root = runtime_root.expanduser().resolve()
         cfg = _C.clone()
         cfg.defrost()
         cfg.merge_from_file(str(upstream_root / "configs/train/train-mix.yaml"))
@@ -235,15 +236,12 @@ def archive_features(
         cfg.sample_frame_stride = [30]
         cfg.val_sample_frame_stride = [24]
         cfg.val_set_scale = [5]
-        cfg.ROBERTA_PATH = str(
-            REPO_ROOT / "runs/flexhook_runtime_20261019/pretrained/roberta-base"
-        )
+        cfg.ROBERTA_PATH = str((runtime_root / "pretrained/roberta-base").resolve())
         cfg.MODEL.PRETRAINED = str(checkpoint)
         cfg.MODEL.RESUME = str(checkpoint)
         cfg.OUTPUT = str(output_root)
         cfg.freeze()
 
-        runtime_root = runtime_root.expanduser().resolve()
         os.chdir(runtime_root)
         dataset_train, dataset_val, loader_train, loader_val, _ = build_loader(cfg)
         dataset = dataset_train if split == "train_core" else dataset_val
