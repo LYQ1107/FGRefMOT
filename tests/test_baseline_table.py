@@ -36,12 +36,12 @@ def test_formal_metrics_extract_flexhook_combined_result() -> None:
     module = _load_builder()
     metrics = module.formal_metrics({"trackeval_results": _trackeval_payload(0.5)})
 
-    assert metrics["validation_hota"] == "55.000000"
-    assert metrics["validation_deta"] == "20.000000"
-    assert metrics["validation_assa"] == "30.000000"
-    assert metrics["validation_idf1"] == "40.000000"
-    assert metrics["validation_idsw"] == "7"
-    assert metrics["validation_ref_f1"] == "NOT_RUN"
+    assert metrics["formal_hota"] == "55.000000"
+    assert metrics["formal_deta"] == "20.000000"
+    assert metrics["formal_assa"] == "30.000000"
+    assert metrics["formal_idf1"] == "40.000000"
+    assert metrics["formal_idsw"] == "7"
+    assert metrics["formal_ref_f1"] == "NOT_RUN"
 
 
 def test_formal_metrics_uses_preregistered_yestrack_threshold() -> None:
@@ -53,7 +53,15 @@ def test_formal_metrics_uses_preregistered_yestrack_threshold() -> None:
         ]
     }
 
-    assert module.formal_metrics(payload)["validation_hota"] == "65.000000"
+    assert module.formal_metrics(payload)["formal_hota"] == "65.000000"
+
+
+def test_validation_metrics_use_validation_namespace() -> None:
+    module = _load_builder()
+    metrics = module.validation_metrics({"trackeval_results": _trackeval_payload(0.4)})
+
+    assert metrics["validation_hota"] == "45.000000"
+    assert "formal_hota" not in metrics
 
 
 def test_resolve_flexhook_eval_manifest_prefers_latest_success(tmp_path: Path) -> None:
@@ -76,3 +84,14 @@ def test_resolve_yestrack_eval_manifest_prefers_latest_success(tmp_path: Path) -
     old.write_text('{"status":"RUNNING"}\n', encoding="utf-8")
     new.write_text('{"status":"SUCCEEDED"}\n', encoding="utf-8")
     assert module.resolve_yestrack_eval_manifest(tmp_path) == new
+
+
+def test_resolve_flexhook_validation_manifest_prefers_latest_success(tmp_path: Path) -> None:
+    module = _load_builder()
+    old = tmp_path / "runs/gpu/flexhook_f1_internal_eval_20261019_v1/FLEXHOOK_EVAL_MANIFEST.json"
+    new = tmp_path / "runs/gpu/flexhook_f1_internal_eval_20261019_v2/FLEXHOOK_EVAL_MANIFEST.json"
+    old.parent.mkdir(parents=True)
+    new.parent.mkdir(parents=True)
+    old.write_text('{"status":"RUNNING"}\n', encoding="utf-8")
+    new.write_text('{"status":"SUCCEEDED"}\n', encoding="utf-8")
+    assert module.resolve_flexhook_validation_manifest(tmp_path) == new

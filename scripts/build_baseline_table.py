@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 """Build a protocol-controlled Refer-Sports baseline table.
 
-The table is deliberately conservative: a metric is emitted only when a
-completed formal-evaluation manifest is available.  Missing or in-progress
-experiments remain ``NOT_RUN``/``RUNNING`` instead of being inferred from
-training losses or partial files.
+The table is deliberately conservative: validation metrics are emitted only
+from a completed internal-validation manifest, and formal metrics only from a
+completed historical-test manifest. Missing or in-progress experiments remain
+``NOT_RUN``/``RUNNING`` instead of being inferred from training losses or
+partial files.
 """
 
 from __future__ import annotations
@@ -16,15 +17,23 @@ from pathlib import Path
 from typing import Any
 
 
-METRIC_FIELDS = (
+VALIDATION_METRIC_FIELDS = (
     "validation_hota",
     "validation_deta",
     "validation_assa",
     "validation_idf1",
     "validation_idsw",
     "validation_ref_f1",
-    "fps",
 )
+FORMAL_METRIC_FIELDS = (
+    "formal_hota",
+    "formal_deta",
+    "formal_assa",
+    "formal_idf1",
+    "formal_idsw",
+    "formal_ref_f1",
+)
+METRIC_FIELDS = (*VALIDATION_METRIC_FIELDS, *FORMAL_METRIC_FIELDS, "fps")
 TABLE_FIELDS = (
     "method",
     "variant",
@@ -32,13 +41,41 @@ TABLE_FIELDS = (
     "sports_training",
     "physical_tracker",
     "referring_model",
+    "validation_split",
     "evaluation_split",
     *METRIC_FIELDS,
     "trainable_parameters",
     "checkpoint_path",
-    "status",
+    "validation_manifest",
     "source_manifest",
+    "status",
 )
+
+
+def _validation_fallback_manifest(nas_root: Path, method: str) -> Path:
+    if method == "flexhook":
+        return nas_root / "runs/gpu/flexhook_f1_internal_eval_20261019_v1/FLEXHOOK_EVAL_MANIFEST.json"
+    if method == "yestrack":
+        return nas_root / "runs/gpu/yestrack_y1_internal_eval_20261019_v1/YESTRACK_EVAL_MANIFEST.json"
+    raise ValueError(f"unknown validation method: {method}")
+
+
+def resolve_flexhook_validation_manifest(nas_root: Path) -> Path:
+    pattern = "runs/gpu/flexhook_f1_internal_eval_20261019_v*/FLEXHOOK_EVAL_MANIFEST.json"
+    candidates = sorted(nas_root.glob(pattern), key=lambda path: path.stat().st_mtime)
+    if not candidates:
+        return _validation_fallback_manifest(nas_root, "flexhook")
+    successful = [path for path in candidates if manifest_status(path) == "SUCCEEDED"]
+    return (successful or candidates)[-1]
+
+
+def resolve_yestrack_validation_manifest(nas_root: Path) -> Path:
+    pattern = "runs/gpu/yestrack_y1_internal_eval_20261019_v*/YESTRACK_EVAL_MANIFEST.json"
+    candidates = sorted(nas_root.glob(pattern), key=lambda path: path.stat().st_mtime)
+    if not candidates:
+        return _validation_fallback_manifest(nas_root, "yestrack")
+    successful = [path for path in candidates if manifest_status(path) == "SUCCEEDED"]
+    return (successful or candidates)[-1]
 
 
 def manifest_status(path: Path) -> str:
@@ -129,13 +166,8 @@ def _find_combined_results(value: Any) -> dict[str, Any] | None:
     return None
 
 
-def formal_metrics(payload: dict[str, Any]) -> dict[str, str]:
-    """Extract only metrics explicitly emitted by a successful TrackEval run.
-
-    YesTrack emits one result per requested score threshold.  The pre-registered
-    0.50 threshold is selected here; choosing the best threshold from the
-    historical test set would be test tuning.
-    """
+def _selected_trackeval_results(payload: dict[str, Any]) -> Any:
+    """Return the registered TrackEval result from a manifest payload."""
 
     results: Any = payload.get("trackeval_results")
     if results is None:
@@ -150,21 +182,39 @@ def formal_metrics(payload: dict[str, Any]) -> dict[str, str]:
                 None,
             )
             results = selected
-    combined = _find_combined_results(results)
+    return results
+
+
+def _metrics(payload: dict[str, Any], prefix: str) -> dict[str, str]:
+    combined = _find_combined_results(_selected_trackeval_results(payload))
+    fields = VALIDATION_METRIC_FIELDS if prefix == "validation" else FORMAL_METRIC_FIELDS
     if not isinstance(combined, dict):
-        return {field: "NOT_RUN" for field in METRIC_FIELDS}
+        return {field: "NOT_RUN" for field in fields}
     hota = combined.get("HOTA", {})
     clear = combined.get("CLEAR", {})
     identity = combined.get("Identity", {})
     return {
-        "validation_hota": _mean_percent(hota.get("HOTA")) if isinstance(hota, dict) else "NOT_RUN",
-        "validation_deta": _mean_percent(hota.get("DetA")) if isinstance(hota, dict) else "NOT_RUN",
-        "validation_assa": _mean_percent(hota.get("AssA")) if isinstance(hota, dict) else "NOT_RUN",
-        "validation_idf1": _mean_percent(identity.get("IDF1")) if isinstance(identity, dict) else "NOT_RUN",
-        "validation_idsw": str(int(clear["IDSW"])) if isinstance(clear, dict) and "IDSW" in clear else "NOT_RUN",
-        "validation_ref_f1": str(payload.get("ref_f1", "NOT_RUN")),
-        "fps": str(payload.get("fps", "NOT_RUN")),
+        f"{prefix}_hota": _mean_percent(hota.get("HOTA")) if isinstance(hota, dict) else "NOT_RUN",
+        f"{prefix}_deta": _mean_percent(hota.get("DetA")) if isinstance(hota, dict) else "NOT_RUN",
+        f"{prefix}_assa": _mean_percent(hota.get("AssA")) if isinstance(hota, dict) else "NOT_RUN",
+        f"{prefix}_idf1": _mean_percent(identity.get("IDF1")) if isinstance(identity, dict) else "NOT_RUN",
+        f"{prefix}_idsw": str(int(clear["IDSW"])) if isinstance(clear, dict) and "IDSW" in clear else "NOT_RUN",
+        f"{prefix}_ref_f1": str(payload.get("ref_f1", "NOT_RUN")),
     }
+
+
+def formal_metrics(payload: dict[str, Any]) -> dict[str, str]:
+    """Extract registered metrics from a completed formal test manifest."""
+
+    values = _metrics(payload, "formal")
+    values["fps"] = str(payload.get("fps", "NOT_RUN"))
+    return values
+
+
+def validation_metrics(payload: dict[str, Any]) -> dict[str, str]:
+    """Extract registered metrics from a completed internal validation manifest."""
+
+    return _metrics(payload, "validation")
 
 
 def row(
@@ -176,8 +226,10 @@ def row(
     physical_tracker: str,
     referring_model: str,
     status: str,
+    validation_split: str = "NOT_RUN",
     evaluation_split: str = "NOT_RUN",
     checkpoint_path: str = "NOT_RUN",
+    validation_manifest: str = "NOT_RUN",
     source_manifest: str = "NOT_RUN",
     metrics: dict[str, str] | None = None,
 ) -> dict[str, str]:
@@ -188,9 +240,11 @@ def row(
         "sports_training": sports_training,
         "physical_tracker": physical_tracker,
         "referring_model": referring_model,
+        "validation_split": validation_split,
         "evaluation_split": evaluation_split,
         "trainable_parameters": "NOT_RUN",
         "checkpoint_path": checkpoint_path,
+        "validation_manifest": validation_manifest,
         "status": status,
         "source_manifest": source_manifest,
     }
@@ -212,11 +266,15 @@ def build_rows(project: Path, nas_root: Path) -> list[dict[str, str]]:
         else None
     )
     y1_eval_manifest = resolve_yestrack_eval_manifest(nas_root)
+    y1_validation_manifest = resolve_yestrack_validation_manifest(nas_root)
     f1_checkpoint = nas_root / "runs/gpu/flexhook_f1_sports_trained_seed42/ckpt_epoch_best_0.pth"
     f1_eval_manifest = resolve_flexhook_eval_manifest(nas_root)
+    f1_validation_manifest = resolve_flexhook_validation_manifest(nas_root)
 
     y1_eval_status = manifest_status(y1_eval_manifest)
     y1_eval_data = manifest_payload(y1_eval_manifest)
+    y1_validation_status = manifest_status(y1_validation_manifest)
+    y1_validation_data = manifest_payload(y1_validation_manifest)
     y1_status = manifest_status(y1_manifest)
     if y1_status.startswith("RUNNING"):
         y1_status = "TRAINING_RUNNING"
@@ -228,12 +286,24 @@ def build_rows(project: Path, nas_root: Path) -> list[dict[str, str]]:
         y1_status = "PROTOCOL_INVALID"
     f1_eval_status = manifest_status(f1_eval_manifest)
     f1_eval_data = manifest_payload(f1_eval_manifest)
+    f1_validation_status = manifest_status(f1_validation_manifest)
+    f1_validation_data = manifest_payload(f1_validation_manifest)
     f1_status = "FORMAL_EVAL_SUCCEEDED" if f1_eval_status == "SUCCEEDED" else (
         "CHECKPOINT_READY_FORMAL_EVAL_PENDING" if f1_checkpoint.is_file() else "NOT_RUN"
     )
     tracker_status = manifest_status(tracker_manifest)
     if tracker_status == "PREPARED_NO_GPU_RUN":
         tracker_status = "TRACKER_GPU_RUN_PENDING"
+    f1_metrics: dict[str, str] = {}
+    if f1_validation_status == "SUCCEEDED":
+        f1_metrics.update(validation_metrics(f1_validation_data))
+    if f1_eval_status == "SUCCEEDED":
+        f1_metrics.update(formal_metrics(f1_eval_data))
+    y1_metrics: dict[str, str] = {}
+    if y1_validation_status == "SUCCEEDED":
+        y1_metrics.update(validation_metrics(y1_validation_data))
+    if y1_eval_status == "SUCCEEDED":
+        y1_metrics.update(formal_metrics(y1_eval_data))
     return [
         row(
             method="FGRefMOT",
@@ -272,10 +342,12 @@ def build_rows(project: Path, nas_root: Path) -> list[dict[str, str]]:
             physical_tracker="fixed-common-SambaMOTR",
             referring_model="FlexHook",
             status=f1_status,
+            validation_split="INTERNAL_VAL_5" if f1_validation_status == "SUCCEEDED" else "NOT_RUN",
             evaluation_split="HISTORICAL_TEST_19",
             checkpoint_path=str(f1_checkpoint) if f1_checkpoint.is_file() else "NOT_RUN",
+            validation_manifest=str(f1_validation_manifest),
             source_manifest=str(f1_eval_manifest),
-            metrics=formal_metrics(f1_eval_data) if f1_eval_status == "SUCCEEDED" else None,
+            metrics=f1_metrics or None,
         ),
         row(
             method="YesTrack",
@@ -294,10 +366,12 @@ def build_rows(project: Path, nas_root: Path) -> list[dict[str, str]]:
             physical_tracker="fixed-common-SambaMOTR",
             referring_model="YesTrack",
             status=y1_status,
+            validation_split="INTERNAL_VAL_5" if y1_validation_status == "SUCCEEDED" else "NOT_RUN",
             evaluation_split="HISTORICAL_TEST_19",
             checkpoint_path=str(y1_checkpoint_root) if y1_checkpoint_root and y1_checkpoint_root.is_dir() else "NOT_RUN",
+            validation_manifest=str(y1_validation_manifest),
             source_manifest=str(y1_eval_manifest),
-            metrics=formal_metrics(y1_eval_data) if y1_eval_status == "SUCCEEDED" else None,
+            metrics=y1_metrics or None,
         ),
         row(
             method="YesTrack",
@@ -339,7 +413,7 @@ def write_outputs(rows: list[dict[str, str]], output_root: Path) -> None:
         json.dumps(
             {
                 "schema_version": "rmot-sports-baseline-table-0.1",
-                "metric_policy": "ONLY_COMPLETED_FORMAL_MANIFESTS; OTHERWISE_NOT_RUN",
+                "metric_policy": "VALIDATION_AND_FORMAL_METRICS_REQUIRE_COMPLETED_MANIFESTS; OTHERWISE_NOT_RUN",
                 "rows": rows,
             },
             indent=2,
