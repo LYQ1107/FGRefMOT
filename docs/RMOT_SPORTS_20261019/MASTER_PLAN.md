@@ -32,8 +32,9 @@ checkpoint, so it has no claimed metric.
 
 The remaining gates are YesTrack training and formal evaluation, internal
 validation metric extraction, H0–H8/YB score and learned-method ablations,
-diagnostic subsets, multi-seed confirmation, efficiency measurements, and the
-final reviewer report. F0/Y0 remain `NOT_RUN/BLOCKED` because no eligible
+multi-seed confirmation, efficiency measurements, and the final reviewer
+report. Phase 65 has registered candidate diagnostic subsets, but their
+metrics remain blocked by the manifest's UNKNOWN negative/event labels. F0/Y0 remain `NOT_RUN/BLOCKED` because no eligible
 official task checkpoint or YesTrack LoRA checkpoint is present on NAS.
 
 Each completed gate must update the relevant phase report, preserve its real
