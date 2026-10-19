@@ -1,7 +1,7 @@
 {
   "phase": 77,
   "title": "YesTrack multi-seed stability training",
-  "status": "SEEDS_43_44_TRAINING_IN_PROGRESS",
+  "status": "SEEDS_43_44_V2_TRAINING_IN_PROGRESS",
   "protocol": {
     "variant": "yestrack_y1_sports_lora",
     "train_split": "SPORTS_TRAIN_FULL_22_VIDEOS_181_EXPRESSIONS",
@@ -14,22 +14,22 @@
   },
   "runs": [
     {
-      "run_id": "yestrack_y1_sports_lora_seed43_v1",
+      "run_id": "yestrack_y1_sports_lora_seed43_v2",
       "seed": 43,
       "gpu": 2,
       "status": "RUNNING",
-      "manifest": "runs/gpu/yestrack_y1_sports_lora_seed43_v1/RUN_MANIFEST.json",
-      "launch_script": "runs/gpu/yestrack_y1_sports_lora_seed43_v1/launch_yestrack_y1_sports_lora_seed43_v1.sh",
-      "output_root": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs"
+      "manifest": "runs/gpu/yestrack_y1_sports_lora_seed43_v2/RUN_MANIFEST.json",
+      "launch_script": "runs/gpu/yestrack_y1_sports_lora_seed43_v2/launch_yestrack_y1_sports_lora_seed43_v2.sh",
+      "output_root": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/yestrack_y1_sports_lora_seed43_v2"
     },
     {
-      "run_id": "yestrack_y1_sports_lora_seed44_v1",
+      "run_id": "yestrack_y1_sports_lora_seed44_v2",
       "seed": 44,
       "gpu": 3,
       "status": "RUNNING",
-      "manifest": "runs/gpu/yestrack_y1_sports_lora_seed44_v1/RUN_MANIFEST.json",
-      "launch_script": "runs/gpu/yestrack_y1_sports_lora_seed44_v1/launch_yestrack_y1_sports_lora_seed44_v1.sh",
-      "output_root": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs"
+      "manifest": "runs/gpu/yestrack_y1_sports_lora_seed44_v2/RUN_MANIFEST.json",
+      "launch_script": "runs/gpu/yestrack_y1_sports_lora_seed44_v2/launch_yestrack_y1_sports_lora_seed44_v2.sh",
+      "output_root": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/yestrack_y1_sports_lora_seed44_v2"
     }
   ],
   "training_arguments": {

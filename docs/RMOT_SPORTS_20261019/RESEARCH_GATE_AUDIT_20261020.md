@@ -46,3 +46,9 @@ The machine-readable gate states, evidence paths, live manifests and next
 gates are in `RESEARCH_GATE_AUDIT_20261020.json`. This report intentionally
 preserves `IN_PROGRESS`/`NOT_RUN` boundaries instead of inferring results
 from partial logs or training loss.
+
+Phase 79 records a validity repair for the multi-seed route: the first seed43
+and seed44 attempts shared the upstream second-resolution NAS timestamp and
+were stopped before any checkpoint was accepted. Isolated v2 roots are now
+running on GPU2 and GPU3; the historical test evaluator on GPU1 was left
+untouched.

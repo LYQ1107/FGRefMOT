@@ -1,6 +1,6 @@
 {
   "schema_version": "rmot-sports-gate-audit-0.1",
-  "observed_at": "2026-10-20T05:58:45+08:00",
+  "observed_at": "2026-10-20T06:04:16+08:00",
   "status": "IN_PROGRESS",
   "workspace": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019",
   "branch": "research/sports-rmot-strong-baselines-20261019",
@@ -76,13 +76,14 @@
     },
     {
       "id": "G_MULTI_SEED_STABILITY",
-      "status": "SEEDS_43_44_TRAINING_IN_PROGRESS",
+      "status": "SEEDS_43_44_V2_TRAINING_IN_PROGRESS",
       "evidence": [
         "configs/experiment_matrix_20261019.json",
         "docs/RMOT_SPORTS_20261019/PHASE44_EXPERIMENT_MATRIX.json",
-        "docs/RMOT_SPORTS_20261019/PHASE77_YESTRACK_MULTI_SEED_TRAINING.json"
+        "docs/RMOT_SPORTS_20261019/PHASE77_YESTRACK_MULTI_SEED_TRAINING.json",
+        "docs/RMOT_SPORTS_20261019/PHASE79_YESTRACK_MULTI_SEED_ISOLATION.json"
       ],
-      "claim_boundary": "Seed43 and seed44 YesTrack trainings are live; no multi-seed metric or stability claim is made until both internal validation manifests succeed."
+      "claim_boundary": "The isolated v2 seed43 and seed44 YesTrack trainings are live; the v1 timestamp-collision attempts are invalidated with no accepted checkpoint. No multi-seed metric or stability claim is made until both v2 internal validation manifests succeed."
     },
     {
       "id": "H_EFFICIENCY_AND_RECOVERY",
@@ -117,16 +118,16 @@
       "log": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/runs/gpu/yestrack_y1_sports_lora_seed42_v2/yestrack_y1_sports_lora_seed42_v2.log"
     },
     {
-      "run_id": "yestrack_y1_sports_lora_seed43_v1",
+      "run_id": "yestrack_y1_sports_lora_seed43_v2",
       "status": "TRAINING_IN_PROGRESS",
-      "manifest": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/runs/gpu/yestrack_y1_sports_lora_seed43_v1/RUN_MANIFEST.json",
-      "log": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/runs/gpu/yestrack_y1_sports_lora_seed43_v1/yestrack_y1_sports_lora_seed43_v1.log"
+      "manifest": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/runs/gpu/yestrack_y1_sports_lora_seed43_v2/RUN_MANIFEST.json",
+      "log": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/runs/gpu/yestrack_y1_sports_lora_seed43_v2/yestrack_y1_sports_lora_seed43_v2.log"
     },
     {
-      "run_id": "yestrack_y1_sports_lora_seed44_v1",
+      "run_id": "yestrack_y1_sports_lora_seed44_v2",
       "status": "TRAINING_IN_PROGRESS",
-      "manifest": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/runs/gpu/yestrack_y1_sports_lora_seed44_v1/RUN_MANIFEST.json",
-      "log": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/runs/gpu/yestrack_y1_sports_lora_seed44_v1/yestrack_y1_sports_lora_seed44_v1.log"
+      "manifest": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/runs/gpu/yestrack_y1_sports_lora_seed44_v2/RUN_MANIFEST.json",
+      "log": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/runs/gpu/yestrack_y1_sports_lora_seed44_v2/yestrack_y1_sports_lora_seed44_v2.log"
     }
   ],
   "next_gates": [

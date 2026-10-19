@@ -1,0 +1,39 @@
+{
+  "schema_version": "rmot-sports-phase-0.1",
+  "phase": 79,
+  "title": "YesTrack multi-seed output isolation repair",
+  "status": "V2_TRAINING_IN_PROGRESS",
+  "observed_at": "2026-10-20T06:04:16+08:00",
+  "problem": {
+    "runs": ["yestrack_y1_sports_lora_seed43_v1", "yestrack_y1_sports_lora_seed44_v1"],
+    "collision_root": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/20261020_055735",
+    "evidence": "Both launch manifests resolved the upstream second-resolution timestamp to one NAS root; the shared config was seed43 and neither run produced an accepted checkpoint.",
+    "resolution": "Both v1 processes were stopped with exit code 143 before checkpoint save; manifests and logs remain preserved."
+  },
+  "active_runs": [
+    {
+      "run_id": "yestrack_y1_sports_lora_seed43_v2",
+      "seed": 43,
+      "gpu": 2,
+      "manifest": "runs/gpu/yestrack_y1_sports_lora_seed43_v2/RUN_MANIFEST.json",
+      "nas_root": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/yestrack_y1_sports_lora_seed43_v2",
+      "status": "RUNNING"
+    },
+    {
+      "run_id": "yestrack_y1_sports_lora_seed44_v2",
+      "seed": 44,
+      "gpu": 3,
+      "manifest": "runs/gpu/yestrack_y1_sports_lora_seed44_v2/RUN_MANIFEST.json",
+      "nas_root": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/yestrack_y1_sports_lora_seed44_v2",
+      "status": "RUNNING"
+    }
+  ],
+  "invariants": {
+    "train_split": "SPORTS_TRAIN_FULL_22_VIDEOS_181_EXPRESSIONS",
+    "selection_split": "INTERNAL_VAL_5_ONLY_AFTER_TRAINING",
+    "historical_test": "untouched",
+    "selected_threshold": 0.8,
+    "common_tracker": "fixed-common-SambaMOTR"
+  },
+  "next_gate": "complete v2 training, then fixed-threshold internal validation and seed-wise spread"
+}
