@@ -1,6 +1,6 @@
 # Phase 71 — FlexHook temporal feature archive tooling
 
-Status: `IMPLEMENTED_NOT_RUN`
+Status: `SUCCEEDED_TRAIN_CORE_AND_INTERNAL_VAL_ARCHIVES`
 
 `scripts/flexhook_feature_archive.py` now provides the reproducible bridge from
 the frozen FlexHook checkpoint to the project-level causal temporal head. It
@@ -13,6 +13,8 @@ in hashable NAS shards.
 The archive command never passes labels to FlexHook or to the common tracker;
 labels are retained as temporal-head training targets. Historical test is not an
 accepted archive split and remains an offline TrackEval-only evaluation set.
-The implementation has four focused helper tests and has not yet produced an
-archive or a learned-method metric. It will run after the strict FlexHook
-core-only checkpoint is complete.
+The real strict-core checkpoint produced a successful `train_core` archive with
+4,360 samples across nine shards and an `internal_val` archive with 448 samples
+in one shard. The manifest hashes and NAS paths are recorded in the JSON report.
+The four focused helper tests remain green; no learned-method metric is claimed
+until the temporal head is trained and selected.
