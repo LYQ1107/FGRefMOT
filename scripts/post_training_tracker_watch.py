@@ -102,7 +102,6 @@ def run(args: argparse.Namespace) -> int:
 
     def log(message: str) -> None:
         line = f"{now()} {message}"
-        print(line, flush=True)
         with log_path.open("a", encoding="utf-8") as handle:
             handle.write(line + "\n")
 
