@@ -1,8 +1,8 @@
 {
   "phase": 96,
-  "observed_at": "2026-10-20T07:39:47+08:00",
-  "status": "CURRENT_PREFLIGHT_AND_F1_Y1_CONTRACTS_READY",
-  "purpose": "Replace the pre-asset placeholder launch contracts with source-backed contracts for the variants actually run in the study.",
+  "observed_at": "2026-10-20T07:52:56+08:00",
+  "status": "CURRENT_PREFLIGHT_AND_F1_Y1_CONTRACTS_CORRECTED",
+  "purpose": "Record source-backed contracts whose split labels match the completed full-budget baseline runs and their separate internal-selection routes.",
   "workspace": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019",
   "branch": "research/sports-rmot-strong-baselines-20261019",
   "preflight": {
@@ -27,22 +27,24 @@
     {
       "variant": "flexhook_f1_sports_trained",
       "path": "docs/RMOT_SPORTS_20261019/FLEXHOOK_F1_RUN_CONTRACT_20261020.json",
-      "sha256": "a7aa1dbdb0d49154aa56781de2890aee47d50b550d5d97931af21b13101a306d",
+      "sha256": "19cc1806f95c56c91bd97be993ad3d4609f4c8eb754984563d460f3282971963",
       "status": "READY",
       "ready_to_launch": true,
-      "training_split": "SPORTS_TRAIN_CORE",
-      "selection_split": "SPORTS_VAL",
+      "training_split": "TRAIN_FULL_22",
+      "evaluation_split": "HISTORICAL_TEST_19",
+      "selection_route": "flexhook_f1_internal_core_seed42: 17 train-core videos / 5 internal-val videos",
       "seed": 42,
       "tracker_policy": "common_physical_tracker_detector_outputs"
     },
     {
       "variant": "yestrack_y1_sports_lora",
       "path": "docs/RMOT_SPORTS_20261019/YESTRACK_Y1_RUN_CONTRACT_20261020.json",
-      "sha256": "fb36e5b452d62c69d34558bb812856d52c4439441470222156cba04597cfe09f",
+      "sha256": "f9a26c1a86778cfecfe6e356bec24b77d98d626e1fb2499f0bf9617f0d4221c5",
       "status": "READY",
       "ready_to_launch": true,
-      "training_split": "SPORTS_TRAIN_CORE",
-      "selection_split": "SPORTS_VAL",
+      "training_split": "TRAIN_FULL_22",
+      "evaluation_split": "HISTORICAL_TEST_19",
+      "selection_route": "yestrack_y1_sports_core_lora_seed42: 17 train-core videos / 5 internal-val videos; threshold 0.8",
       "seed": 42,
       "tracker_policy": "common_physical_tracker_detector_outputs"
     }
@@ -52,6 +54,6 @@
     "contract_gate": "venv/bin/python scripts/run_contract.py --check <contract> --require-ready",
     "gpu_jobs_changed": false,
     "test_gt_used_as_model_or_tracker_input": false,
-    "claim_boundary": "This phase records reproducible launch metadata and does not add or revise any metric claim. Formal test metrics still require successful evaluator manifests."
+    "claim_boundary": "The full-budget F1/Y1 training routes use 22 train videos / 181 expressions. Checkpoint and threshold selection are represented by separate core/internal-val runs; historical test remains an evaluation-only split. This phase records metadata and does not add or revise any metric claim."
   }
 }

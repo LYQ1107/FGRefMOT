@@ -4,8 +4,8 @@
     "git": {
       "branch": "research/sports-rmot-strong-baselines-20261019",
       "clean": false,
-      "head": "601b4c978750572bd6bb5e9d3189a4840de6e19f",
-      "status": "?? docs/RMOT_SPORTS_20261019/FLEXHOOK_F1_RUN_CONTRACT_20261020.json",
+      "head": "8c299a972f458ac7032b8d352292ab95d27a9758",
+      "status": "M docs/RMOT_SPORTS_20261019/FLEXHOOK_F1_RUN_CONTRACT_20261020.json",
       "workspace": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019"
     },
     "official_source_commits": {
@@ -43,7 +43,7 @@
     "python_executable": "/data3/liuyeqiang/.venvs/fgrefmot-rmot-sports-20261019/bin/python",
     "python_version": "3.10.21"
   },
-  "generated_at": "2026-10-19T23:39:37.018988+00:00",
+  "generated_at": "2026-10-19T23:52:32.043448+00:00",
   "inputs": {
     "assets": {
       "common_sports_tracker": {
@@ -247,7 +247,7 @@
     "tracker_outputs_must_be_common_across_methods": true
   },
   "protocol": {
-    "evaluation_split": "SPORTS_VAL",
+    "evaluation_split": "HISTORICAL_TEST_19",
     "hyperparameters": {
       "batch_size": 8,
       "epochs": 1,
@@ -268,13 +268,16 @@
       "negative_downsample": 0.5,
       "re_refer_lower": 0.2,
       "re_refer_thresh": 0.8,
-      "seed": 42
+      "seed": 42,
+      "selection_route": "yestrack_y1_sports_core_lora_seed42 on SPORTS_VAL; threshold 0.8 fixed before historical evaluation",
+      "train_expressions": 181,
+      "train_videos": 22
     },
     "launch_command": [
       "/data3/liuyeqiang/.venvs/fgrefmot-rmot-sports-20261019/bin/python",
       "scripts/yestrack_sportsmot_adapter.py",
       "--layout-root",
-      "runs/yestrack_sports_layout_20261019_v1",
+      "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/runs/yestrack_sports_layout_20261019_v1",
       "--model_name",
       "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/assets/pretrained/yestrack/Qwen3-VL-2B-Instruct",
       "--batch_size",
@@ -316,7 +319,7 @@
       ]
     },
     "tracker_policy": "common_physical_tracker_detector_outputs",
-    "train_split": "SPORTS_TRAIN_CORE"
+    "train_split": "TRAIN_FULL_22"
   },
   "ready_to_launch": true,
   "schema_version": 1,

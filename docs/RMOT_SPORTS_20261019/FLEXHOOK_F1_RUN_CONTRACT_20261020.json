@@ -4,7 +4,7 @@
     "git": {
       "branch": "research/sports-rmot-strong-baselines-20261019",
       "clean": true,
-      "head": "601b4c978750572bd6bb5e9d3189a4840de6e19f",
+      "head": "8c299a972f458ac7032b8d352292ab95d27a9758",
       "status": "",
       "workspace": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019"
     },
@@ -17,6 +17,11 @@
         "path": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/configs/official_sources.env.example",
         "sha256": "5fed05ac82cb21cfcba8bffa4d76db153d15f0377b453b61335074e2d22b48a4",
         "size_bytes": 627
+      },
+      "flexhook_runtime_manifest": {
+        "path": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_f1_sports_trained_seed42/RUN_MANIFEST.json",
+        "sha256": "025d1621e00b0cf5ebaa97be27db44eed410bfd704bd641c6275ecc4673105a8",
+        "size_bytes": 18736
       },
       "scripts/preflight_baseline_assets.py": {
         "path": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/scripts/preflight_baseline_assets.py",
@@ -38,7 +43,7 @@
     "python_executable": "/data3/liuyeqiang/.venvs/fgrefmot-rmot-sports-20261019/bin/python",
     "python_version": "3.10.21"
   },
-  "generated_at": "2026-10-19T23:39:32.776688+00:00",
+  "generated_at": "2026-10-19T23:52:27.349881+00:00",
   "inputs": {
     "assets": {
       "common_sports_tracker": {
@@ -266,7 +271,7 @@
     "tracker_outputs_must_be_common_across_methods": true
   },
   "protocol": {
-    "evaluation_split": "SPORTS_VAL",
+    "evaluation_split": "HISTORICAL_TEST_19",
     "hyperparameters": {
       "base_lr": 1e-05,
       "batch_size": 10,
@@ -282,9 +287,12 @@
       "sample_frame_len": 8,
       "sample_frame_num": 4,
       "sample_frame_stride": 30,
+      "selection_route": "flexhook_f1_internal_core_seed42 on SPORTS_VAL before historical evaluation",
       "text": "roberta",
       "text_len": 25,
       "tracker_root": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/assets/pretrained/common_tracker/sambamotr_dab_refersports_train_20261019",
+      "train_expressions": 181,
+      "train_videos": 22,
       "val_batch_size": 40,
       "val_sample_expression_num": 8,
       "val_sample_frame_stride": 24,
@@ -293,6 +301,11 @@
       "weight_decay": 0.0001
     },
     "launch_command": [
+      "/data3/liuyeqiang/.venvs/fgrefmot-rmot-sports-20261019/bin/python",
+      "scripts/launch_flexhook.py",
+      "--runtime-root",
+      "runs/flexhook_runtime_20261019",
+      "--",
       "/data3/liuyeqiang/.venvs/fgrefmot-rmot-sports-20261019/bin/python",
       "third_party/FlexHook/main.py",
       "--cfg",
@@ -311,19 +324,21 @@
       "src",
       "--opts",
       "DATA.DATASET",
-      "SportsMOT",
+      "mix",
       "DATA.TRAIN",
-      "SportsMOT",
+      "[SportsMOT]",
       "DATA.TEST",
-      "SportsMOT",
+      "[SportsMOT]",
       "SEED",
       "42",
       "data_root",
-      "runs/flexhook_sports_layout_20261019_v2",
+      "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/runs/flexhook_sports_layout_20261019_v2",
       "val_data_root",
-      "runs/flexhook_sports_layout_20261019_v2",
+      "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/runs/flexhook_sports_layout_20261019_v2",
       "track_root",
-      "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/assets/pretrained/common_tracker/sambamotr_dab_refersports_train_20261019"
+      "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/assets/pretrained/common_tracker/sambamotr_sportsmot_dab/tracker_outputs",
+      "ROBERTA_PATH",
+      "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/assets/pretrained/flexhook/roberta-base"
     ],
     "seed": 42,
     "thresholds": {
@@ -339,7 +354,7 @@
       ]
     },
     "tracker_policy": "common_physical_tracker_detector_outputs",
-    "train_split": "SPORTS_TRAIN_CORE"
+    "train_split": "TRAIN_FULL_22"
   },
   "ready_to_launch": true,
   "schema_version": 1,

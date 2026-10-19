@@ -1,11 +1,15 @@
 # Phase 96 — current source-backed run contracts
 
-Status: `CURRENT_PREFLIGHT_AND_F1_Y1_CONTRACTS_READY` at 07:39:47 CST.
+Status: `CURRENT_PREFLIGHT_AND_F1_Y1_CONTRACTS_CORRECTED` at 07:52:56 CST.
 
 The original method-level contracts were generated before the external assets
 and common tracker were installed, so they intentionally described a pending
 launch.  I reran the finite-file preflight against the current NAS assets and
-generated source-backed contracts for the two variants that are actually used:
+generated source-backed contracts for the two full-budget baseline routes.  I
+also corrected the split labels against the completed run manifests: both full
+routes train on all 22 training videos/181 expressions, while separate core
+runs provide the 17-video/136-expression training core and five-video/45-expression
+internal selection evidence.
 
 - `FLEXHOOK_F1_RUN_CONTRACT_20261020.json` is `READY` for the Sports-trained
   FlexHook route.
@@ -15,10 +19,11 @@ generated source-backed contracts for the two variants that are actually used:
 The aggregate preflight still reports `PENDING` only because the optional
 zero-shot/task-checkpoint assets are absent.  Those assets are not required by
 F1 or Y1, and the variant-specific contract gate excludes them.  Both contracts
-record the 17-video training core, the five-video internal selection split,
-seed 42, the fixed common detector-output tracker, explicit thresholds, and the
-actual launch command.  The preflight and contract files include SHA-256
-provenance in the machine-readable companion JSON.
+record the full 22-video training route, the historical 19-video evaluation
+layout, seed 42, the fixed common detector-output tracker, explicit thresholds,
+and the actual launch command.  Each contract also names its separate internal
+selection route.  The preflight and contract files include SHA-256 provenance in
+the machine-readable companion JSON.
 
 Validation commands:
 

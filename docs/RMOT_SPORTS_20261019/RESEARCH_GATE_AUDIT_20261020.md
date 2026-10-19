@@ -110,10 +110,12 @@ validation/historical metrics while leaving the YesTrack historical row as
 retained under the ignored live-run directory and is not treated as a final
 comparison.
 
-Phase 96 records a fresh hash-based asset preflight and source-backed
-variant-specific run contracts. The aggregate preflight remains pending only
-for the optional zero-shot/task-checkpoint assets; both the F1 Sports-trained
-FlexHook contract and the Y1 Sports-LoRA contract pass `--require-ready` with
-the current common tracker, layouts, explicit protocol values and actual
-launch commands. This metadata update does not change any live GPU job or
-promote nonterminal evaluation output into a metric.
+Phase 96 records a fresh hash-based asset preflight and corrected
+source-backed variant-specific run contracts. The full-budget F1 and Y1
+contracts now match their manifests (22 training videos/181 expressions and a
+19-video historical evaluation layout), while the separate core/internal-val
+runs remain the selection routes. The aggregate preflight remains pending only
+for optional zero-shot/task-checkpoint assets; both contracts pass
+`--require-ready` with the current common tracker, layouts, explicit protocol
+values and actual launch commands. This metadata update does not change any
+live GPU job or promote nonterminal evaluation output into a metric.
