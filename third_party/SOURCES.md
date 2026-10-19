@@ -30,6 +30,14 @@ pretrained weights, datasets, environment installation, training, or evaluation
 were performed. The script refuses non-empty destinations, so it should not
 be rerun against these populated directories.
 
+The Refer-Sports evaluator applies the tracked
+`patches/yestrack_efficiency.patch` to the isolated YesTrack checkout at
+runtime. It only adds timing and peak-memory fields to
+`overall_infer_time.json`; the pinned model and inference decisions are
+unchanged. The adapter records the patch SHA-256 in its evaluation manifest,
+so a future run can verify the exact instrumentation applied to the upstream
+source.
+
 The following items remain explicitly unavailable until independently verified:
 
 * pretrained weights and their checksums;
