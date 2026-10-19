@@ -15,10 +15,18 @@ On the current V100 engineering probe, original Mamba QIM latency at 20 active t
 ## What cannot be claimed yet?
 
 The local SportsMOT image tree, `labels_with_ids`, expressions, and global-ID
-manifest have now been audited and agree, so a fixed development comparison is
-being evaluated on real data. The published Test images still have no matching
-local ground-truth labels; therefore historical Test HOTA/AssA/IDF1/IDSW, a
-reproducible 0.29-HOTA attribution, and a final paper conclusion must not be
-claimed until the Test GT/protocol is supplied. Development results will be
-reported with their exact split and frame coverage.
+manifest have now been audited and agree. The four step-200 QIM-only checkpoints
+have been evaluated on the frozen four-video development split (2,621 frames,
+one expression per video, all frames): Standard HOTA/IDF1/AssA =
+0.0432/0.0078/0.1534, LSTM = 0.0284/0.0065/0.0108, Temporal Attention =
+0.6376/0.6723/0.6707, and Original Mamba = 0.7328/0.7458/0.6254. The
+corresponding IDSW sums are 1391, 4113, 44, and 74. These are explicitly
+development results, not historical Test claims.
+
+The published Test images still have no matching local ground-truth labels;
+therefore historical Test HOTA/AssA/IDF1/IDSW, a reproducible 0.29-HOTA
+attribution, and a final paper conclusion must not be claimed until the Test
+GT/protocol is supplied. The real-image efficiency benchmark is reported
+separately from the synthetic engineering probe and is still running.
+
 

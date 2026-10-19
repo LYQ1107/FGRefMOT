@@ -1,5 +1,6 @@
-variant,source_status,protocol,HOTA,DetA,AssA,IDF1,IDSW,referring_F1,notes
-standard,REIMPLEMENTED_VARIANT,FINAL_TEST,,,,,,,Not run: SportsMOT image/labels unavailable
-lstm,REIMPLEMENTED_VARIANT,FINAL_TEST,,,,,,,Not run: SportsMOT image/labels unavailable
-temporal_attention,REIMPLEMENTED_VARIANT,FINAL_TEST,,,,,,,Not run: SportsMOT image/labels unavailable
-mamba,ORIGINAL_MAMBA,FINAL_TEST,,,,,,,Not run: SportsMOT image/labels unavailable
+variant,source_status,protocol,HOTA,DetA,AssA,IDF1,IDSW_sum,IDSW_mean_per_sequence,referring_F1,historical_test_status,notes
+standard,REIMPLEMENTED_VARIANT,STEP200_DEV_FULL,0.0432081904,0.0123929785,0.1533831670,0.0078416752,1391,347.75,0.0714309626,GT_MISSING,"4 videos; 2,621 frames; one expression/video; all frames"
+lstm,REIMPLEMENTED_VARIANT,STEP200_DEV_FULL,0.0283729375,0.0809070816,0.0108260954,0.0064745215,4113,1028.25,0.2359990516,GT_MISSING,"4 videos; 2,621 frames; one expression/video; all frames"
+temporal_attention,REIMPLEMENTED_VARIANT,STEP200_DEV_FULL,0.6375986377,0.6259020923,0.6706936402,0.6723358467,44,11.00,0.7663874761,GT_MISSING,"4 videos; 2,621 frames; one expression/video; all frames"
+mamba,ORIGINAL_MAMBA,STEP200_DEV_FULL,0.7327523194,0.8695473862,0.6253959570,0.7458465337,74,18.50,0.9368380886,GT_MISSING,"4 videos; 2,621 frames; one expression/video; all frames"
+

@@ -1,6 +1,6 @@
 # FGRefMOT original QIM ablation — current report
 
-Status: **FORMAL DEVELOPMENT RUN IN PROGRESS / HISTORICAL TEST GT STILL MISSING**.
+Status: **STEP-200 FULL DEVELOPMENT EVALUATION COMPLETE / LONG RUN IN PROGRESS / HISTORICAL TEST GT STILL MISSING**.
 
 Completed in this snapshot:
 
@@ -17,11 +17,14 @@ Completed in this snapshot:
 - one successful real-data full-model training smoke.
 - four real-data, QIM-only 200-step runs with the same optimizer/data protocol;
 - fixed development-split smoke evaluation for all four QIM variants.
+- full step-200 development evaluation for all four QIM variants over 4 videos and
+  2,621 frames;
+- Mamba step-200 full-development result pushed to the research branch.
 
 Still in progress or blocked:
 
 - completion of the 5k/20k/60k/120k checkpoints (four nodes are running continuously);
-- full development validation over the frozen protocol;
+- the real SportsMOT image benchmark (decode/transform plus prepared-GPU latency);
 - historical Test HOTA/DetA/AssA/IDF1/IDSW, because the local Test tree has no matching GT;
 - multi-seed/partial-unfreeze experiments;
 - formal paper-level Full-model FPS on real SportsMOT clips.
@@ -38,4 +41,22 @@ These are real metrics from the frozen four-video development validation list, o
 | Original Mamba | 0.9338 | 0.9787 | 0.9237 | 0.9445 | 0.9855 | 0.0 | 0.4942 |
 
 The machine-readable results are `reports/qim_ablation/*_step200_dev_smoke.json`. The original Mamba 200-step log recorded one no-gradient QIM batch as an explicit no-op; it did not alter the optimizer state or fabricate a metric.
+
+## Step-200 full development evaluation
+
+These are real metrics from the same frozen four-video development validation list,
+one expression per video, all frames, and the UNKNOWN-safe referring protocol. The
+four sequences contain 2,621 frames in total. They are development results, not
+historical Test results; the local Test tree still has no matching ground truth.
+
+| QIM | HOTA | HOTA@0.5 | DetA | AssA | IDF1 | IDSW sum | IDSW mean/sequence | Referring F1 |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| Standard | 0.0432 | 0.0454 | 0.0124 | 0.1534 | 0.0078 | 1391 | 347.75 | 0.0714 |
+| LSTM | 0.0284 | 0.0309 | 0.0809 | 0.0108 | 0.0065 | 4113 | 1028.25 | 0.2360 |
+| Temporal Attention | 0.6376 | 0.6704 | 0.6259 | 0.6707 | 0.6723 | 44 | 11.00 | 0.7664 |
+| Original Mamba | 0.7328 | 0.7730 | 0.8695 | 0.6254 | 0.7458 | 74 | 18.50 | 0.9368 |
+
+The exact per-sequence results are stored in
+`reports/qim_ablation/{standard,lstm,temporal_attention,mamba}_step200_dev_full.json`.
+
 

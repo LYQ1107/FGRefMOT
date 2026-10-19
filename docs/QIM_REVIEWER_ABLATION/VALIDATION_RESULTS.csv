@@ -1,5 +1,6 @@
-variant,protocol,status,HOTA,DetA,AssA,IDF1,IDSW,reason
-standard,Refer-Sports development,NOT_RUN,,,,,,SportsMOT image/labels unavailable
-lstm,Refer-Sports development,NOT_RUN,,,,,,SportsMOT image/labels unavailable
-temporal_attention,Refer-Sports development,NOT_RUN,,,,,,SportsMOT image/labels unavailable
-mamba,Refer-Sports development,NOT_RUN,,,,,,SportsMOT image/labels unavailable
+variant,protocol,status,HOTA,DetA,AssA,IDF1,IDSW_sum,IDSW_mean_per_sequence,reason
+standard,Refer-Sports development step200,COMPLETE,0.0432081904,0.0123929785,0.1533831670,0.0078416752,1391,347.75,"4 videos/2,621 frames; historical Test GT missing"
+lstm,Refer-Sports development step200,COMPLETE,0.0283729375,0.0809070816,0.0108260954,0.0064745215,4113,1028.25,"4 videos/2,621 frames; historical Test GT missing"
+temporal_attention,Refer-Sports development step200,COMPLETE,0.6375986377,0.6259020923,0.6706936402,0.6723358467,44,11.00,"4 videos/2,621 frames; historical Test GT missing"
+mamba,Refer-Sports development step200,COMPLETE,0.7327523194,0.8695473862,0.6253959570,0.7458465337,74,18.50,"4 videos/2,621 frames; historical Test GT missing"
+
