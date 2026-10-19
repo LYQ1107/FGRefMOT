@@ -58,16 +58,24 @@
     "selection_finalized": false
   },
   "observed_progress": {
-    "observed_at": "2026-10-20T00:07:20+08:00",
-    "epoch_completed": 8,
-    "training_epoch_in_progress": 9,
+    "observed_at": "2026-10-20T00:11:43+08:00",
+    "epoch_completed": 9,
+    "training_epoch_in_progress": 10,
     "internal_validation": {
       "split": "5-video/45-expression internal validation",
+      "f1": 72.339,
+      "acc1": 80.497,
+      "precision": 59.006,
+      "recall": 93.456,
+      "policy": "diagnostic checkpoint candidate only; final selection remains pending"
+    },
+    "best_internal_validation": {
+      "epoch": 8,
       "f1": 73.702,
       "acc1": 82.338,
       "precision": 62.071,
       "recall": 90.695,
-      "policy": "diagnostic checkpoint candidate only; final selection remains pending"
+      "checkpoint": "ckpt_epoch_best_0.pth"
     },
     "checkpoint_candidate": {
       "path": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_f1_internal_core_seed42/ckpt_epoch_best_0.pth",
