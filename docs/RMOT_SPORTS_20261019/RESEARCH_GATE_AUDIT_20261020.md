@@ -102,3 +102,10 @@ Phase 88 records the 07:11:03 non-GPU regression check: the repository test
 suite completed with 78 passed tests and two known deprecation warnings. This
 verification does not change any live GPU run or convert partial outputs into
 metrics.
+
+Phase 89 records the 07:13:27 baseline-table readiness check. The conservative
+builder produced nine rows and correctly extracted FlexHook F1's completed
+validation/historical metrics while leaving the YesTrack historical row as
+`NOT_RUN` because its terminal manifest is absent. The generated table is
+retained under the ignored live-run directory and is not treated as a final
+comparison.

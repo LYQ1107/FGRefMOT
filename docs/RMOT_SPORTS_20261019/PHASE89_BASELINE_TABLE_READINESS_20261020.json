@@ -1,0 +1,23 @@
+{
+  "schema_version": "rmot-sports-phase-0.1",
+  "phase": 89,
+  "title": "Conservative baseline-table readiness check",
+  "status": "PASSED_PARTIAL_ROWS_EXPECTED",
+  "observed_at": "2026-10-20T07:13:27+08:00",
+  "command": "/data3/liuyeqiang/.venvs/fgrefmot-rmot-sports-20261019/bin/python scripts/build_baseline_table.py --nas-root /data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019 --output runs/baseline_table_live_20261020",
+  "outputs": {
+    "csv": "runs/baseline_table_live_20261020/BASELINE_TABLE.csv",
+    "json": "runs/baseline_table_live_20261020/BASELINE_TABLE.json",
+    "row_count": 9,
+    "metric_policy": "VALIDATION_AND_FORMAL_METRICS_REQUIRE_COMPLETED_MANIFESTS; OTHERWISE_NOT_RUN"
+  },
+  "checks": {
+    "flexhook_f1_validation_hota": "71.241265",
+    "flexhook_f1_formal_hota": "68.385415",
+    "flexhook_f1_status": "FORMAL_EVAL_SUCCEEDED",
+    "yestrack_y1_validation_hota": "74.652451",
+    "yestrack_y1_formal_hota": "NOT_RUN",
+    "yestrack_y1_status": "TRAINING_SUCCEEDED_FORMAL_EVAL_PENDING"
+  },
+  "claim_boundary": "The table builder is ready for the terminal YesTrack manifest, but this live table is not a final baseline comparison and does not infer metrics from partial prediction files."
+}
