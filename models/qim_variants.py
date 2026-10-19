@@ -19,6 +19,12 @@ from torch import nn
 from models.structures import Boxes, Instances, pairwise_iou
 from util import box_ops
 from util.misc import inverse_sigmoid
+from .qim_mamba import (
+    OrderedBiMambaMixer,
+    ReliabilityHybridMambaMixer,
+    TrackwiseTemporalMixer,
+)
+from .qim_mamba.shared_utils import Mamba as MambaImplementation
 
 
 def _random_drop_tracks(track_instances: Instances, drop_probability: float) -> Instances:
@@ -320,11 +326,139 @@ class TemporalAttentionQIM(_VariantQIMBase):
                                          query_pos, query_feat, tgt)
 
 
+class _MambaQIMBase(_VariantQIMBase):
+    """Common wrapper for the three lightweight, explicit Mamba1 designs."""
+
+    variant_name = "LIGHTWEIGHT_MAMBA"
+
+    def _reset_parameters(self):
+        # Preserve mamba_ssm's calibrated SSM initialization.  The common QIM
+        # projections and the new wrapper projections use the same Xavier
+        # policy as the existing reimplemented variants.
+        mamba_parameter_ids = set()
+        if MambaImplementation is not None:
+            for module in self.modules():
+                if isinstance(module, MambaImplementation):
+                    mamba_parameter_ids.update(id(parameter) for parameter in module.parameters())
+        for parameter in self.parameters():
+            if parameter.dim() > 1 and id(parameter) not in mamba_parameter_ids:
+                nn.init.xavier_uniform_(parameter)
+
+    def _build_variant_layers(self):
+        raise NotImplementedError
+
+    def _variant_mix(self, tgt, track_instances, data):
+        raise NotImplementedError
+
+    def _run_shared_core(self, track_instances: Instances, data=None) -> Instances:
+        if len(track_instances) == 0:
+            return track_instances
+
+        is_positive = track_instances.scores > 0.5
+        track_instances.ref_pts[is_positive] = inverse_sigmoid(
+            track_instances.pred_boxes[:, :2].detach().clone()[is_positive]
+        )
+
+        dim = track_instances.query_pos.shape[1]
+        out_embed = track_instances.output_embedding
+        query_pos = track_instances.query_pos[:, :dim // 2]
+        query_feat = track_instances.query_pos[:, dim // 2:]
+
+        if getattr(self, "disable_self_attention", False):
+            tgt = out_embed
+        else:
+            q = k = query_pos + out_embed
+            tgt2 = self.self_attn(
+                q[:, None], k[:, None], out_embed[:, None], need_weights=False
+            )[0][:, 0]
+            tgt = self.norm1(out_embed + self.dropout1(tgt2))
+
+        tgt = self._variant_mix(tgt, track_instances, data)
+        tgt2 = self.linear2(self.dropout(self.activation(self.linear1(tgt))))
+        tgt = self.norm2(tgt + self.dropout2(tgt2))
+        return self._finish_query_writer(
+            track_instances, is_positive, dim, query_pos, query_feat, tgt
+        )
+
+    def _update_track_embedding(self, track_instances: Instances, data=None) -> Instances:
+        return self._run_shared_core(track_instances, data=data)
+
+    def forward(self, data: dict) -> Instances:
+        active_track_instances = self._select_active_tracks(data)
+        active_track_instances = self._update_track_embedding(
+            active_track_instances, data=data
+        )
+        init_track_instances: Instances = data["init_track_instances"]
+        return Instances.cat([init_track_instances, active_track_instances])
+
+
+class OrderedBiMambaQIM(_MambaQIMBase):
+    """M1: geometry-ordered bidirectional Mamba over active tracks."""
+
+    variant_name = "LIGHTWEIGHT_MAMBA:mamba_ordered_bi"
+
+    def _build_variant_layers(self):
+        self.disable_self_attention = bool(
+            getattr(self.args, "qim_disable_self_attention", False)
+        )
+        self.mixer = OrderedBiMambaMixer(self.args, self.dim_in)
+
+    def _variant_mix(self, tgt, track_instances, data):
+        return self.mixer(tgt, track_instances)
+
+
+class TrackwiseTemporalMambaQIM(_MambaQIMBase):
+    """M2: causal per-track temporal Mamba over valid history tokens."""
+
+    variant_name = "LIGHTWEIGHT_MAMBA:trackwise_mamba1"
+
+    def _build_variant_layers(self):
+        self.disable_self_attention = bool(
+            getattr(self.args, "qim_disable_self_attention", False)
+        )
+        # The explicit name is intentional: this screening uses Mamba1.
+        self.mixer = TrackwiseTemporalMixer(self.args, self.dim_in)
+
+    def _variant_mix(self, tgt, track_instances, data):
+        history = (
+            track_instances.get("hist_embeds")
+            if track_instances.has("hist_embeds")
+            else None
+        )
+        padding = (
+            track_instances.get("hist_padding_masks")
+            if track_instances.has("hist_padding_masks")
+            else None
+        )
+        return self.mixer(history, padding, tgt)
+
+
+class ReliabilityHybridMambaQIM(_MambaQIMBase):
+    """M3: trackwise Mamba plus reliability-gated long identity memory."""
+
+    variant_name = "LIGHTWEIGHT_MAMBA:reliability_hybrid_mamba1"
+
+    def _build_variant_layers(self):
+        self.disable_self_attention = bool(
+            getattr(self.args, "qim_disable_self_attention", False)
+        )
+        self.mixer = ReliabilityHybridMambaMixer(self.args, self.dim_in)
+        self.requires_qim_memory = True
+        self.memory_dim = self.mixer.memory_dim
+        self.uses_rmot_text_gate = self.mixer.uses_rmot_text_gate
+
+    def _variant_mix(self, tgt, track_instances, data):
+        return self.mixer(tgt, track_instances, data=data)
+
+
 def build_qim_variant(args, variant: str, dim_in: int, hidden_dim: int, dim_out: int):
     variants = {
         "standard": StandardQIM,
         "lstm": LSTMQIM,
         "temporal_attention": TemporalAttentionQIM,
+        "mamba_ordered_bi": OrderedBiMambaQIM,
+        "mamba_trackwise": TrackwiseTemporalMambaQIM,
+        "mamba_reliability_hybrid": ReliabilityHybridMambaQIM,
     }
     key = variant.lower()
     if key not in variants:

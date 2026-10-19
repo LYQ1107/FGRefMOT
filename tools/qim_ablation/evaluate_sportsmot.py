@@ -197,7 +197,10 @@ def evaluate_expression(model, transform, video_dir, expression_path, device, ma
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--checkpoint', required=True)
-    parser.add_argument('--qim-variant', required=True, choices=('standard', 'lstm', 'temporal_attention', 'mamba'))
+    parser.add_argument('--qim-variant', required=True, choices=(
+        'standard', 'lstm', 'temporal_attention', 'mamba',
+        'mamba_ordered_bi', 'mamba_trackwise', 'mamba_reliability_hybrid',
+    ))
     parser.add_argument('--sportsmot-root', default='/data/DATASETS/TRACKING/JDE/SportsMOT/sportsmot_publish')
     parser.add_argument('--expression-root', default='/data1/liuyeqiang/SportsMOT/expression')
     parser.add_argument('--video-list', required=True)

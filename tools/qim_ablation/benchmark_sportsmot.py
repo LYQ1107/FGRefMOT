@@ -28,7 +28,10 @@ from main import get_args_parser
 from models import build_model
 
 
-VARIANTS = ('standard', 'lstm', 'temporal_attention', 'mamba')
+VARIANTS = (
+    'standard', 'lstm', 'temporal_attention', 'mamba',
+    'mamba_ordered_bi', 'mamba_trackwise', 'mamba_reliability_hybrid',
+)
 
 
 def load_model(checkpoint_path, variant, device):

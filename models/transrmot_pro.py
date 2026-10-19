@@ -646,6 +646,28 @@ class TransRMOT(nn.Module):
         track_instances.mem_padding_mask = torch.ones((len(track_instances), mem_bank_len), dtype=torch.bool, device=device)
         track_instances.save_period = torch.zeros((len(track_instances), ), dtype=torch.float32, device=device)
 
+        # M3-only long identity memory.  Instances already provides generic
+        # cat/index/to behavior for arbitrary tensor fields, so these fields
+        # naturally survive births, deletions, checkpoint reconstruction, and
+        # device transfers alongside the ordinary track state.
+        if getattr(self.track_embed, 'requires_qim_memory', False):
+            memory_dim = int(getattr(self.track_embed, 'memory_dim', dim // 2))
+            track_instances.qim_long_memory = torch.zeros(
+                (len(track_instances), memory_dim), dtype=torch.float32, device=device
+            )
+            track_instances.qim_long_memory_valid = torch.zeros(
+                (len(track_instances),), dtype=torch.bool, device=device
+            )
+            track_instances.qim_memory_age = torch.zeros(
+                (len(track_instances),), dtype=torch.long, device=device
+            )
+            track_instances.qim_previous_box = torch.zeros(
+                (len(track_instances), 4), dtype=torch.float32, device=device
+            )
+            track_instances.qim_memory_write_gate = torch.zeros(
+                (len(track_instances),), dtype=torch.float32, device=device
+            )
+
         return track_instances.to(self.query_embed.weight.device)
 
     def clear(self):
@@ -882,6 +904,12 @@ class TransRMOT(nn.Module):
         tmp = {}
         tmp['init_track_instances'] = self._generate_empty_tracks()
         tmp['track_instances'] = track_instances
+        if getattr(self.track_embed, 'uses_rmot_text_gate', False):
+            # Optional text is visible only to M3's short Query Writer path;
+            # the long identity memory gate never consumes referring scores or
+            # language features.
+            tmp['qim_text_features'] = text_result['text_word_features']
+            tmp['qim_text_mask'] = text_result['text_word_mask']
         if not is_last:
             out_track_instances = self.track_embed(tmp)
             frame_res['track_instances'] = out_track_instances

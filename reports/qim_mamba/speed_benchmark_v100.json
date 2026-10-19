@@ -1,0 +1,106 @@
+{
+  "contract": {
+    "device": "cuda",
+    "cuda_events": true,
+    "warmup": 5,
+    "repeats": 20,
+    "active_tracks": [
+      5,
+      20,
+      50
+    ],
+    "mamba_backend": "Mamba1:mamba_ssm.modules.mamba_simple.Mamba"
+  },
+  "variants": {
+    "mamba_ordered_bi": {
+      "qim_params": 1992000,
+      "variant_name": "LIGHTWEIGHT_MAMBA:mamba_ordered_bi",
+      "active_tracks": {
+        "5": {
+          "mean_ms": 8.59412477016449,
+          "median_ms": 6.67033576965332,
+          "p95_ms": 18.21752395629883,
+          "repeats": 20,
+          "peak_allocated_gb": 0.016839981079101562,
+          "peak_reserved_gb": 0.029296875
+        },
+        "20": {
+          "mean_ms": 7.451699233055114,
+          "median_ms": 7.028736114501953,
+          "p95_ms": 9.609625959396364,
+          "repeats": 20,
+          "peak_allocated_gb": 0.018098831176757812,
+          "peak_reserved_gb": 0.03125
+        },
+        "50": {
+          "mean_ms": 5.481675171852112,
+          "median_ms": 4.986879825592041,
+          "p95_ms": 7.894016075134279,
+          "repeats": 20,
+          "peak_allocated_gb": 0.020628929138183594,
+          "peak_reserved_gb": 0.033203125
+        }
+      }
+    },
+    "mamba_trackwise": {
+      "qim_params": 2032640,
+      "variant_name": "LIGHTWEIGHT_MAMBA:trackwise_mamba1",
+      "active_tracks": {
+        "5": {
+          "mean_ms": 6.152140808105469,
+          "median_ms": 6.475776195526123,
+          "p95_ms": 6.536960148811341,
+          "repeats": 20,
+          "peak_allocated_gb": 0.017498493194580078,
+          "peak_reserved_gb": 0.03515625
+        },
+        "20": {
+          "mean_ms": 19.12483854293823,
+          "median_ms": 17.104896545410156,
+          "p95_ms": 23.18510065078737,
+          "repeats": 20,
+          "peak_allocated_gb": 0.020245075225830078,
+          "peak_reserved_gb": 0.03515625
+        },
+        "50": {
+          "mean_ms": 49.037106895446776,
+          "median_ms": 38.4983024597168,
+          "p95_ms": 74.31316375732423,
+          "repeats": 20,
+          "peak_allocated_gb": 0.02575063705444336,
+          "peak_reserved_gb": 0.0390625
+        }
+      }
+    },
+    "mamba_reliability_hybrid": {
+      "qim_params": 2099329,
+      "variant_name": "LIGHTWEIGHT_MAMBA:reliability_hybrid_mamba1",
+      "active_tracks": {
+        "5": {
+          "mean_ms": 10.08010230064392,
+          "median_ms": 9.336832046508789,
+          "p95_ms": 14.65087976455689,
+          "repeats": 20,
+          "peak_allocated_gb": 0.017859935760498047,
+          "peak_reserved_gb": 0.0390625
+        },
+        "20": {
+          "mean_ms": 24.722483253479005,
+          "median_ms": 22.638591766357422,
+          "p95_ms": 32.81766242980957,
+          "repeats": 20,
+          "peak_allocated_gb": 0.020792484283447266,
+          "peak_reserved_gb": 0.0390625
+        },
+        "50": {
+          "mean_ms": 47.18177394866943,
+          "median_ms": 47.036415100097656,
+          "p95_ms": 56.16732177734376,
+          "repeats": 20,
+          "peak_allocated_gb": 0.026682376861572266,
+          "peak_reserved_gb": 0.0390625
+        }
+      }
+    }
+  }
+}

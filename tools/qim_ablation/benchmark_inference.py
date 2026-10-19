@@ -25,7 +25,10 @@ from models.structures import Instances
 from util.misc import nested_tensor_from_tensor_list
 
 
-VARIANTS = ('standard', 'lstm', 'temporal_attention', 'mamba')
+VARIANTS = (
+    'standard', 'lstm', 'temporal_attention', 'mamba',
+    'mamba_ordered_bi', 'mamba_trackwise', 'mamba_reliability_hybrid',
+)
 
 
 class _BatchEncoding(dict):
