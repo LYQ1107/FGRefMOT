@@ -12,6 +12,7 @@ never passed to the model or used to construct tracker inputs.
 from __future__ import annotations
 
 import argparse
+from contextlib import contextmanager
 import hashlib
 import json
 import logging
@@ -28,6 +29,18 @@ import numpy as np
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_SEQUENCE_LIST = REPO_ROOT / "configs" / "refer_sports_eval_sequences_20261019.txt"
+
+
+@contextmanager
+def _working_directory(path: Path):
+    """Temporarily provide the relative asset root expected by FlexHook."""
+
+    previous = Path.cwd()
+    os.chdir(path)
+    try:
+        yield
+    finally:
+        os.chdir(previous)
 
 
 def sha256_file(path: Path) -> str:
@@ -480,7 +493,20 @@ def run_flexhook_inference(
     logger.info("Building test-mode SportsMOT loader from fixed tracker outputs")
     _, dataset_val, _, data_loader_val, _ = build_loader(cfg)
     logger.info("Building FlexHook model and loading %s", checkpoint)
-    model = build_model(cfg).cuda()
+    # The upstream Swin constructor resolves ``pretrained/...`` relative to a
+    # symlink-only runtime root prepared beside the project.  Derive that root
+    # from the recorded RoBERTa path instead of relying on the caller's CWD.
+    # Do not resolve the RoBERTa symlink before deriving the root: the
+    # symlink-only runtime directory is the relative-asset namespace, while
+    # the resolved target lives on NAS under a different directory layout.
+    runtime_root = Path(str(cfg.ROBERTA_PATH)).expanduser().parent.parent
+    if not (runtime_root / "pretrained" / "swin_rope_mixed_tiny_patch4_window7_224").is_dir():
+        raise FileNotFoundError(
+            "FlexHook runtime is missing the Swin asset symlink: "
+            f"{runtime_root / 'pretrained' / 'swin_rope_mixed_tiny_patch4_window7_224'}"
+        )
+    with _working_directory(runtime_root):
+        model = build_model(cfg).cuda()
     load_ckpt_my(cfg, model, logger)
     model.eval()
     start = time.time()
