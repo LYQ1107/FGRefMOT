@@ -1,0 +1,44 @@
+{
+  "schema_version": "rmot-sports-phase-47-0.1",
+  "phase": 47,
+  "status": "TRACKER_RUNNING_MANIFEST_ATOMICITY_PATCH_VALIDATED",
+  "snapshot": {
+    "observed_at": "2026-10-19T17:35:12+08:00",
+    "tracker_progress": {
+      "sequence": "v_-6Os86HzwCs_c009",
+      "frame": 408,
+      "frame_total": 500,
+      "completed_video_count_observed": 7,
+      "video_count": 19
+    },
+    "yestrack_steps": 10231,
+    "yestrack_total_steps": 103988
+  },
+  "launcher_change": {
+    "path": "scripts/run_sambamotr_refersports_tracker.py",
+    "live_manifest_status": "RUNNING",
+    "atomic_publish": "same-directory temporary file followed by os.replace",
+    "fields_added": ["run_id", "launcher_pid", "started_at", "finished_at"],
+    "current_run_uses_patch": false,
+    "future_runs_use_patch": true
+  },
+  "active_runs": {
+    "tracker_launcher_pid": 2225078,
+    "tracker_physical_gpu": 0,
+    "yestrack_run_id": "yestrack_y1_sports_lora_seed42",
+    "yestrack_physical_gpu": 1,
+    "training_restarted": false,
+    "other_gpu_jobs_untouched": true
+  },
+  "evaluation_gate": {
+    "path": "/tmp/fgrefmot_wait_eval_20261019.sh",
+    "status": "WAITING_FOR_TRACKER_SUCCEEDED",
+    "policy": "ignore_stale_failed_manifest_while_current_launcher_is_alive"
+  },
+  "validation": {
+    "py_compile": "PASS",
+    "atomic_manifest_smoke_test": "PASS",
+    "pytest": "23 passed",
+    "metrics_claimed": false
+  }
+}

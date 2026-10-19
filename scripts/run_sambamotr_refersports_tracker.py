@@ -23,6 +23,7 @@ import os
 import shutil
 import subprocess
 import sys
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Iterable
 
@@ -42,6 +43,18 @@ def sha256_file(path: Path) -> str:
         for block in iter(lambda: handle.read(1024 * 1024), b""):
             digest.update(block)
     return digest.hexdigest()
+
+
+def _timestamp() -> str:
+    return datetime.now(timezone.utc).isoformat()
+
+
+def _atomic_write_json(path: Path, payload: dict[str, Any]) -> None:
+    """Publish a manifest without exposing a partially written JSON file."""
+
+    temporary = path.with_name(f".{path.name}.partial.{os.getpid()}")
+    temporary.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n")
+    os.replace(temporary, path)
 
 
 def read_sequence_list(path: str | Path) -> list[str]:
@@ -204,6 +217,7 @@ def run_tracker(
         raise FileNotFoundError("SambaMOTR model/config asset is incomplete")
 
     output_root.mkdir(parents=True, exist_ok=True)
+    manifest_path = output_root / "TRACKER_RUN_MANIFEST.json"
     model_link = output_root / "model.pth"
     _replace_path(model_link)
     model_link.symlink_to(checkpoint)
@@ -260,8 +274,15 @@ def run_tracker(
         "physical_gpu": physical_gpu,
         "data_staging": stage_manifest,
         "command": command,
+        "run_id": output_root.name,
+        "launcher_pid": os.getpid(),
+        "started_at": _timestamp(),
         "status": "PREPARED_NO_GPU_RUN" if not run else "RUNNING",
     }
+    result["manifest_path"] = str(manifest_path)
+    # Publish the RUNNING state before starting inference so a watcher can
+    # distinguish this invocation from a stale terminal manifest.
+    _atomic_write_json(manifest_path, result)
     if run:
         env = os.environ.copy()
         env["CUDA_VISIBLE_DEVICES"] = str(physical_gpu)
@@ -276,7 +297,8 @@ def run_tracker(
         result["exit_code"] = completed.returncode
         if completed.returncode != 0:
             result["status"] = "FAILED"
-            (output_root / "TRACKER_RUN_MANIFEST.json").write_text(json.dumps(result, indent=2, sort_keys=True) + "\n")
+            result["finished_at"] = _timestamp()
+            _atomic_write_json(manifest_path, result)
             raise RuntimeError(f"SambaMOTR submit exited with {completed.returncode}")
         actual = output_root / "train" / "refersports_train" / "tracker"
         formal = output_root / "tracker_outputs"
@@ -287,9 +309,8 @@ def run_tracker(
         result["outputs"] = [_validate_tracker_file(formal / f"{name}.txt") for name in names]
         result["output_count"] = len(result["outputs"])
         result["status"] = "SUCCEEDED"
-    manifest_path = output_root / "TRACKER_RUN_MANIFEST.json"
-    manifest_path.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n")
-    result["manifest_path"] = str(manifest_path)
+        result["finished_at"] = _timestamp()
+    _atomic_write_json(manifest_path, result)
     result["manifest_sha256"] = sha256_file(manifest_path)
     return result
 
