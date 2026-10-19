@@ -1,0 +1,52 @@
+{
+  "schema_version": "rmot-sports-phase-0.1",
+  "phase": 87,
+  "title": "Live health after timed tracker completion",
+  "status": "FORMAL_EVAL_AND_MULTI_SEED_TRAINING_HEALTHY",
+  "observed_at": "2026-10-20T07:08:00+08:00",
+  "formal_test": {
+    "run_id": "yestrack_y1_common_eval_20261019_v3",
+    "gpu": 1,
+    "manifest": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/yestrack_y1_common_eval_20261019_v3/YESTRACK_EVAL_MANIFEST.json",
+    "manifest_status": "ABSENT",
+    "completed_prediction_files": 60,
+    "expected_expression_count": 142,
+    "latest_prediction_mtime": "2026-10-20T07:05:22+08:00",
+    "process_alive": true,
+    "claim_boundary": "Partial prediction files are progress evidence only; no historical-test metric is claimed."
+  },
+  "multi_seed_training": [
+    {
+      "seed": 43,
+      "gpu": 2,
+      "run_id": "yestrack_y1_sports_lora_seed43_v2",
+      "manifest": "runs/gpu/yestrack_y1_sports_lora_seed43_v2/RUN_MANIFEST.json",
+      "status": "RUNNING",
+      "optimizer_steps_observed": 9048,
+      "planned_steps": 90523,
+      "process_alive": true
+    },
+    {
+      "seed": 44,
+      "gpu": 3,
+      "run_id": "yestrack_y1_sports_lora_seed44_v2",
+      "manifest": "runs/gpu/yestrack_y1_sports_lora_seed44_v2/RUN_MANIFEST.json",
+      "status": "RUNNING",
+      "optimizer_steps_observed": 8875,
+      "planned_steps": 90528,
+      "process_alive": true
+    }
+  ],
+  "completed_parallel_evidence": {
+    "timed_tracker_manifest": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/common_tracker_refersports_timed_20261020/TRACKER_RUN_MANIFEST.json",
+    "timed_tracker_status": "SUCCEEDED",
+    "timed_tracker_frame_count": 11900,
+    "timed_tracker_wall_seconds": 1580.7066358999873
+  },
+  "protocol_boundary": {
+    "train": "22 videos / 181 expressions; seeds 43/44 use the full registered train split",
+    "internal_selection": "fixed threshold 0.8 follows completed training and internal validation",
+    "historical_test": "test ground truth remains offline-only; no partial output is scored"
+  },
+  "next_step": "Wait for terminal formal YesTrack and seed43/44 manifests; then run fixed-threshold internal validation and the registered postbaseline ablation watchers."
+}

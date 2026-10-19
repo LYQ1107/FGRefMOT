@@ -92,3 +92,8 @@ efficiency join. All 19 historical-test sequences produced 11,900 frames in
 manifest with the selected FlexHook H8 historical evaluation gives 1.9088 FPS
 for the complete tracker-plus-referring pipeline. YesTrack historical timing
 and the remaining method-comparison gates are still open.
+
+Phase 87 records the 07:08:00 health check: the formal YesTrack evaluator was
+still alive after producing 60/142 prediction files, while seed43 and seed44
+were actively training at 9,048/90,523 and 8,875/90,528 optimizer steps.
+Neither partial output nor nonterminal training state is used as a metric.

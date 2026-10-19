@@ -1,6 +1,6 @@
 {
   "schema_version": "rmot-sports-gate-audit-0.1",
-  "observed_at": "2026-10-20T07:06:25+08:00",
+  "observed_at": "2026-10-20T07:08:00+08:00",
   "status": "IN_PROGRESS",
   "workspace": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019",
   "branch": "research/sports-rmot-strong-baselines-20261019",
@@ -52,7 +52,8 @@
         "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/yestrack_y1_internal_eval_20261019_v5/YESTRACK_EVAL_MANIFEST.json",
         "docs/RMOT_SPORTS_20261019/PHASE82_LIVE_PROGRESS_20261020.json",
         "docs/RMOT_SPORTS_20261019/PHASE83_LIVE_HEALTH_20261020.json",
-        "docs/RMOT_SPORTS_20261019/PHASE85_LIVE_PROGRESS_20261020.json"
+        "docs/RMOT_SPORTS_20261019/PHASE85_LIVE_PROGRESS_20261020.json",
+        "docs/RMOT_SPORTS_20261019/PHASE87_LIVE_HEALTH_20261020.json"
       ],
       "claim_boundary": "The full 22-video training manifest succeeded and its formal historical evaluation is running. The 17-video internal training and fixed five-video validation evaluation also succeeded; threshold 0.8 was selected on internal HOTA. The internal metric is selection evidence, while no full historical-test result is claimed until the formal manifest succeeds."
     },
@@ -91,7 +92,8 @@
         "docs/RMOT_SPORTS_20261019/PHASE81_LIVE_PROGRESS_20261020.json",
         "docs/RMOT_SPORTS_20261019/PHASE82_LIVE_PROGRESS_20261020.json",
         "docs/RMOT_SPORTS_20261019/PHASE83_LIVE_HEALTH_20261020.json",
-        "docs/RMOT_SPORTS_20261019/PHASE85_LIVE_PROGRESS_20261020.json"
+        "docs/RMOT_SPORTS_20261019/PHASE85_LIVE_PROGRESS_20261020.json",
+        "docs/RMOT_SPORTS_20261019/PHASE87_LIVE_HEALTH_20261020.json"
       ],
       "claim_boundary": "The isolated v2 seed43 and seed44 YesTrack trainings are in the optimizer loop; the v1 timestamp-collision attempts are invalidated with no accepted checkpoint. No multi-seed metric or stability claim is made until both v2 internal validation manifests succeed."
     },
