@@ -1,0 +1,27 @@
+{
+  "schema_version": "rmot-sports-phase-37-0.1",
+  "phase": 37,
+  "status": "PREPARED_GPU_EVAL_PENDING",
+  "branch": "research/sports-rmot-strong-baselines-20261019",
+  "adapter": "scripts/eval_flexhook_refersports.py",
+  "upstream_policy": "VENDORED_FLEXHOOK_UNMODIFIED",
+  "sequence_count": 19,
+  "expression_record_count": 142,
+  "tracker_input_policy": "FIXED_COMMON_SAMBAMOTR_OUTPUTS_ONLY",
+  "gt_or_labels_as_tracker_input": "REJECTED",
+  "offline_gt_policy": "GT_ROWS_ONLY_IN_EVALUATION_TREE",
+  "metrics": ["HOTA", "CLEAR", "Identity"],
+  "validation": {
+    "py_compile": "PASS",
+    "prepare_only_synthetic_tracker": "PASS",
+    "full_project_pytest": "23 passed",
+    "gpu_inference": "NOT_RUN",
+    "real_tracker_outputs": "PENDING"
+  },
+  "real_evaluation": {
+    "checkpoint": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/flexhook_f1_sports_trained_seed42/ckpt_epoch_best_0.pth",
+    "layout_root": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/runs/flexhook_sports_layout_20261019_v2",
+    "tracker_root": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/assets/pretrained/common_tracker/sambamotr_dab_refersports_train_20261019/tracker_outputs",
+    "run_condition": "AFTER_YESTRACK_Y1_AND_COMMON_TRACKER_GPU_RUN"
+  }
+}
