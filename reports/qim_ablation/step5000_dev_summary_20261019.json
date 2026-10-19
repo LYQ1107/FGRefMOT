@@ -1,54 +1,97 @@
 {
-  "protocol": "Refer-Sports development full evaluation",
-  "checkpoint_step": 5000,
+  "step": 5000,
+  "protocol": "development video split; one or more fixed expressions per video; all-object MOT metrics; UNKNOWN expression negatives ignored",
+  "video_list": "docs/QIM_REVIEWER_ABLATION/DEV_SPLIT_VAL.txt",
   "num_sequences": 4,
-  "num_frames": 2621,
-  "max_expressions_per_video": 1,
-  "historical_test_status": "GT_MISSING",
+  "frames": 2621,
   "variants": {
     "standard": {
-      "hota": 0.6720239767527608,
-      "hota_05": 0.7057927735870662,
-      "deta": 0.7019303134696133,
-      "assa": 0.6506022911100846,
-      "idf1": 0.7028251106952481,
-      "idsw_sum": 65,
-      "idsw_mean_per_sequence": 16.25,
-      "referring_f1": 0.909121849570457,
-      "report": "standard_step5000_dev_full.json"
+      "source": "standard_step5000_dev_full.json",
+      "checkpoint": "/data1/liuyeqiang/fg_v2_runs/qim_ablation_sports_20261019/standard/checkpoint_step00005000.pth",
+      "mean": {
+        "hota": 0.6720239767527608,
+        "hota_05": 0.7057927735870662,
+        "deta": 0.7019303134696133,
+        "assa": 0.6506022911100846,
+        "idf1": 0.7028251106952481,
+        "idsw_sum": 65,
+        "idsw_mean_per_sequence": 16.25,
+        "referring_f1": 0.909121849570457
+      },
+      "num_sequences": 4,
+      "frames": 2621,
+      "videos": [
+        "v_-6Os86HzwCs_c001",
+        "v_1yHWGw8DH4A_c047",
+        "v_4LXTUim5anY_c002",
+        "v_CW0mQbgYIF4_c004"
+      ]
     },
     "lstm": {
-      "hota": 0.6518509196370744,
-      "hota_05": 0.6834445939534433,
-      "deta": 0.6725520951106214,
-      "assa": 0.6462411334862005,
-      "idf1": 0.6754424470559118,
-      "idsw_sum": 62,
-      "idsw_mean_per_sequence": 15.5,
-      "referring_f1": 0.8606395978452659,
-      "report": "lstm_step5000_dev_full.json"
+      "source": "lstm_step5000_dev_full.json",
+      "checkpoint": "/data1/liuyeqiang/fg_v2_runs/qim_ablation_sports_20261019/lstm/checkpoint_step00005000.pth",
+      "mean": {
+        "hota": 0.6518509196370744,
+        "hota_05": 0.6834445939534433,
+        "deta": 0.6725520951106214,
+        "assa": 0.6462411334862005,
+        "idf1": 0.6754424470559118,
+        "idsw_sum": 62,
+        "idsw_mean_per_sequence": 15.5,
+        "referring_f1": 0.8606395978452659
+      },
+      "num_sequences": 4,
+      "frames": 2621,
+      "videos": [
+        "v_-6Os86HzwCs_c001",
+        "v_1yHWGw8DH4A_c047",
+        "v_4LXTUim5anY_c002",
+        "v_CW0mQbgYIF4_c004"
+      ]
     },
     "temporal_attention": {
-      "hota": 0.5431658111431414,
-      "hota_05": 0.5680501580888404,
-      "deta": 0.5007502091437501,
-      "assa": 0.5998667654768199,
-      "idf1": 0.5147630389445467,
-      "idsw_sum": 116,
-      "idsw_mean_per_sequence": 29.0,
-      "referring_f1": 0.7381873163774682,
-      "report": "temporal_attention_step5000_dev_full.json"
+      "source": "temporal_attention_step5000_dev_full.json",
+      "checkpoint": "/data1/liuyeqiang/fg_v2_runs/qim_ablation_sports_20261019/temporal_attention/checkpoint_step00005000.pth",
+      "mean": {
+        "hota": 0.5431658111431414,
+        "hota_05": 0.5680501580888404,
+        "deta": 0.5007502091437501,
+        "assa": 0.5998667654768199,
+        "idf1": 0.5147630389445467,
+        "idsw_sum": 116,
+        "idsw_mean_per_sequence": 29.0,
+        "referring_f1": 0.7381873163774682
+      },
+      "num_sequences": 4,
+      "frames": 2621,
+      "videos": [
+        "v_-6Os86HzwCs_c001",
+        "v_1yHWGw8DH4A_c047",
+        "v_4LXTUim5anY_c002",
+        "v_CW0mQbgYIF4_c004"
+      ]
     },
     "mamba": {
-      "hota": 0.722230414382451,
-      "hota_05": 0.7586885335746298,
-      "deta": 0.8233293621741027,
-      "assa": 0.6378402663924516,
-      "idf1": 0.7517049871957887,
-      "idsw_sum": 75,
-      "idsw_mean_per_sequence": 18.75,
-      "referring_f1": 0.9695142071736351,
-      "report": "mamba_step5000_dev_full.json"
+      "source": "mamba_step5000_dev_full.json",
+      "checkpoint": "/data1/liuyeqiang/fg_v2_runs/qim_ablation_sports_20261019/mamba/checkpoint_step00005000.pth",
+      "mean": {
+        "hota": 0.722230414382451,
+        "hota_05": 0.7586885335746298,
+        "deta": 0.8233293621741027,
+        "assa": 0.6378402663924516,
+        "idf1": 0.7517049871957887,
+        "idsw_sum": 75,
+        "idsw_mean_per_sequence": 18.75,
+        "referring_f1": 0.9695142071736351
+      },
+      "num_sequences": 4,
+      "frames": 2621,
+      "videos": [
+        "v_-6Os86HzwCs_c001",
+        "v_1yHWGw8DH4A_c047",
+        "v_4LXTUim5anY_c002",
+        "v_CW0mQbgYIF4_c004"
+      ]
     }
   }
 }
