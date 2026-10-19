@@ -1,6 +1,6 @@
 {
   "schema_version": "rmot-sports-gate-audit-0.1",
-  "observed_at": "2026-10-20T02:04:58+08:00",
+  "observed_at": "2026-10-20T02:13:07+08:00",
   "status": "IN_PROGRESS",
   "workspace": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019",
   "branch": "research/sports-rmot-strong-baselines-20261019",
@@ -32,13 +32,13 @@
     },
     {
       "id": "C_FLEXHOOK_NATIVE_BASELINE",
-      "status": "F1_COMPLETE_INTERNAL_CORE_IN_PROGRESS",
+      "status": "F1_COMPLETE_INTERNAL_SELECTION_COMPLETE",
       "evidence": [
         "docs/RMOT_SPORTS_20261019/PHASE60_FLEXHOOK_F1_COMPLETION.json",
         "docs/RMOT_SPORTS_20261019/PHASE70_FLEXHOOK_INTERNAL_CORE_TRAINING.json",
         "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/runs/gpu/flexhook_f1_internal_core_seed42/RUN_MANIFEST.json"
       ],
-      "claim_boundary": "F1 has a completed formal result; the strict core training and final internal checkpoint selection are still running. F0/F2 are not claimed."
+      "claim_boundary": "F1 training and the five-video internal checkpoint selection are complete, with a separate TrackEval manifest for the selected checkpoint. Historical test remains unrun; F0/F2 and any learned improvement are not claimed."
     },
     {
       "id": "D_YESTRACK_NATIVE_BASELINE",
@@ -87,7 +87,7 @@
         "docs/RMOT_SPORTS_20261019/PHASE74_EFFICIENCY_PROTOCOL.json",
         "docs/RMOT_SPORTS_20261019/PHASE75_FLEXHOOK_RESUME_STATE.json"
       ],
-      "claim_boundary": "NAS-direct artifact storage, synthetic archive checks, read-only measurement tooling, and a real patched one-GPU FlexHook smoke resume are recorded. Final online FPS, peak-memory comparison, multi-GPU recovery, and resuming the already-running strict core job remain outstanding."
+      "claim_boundary": "NAS-direct artifact storage, synthetic archive checks, read-only measurement tooling, and a real patched one-GPU FlexHook smoke resume are recorded. Final online FPS, complete peak-memory comparison, and multi-GPU recovery remain outstanding; the completed strict core job was launched before the resume patch."
     },
     {
       "id": "I_REPORT_AND_REMOTE_SYNC",
@@ -102,12 +102,6 @@
   ],
   "live_jobs_at_observation": [
     {
-      "run_id": "flexhook_f1_internal_core_seed42",
-      "status": "RUNNING",
-      "manifest": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/runs/gpu/flexhook_f1_internal_core_seed42/RUN_MANIFEST.json",
-      "log": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/runs/gpu/flexhook_f1_internal_core_seed42/flexhook_f1_internal_core_seed42.log"
-    },
-    {
       "run_id": "yestrack_y1_sports_lora_seed42_v2",
       "status": "RUNNING",
       "manifest": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/runs/gpu/yestrack_y1_sports_lora_seed42_v2/RUN_MANIFEST.json",
@@ -121,7 +115,6 @@
     }
   ],
   "next_gates": [
-    "complete FlexHook strict core training and internal checkpoint selection",
     "complete YesTrack full and internal training, then validate before historical test",
     "archive real FlexHook train-core/internal-val features and train/select the causal temporal head",
     "run registered proposed-method and baseline ablations after the baseline gate",

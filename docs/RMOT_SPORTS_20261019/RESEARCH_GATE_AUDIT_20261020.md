@@ -12,10 +12,12 @@ is offline TrackEval input only after checkpoint and method selection.
 The environment, NAS/data audit, split registry, fixed SambaMOTR tracker
 manifests, FlexHook F1 formal baseline, reproducible temporal-module tooling,
 read-only efficiency measurement tooling, and the fail-closed FlexHook
-resume-state patch have evidence in the cited phase reports. A real patched
-one-GPU resume smoke run also completed: it loaded epoch 1, continued at epoch
-2, saved a checkpoint, and exited successfully. The strict FlexHook core run
-and both YesTrack runs are still live.
+resume-state patch have evidence in the cited phase reports. The strict
+FlexHook core training and five-video internal TrackEval selection are now
+complete, and a real patched one-GPU resume smoke run also completed: it loaded
+epoch 1, continued at epoch 2, saved a checkpoint, and exited successfully.
+The feature archive/temporal pipeline and both YesTrack trainings are still
+active.
 The FlexHook frozen-score H0-H8 replay is a diagnostic control over a frozen
 checkpoint; it is not a learned temporal-head result.
 
