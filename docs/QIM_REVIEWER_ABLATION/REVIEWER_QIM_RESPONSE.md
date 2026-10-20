@@ -85,11 +85,9 @@ checkpoint logs. The measured checkpoint-cost records are available for steps
 5000 and 20000; the observed GPU-hours from the step-200 checkpoint timestamp
 are 1.713/1.772/1.760/1.845 at step 5000 and
 6.971/7.212/7.174/7.454 at step 20000 for
-Standard/LSTM/Temporal Attention/Original Mamba respectively. The Standard
-60k checkpoint is additionally observed at 22.136 GPU-hours; the other three
-60k values and all 120k values remain explicitly missing until their actual
-checkpoints are written. These are checkpoint-timestamp observations, not
-power-meter measurements.
+Standard/LSTM/Temporal Attention/Original Mamba respectively. These are
+checkpoint-timestamp observations, not power-meter measurements; 60k/120k
+fields remain explicitly missing until their checkpoints are written.
 
 The long-run logs also contain explicit no-gradient QIM batches: Standard at
 steps 1535, 3316, and 13539, and Original Mamba at steps 3624 and 12472 in the
