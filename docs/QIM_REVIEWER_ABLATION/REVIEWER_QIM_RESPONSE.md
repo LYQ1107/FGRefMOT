@@ -33,9 +33,20 @@ split, and exact step-200 resume. Their completed step-5000 development means
 0.6205/0.6263/0.6368/80, and M3 0.5628/0.5476/0.5900/121. The parameter
 counts are 1,992,000, 2,032,640, and 2,099,329 respectively. These are real
 development measurements over four videos and 2,621 frames; the 20k runs and
-their matched evaluations are still in progress, and no Test-set claim is made.
+their matched evaluations are now also complete: at step 20,000 the
+(HOTA/IDF1/AssA/IDSW sum) values are M1 0.6568748888/0.6681123116/0.6169121990/113,
+M2 0.6639157661/0.6851646777/0.6346569258/64, and M3
+0.7094399110/0.7331716865/0.6277113414/68. These are real development
+measurements over four videos and 2,621 frames; no Test-set claim is made.
 The detailed reports are in `docs/QIM_MAMBA_20261020/STEP5000_RESULTS.md` and
 `reports/qim_mamba/*_step5000_dev_full.json` on the lightweight branch.
+The step-200 real-image efficiency probe also records prepared-GPU/wall FPS of
+4.029/3.108 for M1, 3.612/2.794 for M2, and 3.894/3.021 for M3, with exact
+parameter, latency, and peak-memory fields in
+`docs/QIM_MAMBA_20261020/REAL_EFFICIENCY_RESULTS.csv`. M2 and M3 are marked
+diagnostic because their active-track counts grew during that engineering
+clip; these are not steady-state claims. The 60k/120k lightweight checkpoints
+and evaluations remain pending.
 
 ## What cannot be claimed yet?
 
