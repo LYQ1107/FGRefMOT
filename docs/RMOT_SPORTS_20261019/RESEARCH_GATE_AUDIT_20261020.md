@@ -152,3 +152,5 @@ Partial-output integrity refreshed at 2026-10-20T08:21:15+08:00 (Phase 108): 74/
 
 
 Partial-output integrity refreshed at 2026-10-20T08:23:34+08:00 (Phase 109): 75/142 files and 495,763 rows were checked with 0 format/identifier issues and 0 non-finite-value issues; no formal metric is claimed while the terminal manifest is absent.
+
+Partial-output integrity refreshed at 2026-10-20T08:26:46+08:00 (Phase 110): 76/142 files and 500,580 rows were checked with 0 format/identifier issues and 0 non-finite-value issues; no formal metric is claimed while the terminal manifest is absent. Seed43/44 are still active at 22604/90523 and 21916/90528 optimizer steps.
