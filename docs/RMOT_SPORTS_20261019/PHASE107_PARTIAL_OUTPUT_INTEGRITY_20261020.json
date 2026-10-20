@@ -1,0 +1,27 @@
+{
+  "schema_version": "rmot-sports-phase-0.1",
+  "phase": 107,
+  "title": "Partial formal YesTrack output integrity refresh",
+  "status": "PARTIAL_OUTPUT_FORMAT_VALIDATED_TERMINAL_METRICS_PENDING",
+  "observed_at": "2026-10-20T08:18:26+08:00",
+  "formal_run": {
+    "run_id": "yestrack_y1_common_eval_20261019_v3",
+    "manifest": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/yestrack_y1_common_eval_20261019_v3/YESTRACK_EVAL_MANIFEST.json",
+    "manifest_exists": false,
+    "prediction_files_observed": 73,
+    "prediction_files_expected": 142,
+    "nonempty_rows": 486129,
+    "unique_frames": 1825,
+    "frame_min": 1,
+    "frame_max": 1825,
+    "unique_track_ids": 35,
+    "format_issue_count": 0,
+    "finite_value_issue_count": 0
+  },
+  "issues": {
+    "format_examples": [],
+    "finite_value_examples": []
+  },
+  "claim_boundary": "Read-only partial-file integrity only; no historical-test metric is claimed until the terminal manifest is SUCCEEDED.",
+  "next_step": "Wait for the formal manifest, then verify complete output coverage and run the registered offline historical scorer."
+}

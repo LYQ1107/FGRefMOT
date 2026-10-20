@@ -143,3 +143,6 @@ Live snapshot refreshed at 2026-10-20T08:15:17+08:00 (Phase 105): the formal eva
 
 
 Activity probe refreshed at 2026-10-20T08:17:33+08:00 (Phase 106): the formal evaluator remained `Rl+` at about 346% CPU; over four seconds its `rchar` increased by 18,285,897 and `syscr` by 409 while the completed-file count stayed 72/142. The terminal manifest is still absent, so no historical-test metric is claimed.
+
+
+Partial-output integrity refreshed at 2026-10-20T08:18:26+08:00 (Phase 107): 73/142 files and 486,129 rows were checked with 0 format/identifier issues and 0 non-finite-value issues; no formal metric is claimed while the terminal manifest is absent.
