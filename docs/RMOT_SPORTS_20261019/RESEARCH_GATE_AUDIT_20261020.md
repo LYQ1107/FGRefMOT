@@ -127,3 +127,5 @@ of Phase 98. Seed43 and seed44 were still active at 18,205/90,523 and
 historical-test row and all postbaseline watchers remain pending.
 
 Live snapshot refreshed at 2026-10-20T08:03:48+08:00 (Phase 99): the formal YesTrack evaluator remains alive with 67/142 prediction files and no terminal manifest; seed 43 is at 18645/90,523 steps and seed 44 at 18119/90,528. These are progress observations only; formal-test and multi-seed metrics remain pending terminal manifests.
+
+Live snapshot refreshed at 2026-10-20T08:04:51+08:00 (Phase 100): formal YesTrack remains active with 68/142 partial prediction files; seed 43 is at 18826/90,523 steps and seed 44 at 18290/90,528. No terminal formal-test or multi-seed metric is claimed.

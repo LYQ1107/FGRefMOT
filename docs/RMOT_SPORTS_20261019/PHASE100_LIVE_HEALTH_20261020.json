@@ -1,0 +1,66 @@
+{
+  "schema_version": "rmot-sports-phase-0.1",
+  "phase": 100,
+  "title": "Live health after formal evaluator and multi-seed progress advance",
+  "status": "FORMAL_EVALUATION_AND_MULTI_SEED_TRAINING_IN_PROGRESS",
+  "observed_at": "2026-10-20T08:04:51+08:00",
+  "authoritative_checks": {
+    "formal_yestrack": {
+      "run_id": "yestrack_y1_common_eval_20261019_v3",
+      "gpu": 1,
+      "manifest": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/yestrack_y1_common_eval_20261019_v3/YESTRACK_EVAL_MANIFEST.json",
+      "manifest_status": "ABSENT",
+      "completed_prediction_files": 68,
+      "expected_expression_count": 142,
+      "latest_prediction_mtime": "2026-10-20T08:04:14+08:00",
+      "gpu_process_pid": 2708884,
+      "process_alive": true,
+      "process_stat": "Rl+",
+      "claim_boundary": "Partial prediction files are progress evidence only; no historical-test metric is claimed until the terminal manifest is SUCCEEDED."
+    },
+    "multi_seed_training": [
+      {
+        "seed": 43,
+        "gpu": 2,
+        "run_id": "yestrack_y1_sports_lora_seed43_v2",
+        "manifest": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/runs/gpu/yestrack_y1_sports_lora_seed43_v2/RUN_MANIFEST.json",
+        "manifest_status": "RUNNING",
+        "finished_at": null,
+        "progress": {
+          "optimizer_steps_observed": 18826,
+          "planned_steps": 90523,
+          "loss": 0.0149
+        },
+        "gpu_process_pid": 3078707,
+        "process_alive": true,
+        "process_stat": "Sl",
+        "log_mtime": "2026-10-20T08:04:52+08:00"
+      },
+      {
+        "seed": 44,
+        "gpu": 3,
+        "run_id": "yestrack_y1_sports_lora_seed44_v2",
+        "manifest": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/runs/gpu/yestrack_y1_sports_lora_seed44_v2/RUN_MANIFEST.json",
+        "manifest_status": "RUNNING",
+        "finished_at": null,
+        "progress": {
+          "optimizer_steps_observed": 18290,
+          "planned_steps": 90528,
+          "loss": 0.0176
+        },
+        "gpu_process_pid": 3078708,
+        "process_alive": true,
+        "process_stat": "Rl",
+        "log_mtime": "2026-10-20T08:04:52+08:00"
+      }
+    ],
+    "timed_tracker_status": "SUCCEEDED",
+    "timed_tracker_manifest": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/common_tracker_refersports_timed_20261020/TRACKER_RUN_MANIFEST.json"
+  },
+  "protocol_boundary": {
+    "full_train": "22 videos / 181 expressions; seed43/44 use the full registered train split",
+    "internal_selection": "17 train-core videos / 136 expressions plus 5 internal-val videos / 45 expressions; fixed threshold 0.8",
+    "historical_test": "19 videos / 142 expressions; test ground truth remains offline-only and is not used for training or selection"
+  },
+  "next_step": "Wait for terminal formal YesTrack and seed43/44 manifests; then run fixed-threshold internal validation, timing joins, and registered postbaseline ablations."
+}
