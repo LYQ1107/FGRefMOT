@@ -1,0 +1,61 @@
+{
+  "phase": 142,
+  "date": "2026-10-20",
+  "status": "MCBYTE_TRACKER_OUTPUTS_READY",
+  "user_directive": "Use the original SportsMOT/McByte route for FlexHook and YesTrack, but prevent test leakage because Refer-Sports evaluation videos are in official SportsMOT train.",
+  "methods": ["FlexHook", "YesTrack+McByte"],
+  "tracker": "McByte-SportsMOT",
+  "original_yestrack_tracker": "TempRMOT*",
+  "yestrack_shared_tracker_variant": "YesTrack+McByte",
+  "leakage_source": {
+    "official_sportsmot_train_video_count": 45,
+    "refer_sports_eval_video_count": 19,
+    "eval_videos_in_official_train": true,
+    "official_mcbyte_detector": "yolox_x_sports_mix.pth.tar",
+    "official_mcbyte_detector_used": false
+  },
+  "detector_protocol": {
+    "architecture": "YOLOX-X",
+    "initialization": "generic COCO yolox_x.pth",
+    "training_annotations": "clean_train.json",
+    "training_videos": 26,
+    "training_frames": 16674,
+    "training_boxes": 182427,
+    "evaluation_frames_in_training": false,
+    "evaluation_gt_in_training": false,
+    "validation_split": "official SportsMOT val only",
+    "training_config": "configs/mcbyte_yolox_x_loo19.py",
+    "fast_training": {
+      "epochs": 5,
+      "input_size": "512x896",
+      "global_batch_size": 64,
+      "gpu_count": 8,
+      "random_resize": false,
+      "mixup": false,
+      "validation_during_training": false,
+      "checkpoint": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/runs/gpu/mcbyte_yolox_x_fast5_20261020/mcbyte_yolox_x_loo19/latest_ckpt.pth.tar",
+      "checkpoint_sha256": "640d475899f2c38e273bed8a0e8ceb4b223f78c653d84bac2791c89f02562944",
+      "completed_at": "2026-10-20T11:28:40+08:00"
+    },
+    "split_manifest": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/assets/pretrained/common_tracker/mcbyte_leakage_safe_detector_loo19_20261020/SPLIT_MANIFEST.json"
+  },
+  "tracker_outputs": {
+    "manifest": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/assets/pretrained/common_tracker/mcbyte_sportsmot_loo19_fast5_20261020/track_results/TRACKER_MANIFEST.json",
+    "sequence_count": 19,
+    "used_ground_truth": false,
+    "used_evaluation_frames_for_training": false,
+    "same_files_for_flexhook_and_yestrack_mcbyte": true
+  },
+  "downstream_policy": {
+    "same_mcbyte_outputs_for_both_methods": true,
+    "yestrack_is_original_unmodified": false,
+    "sambamotr_runs_valid_for_final_protocol": false,
+    "metrics_releasable": false
+  },
+  "source_urls": {
+    "mcbyte": "https://github.com/tstanczyk95/McByte",
+    "mcbyte_installation": "https://github.com/tstanczyk95/McByte/blob/main/INSTALLATION.md",
+    "mixsort_training": "https://github.com/MCG-NJU/MixSort#training",
+    "yolox_coco_checkpoint": "https://github.com/Megvii-BaseDetection/YOLOX/releases/download/0.1.1rc0/yolox_x.pth"
+  }
+}

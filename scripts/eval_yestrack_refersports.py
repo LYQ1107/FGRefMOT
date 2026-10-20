@@ -156,6 +156,8 @@ def run_yestrack_inference(
     stability_boost: float = 0.3,
     enable_video_mode: bool = False,
     video_n_frames: int = 4,
+    use_4bit: bool = False,
+    fp16: bool = False,
 ) -> dict[str, Any]:
     results_root.mkdir(parents=True, exist_ok=True)
     timing_patch_sha256 = ensure_yestrack_efficiency_patch()
@@ -191,6 +193,10 @@ def run_yestrack_inference(
         str(results_root),
         "--resume",
     ]
+    if use_4bit:
+        command.append("--use_4bit")
+    if fp16:
+        command.append("--fp16")
     if stability_enable:
         command.extend(
             [
@@ -445,6 +451,21 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--enable-video-mode", action="store_true")
     parser.add_argument("--video-n-frames", type=int, default=4)
     parser.add_argument("--run-inference", action="store_true")
+    parser.add_argument(
+        "--inference-only",
+        action="store_true",
+        help="Run the model and write predictions, but defer TrackEval to a full merged result tree.",
+    )
+    parser.add_argument(
+        "--use-4bit",
+        action="store_true",
+        help="Load the upstream model with 4-bit bitsandbytes quantization.",
+    )
+    parser.add_argument(
+        "--fp16",
+        action="store_true",
+        help="Use float16 instead of the default bfloat16 model weights.",
+    )
     parser.add_argument("--json", action="store_true")
     return parser.parse_args(argv)
 
@@ -504,7 +525,31 @@ def main(argv: list[str] | None = None) -> int:
             stability_boost=args.stability_boost,
             enable_video_mode=args.enable_video_mode,
             video_n_frames=args.video_n_frames,
+            use_4bit=args.use_4bit,
+            fp16=args.fp16,
         )
+    if args.inference_only:
+        if not args.run_inference:
+            raise ValueError("--inference-only requires --run-inference")
+        payload["efficiency"] = _efficiency_record(
+            data_root=Path(args.data_root).expanduser().resolve(),
+            sequence_names=sequence_names,
+            inference=payload.get("inference"),
+        )
+        payload["evaluations"] = []
+        payload["status"] = "INFERENCE_SUCCEEDED"
+        manifest_path = output_root / "YESTRACK_EVAL_MANIFEST.json"
+        manifest_path.write_text(
+            json.dumps(_jsonable(payload), indent=2, sort_keys=True) + "\n",
+            encoding="utf-8",
+        )
+        payload["manifest_path"] = str(manifest_path)
+        payload["manifest_sha256"] = sha256_file(manifest_path)
+        if args.json:
+            print(json.dumps(_jsonable(payload), indent=2, sort_keys=True))
+        else:
+            print(f"yestrack_refersports_eval: {payload['status']}")
+        return 0
     payload["efficiency"] = _efficiency_record(
         data_root=Path(args.data_root).expanduser().resolve(),
         sequence_names=sequence_names,
