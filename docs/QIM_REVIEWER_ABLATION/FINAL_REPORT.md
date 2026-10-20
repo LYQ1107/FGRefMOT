@@ -103,6 +103,17 @@ Attention has the lowest IDSW sum. These rankings are not promoted to a final
 paper conclusion until the 60k/120k nodes and their matched efficiency/cost
 records are complete.
 
+## Step-60000 full development evaluation (partial milestone)
+
+The Standard 60k checkpoint has completed the same frozen four-video
+development evaluation (2,621 frames, one expression per video, UNKNOWN-safe
+referring protocol). It reports HOTA 0.6770, HOTA@0.5 0.7115, DetA 0.7318,
+AssA 0.6343, IDF1 0.7129, IDSW sum 58, and Referring F1 0.8968. The exact
+machine-readable result is `reports/qim_ablation/standard_step60000_dev_full.json`.
+The LSTM, Temporal Attention, and Original Mamba 60k evaluations are not yet
+available; therefore this partial milestone is not used to declare a final
+long-run ranking.
+
 ## Step-200 real SportsMOT image benchmark
 
 This is a full-model engineering benchmark on native images from

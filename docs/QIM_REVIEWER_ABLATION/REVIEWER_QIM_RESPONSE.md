@@ -68,7 +68,11 @@ they are not historical Test results. The exact 20k milestone is now also
 available: Standard/LSTM/Temporal Attention/Original Mamba HOTA/IDF1/AssA/IDSW
 sum are 0.6878/0.7172/0.6568/59, 0.7406/0.7721/0.6550/75,
 0.5633/0.5955/0.6829/30, and 0.7236/0.7540/0.6556/76 respectively. The
-60k/120k checkpoints and their evaluations are still running, so no final
+Standard's 60k checkpoint and matched full development evaluation are now
+available: HOTA/IDF1/AssA/IDSW sum = 0.6770/0.7129/0.6343/58 and referring
+F1 = 0.8968. This is still a four-video development result, not a Test-set
+claim. The LSTM, Temporal Attention, and Original Mamba 60k checkpoints, plus
+all 120k checkpoints and their evaluations, are still running, so no final
 long-run ranking or extrapolated training-cost claim is made yet.
 
 The published Test images still have no matching local ground-truth labels;

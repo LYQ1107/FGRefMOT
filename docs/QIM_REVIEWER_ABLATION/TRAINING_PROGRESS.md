@@ -20,6 +20,7 @@
 | Long-run no-gradient branches (current snapshot) | HANDLED / RECORDED | Standard steps 1535, 3316, 13539; Original Mamba steps 3624, 12472; explicit `NO_GRAD_STEP` no-op branch skips the optimizer step and is not a crash |
 | Real SportsMOT image benchmark | COMPLETE | 60-frame real clip, 5 warmup + 55 timed frames; `real_sportsmot_benchmark_step200.json` |
 | 20k training/evaluation node | COMPLETE | all four exact-resume checkpoints and full development evaluations are complete; 4 videos/2,621 frames |
+| Standard 60k training/evaluation node | COMPLETE (PARTIAL 60K MILESTONE) | `standard/checkpoint_step00060000.pth` and `reports/qim_ablation/standard_step60000_dev_full.json`; remaining three 60k nodes are still running |
 | 60k/120k training nodes | RUNNING | all four variants remain active; later checkpoints and evaluations are pending |
 | Historical Test HOTA/DetA/AssA/IDF1/IDSW | BLOCKED | test images exist, corresponding local GT labels do not |
 
