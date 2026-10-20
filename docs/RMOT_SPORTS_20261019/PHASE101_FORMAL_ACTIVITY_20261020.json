@@ -1,0 +1,71 @@
+{
+  "schema_version": "rmot-sports-phase-0.1",
+  "phase": 101,
+  "title": "Formal evaluator activity probe with live multi-seed progress",
+  "status": "FORMAL_EVALUATOR_ACTIVE_PARTIAL_OUTPUT_PENDING",
+  "observed_at": "2026-10-20T08:06:34+08:00",
+  "probe": {
+    "pid": 2708884,
+    "window_seconds": 3,
+    "before": {
+      "rchar": 27456391185,
+      "wchar": 27799922,
+      "syscr": 765162,
+      "syscw": 1663,
+      "read_bytes": 3624960,
+      "write_bytes": 27813159,
+      "cancelled_write_bytes": 4096
+    },
+    "after": {
+      "rchar": 27463539161,
+      "wchar": 27799922,
+      "syscr": 765366,
+      "syscw": 1663,
+      "read_bytes": 3624960,
+      "write_bytes": 27813159,
+      "cancelled_write_bytes": 4096
+    },
+    "delta_rchar": 7147976,
+    "delta_syscr": 204,
+    "delta_read_bytes": 0,
+    "delta_write_bytes": 0,
+    "ps_before": "Rl+     04:48:12  345",
+    "ps_after": "Rl+     04:48:15  345"
+  },
+  "authoritative_outputs": {
+    "manifest": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/yestrack_y1_common_eval_20261019_v3/YESTRACK_EVAL_MANIFEST.json",
+    "manifest_exists": false,
+    "prediction_file_count": 68,
+    "expected_prediction_file_count": 142,
+    "latest_prediction_mtime": "2026-10-20T08:04:14+08:00"
+  },
+  "multi_seed_training": [
+    {
+      "seed": 43,
+      "gpu": 2,
+      "manifest_status": "RUNNING",
+      "progress": {
+        "optimizer_steps_observed": 19134,
+        "planned_steps": 90523,
+        "loss": 0.1357
+      },
+      "pid": 3078707,
+      "alive": true
+    },
+    {
+      "seed": 44,
+      "gpu": 3,
+      "manifest_status": "RUNNING",
+      "progress": {
+        "optimizer_steps_observed": 18585,
+        "planned_steps": 90528,
+        "loss": 0.0425
+      },
+      "pid": 3078708,
+      "alive": true
+    }
+  ],
+  "interpretation": "The evaluator remained alive and read input during the probe; increasing rchar/syscr and CPU state are activity evidence only. Partial files and optimizer progress are not formal metrics.",
+  "claim_boundary": "Formal YesTrack metrics remain NOT_RUN until the evaluator writes a successful YESTRACK_EVAL_MANIFEST.json; no multi-seed claim is made until both terminal internal-validation manifests succeed.",
+  "next_step": "Wait for the terminal formal manifest and seed43/44 training manifests; then parse metrics and let registered watchers proceed."
+}
