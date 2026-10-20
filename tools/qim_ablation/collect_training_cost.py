@@ -16,7 +16,7 @@ import re
 from pathlib import Path
 
 
-VARIANTS = ("standard", "lstm", "temporal_attention", "mamba")
+DEFAULT_VARIANTS = ("standard", "lstm", "temporal_attention", "mamba")
 MILESTONES = (200, 5000, 20000, 60000, 120000)
 _BENCHMARK_RE = re.compile(r"TRAIN_BENCHMARK\s+(\{.*\})")
 _TRAINING_TIME_RE = re.compile(r"Training time\s+(\d+):([0-5]\d):([0-5]\d)\s*$")
@@ -122,6 +122,13 @@ def main() -> None:
         type=Path,
         default=Path("reports/qim_ablation/training_cost_20261019.json"),
     )
+    parser.add_argument(
+        "--variants",
+        nargs="+",
+        default=list(DEFAULT_VARIANTS),
+        metavar="VARIANT",
+        help="variant directory names under --run-root (defaults to the original four QIM variants)",
+    )
     args = parser.parse_args()
 
     result = {
@@ -134,8 +141,9 @@ def main() -> None:
             "missing milestones remain missing; no ETA or extrapolation is recorded",
             "training_time_s is taken only from the log's final Training time line",
         ],
+        "variant_names": args.variants,
         "variants": {
-            variant: collect_variant(args.run_root, variant) for variant in VARIANTS
+            variant: collect_variant(args.run_root, variant) for variant in args.variants
         },
     }
     args.output.parent.mkdir(parents=True, exist_ok=True)
