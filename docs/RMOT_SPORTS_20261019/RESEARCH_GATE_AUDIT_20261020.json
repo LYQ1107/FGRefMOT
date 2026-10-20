@@ -1,6 +1,6 @@
 {
   "schema_version": "rmot-sports-gate-audit-0.1",
-  "observed_at": "2026-10-20T09:39:20+08:00",
+  "observed_at": "2026-10-20T09:40:54+08:00",
   "status": "IN_PROGRESS",
   "workspace": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019",
   "branch": "research/sports-rmot-strong-baselines-20261019",
@@ -98,9 +98,10 @@
         "docs/RMOT_SPORTS_20261019/PHASE137_PARTIAL_OUTPUT_INTEGRITY_20261020.json",
         "docs/RMOT_SPORTS_20261019/PHASE138_PARTIAL_OUTPUT_INTEGRITY_20261020.json",
         "docs/RMOT_SPORTS_20261019/PHASE139_PARTIAL_OUTPUT_INTEGRITY_20261020.json",
-        "docs/RMOT_SPORTS_20261019/PHASE140_PARTIAL_OUTPUT_INTEGRITY_20261020.json"
+        "docs/RMOT_SPORTS_20261019/PHASE140_PARTIAL_OUTPUT_INTEGRITY_20261020.json",
+        "docs/RMOT_SPORTS_20261019/PHASE141_PARTIAL_OUTPUT_INTEGRITY_20261020.json"
       ],
-      "claim_boundary": "The full 22-video training manifest succeeded and its formal historical evaluation is running. The 17-video internal training and fixed five-video validation evaluation also succeeded; threshold 0.8 was selected on internal HOTA. The internal metric is selection evidence, while no full historical-test result is claimed until the formal manifest succeeds."
+      "claim_boundary": "The full 22-video training manifest succeeded and its seed42 formal historical evaluation is running. The 17-video internal training and fixed five-video validation evaluation also succeeded; threshold 0.8 was selected on internal HOTA. The internal metric is selection evidence, while no full historical-test result is claimed until the seed42 formal manifest succeeds."
     },
     {
       "id": "E_LEARNED_IMPROVEMENT_AND_ABLATIONS",
@@ -177,7 +178,8 @@
         "docs/RMOT_SPORTS_20261019/PHASE137_PARTIAL_OUTPUT_INTEGRITY_20261020.json",
         "docs/RMOT_SPORTS_20261019/PHASE138_PARTIAL_OUTPUT_INTEGRITY_20261020.json",
         "docs/RMOT_SPORTS_20261019/PHASE139_PARTIAL_OUTPUT_INTEGRITY_20261020.json",
-        "docs/RMOT_SPORTS_20261019/PHASE140_PARTIAL_OUTPUT_INTEGRITY_20261020.json"
+        "docs/RMOT_SPORTS_20261019/PHASE140_PARTIAL_OUTPUT_INTEGRITY_20261020.json",
+        "docs/RMOT_SPORTS_20261019/PHASE141_PARTIAL_OUTPUT_INTEGRITY_20261020.json"
       ],
       "claim_boundary": "Seed43/seed44 stability training was stopped at the user request before terminal manifests. No stability metric or multi-seed claim is made; this optional gate is deferred while the requested seed42 formal test continues."
     },
@@ -265,7 +267,8 @@
         "docs/RMOT_SPORTS_20261019/PHASE137_PARTIAL_OUTPUT_INTEGRITY_20261020.json",
         "docs/RMOT_SPORTS_20261019/PHASE138_PARTIAL_OUTPUT_INTEGRITY_20261020.json",
         "docs/RMOT_SPORTS_20261019/PHASE139_PARTIAL_OUTPUT_INTEGRITY_20261020.json",
-        "docs/RMOT_SPORTS_20261019/PHASE140_PARTIAL_OUTPUT_INTEGRITY_20261020.json"
+        "docs/RMOT_SPORTS_20261019/PHASE140_PARTIAL_OUTPUT_INTEGRITY_20261020.json",
+        "docs/RMOT_SPORTS_20261019/PHASE141_PARTIAL_OUTPUT_INTEGRITY_20261020.json"
       ],
       "claim_boundary": "The required final-report entrypoints and evidence ledger exist and are remotely synchronized; the final reviewer conclusion and remaining formal comparisons are not complete."
     }
@@ -275,18 +278,22 @@
       "run_id": "yestrack_y1_sports_lora_seed42_v2",
       "status": "TRAINING_SUCCEEDED_FORMAL_EVALUATION_IN_PROGRESS",
       "manifest": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/yestrack_y1_common_eval_20261019_v3/YESTRACK_EVAL_MANIFEST.json",
-      "prediction_files_observed": 102,
+      "prediction_files_observed": 103,
       "prediction_files_expected": 142,
       "gpu_process_pid": 2708884,
       "partial_output_format_issues": 0,
       "partial_output_finite_value_issues": 0,
       "formal_activity_probe_pid": 2708884,
-      "formal_activity_probe_rchar_delta": 3057771,
-      "formal_activity_probe_syscr_delta": 80,
+      "formal_activity_probe_rchar_delta": 7646219,
+      "formal_activity_probe_syscr_delta": 182,
       "formal_activity_probe_prediction_files_before_after": [
-        102,
-        102
-      ]
+        103,
+        103
+      ],
+      "formal_activity_probe_finished_at": "2026-10-20T09:40:41+08:00",
+      "formal_activity_probe_process_state": "Rl+",
+      "formal_activity_probe_cpu_percent": 345.0,
+      "formal_activity_probe_elapsed": "06:22:19"
     },
     {
       "run_id": "yestrack_y1_sports_lora_seed43_v2",
@@ -314,31 +321,31 @@
     }
   ],
   "next_gates": [
-    "complete the full YesTrack 19-video historical evaluation manifest and timing join",
-    "complete seed43 and seed44 training and fixed-threshold internal validation",
+    "complete the seed42 full YesTrack 19-video historical evaluation manifest and timing join",
+    "verify complete formal output coverage and run the registered offline historical scorer",
     "run registered proposed-method and baseline ablations after the baseline gate",
-    "complete multi-seed, remaining efficiency, final-test and reviewer-report evidence"
+    "complete remaining efficiency, final-test and reviewer-report evidence; optional multi-seed stability remains deferred unless scope is reopened"
   ],
   "latest_formal_activity_probe": {
     "pid": 2708884,
-    "started_at": "2026-10-20T09:39:16+08:00",
-    "finished_at": "2026-10-20T09:39:20+08:00",
+    "started_at": "2026-10-20T09:40:37+08:00",
+    "finished_at": "2026-10-20T09:40:41+08:00",
     "sample_seconds": 4,
-    "rchar_before": 39230082478,
-    "rchar_after": 39233140249,
-    "rchar_delta": 3057771,
-    "syscr_before": 1055368,
-    "syscr_after": 1055448,
-    "syscr_delta": 80,
-    "prediction_files_before": 102,
-    "prediction_files_after": 102,
+    "rchar_before": 39357712184,
+    "rchar_after": 39365358403,
+    "rchar_delta": 7646219,
+    "syscr_before": 1058624,
+    "syscr_after": 1058806,
+    "syscr_delta": 182,
+    "prediction_files_before": 103,
+    "prediction_files_after": 103,
     "process_state": "Rl+",
     "cpu_percent": 345.0,
-    "elapsed": "06:20:58"
+    "elapsed": "06:22:19"
   },
   "user_scope_change": {
     "requested_at": "2026-10-20T09:39:03+08:00",
     "request": "Stability-test results are not currently needed; only the formal test result is required.",
-    "effect": "Seed43/seed44 stability training stopped; seed42 formal test retained."
+    "effect": "Seed43/seed44 stability training stopped; seed42 formal test retained. No stability metric is claimed."
   }
 }

@@ -1,0 +1,62 @@
+{
+  "schema_version": "rmot-sports-phase-0.1",
+  "phase": 141,
+  "title": "Live formal YesTrack health and partial output integrity refresh",
+  "status": "FORMAL_TEST_RUNNING_OPTIONAL_STABILITY_DEFERRED_USER_SCOPE",
+  "observed_at": "2026-10-20T09:40:54+08:00",
+  "formal_run": {
+    "run_id": "yestrack_y1_common_eval_20261019_v3",
+    "manifest": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/yestrack_y1_common_eval_20261019_v3/YESTRACK_EVAL_MANIFEST.json",
+    "manifest_exists": false,
+    "prediction_files_observed": 103,
+    "prediction_files_expected": 142,
+    "nonempty_rows": 609471,
+    "unique_frames": 1825,
+    "frame_min": 1,
+    "frame_max": 1825,
+    "unique_track_ids": 35,
+    "format_issue_count": 0,
+    "finite_value_issue_count": 0
+  },
+  "issues": {
+    "format_examples": [],
+    "finite_value_examples": []
+  },
+  "seed43": {
+    "run_id": "yestrack_y1_sports_lora_seed43_v2",
+    "status": "STOPPED_USER_SCOPE",
+    "optimizer_steps_observed": 34865,
+    "optimizer_steps_expected": 90523,
+    "gpu": "2",
+    "stopped_at": "2026-10-20T09:39:03+08:00",
+    "stop_reason": "Optional stability result deferred by user scope."
+  },
+  "seed44": {
+    "run_id": "yestrack_y1_sports_lora_seed44_v2",
+    "status": "STOPPED_USER_SCOPE",
+    "optimizer_steps_observed": 33761,
+    "optimizer_steps_expected": 90528,
+    "gpu": "3",
+    "stopped_at": "2026-10-20T09:39:03+08:00",
+    "stop_reason": "Optional stability result deferred by user scope."
+  },
+  "claim_boundary": "Read-only partial-file integrity and live-progress evidence only; no historical-test metric is claimed until the seed42 formal terminal manifest is SUCCEEDED. Seed43/seed44 were stopped by user scope, so no multi-seed stability claim is made.",
+  "next_step": "Wait for the seed42 formal manifest, verify complete 142/142 output coverage, then run the registered offline historical scorer; do not restart optional seed43/seed44 stability runs unless the user reopens that scope.",
+  "formal_activity_probe": {
+    "pid": 2708884,
+    "started_at": "2026-10-20T09:40:37+08:00",
+    "finished_at": "2026-10-20T09:40:41+08:00",
+    "sample_seconds": 4,
+    "rchar_before": 39357712184,
+    "rchar_after": 39365358403,
+    "rchar_delta": 7646219,
+    "syscr_before": 1058624,
+    "syscr_after": 1058806,
+    "syscr_delta": 182,
+    "prediction_files_before": 103,
+    "prediction_files_after": 103,
+    "process_state": "Rl+",
+    "cpu_percent": 345.0,
+    "elapsed": "06:22:19"
+  }
+}
