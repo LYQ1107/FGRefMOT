@@ -116,6 +116,9 @@ def benchmark_variant(model, image_paths, sentence, transform, device, warmup_fr
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--checkpoint-root', required=True)
+    parser.add_argument('--variants', nargs='+', choices=VARIANTS,
+                        default=list(VARIANTS),
+                        help='variants to benchmark; defaults to all supported variants')
     parser.add_argument('--sportsmot-root', default='/data/DATASETS/TRACKING/JDE/SportsMOT/sportsmot_publish')
     parser.add_argument('--expression-root', default='/data1/liuyeqiang/SportsMOT/expression')
     parser.add_argument('--video', required=True)
@@ -154,7 +157,7 @@ def main():
         },
         'variants': {},
     }
-    for variant in VARIANTS:
+    for variant in args.variants:
         checkpoint_path = Path(args.checkpoint_root) / variant / 'checkpoint_step00000200.pth'
         print('building', variant, flush=True)
         model = load_model(checkpoint_path, variant, device)
