@@ -140,3 +140,6 @@ Partial-output integrity refreshed at 2026-10-20T08:12:25+08:00 (Phase 104): 71/
 
 
 Live snapshot refreshed at 2026-10-20T08:15:17+08:00 (Phase 105): the formal evaluator is alive with 72/142 prediction files and no terminal manifest; the read-only partial audit has 481,312 rows and zero format/finite-value issues. The three-second activity probe recorded +11,176,365 `rchar` and +240 `syscr`. Seed43/44 remain active at 20,605/90,523 and 20,008/90,528 steps. These observations do not claim a formal-test or multi-seed metric.
+
+
+Activity probe refreshed at 2026-10-20T08:17:33+08:00 (Phase 106): the formal evaluator remained `Rl+` at about 346% CPU; over four seconds its `rchar` increased by 18,285,897 and `syscr` by 409 while the completed-file count stayed 72/142. The terminal manifest is still absent, so no historical-test metric is claimed.

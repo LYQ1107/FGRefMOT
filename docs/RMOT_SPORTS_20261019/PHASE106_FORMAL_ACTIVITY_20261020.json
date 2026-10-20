@@ -1,0 +1,25 @@
+{
+  "schema_version": "rmot-sports-phase-0.1",
+  "phase": 106,
+  "title": "Formal YesTrack evaluator activity probe",
+  "status": "FORMAL_EVALUATION_ACTIVE_TERMINAL_MANIFEST_PENDING",
+  "observed_at": "2026-10-20T08:17:33+08:00",
+  "formal_run": {
+    "run_id": "yestrack_y1_common_eval_20261019_v3",
+    "manifest": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/yestrack_y1_common_eval_20261019_v3/YESTRACK_EVAL_MANIFEST.json",
+    "manifest_exists": false,
+    "prediction_files_observed": 72,
+    "prediction_files_expected": 142,
+    "parent_pid": 2708840,
+    "child_pid": 2708884,
+    "parent_stat": "Sl+",
+    "child_stat": "Rl+",
+    "child_cpu_percent": 346.0,
+    "activity_probe_seconds": 4,
+    "activity_probe_rchar_delta": 18285897,
+    "activity_probe_syscr_delta": 409,
+    "prediction_count_changed_during_probe": false
+  },
+  "claim_boundary": "The evaluator is demonstrably active while processing a long sequence; partial output and I/O activity are not a terminal historical-test metric. No metric is claimed until the manifest exists with status SUCCEEDED.",
+  "next_step": "Wait for YESTRACK_EVAL_MANIFEST.json; then verify complete output coverage and run the registered offline historical scorer."
+}

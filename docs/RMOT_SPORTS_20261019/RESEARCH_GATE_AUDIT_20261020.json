@@ -1,6 +1,6 @@
 {
   "schema_version": "rmot-sports-gate-audit-0.1",
-  "observed_at": "2026-10-20T08:15:17+08:00",
+  "observed_at": "2026-10-20T08:17:33+08:00",
   "status": "IN_PROGRESS",
   "workspace": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019",
   "branch": "research/sports-rmot-strong-baselines-20261019",
@@ -63,7 +63,8 @@
         "docs/RMOT_SPORTS_20261019/PHASE102_PARTIAL_OUTPUT_INTEGRITY_20261020.json",
         "docs/RMOT_SPORTS_20261019/PHASE103_PARTIAL_OUTPUT_INTEGRITY_20261020.json",
         "docs/RMOT_SPORTS_20261019/PHASE104_PARTIAL_OUTPUT_INTEGRITY_20261020.json",
-        "docs/RMOT_SPORTS_20261019/PHASE105_LIVE_HEALTH_20261020.json"
+        "docs/RMOT_SPORTS_20261019/PHASE105_LIVE_HEALTH_20261020.json",
+        "docs/RMOT_SPORTS_20261019/PHASE106_FORMAL_ACTIVITY_20261020.json"
       ],
       "claim_boundary": "The full 22-video training manifest succeeded and its formal historical evaluation is running. The 17-video internal training and fixed five-video validation evaluation also succeeded; threshold 0.8 was selected on internal HOTA. The internal metric is selection evidence, while no full historical-test result is claimed until the formal manifest succeeds."
     },
@@ -164,7 +165,8 @@
         "docs/RMOT_SPORTS_20261019/PHASE102_PARTIAL_OUTPUT_INTEGRITY_20261020.json",
         "docs/RMOT_SPORTS_20261019/PHASE103_PARTIAL_OUTPUT_INTEGRITY_20261020.json",
         "docs/RMOT_SPORTS_20261019/PHASE104_PARTIAL_OUTPUT_INTEGRITY_20261020.json",
-        "docs/RMOT_SPORTS_20261019/PHASE105_LIVE_HEALTH_20261020.json"
+        "docs/RMOT_SPORTS_20261019/PHASE105_LIVE_HEALTH_20261020.json",
+        "docs/RMOT_SPORTS_20261019/PHASE106_FORMAL_ACTIVITY_20261020.json"
       ],
       "claim_boundary": "The required final-report entrypoints and evidence ledger exist and are remotely synchronized; the final reviewer conclusion and remaining formal comparisons are not complete."
     }
