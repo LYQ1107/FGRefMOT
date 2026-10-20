@@ -1,0 +1,75 @@
+{
+  "step": 5000,
+  "protocol": "development video split; one or more fixed expressions per video; all-object MOT metrics; UNKNOWN expression negatives ignored",
+  "video_list": "docs/QIM_REVIEWER_ABLATION/DEV_SPLIT_VAL.txt",
+  "num_sequences": 4,
+  "frames": 2621,
+  "variants": {
+    "mamba_ordered_bi": {
+      "source": "mamba_ordered_bi_step5000_dev_full.json",
+      "checkpoint": "/data1/liuyeqiang/fg_v2_runs/qim_lightweight_mamba_20261020/mamba_ordered_bi/checkpoint_step00005000.pth",
+      "mean": {
+        "hota": 0.5978208587656133,
+        "hota_05": 0.6269566550359723,
+        "deta": 0.6915025536176076,
+        "assa": 0.5349085325971347,
+        "idf1": 0.575094766408316,
+        "idsw_sum": 157,
+        "idsw_mean_per_sequence": 39.25,
+        "referring_f1": 0.8568793271942922
+      },
+      "num_sequences": 4,
+      "frames": 2621,
+      "videos": [
+        "v_-6Os86HzwCs_c001",
+        "v_1yHWGw8DH4A_c047",
+        "v_4LXTUim5anY_c002",
+        "v_CW0mQbgYIF4_c004"
+      ]
+    },
+    "mamba_trackwise": {
+      "source": "mamba_trackwise_step5000_dev_full.json",
+      "checkpoint": "/data1/liuyeqiang/fg_v2_runs/qim_lightweight_mamba_20261020/mamba_trackwise/checkpoint_step00005000.pth",
+      "mean": {
+        "hota": 0.6204691865310357,
+        "hota_05": 0.6497193854068442,
+        "deta": 0.6221790257135549,
+        "assa": 0.6367979083783355,
+        "idf1": 0.6263275530147606,
+        "idsw_sum": 80,
+        "idsw_mean_per_sequence": 20.0,
+        "referring_f1": 0.8552823560165246
+      },
+      "num_sequences": 4,
+      "frames": 2621,
+      "videos": [
+        "v_-6Os86HzwCs_c001",
+        "v_1yHWGw8DH4A_c047",
+        "v_4LXTUim5anY_c002",
+        "v_CW0mQbgYIF4_c004"
+      ]
+    },
+    "mamba_reliability_hybrid": {
+      "source": "mamba_reliability_hybrid_step5000_dev_full.json",
+      "checkpoint": "/data1/liuyeqiang/fg_v2_runs/qim_lightweight_mamba_20261020/mamba_reliability_hybrid/checkpoint_step00005000.pth",
+      "mean": {
+        "hota": 0.5628495673200282,
+        "hota_05": 0.5879657755699514,
+        "deta": 0.5410540147754668,
+        "assa": 0.589986348037218,
+        "idf1": 0.5476451272112153,
+        "idsw_sum": 121,
+        "idsw_mean_per_sequence": 30.25,
+        "referring_f1": 0.6664825399167288
+      },
+      "num_sequences": 4,
+      "frames": 2621,
+      "videos": [
+        "v_-6Os86HzwCs_c001",
+        "v_1yHWGw8DH4A_c047",
+        "v_4LXTUim5anY_c002",
+        "v_CW0mQbgYIF4_c004"
+      ]
+    }
+  }
+}
