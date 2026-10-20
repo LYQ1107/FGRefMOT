@@ -1,0 +1,56 @@
+{
+  "schema_version": "rmot-sports-phase-0.1",
+  "phase": 120,
+  "title": "Live formal YesTrack health and partial output integrity refresh",
+  "status": "PARTIAL_OUTPUT_FORMAT_VALIDATED_TERMINAL_METRICS_PENDING",
+  "observed_at": "2026-10-20T09:00:36+08:00",
+  "formal_run": {
+    "run_id": "yestrack_y1_common_eval_20261019_v3",
+    "manifest": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/yestrack_y1_common_eval_20261019_v3/YESTRACK_EVAL_MANIFEST.json",
+    "manifest_exists": false,
+    "prediction_files_observed": 85,
+    "prediction_files_expected": 142,
+    "nonempty_rows": 550939,
+    "unique_frames": 1825,
+    "frame_min": 1,
+    "frame_max": 1825,
+    "unique_track_ids": 35,
+    "format_issue_count": 0,
+    "finite_value_issue_count": 0
+  },
+  "issues": {
+    "format_examples": [],
+    "finite_value_examples": []
+  },
+  "seed43": {
+    "run_id": "yestrack_y1_sports_lora_seed43_v2",
+    "status": "TRAINING_IN_PROGRESS",
+    "optimizer_steps_observed": 28442,
+    "optimizer_steps_expected": 90523
+  },
+  "seed44": {
+    "run_id": "yestrack_y1_sports_lora_seed44_v2",
+    "status": "TRAINING_IN_PROGRESS",
+    "optimizer_steps_observed": 27535,
+    "optimizer_steps_expected": 90528
+  },
+  "claim_boundary": "Read-only partial-file integrity and live-progress evidence only; no historical-test or multi-seed metric is claimed until terminal manifests are SUCCEEDED.",
+  "next_step": "Wait for the formal manifest, then verify complete output coverage and run the registered offline historical scorer; wait for seed43/44 training and internal-validation manifests before any stability claim.",
+  "formal_activity_probe": {
+    "pid": 2708884,
+    "started_at": "2026-10-20T09:00:40+08:00",
+    "finished_at": "2026-10-20T09:00:44+08:00",
+    "sample_seconds": 4,
+    "rchar_before": 36023035082,
+    "rchar_after": 36030632642,
+    "rchar_delta": 7597560,
+    "syscr_before": 960910,
+    "syscr_after": 961117,
+    "syscr_delta": 207,
+    "prediction_files_before": 85,
+    "prediction_files_after": 85,
+    "process_state": "Rl+",
+    "cpu_percent": 344.0,
+    "elapsed": "05:42:22"
+  }
+}
