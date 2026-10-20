@@ -105,13 +105,16 @@ records are complete.
 
 ## Step-60000 full development evaluation (partial milestone)
 
-The Standard 60k checkpoint has completed the same frozen four-video
-development evaluation (2,621 frames, one expression per video, UNKNOWN-safe
-referring protocol). It reports HOTA 0.6770, HOTA@0.5 0.7115, DetA 0.7318,
-AssA 0.6343, IDF1 0.7129, IDSW sum 58, and Referring F1 0.8968. The exact
-machine-readable result is `reports/qim_ablation/standard_step60000_dev_full.json`.
-The LSTM, Temporal Attention, and Original Mamba 60k evaluations are not yet
-available; therefore this partial milestone is not used to declare a final
+The Standard and LSTM 60k checkpoints have completed the same frozen
+four-video development evaluation (2,621 frames, one expression per video,
+UNKNOWN-safe referring protocol). Standard reports HOTA 0.6770, HOTA@0.5
+0.7115, DetA 0.7318, AssA 0.6343, IDF1 0.7129, IDSW sum 58, and Referring F1
+0.8968. LSTM reports HOTA 0.6622, HOTA@0.5 0.6944, DetA 0.7371, AssA
+0.5999, IDF1 0.6966, IDSW sum 67, and Referring F1 0.8875. The exact
+machine-readable results are `reports/qim_ablation/standard_step60000_dev_full.json`
+and `reports/qim_ablation/lstm_step60000_dev_full.json`. Temporal Attention's
+60k evaluation is running and Original Mamba's 60k evaluation is pending;
+therefore this remains a partial milestone and is not used to declare a final
 long-run ranking.
 
 ## Step-200 real SportsMOT image benchmark
@@ -135,9 +138,11 @@ training-cost evidence is tracked in
 `reports/qim_ablation/training_cost_20261019.json`. At the current snapshot, the
 step-5000 and step-20000 checkpoint wall-clock observed from the step-200
 checkpoint are 1.713/1.772/1.760/1.845 and 6.971/7.212/7.174/7.454 GPU-hours
-for Standard, LSTM, Temporal Attention, and Original Mamba respectively. These
-are checkpoint-timestamp observations, not power-meter measurements;
-60k/120k fields remain missing until their actual checkpoints and logs exist.
+for Standard, LSTM, Temporal Attention, and Original Mamba respectively. The
+Standard 60k checkpoint is additionally observed at 22.136 GPU-hours; the
+other three 60k values and all 120k fields remain missing until their actual
+checkpoints and logs exist. These are checkpoint-timestamp observations, not
+power-meter measurements.
 No ETA or extrapolated cost is presented as a measured result.
 
 ## Long-run no-gradient handling

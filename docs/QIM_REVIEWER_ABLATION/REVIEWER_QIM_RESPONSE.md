@@ -70,10 +70,14 @@ sum are 0.6878/0.7172/0.6568/59, 0.7406/0.7721/0.6550/75,
 0.5633/0.5955/0.6829/30, and 0.7236/0.7540/0.6556/76 respectively. The
 Standard's 60k checkpoint and matched full development evaluation are now
 available: HOTA/IDF1/AssA/IDSW sum = 0.6770/0.7129/0.6343/58 and referring
-F1 = 0.8968. This is still a four-video development result, not a Test-set
-claim. The LSTM, Temporal Attention, and Original Mamba 60k checkpoints, plus
-all 120k checkpoints and their evaluations, are still running, so no final
-long-run ranking or extrapolated training-cost claim is made yet.
+F1 = 0.8968. The LSTM 60k checkpoint and matched evaluation are also now
+available: HOTA/IDF1/AssA/IDSW sum = 0.6622/0.6966/0.5999/67 and referring
+F1 = 0.8875. These are still four-video development results, not Test-set
+claims; the exact files are
+`reports/qim_ablation/standard_step60000_dev_full.json` and
+`reports/qim_ablation/lstm_step60000_dev_full.json`. Temporal Attention's 60k
+evaluation is running, while Original Mamba's 60k evaluation and all 120k
+evaluations remain pending, so no final long-run ranking is claimed yet.
 
 The published Test images still have no matching local ground-truth labels;
 therefore historical Test HOTA/AssA/IDF1/IDSW, a reproducible 0.29-HOTA
@@ -85,9 +89,12 @@ checkpoint logs. The measured checkpoint-cost records are available for steps
 5000 and 20000; the observed GPU-hours from the step-200 checkpoint timestamp
 are 1.713/1.772/1.760/1.845 at step 5000 and
 6.971/7.212/7.174/7.454 at step 20000 for
-Standard/LSTM/Temporal Attention/Original Mamba respectively. These are
-checkpoint-timestamp observations, not power-meter measurements; 60k/120k
-fields remain explicitly missing until their checkpoints are written.
+Standard/LSTM/Temporal Attention/Original Mamba respectively. The Standard,
+LSTM, and Temporal Attention 60k checkpoints are additionally observed at
+22.136, 22.990, and 23.004 GPU-hours respectively; the Original Mamba 60k
+value and all 120k values remain explicitly missing until their actual
+checkpoints are written. These are checkpoint-timestamp observations, not
+power-meter measurements.
 
 The long-run logs also contain explicit no-gradient QIM batches: Standard at
 steps 1535, 3316, and 13539, and Original Mamba at steps 3624 and 12472 in the

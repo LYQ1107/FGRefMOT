@@ -20,7 +20,7 @@
 | Long-run no-gradient branches (current snapshot) | HANDLED / RECORDED | Standard steps 1535, 3316, 13539; Original Mamba steps 3624, 12472; explicit `NO_GRAD_STEP` no-op branch skips the optimizer step and is not a crash |
 | Real SportsMOT image benchmark | COMPLETE | 60-frame real clip, 5 warmup + 55 timed frames; `real_sportsmot_benchmark_step200.json` |
 | 20k training/evaluation node | COMPLETE | all four exact-resume checkpoints and full development evaluations are complete; 4 videos/2,621 frames |
-| Standard 60k training/evaluation node | COMPLETE (PARTIAL 60K MILESTONE) | `standard/checkpoint_step00060000.pth` and `reports/qim_ablation/standard_step60000_dev_full.json`; remaining three 60k nodes are still running |
+| Standard/LSTM 60k training/evaluation nodes | COMPLETE (PARTIAL 60K MILESTONE) | `standard/checkpoint_step00060000.pth`, `lstm/checkpoint_step00060000.pth`, and their full development JSON results are present; Temporal Attention evaluation is running and Original Mamba 60k is still running |
 | 60k/120k training nodes | RUNNING | all four variants remain active; later checkpoints and evaluations are pending |
 | Historical Test HOTA/DetA/AssA/IDF1/IDSW | BLOCKED | test images exist, corresponding local GT labels do not |
 
@@ -29,6 +29,7 @@ The four 200-step, four 5k, and four 20k benchmark logs/checkpoints are under
 marked `FINAL_TEST`; later long-run checkpoints will be promoted only after
 their actual logs and validation outputs are preserved. The development
 metrics are recorded in `FINAL_REPORT.md` and `FINAL_TRACKING_RESULTS.csv`.
-The current cost report records observed 5k and 20k checkpoints; missing
-60k/120k milestones remain null rather than being extrapolated.
+The current cost report records observed 5k, 20k, and the Standard 60k
+checkpoint; the other 60k/120k milestones remain null rather than being
+extrapolated.
 
