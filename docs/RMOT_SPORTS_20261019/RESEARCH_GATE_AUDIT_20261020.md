@@ -119,3 +119,9 @@ for optional zero-shot/task-checkpoint assets; both contracts pass
 `--require-ready` with the current common tracker, layouts, explicit protocol
 values and actual launch commands. This metadata update does not change any
 live GPU job or promote nonterminal evaluation output into a metric.
+
+The 08:01:17 live gate snapshot records the formal evaluator at 67/142
+prediction files, with zero format issues in the read-only partial-output audit
+of Phase 98. Seed43 and seed44 were still active at 18,205/90,523 and
+17,701/90,528 optimizer steps. The formal manifest remains absent, so the
+historical-test row and all postbaseline watchers remain pending.
