@@ -1,0 +1,183 @@
+{
+  "generated_at_utc": "2026-10-20T02:31:53.876215+00:00",
+  "run_root": "/data1/liuyeqiang/fg_v2_runs/qim_lightweight_mamba_20261020",
+  "milestones": [
+    200,
+    5000,
+    20000,
+    60000,
+    120000
+  ],
+  "measurement_notes": [
+    "checkpoint_wallclock_from_step200_s is measured from checkpoint file modification times",
+    "observed_gpu_hours_from_step200 is one GPU-hour per active variant GPU",
+    "missing milestones remain missing; no ETA or extrapolation is recorded",
+    "training_time_s is taken only from the log's final Training time line"
+  ],
+  "variant_names": [
+    "mamba_ordered_bi",
+    "mamba_trackwise",
+    "mamba_reliability_hybrid"
+  ],
+  "variants": {
+    "mamba_ordered_bi": {
+      "variant": "mamba_ordered_bi",
+      "log": {
+        "status": "present",
+        "path": "/data1/liuyeqiang/fg_v2_runs/qim_lightweight_mamba_20261020/mamba_ordered_bi_long.log",
+        "bytes": 54086,
+        "last_modified_utc": "2026-10-20T02:31:51.200498+00:00",
+        "source_sha": "b0ab028eb4e43c6d48d4076c4de282db54def142",
+        "source_worktree_status": "clean, branch: research/qim-lightweight-mamba-20261020",
+        "training_time_s": null,
+        "benchmark_epochs": 0,
+        "latest_benchmark": null,
+        "explicit_no_grad_log_events": 0
+      },
+      "checkpoints": {
+        "200": {
+          "status": "present",
+          "path": "/data1/liuyeqiang/fg_v2_runs/qim_lightweight_mamba_20261020/mamba_ordered_bi/checkpoint_step00000200.pth",
+          "bytes": 731598701,
+          "modified_utc": "2026-10-19T17:34:49.320051+00:00",
+          "checkpoint_wallclock_from_step200_s": 0.0,
+          "observed_gpu_hours_from_step200": 0.0
+        },
+        "5000": {
+          "status": "present",
+          "path": "/data1/liuyeqiang/fg_v2_runs/qim_lightweight_mamba_20261020/mamba_ordered_bi/checkpoint_step00005000.pth",
+          "bytes": 731598765,
+          "modified_utc": "2026-10-19T19:32:30.621580+00:00",
+          "checkpoint_wallclock_from_step200_s": 7061.301528930664,
+          "observed_gpu_hours_from_step200": 1.9614726469251844
+        },
+        "20000": {
+          "status": "present",
+          "path": "/data1/liuyeqiang/fg_v2_runs/qim_lightweight_mamba_20261020/mamba_ordered_bi/checkpoint_step00020000.pth",
+          "bytes": 731598701,
+          "modified_utc": "2026-10-20T01:20:41.239762+00:00",
+          "checkpoint_wallclock_from_step200_s": 27951.919711112976,
+          "observed_gpu_hours_from_step200": 7.764422141975826
+        },
+        "60000": {
+          "status": "missing",
+          "path": "/data1/liuyeqiang/fg_v2_runs/qim_lightweight_mamba_20261020/mamba_ordered_bi/checkpoint_step00060000.pth",
+          "checkpoint_wallclock_from_step200_s": null,
+          "observed_gpu_hours_from_step200": null
+        },
+        "120000": {
+          "status": "missing",
+          "path": "/data1/liuyeqiang/fg_v2_runs/qim_lightweight_mamba_20261020/mamba_ordered_bi/checkpoint_step00120000.pth",
+          "checkpoint_wallclock_from_step200_s": null,
+          "observed_gpu_hours_from_step200": null
+        }
+      }
+    },
+    "mamba_trackwise": {
+      "variant": "mamba_trackwise",
+      "log": {
+        "status": "present",
+        "path": "/data1/liuyeqiang/fg_v2_runs/qim_lightweight_mamba_20261020/mamba_trackwise_long.log",
+        "bytes": 56654,
+        "last_modified_utc": "2026-10-20T02:31:53.848484+00:00",
+        "source_sha": "b0ab028eb4e43c6d48d4076c4de282db54def142",
+        "source_worktree_status": "clean, branch: research/qim-lightweight-mamba-20261020",
+        "training_time_s": null,
+        "benchmark_epochs": 0,
+        "latest_benchmark": null,
+        "explicit_no_grad_log_events": 0
+      },
+      "checkpoints": {
+        "200": {
+          "status": "present",
+          "path": "/data1/liuyeqiang/fg_v2_runs/qim_lightweight_mamba_20261020/mamba_trackwise/checkpoint_step00000200.pth",
+          "bytes": 732083885,
+          "modified_utc": "2026-10-19T17:35:48.127731+00:00",
+          "checkpoint_wallclock_from_step200_s": 0.0,
+          "observed_gpu_hours_from_step200": 0.0
+        },
+        "5000": {
+          "status": "present",
+          "path": "/data1/liuyeqiang/fg_v2_runs/qim_lightweight_mamba_20261020/mamba_trackwise/checkpoint_step00005000.pth",
+          "bytes": 732083949,
+          "modified_utc": "2026-10-19T19:38:19.507679+00:00",
+          "checkpoint_wallclock_from_step200_s": 7351.379947900772,
+          "observed_gpu_hours_from_step200": 2.042049985527992
+        },
+        "20000": {
+          "status": "present",
+          "path": "/data1/liuyeqiang/fg_v2_runs/qim_lightweight_mamba_20261020/mamba_trackwise/checkpoint_step00020000.pth",
+          "bytes": 732083885,
+          "modified_utc": "2026-10-20T01:42:59.044473+00:00",
+          "checkpoint_wallclock_from_step200_s": 29230.916741847992,
+          "observed_gpu_hours_from_step200": 8.119699094957776
+        },
+        "60000": {
+          "status": "missing",
+          "path": "/data1/liuyeqiang/fg_v2_runs/qim_lightweight_mamba_20261020/mamba_trackwise/checkpoint_step00060000.pth",
+          "checkpoint_wallclock_from_step200_s": null,
+          "observed_gpu_hours_from_step200": null
+        },
+        "120000": {
+          "status": "missing",
+          "path": "/data1/liuyeqiang/fg_v2_runs/qim_lightweight_mamba_20261020/mamba_trackwise/checkpoint_step00120000.pth",
+          "checkpoint_wallclock_from_step200_s": null,
+          "observed_gpu_hours_from_step200": null
+        }
+      }
+    },
+    "mamba_reliability_hybrid": {
+      "variant": "mamba_reliability_hybrid",
+      "log": {
+        "status": "present",
+        "path": "/data1/liuyeqiang/fg_v2_runs/qim_lightweight_mamba_20261020/mamba_reliability_hybrid_long.log",
+        "bytes": 54451,
+        "last_modified_utc": "2026-10-20T02:31:50.636502+00:00",
+        "source_sha": "b0ab028eb4e43c6d48d4076c4de282db54def142",
+        "source_worktree_status": "clean, branch: research/qim-lightweight-mamba-20261020",
+        "training_time_s": null,
+        "benchmark_epochs": 0,
+        "latest_benchmark": null,
+        "explicit_no_grad_log_events": 0
+      },
+      "checkpoints": {
+        "200": {
+          "status": "present",
+          "path": "/data1/liuyeqiang/fg_v2_runs/qim_lightweight_mamba_20261020/mamba_reliability_hybrid/checkpoint_step00000200.pth",
+          "bytes": 732632299,
+          "modified_utc": "2026-10-19T17:35:48.283730+00:00",
+          "checkpoint_wallclock_from_step200_s": 0.0,
+          "observed_gpu_hours_from_step200": 0.0
+        },
+        "5000": {
+          "status": "present",
+          "path": "/data1/liuyeqiang/fg_v2_runs/qim_lightweight_mamba_20261020/mamba_reliability_hybrid/checkpoint_step00005000.pth",
+          "bytes": 732632363,
+          "modified_utc": "2026-10-19T19:41:04.758779+00:00",
+          "checkpoint_wallclock_from_step200_s": 7516.47504901886,
+          "observed_gpu_hours_from_step200": 2.087909735838572
+        },
+        "20000": {
+          "status": "present",
+          "path": "/data1/liuyeqiang/fg_v2_runs/qim_lightweight_mamba_20261020/mamba_reliability_hybrid/checkpoint_step00020000.pth",
+          "bytes": 732632299,
+          "modified_utc": "2026-10-20T01:52:00.853522+00:00",
+          "checkpoint_wallclock_from_step200_s": 29772.569792032242,
+          "observed_gpu_hours_from_step200": 8.270158275564512
+        },
+        "60000": {
+          "status": "missing",
+          "path": "/data1/liuyeqiang/fg_v2_runs/qim_lightweight_mamba_20261020/mamba_reliability_hybrid/checkpoint_step00060000.pth",
+          "checkpoint_wallclock_from_step200_s": null,
+          "observed_gpu_hours_from_step200": null
+        },
+        "120000": {
+          "status": "missing",
+          "path": "/data1/liuyeqiang/fg_v2_runs/qim_lightweight_mamba_20261020/mamba_reliability_hybrid/checkpoint_step00120000.pth",
+          "checkpoint_wallclock_from_step200_s": null,
+          "observed_gpu_hours_from_step200": null
+        }
+      }
+    }
+  }
+}
