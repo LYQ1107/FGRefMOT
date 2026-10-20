@@ -131,3 +131,5 @@ Live snapshot refreshed at 2026-10-20T08:03:48+08:00 (Phase 99): the formal YesT
 Live snapshot refreshed at 2026-10-20T08:04:51+08:00 (Phase 100): formal YesTrack remains active with 68/142 partial prediction files; seed 43 is at 18826/90,523 steps and seed 44 at 18290/90,528. No terminal formal-test or multi-seed metric is claimed.
 
 Activity probe refreshed at 2026-10-20T08:06:34+08:00 (Phase 101): PID 2708884 remained active and increased rchar by 7,147,976 over 3 seconds; formal output remains 68/142 with no terminal manifest. Seed43/44 remain in training.
+
+Partial-output integrity refreshed at 2026-10-20T08:07:36+08:00 (Phase 102): 69/142 files and 465,077 rows were checked with 0 issues. No formal metric is claimed while the terminal manifest is absent.

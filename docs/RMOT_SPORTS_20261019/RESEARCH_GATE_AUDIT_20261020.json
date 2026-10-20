@@ -1,6 +1,6 @@
 {
   "schema_version": "rmot-sports-gate-audit-0.1",
-  "observed_at": "2026-10-20T08:06:34+08:00",
+  "observed_at": "2026-10-20T08:07:36+08:00",
   "status": "IN_PROGRESS",
   "workspace": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019",
   "branch": "research/sports-rmot-strong-baselines-20261019",
@@ -59,7 +59,8 @@
         "docs/RMOT_SPORTS_20261019/PHASE98_PARTIAL_OUTPUT_INTEGRITY_20261020.json",
         "docs/RMOT_SPORTS_20261019/PHASE99_LIVE_HEALTH_20261020.json",
         "docs/RMOT_SPORTS_20261019/PHASE100_LIVE_HEALTH_20261020.json",
-        "docs/RMOT_SPORTS_20261019/PHASE101_FORMAL_ACTIVITY_20261020.json"
+        "docs/RMOT_SPORTS_20261019/PHASE101_FORMAL_ACTIVITY_20261020.json",
+        "docs/RMOT_SPORTS_20261019/PHASE102_PARTIAL_OUTPUT_INTEGRITY_20261020.json"
       ],
       "claim_boundary": "The full 22-video training manifest succeeded and its formal historical evaluation is running. The 17-video internal training and fixed five-video validation evaluation also succeeded; threshold 0.8 was selected on internal HOTA. The internal metric is selection evidence, while no full historical-test result is claimed until the formal manifest succeeds."
     },
@@ -155,7 +156,8 @@
         "runs/baseline_asset_preflight_20261020/current_report.json",
         "docs/RMOT_SPORTS_20261019/PHASE99_LIVE_HEALTH_20261020.json",
         "docs/RMOT_SPORTS_20261019/PHASE100_LIVE_HEALTH_20261020.json",
-        "docs/RMOT_SPORTS_20261019/PHASE101_FORMAL_ACTIVITY_20261020.json"
+        "docs/RMOT_SPORTS_20261019/PHASE101_FORMAL_ACTIVITY_20261020.json",
+        "docs/RMOT_SPORTS_20261019/PHASE102_PARTIAL_OUTPUT_INTEGRITY_20261020.json"
       ],
       "claim_boundary": "The required final-report entrypoints and evidence ledger exist and are remotely synchronized; the final reviewer conclusion and remaining formal comparisons are not complete."
     }
@@ -165,7 +167,7 @@
       "run_id": "yestrack_y1_sports_lora_seed42_v2",
       "status": "TRAINING_SUCCEEDED_FORMAL_EVALUATION_IN_PROGRESS",
       "manifest": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/yestrack_y1_common_eval_20261019_v3/YESTRACK_EVAL_MANIFEST.json",
-      "prediction_files_observed": 68,
+      "prediction_files_observed": 69,
       "prediction_files_expected": 142,
       "gpu_process_pid": 2708884,
       "partial_output_format_issues": 0
