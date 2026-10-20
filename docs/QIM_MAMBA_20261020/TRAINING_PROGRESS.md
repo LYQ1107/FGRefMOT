@@ -1,8 +1,8 @@
 # Training progress
 
-The branch is ready for the first matched screening run. The original
-four-way QIM training remains active in the separate worktree and is not
-modified by this branch.
+The matched three-way lightweight QIM run is active. The original four-way
+QIM training remains active in the separate worktree and is not modified by
+this branch.
 
 Planned matched run:
 
@@ -54,3 +54,14 @@ pending. The cost collector records measured checkpoint timestamps in
 null and are not extrapolated. A persistent evaluator waits for the three
 60,000 and 120,000 checkpoints and runs the same fixed Development-Val
 protocol on GPU 6.
+
+The step-200 real-image efficiency benchmark is now complete for all three
+variants on the same 60-frame SportsMOT clip used by the original efficiency
+probe. OrderedBi measured 248.215 ms prepared-GPU latency (4.029 FPS),
+321.712 ms wall latency (3.108 FPS), and 1.914 GB peak allocated memory.
+Trackwise measured 276.818 ms / 3.612 prepared-GPU FPS and 357.954 ms / 2.794
+wall FPS; Reliability-Hybrid measured 256.790 ms / 3.894 prepared-GPU FPS and
+331.057 ms / 3.021 wall FPS. The latter two are marked diagnostic because
+their active-track counts grew substantially during the engineering clip;
+their full raw values and parameter counts are in
+`REAL_EFFICIENCY_RESULTS.csv` and the JSON report.
