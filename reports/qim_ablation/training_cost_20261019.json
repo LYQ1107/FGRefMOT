@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-10-20T08:34:23.699693+00:00",
+  "generated_at_utc": "2026-10-20T08:35:40.666427+00:00",
   "run_root": "/data1/liuyeqiang/fg_v2_runs/qim_ablation_sports_20261019",
   "milestones": [
     200,
@@ -26,8 +26,8 @@
       "log": {
         "status": "present",
         "path": "/data1/liuyeqiang/fg_v2_runs/qim_ablation_sports_20261019/standard_long.log",
-        "bytes": 8822093,
-        "last_modified_utc": "2026-10-20T08:34:16.282026+00:00",
+        "bytes": 8829068,
+        "last_modified_utc": "2026-10-20T08:35:29.313628+00:00",
         "source_sha": "445875fd38b767e8d011c74067e2a01820c3c663",
         "source_worktree_status": "has uncommited changes, branch: research/qim-reviewer-ablation-20261019",
         "training_time_s": null,
@@ -92,8 +92,8 @@
       "log": {
         "status": "present",
         "path": "/data1/liuyeqiang/fg_v2_runs/qim_ablation_sports_20261019/lstm_long.log",
-        "bytes": 8523574,
-        "last_modified_utc": "2026-10-20T08:34:15.050032+00:00",
+        "bytes": 8530549,
+        "last_modified_utc": "2026-10-20T08:35:29.001629+00:00",
         "source_sha": "445875fd38b767e8d011c74067e2a01820c3c663",
         "source_worktree_status": "has uncommited changes, branch: research/qim-reviewer-ablation-20261019",
         "training_time_s": null,
@@ -158,8 +158,8 @@
       "log": {
         "status": "present",
         "path": "/data1/liuyeqiang/fg_v2_runs/qim_ablation_sports_20261019/temporal_attention_long.log",
-        "bytes": 8520634,
-        "last_modified_utc": "2026-10-20T08:34:12.990044+00:00",
+        "bytes": 8527609,
+        "last_modified_utc": "2026-10-20T08:35:29.425627+00:00",
         "source_sha": "445875fd38b767e8d011c74067e2a01820c3c663",
         "source_worktree_status": "has uncommited changes, branch: research/qim-reviewer-ablation-20261019",
         "training_time_s": null,
@@ -224,8 +224,8 @@
       "log": {
         "status": "present",
         "path": "/data1/liuyeqiang/fg_v2_runs/qim_ablation_sports_20261019/mamba_long.log",
-        "bytes": 8251454,
-        "last_modified_utc": "2026-10-20T08:34:14.006038+00:00",
+        "bytes": 8258429,
+        "last_modified_utc": "2026-10-20T08:35:30.769620+00:00",
         "source_sha": "445875fd38b767e8d011c74067e2a01820c3c663",
         "source_worktree_status": "has uncommited changes, branch: research/qim-reviewer-ablation-20261019",
         "training_time_s": null,
