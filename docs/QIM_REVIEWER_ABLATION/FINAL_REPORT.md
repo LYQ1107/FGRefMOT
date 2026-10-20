@@ -23,11 +23,14 @@ Completed in this snapshot:
   4 videos and 2,621 frames;
 - full step-20000 development evaluation for all four QIM variants over the same
   4 videos and 2,621 frames;
+- Standard, LSTM, and Temporal Attention 60k checkpoints with matched full
+  development evaluations;
 - Mamba step-200 full-development result pushed to the research branch.
 
 Still in progress or blocked:
 
-- completion of the 60k/120k checkpoints (four nodes are running continuously);
+- completion of Original Mamba 60k and the four 120k checkpoints (the long-run
+  nodes are still running continuously);
 - multi-clip paper-level efficiency and training-cost aggregation;
 - historical Test HOTA/DetA/AssA/IDF1/IDSW, because the local Test tree has no matching GT;
 - multi-seed/partial-unfreeze experiments;
@@ -105,15 +108,18 @@ records are complete.
 
 ## Step-60000 full development evaluation (partial milestone)
 
-The Standard and LSTM 60k checkpoints have completed the same frozen
-four-video development evaluation (2,621 frames, one expression per video,
-UNKNOWN-safe referring protocol). Standard reports HOTA 0.6770, HOTA@0.5
-0.7115, DetA 0.7318, AssA 0.6343, IDF1 0.7129, IDSW sum 58, and Referring F1
-0.8968. LSTM reports HOTA 0.6622, HOTA@0.5 0.6944, DetA 0.7371, AssA
-0.5999, IDF1 0.6966, IDSW sum 67, and Referring F1 0.8875. The exact
-machine-readable results are `reports/qim_ablation/standard_step60000_dev_full.json`
-and `reports/qim_ablation/lstm_step60000_dev_full.json`. Temporal Attention's
-60k evaluation is running and Original Mamba's 60k evaluation is pending;
+The Standard, LSTM, and Temporal Attention 60k checkpoints have completed the
+same frozen four-video development evaluation (2,621 frames, one expression per
+video, UNKNOWN-safe referring protocol). Standard reports HOTA 0.6770,
+HOTA@0.5 0.7115, DetA 0.7318, AssA 0.6343, IDF1 0.7129, IDSW sum 58, and
+Referring F1 0.8968. LSTM reports HOTA 0.6622, HOTA@0.5 0.6944, DetA 0.7371,
+AssA 0.5999, IDF1 0.6966, IDSW sum 67, and Referring F1 0.8875. Temporal
+Attention reports HOTA 0.5374, HOTA@0.5 0.5603, DetA 0.5040, AssA 0.5795,
+IDF1 0.5518, IDSW sum 75, and Referring F1 0.7031. The exact machine-readable
+results are `reports/qim_ablation/standard_step60000_dev_full.json`,
+`reports/qim_ablation/lstm_step60000_dev_full.json`, and
+`reports/qim_ablation/temporal_attention_step60000_dev_full.json`. Original
+Mamba's 60k checkpoint/evaluation and all 120k evaluations are pending;
 therefore this remains a partial milestone and is not used to declare a final
 long-run ranking.
 
@@ -139,8 +145,9 @@ training-cost evidence is tracked in
 step-5000 and step-20000 checkpoint wall-clock observed from the step-200
 checkpoint are 1.713/1.772/1.760/1.845 and 6.971/7.212/7.174/7.454 GPU-hours
 for Standard, LSTM, Temporal Attention, and Original Mamba respectively. The
-Standard 60k checkpoint is additionally observed at 22.136 GPU-hours; the
-other three 60k values and all 120k fields remain missing until their actual
+Standard, LSTM, and Temporal Attention 60k checkpoints are additionally
+observed at 22.136, 22.990, and 23.004 GPU-hours respectively; the Original
+Mamba 60k value and all 120k fields remain missing until their actual
 checkpoints and logs exist. These are checkpoint-timestamp observations, not
 power-meter measurements.
 No ETA or extrapolated cost is presented as a measured result.

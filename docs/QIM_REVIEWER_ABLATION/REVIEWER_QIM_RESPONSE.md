@@ -72,12 +72,15 @@ Standard's 60k checkpoint and matched full development evaluation are now
 available: HOTA/IDF1/AssA/IDSW sum = 0.6770/0.7129/0.6343/58 and referring
 F1 = 0.8968. The LSTM 60k checkpoint and matched evaluation are also now
 available: HOTA/IDF1/AssA/IDSW sum = 0.6622/0.6966/0.5999/67 and referring
-F1 = 0.8875. These are still four-video development results, not Test-set
-claims; the exact files are
-`reports/qim_ablation/standard_step60000_dev_full.json` and
-`reports/qim_ablation/lstm_step60000_dev_full.json`. Temporal Attention's 60k
-evaluation is running, while Original Mamba's 60k evaluation and all 120k
-evaluations remain pending, so no final long-run ranking is claimed yet.
+F1 = 0.8875. Temporal Attention's matched 60k evaluation is now complete:
+HOTA/IDF1/AssA/IDSW sum = 0.5374/0.5518/0.5795/75 and referring F1 =
+0.7031. These are still four-video development results, not Test-set claims;
+the exact files are
+`reports/qim_ablation/standard_step60000_dev_full.json`,
+`reports/qim_ablation/lstm_step60000_dev_full.json`, and
+`reports/qim_ablation/temporal_attention_step60000_dev_full.json`. Original
+Mamba's 60k evaluation and all 120k evaluations remain pending, so no final
+long-run ranking is claimed yet.
 
 The published Test images still have no matching local ground-truth labels;
 therefore historical Test HOTA/AssA/IDF1/IDSW, a reproducible 0.29-HOTA
