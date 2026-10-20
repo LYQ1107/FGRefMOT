@@ -179,7 +179,12 @@ def get_args_parser():
     parser.add_argument('--query_interaction_layer', default='QIM', type=str,
                         help="")
     parser.add_argument('--qim_variant', default='mamba',
-                        choices=('standard', 'lstm', 'temporal_attention', 'mamba'),
+                        choices=('standard', 'lstm', 'temporal_attention', 'mamba',
+                                 'mamba_ordered_bi', 'mamba_trackwise',
+                                 'mamba_reliability_hybrid',
+                                 'fast_mamba_spatial', 'fast_mamba_temporal',
+                                 'fast_mamba_streaming', 'fast_mamba_motion',
+                                 'fast_mamba_language', 'fast_mamba_reliability'),
                         help='QIM implementation; mamba is the untouched original implementation')
     parser.add_argument('--qim_depth', default=4, type=int,
                         help='depth for the reimplemented LSTM/attention active-token mixer')
@@ -189,6 +194,26 @@ def get_args_parser():
     parser.add_argument('--fp_ratio', type=float, default=0)
     parser.add_argument('--merger_dropout', type=float, default=0.1)
     parser.add_argument('--update_query_pos', action='store_true')
+    # Previous three-way lightweight Mamba controls.  They remain separate
+    # from the fast-six budget so historical runs are exactly reproducible.
+    parser.add_argument('--qim_mamba_dim', type=int, default=0)
+    parser.add_argument('--qim_mamba_layers', type=int, default=1)
+    parser.add_argument('--qim_mamba_state', type=int, default=16)
+    parser.add_argument('--qim_mamba_history_len', type=int, default=4)
+    parser.add_argument('--qim_mamba2_enable', action='store_true', default=False)
+    parser.add_argument('--qim_bidirectional_share', dest='qim_bidirectional_share',
+                        action='store_true', default=True)
+    parser.add_argument('--qim_no_bidirectional_share', dest='qim_bidirectional_share',
+                        action='store_false')
+    parser.add_argument('--qim_reliability_enable', action='store_true', default=False)
+    parser.add_argument('--qim_rmot_text_gate', action='store_true', default=False)
+    parser.add_argument('--qim_disable_self_attention', action='store_true', default=False)
+    # Fast-six controls: one Mamba1 layer and a 64-wide bottleneck by default.
+    parser.add_argument('--qim_fast_dim', type=int, default=64)
+    parser.add_argument('--qim_fast_layers', type=int, default=1)
+    parser.add_argument('--qim_fast_state', type=int, default=8)
+    parser.add_argument('--qim_fast_history_len', type=int, default=4)
+    parser.add_argument('--qim_fast_disable_self_attention', action='store_true', default=False)
 
     parser.add_argument('--sampler_steps', type=int, default=[60,80,90], nargs='*')
     parser.add_argument('--sampler_lengths', type=int, default=[4,4,4,4],nargs='*')

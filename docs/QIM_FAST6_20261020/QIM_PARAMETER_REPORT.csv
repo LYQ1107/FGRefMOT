@@ -1,0 +1,11 @@
+variant,trainable_qim_parameters,total_model_parameters,common_init,protocol,status
+standard,PENDING,PENDING,not_applicable,REFERENCE,PENDING
+lstm,PENDING,PENDING,not_applicable,REFERENCE,PENDING
+temporal_attention,PENDING,PENDING,not_applicable,REFERENCE,PENDING
+mamba,PENDING,PENDING,not_applicable,REFERENCE,PENDING
+fast_mamba_spatial,1890432,PENDING,checkpoint0089_reset_qim,FAST6_20K,PASS_QIM_GATE
+fast_mamba_temporal,1890432,PENDING,checkpoint0089_reset_qim,FAST6_20K,PASS_QIM_GATE
+fast_mamba_streaming,1890432,PENDING,checkpoint0089_reset_qim,FAST6_20K,PASS_QIM_GATE
+fast_mamba_motion,1890689,PENDING,checkpoint0089_reset_qim,FAST6_20K,PASS_QIM_GATE
+fast_mamba_language,1923329,PENDING,checkpoint0089_reset_qim,FAST6_20K,PASS_QIM_GATE
+fast_mamba_reliability,1924225,PENDING,checkpoint0089_reset_qim,FAST6_20K,PASS_QIM_GATE
