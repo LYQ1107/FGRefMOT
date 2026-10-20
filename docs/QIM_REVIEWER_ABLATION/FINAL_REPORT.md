@@ -135,9 +135,11 @@ training-cost evidence is tracked in
 `reports/qim_ablation/training_cost_20261019.json`. At the current snapshot, the
 step-5000 and step-20000 checkpoint wall-clock observed from the step-200
 checkpoint are 1.713/1.772/1.760/1.845 and 6.971/7.212/7.174/7.454 GPU-hours
-for Standard, LSTM, Temporal Attention, and Original Mamba respectively. These
-are checkpoint-timestamp observations, not power-meter measurements;
-60k/120k fields remain missing until their actual checkpoints and logs exist.
+for Standard, LSTM, Temporal Attention, and Original Mamba respectively. The
+Standard 60k checkpoint is additionally observed at 22.136 GPU-hours; the
+other three 60k values and all 120k fields remain missing until their actual
+checkpoints and logs exist. These are checkpoint-timestamp observations, not
+power-meter measurements.
 No ETA or extrapolated cost is presented as a measured result.
 
 ## Long-run no-gradient handling
