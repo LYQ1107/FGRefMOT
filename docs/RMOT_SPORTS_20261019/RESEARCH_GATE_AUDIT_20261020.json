@@ -1,6 +1,6 @@
 {
   "schema_version": "rmot-sports-gate-audit-0.1",
-  "observed_at": "2026-10-20T09:07:15+08:00",
+  "observed_at": "2026-10-20T09:09:47+08:00",
   "status": "IN_PROGRESS",
   "workspace": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019",
   "branch": "research/sports-rmot-strong-baselines-20261019",
@@ -82,7 +82,8 @@
         "docs/RMOT_SPORTS_20261019/PHASE121_PARTIAL_OUTPUT_INTEGRITY_20261020.json",
         "docs/RMOT_SPORTS_20261019/PHASE122_PARTIAL_OUTPUT_INTEGRITY_20261020.json",
         "docs/RMOT_SPORTS_20261019/PHASE123_PARTIAL_OUTPUT_INTEGRITY_20261020.json",
-        "docs/RMOT_SPORTS_20261019/PHASE124_PARTIAL_OUTPUT_INTEGRITY_20261020.json"
+        "docs/RMOT_SPORTS_20261019/PHASE124_PARTIAL_OUTPUT_INTEGRITY_20261020.json",
+        "docs/RMOT_SPORTS_20261019/PHASE125_PARTIAL_OUTPUT_INTEGRITY_20261020.json"
       ],
       "claim_boundary": "The full 22-video training manifest succeeded and its formal historical evaluation is running. The 17-video internal training and fixed five-video validation evaluation also succeeded; threshold 0.8 was selected on internal HOTA. The internal metric is selection evidence, while no full historical-test result is claimed until the formal manifest succeeds."
     },
@@ -145,7 +146,8 @@
         "docs/RMOT_SPORTS_20261019/PHASE121_PARTIAL_OUTPUT_INTEGRITY_20261020.json",
         "docs/RMOT_SPORTS_20261019/PHASE122_PARTIAL_OUTPUT_INTEGRITY_20261020.json",
         "docs/RMOT_SPORTS_20261019/PHASE123_PARTIAL_OUTPUT_INTEGRITY_20261020.json",
-        "docs/RMOT_SPORTS_20261019/PHASE124_PARTIAL_OUTPUT_INTEGRITY_20261020.json"
+        "docs/RMOT_SPORTS_20261019/PHASE124_PARTIAL_OUTPUT_INTEGRITY_20261020.json",
+        "docs/RMOT_SPORTS_20261019/PHASE125_PARTIAL_OUTPUT_INTEGRITY_20261020.json"
       ],
       "claim_boundary": "The isolated v2 seed43 and seed44 YesTrack trainings are in the optimizer loop; the v1 timestamp-collision attempts are invalidated with no accepted checkpoint. No multi-seed metric or stability claim is made until both v2 internal validation manifests succeed."
     },
@@ -217,7 +219,8 @@
         "docs/RMOT_SPORTS_20261019/PHASE121_PARTIAL_OUTPUT_INTEGRITY_20261020.json",
         "docs/RMOT_SPORTS_20261019/PHASE122_PARTIAL_OUTPUT_INTEGRITY_20261020.json",
         "docs/RMOT_SPORTS_20261019/PHASE123_PARTIAL_OUTPUT_INTEGRITY_20261020.json",
-        "docs/RMOT_SPORTS_20261019/PHASE124_PARTIAL_OUTPUT_INTEGRITY_20261020.json"
+        "docs/RMOT_SPORTS_20261019/PHASE124_PARTIAL_OUTPUT_INTEGRITY_20261020.json",
+        "docs/RMOT_SPORTS_20261019/PHASE125_PARTIAL_OUTPUT_INTEGRITY_20261020.json"
       ],
       "claim_boundary": "The required final-report entrypoints and evidence ledger exist and are remotely synchronized; the final reviewer conclusion and remaining formal comparisons are not complete."
     }
@@ -227,17 +230,17 @@
       "run_id": "yestrack_y1_sports_lora_seed42_v2",
       "status": "TRAINING_SUCCEEDED_FORMAL_EVALUATION_IN_PROGRESS",
       "manifest": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/yestrack_y1_common_eval_20261019_v3/YESTRACK_EVAL_MANIFEST.json",
-      "prediction_files_observed": 89,
+      "prediction_files_observed": 90,
       "prediction_files_expected": 142,
       "gpu_process_pid": 2708884,
       "partial_output_format_issues": 0,
       "partial_output_finite_value_issues": 0,
       "formal_activity_probe_pid": 2708884,
-      "formal_activity_probe_rchar_delta": 6680108,
-      "formal_activity_probe_syscr_delta": 180,
+      "formal_activity_probe_rchar_delta": 9440994,
+      "formal_activity_probe_syscr_delta": 255,
       "formal_activity_probe_prediction_files_before_after": [
-        89,
-        89
+        90,
+        90
       ]
     },
     {
@@ -246,7 +249,7 @@
       "manifest": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/runs/gpu/yestrack_y1_sports_lora_seed43_v2/RUN_MANIFEST.json",
       "gpu_process_pid": 3078707,
       "gpu": "2",
-      "optimizer_steps_observed": 29580
+      "optimizer_steps_observed": 30017
     },
     {
       "run_id": "yestrack_y1_sports_lora_seed44_v2",
@@ -254,7 +257,7 @@
       "manifest": "/data3/liuyeqiang/FGRefMOT_RMOT_Sports_20261019/runs/gpu/yestrack_y1_sports_lora_seed44_v2/RUN_MANIFEST.json",
       "gpu_process_pid": 3078708,
       "gpu": "3",
-      "optimizer_steps_observed": 28643
+      "optimizer_steps_observed": 29058
     },
     {
       "run_id": "common_tracker_refersports_timed_20261020",
@@ -271,19 +274,19 @@
   ],
   "latest_formal_activity_probe": {
     "pid": 2708884,
-    "started_at": "2026-10-20T09:07:20+08:00",
-    "finished_at": "2026-10-20T09:07:24+08:00",
+    "started_at": "2026-10-20T09:09:29+08:00",
+    "finished_at": "2026-10-20T09:09:34+08:00",
     "sample_seconds": 4,
-    "rchar_before": 36611211199,
-    "rchar_after": 36617891307,
-    "rchar_delta": 6680108,
-    "syscr_before": 978192,
-    "syscr_after": 978372,
-    "syscr_delta": 180,
-    "prediction_files_before": 89,
-    "prediction_files_after": 89,
+    "rchar_before": 36815334996,
+    "rchar_after": 36824775990,
+    "rchar_delta": 9440994,
+    "syscr_before": 984113,
+    "syscr_after": 984368,
+    "syscr_delta": 255,
+    "prediction_files_before": 90,
+    "prediction_files_after": 90,
     "process_state": "Rl+",
     "cpu_percent": 345.0,
-    "elapsed": "05:49:03"
+    "elapsed": "05:51:12"
   }
 }

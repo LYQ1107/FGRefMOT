@@ -182,3 +182,7 @@ Partial-output integrity refreshed at 2026-10-20T09:04:33+08:00 (Phase 122): 87/
 Partial-output integrity refreshed at 2026-10-20T09:06:14+08:00 (Phase 123): 88/142 files and 558,196 rows were checked with 0 format/identifier issues and 0 non-finite-value issues; no formal metric is claimed while the terminal manifest is absent. Seed43/44 are still active at 29405/90523 and 28472/90528 optimizer steps.
 
 Partial-output integrity refreshed at 2026-10-20T09:07:15+08:00 (Phase 124): 89/142 files and 560,615 rows were checked with 0 format/identifier issues and 0 non-finite-value issues; no formal metric is claimed while the terminal manifest is absent. Seed43/44 are still active at 29580/90523 and 28643/90528 optimizer steps.
+
+Partial-output integrity refreshed at 2026-10-20T09:09:47+08:00 (Phase 125): 90/142 files and 563,034 rows were checked with 0 format/identifier issues and 0 non-finite-value issues; no formal metric is claimed while the terminal manifest is absent. Seed43/44 are still active at 30017/90523 and 29058/90528 optimizer steps.
+
+Activity probe refreshed at 2026-10-20T09:09:34+08:00 (Phase 125): PID 2708884 remained `Rl+` at about 345% CPU; over four seconds its `rchar` increased by 9,440,994 and `syscr` by 255 while the formal output count stayed 90/142.
