@@ -19,15 +19,14 @@
 | Step-5000 observed training cost | COMPLETE (PARTIAL STUDY) | `reports/qim_ablation/training_cost_20261019.json`; checkpoint wall-clock from step 200 is 1.713/1.772/1.760/1.845 GPU-hours for Standard/LSTM/Temporal Attention/Mamba |
 | Long-run no-gradient branches (current snapshot) | HANDLED / RECORDED | Standard steps 1535, 3316, 13539; Original Mamba steps 3624, 12472; explicit `NO_GRAD_STEP` no-op branch skips the optimizer step and is not a crash |
 | Real SportsMOT image benchmark | COMPLETE | 60-frame real clip, 5 warmup + 55 timed frames; `real_sportsmot_benchmark_step200.json` |
-| 20k training/evaluation node | COMPLETE | all four exact-resume checkpoints and full development evaluations are complete; 4 videos/2,621 frames |
-| 60k/120k training nodes | RUNNING | all four variants remain active; later checkpoints and evaluations are pending |
+| 20k/60k/120k training nodes | RUNNING | all four variants resumed exactly from step 200; 5k checkpoints and full development evaluations are complete |
 | Historical Test HOTA/DetA/AssA/IDF1/IDSW | BLOCKED | test images exist, corresponding local GT labels do not |
 
-The four 200-step, four 5k, and four 20k benchmark logs/checkpoints are under
+The four 200-step and four 5k benchmark logs/checkpoints are under
 `/data1/liuyeqiang/fg_v2_runs/qim_ablation_sports_20261019/`. No result is
 marked `FINAL_TEST`; later long-run checkpoints will be promoted only after
 their actual logs and validation outputs are preserved. The development
 metrics are recorded in `FINAL_REPORT.md` and `FINAL_TRACKING_RESULTS.csv`.
-The current cost report records observed 5k and 20k checkpoints; missing
-60k/120k milestones remain null rather than being extrapolated.
+The current cost report records only observed checkpoints; missing 20k/60k/120k
+milestones remain null rather than being extrapolated.
 

@@ -1,6 +1,6 @@
 # FGRefMOT original QIM ablation — current report
 
-Status: **STEP-200, STEP-5000, AND STEP-20000 FULL DEVELOPMENT EVALUATIONS COMPLETE / 60K-120K LONG RUN IN PROGRESS / HISTORICAL TEST GT STILL MISSING**.
+Status: **STEP-200 AND STEP-5000 FULL DEVELOPMENT EVALUATIONS COMPLETE / LONG RUN IN PROGRESS / HISTORICAL TEST GT STILL MISSING**.
 
 Completed in this snapshot:
 
@@ -21,13 +21,11 @@ Completed in this snapshot:
   2,621 frames;
 - full step-5000 development evaluation for all four QIM variants over the same
   4 videos and 2,621 frames;
-- full step-20000 development evaluation for all four QIM variants over the same
-  4 videos and 2,621 frames;
 - Mamba step-200 full-development result pushed to the research branch.
 
 Still in progress or blocked:
 
-- completion of the 60k/120k checkpoints (four nodes are running continuously);
+- completion of the 5k/20k/60k/120k checkpoints (four nodes are running continuously);
 - multi-clip paper-level efficiency and training-cost aggregation;
 - historical Test HOTA/DetA/AssA/IDF1/IDSW, because the local Test tree has no matching GT;
 - multi-seed/partial-unfreeze experiments;
@@ -80,28 +78,7 @@ They are development results, not historical Test results.
 The exact machine-readable results are
 `reports/qim_ablation/{standard,lstm,temporal_attention,mamba}_step5000_dev_full.json`;
 the cross-variant summary is `reports/qim_ablation/step5000_dev_summary_20261019.json`.
-The exact machine-readable results for the next milestone are
-`reports/qim_ablation/{standard,lstm,temporal_attention,mamba}_step20000_dev_full.json`;
-the cross-variant summary is `reports/qim_ablation/step20000_dev_summary_20261019.json`.
-
-## Step-20000 full development evaluation
-
-These are exact-resume long-run results on the same frozen four-video
-development list, one expression per video, all 2,621 frames, and the
-UNKNOWN-safe referring protocol. They remain development results, not
-historical Test results.
-
-| QIM | HOTA | HOTA@0.5 | DetA | AssA | IDF1 | IDSW sum | IDSW mean/sequence | Referring F1 |
-|---|---:|---:|---:|---:|---:|---:|---:|---:|
-| Standard | 0.6878 | 0.7246 | 0.7269 | 0.6568 | 0.7172 | 59 | 14.75 | 0.9197 |
-| LSTM | 0.7406 | 0.7787 | 0.8459 | 0.6550 | 0.7721 | 75 | 18.75 | 0.9669 |
-| Temporal Attention | 0.5633 | 0.5902 | 0.4789 | 0.6829 | 0.5955 | 30 | 7.50 | 0.6781 |
-| Original Mamba | 0.7236 | 0.7600 | 0.8054 | 0.6556 | 0.7540 | 76 | 19.00 | 0.9231 |
-
-At this milestone LSTM has the highest development HOTA/IDF1, while Temporal
-Attention has the lowest IDSW sum. These rankings are not promoted to a final
-paper conclusion until the 60k/120k nodes and their matched efficiency/cost
-records are complete.
+The 20k/60k/120k milestones remain in progress.
 
 ## Step-200 real SportsMOT image benchmark
 
@@ -122,12 +99,12 @@ The machine-readable benchmark is
 `reports/qim_ablation/real_sportsmot_benchmark_step200.json`. Long-run
 training-cost evidence is tracked in
 `reports/qim_ablation/training_cost_20261019.json`. At the current snapshot, the
-step-5000 and step-20000 checkpoint wall-clock observed from the step-200
-checkpoint are 1.713/1.772/1.760/1.845 and 6.971/7.212/7.174/7.454 GPU-hours
-for Standard, LSTM, Temporal Attention, and Original Mamba respectively. These
-are checkpoint-timestamp observations, not power-meter measurements;
-60k/120k fields remain missing until their actual checkpoints and logs exist.
-No ETA or extrapolated cost is presented as a measured result.
+step-5000 checkpoint wall-clock observed from the step-200 checkpoint is 1.713,
+1.772, 1.760, and 1.845 GPU-hours for Standard, LSTM, Temporal Attention, and
+Original Mamba respectively. These are checkpoint-timestamp observations, not
+power-meter measurements; 20k/60k/120k fields remain missing until their actual
+checkpoints and logs exist. No ETA or extrapolated cost is presented as a
+measured result.
 
 ## Long-run no-gradient handling
 

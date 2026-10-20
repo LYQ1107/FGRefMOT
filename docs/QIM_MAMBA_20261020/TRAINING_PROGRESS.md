@@ -1,8 +1,8 @@
 # Training progress
 
-The branch is ready for the first matched screening run. The original
-four-way QIM training remains active in the separate worktree and is not
-modified by this branch.
+The matched three-way lightweight QIM run is active. The original four-way
+QIM training remains active in the separate worktree and is not modified by
+this branch.
 
 Planned matched run:
 
@@ -23,8 +23,8 @@ The 200-step engineering runs completed for all three variants. Observed
 training benchmark means were 1,223.93 ms/step for M1, 1,342.28 ms/step for
 M2, and 1,350.23 ms/step for M3; each saved a valid step-200 checkpoint. The
 M1 full step-200 development report on the frozen four-video split records
-HOTA 0.5798, AssA 0.6121, IDF1 0.5814, and IDSW 102. The three exact-resume
-processes are running in parallel toward step 20,000. M2's full step-200
+HOTA 0.5798, AssA 0.6121, IDF1 0.5814, and IDSW 102. The three initial
+exact-resume processes reached step 20,000 in parallel. M2's full step-200
 report records HOTA 0.0476, AssA 0.4420, IDF1 0.0074, and IDSW 673; M3 records
 HOTA 0.0755, AssA 0.2999, IDF1 0.0194, and IDSW 765. Both reports contain
 large false-positive counts on the four-video split, so they are real
@@ -36,5 +36,32 @@ The matched step-5000 checkpoints and full development evaluations are now
 complete for all three variants. Every report covers the same four videos and
 2,621 frames under the same `unknown_mask` protocol; the exact metrics are
 recorded in `STEP5000_RESULTS.md` and the JSON reports. These are valid
-development measurements, not test-set claims. The three processes remain
-active and continue toward step 20,000.
+development measurements, not test-set claims.
+
+The exact-resume step-20,000 checkpoints and full development evaluations are
+also complete. OrderedBi records HOTA/AssA/IDF1/IDSW of
+0.6568748888/0.6169121990/0.6681123116/113; Trackwise records
+0.6639157661/0.6346569258/0.6851646777/64; Reliability-Hybrid records
+0.7094399110/0.6277113414/0.7331716865/68. Each report covers the same four
+videos and 2,621 frames. These are development results, not Test-set claims.
+
+All three variants have now been relaunched from their exact 20,000-step
+checkpoints with the original long-run protocol, targeting step 120,000 and
+saving 5,000/20,000/60,000/120,000. They are running in parallel on GPUs 7,
+8, and 9; the 60,000 and 120,000 checkpoints and evaluations are still
+pending. The cost collector records measured checkpoint timestamps in
+`reports/qim_mamba/training_cost_20261020.json`; missing milestones remain
+null and are not extrapolated. A persistent evaluator waits for the three
+60,000 and 120,000 checkpoints and runs the same fixed Development-Val
+protocol on GPU 6.
+
+The step-200 real-image efficiency benchmark is now complete for all three
+variants on the same 60-frame SportsMOT clip used by the original efficiency
+probe. OrderedBi measured 248.215 ms prepared-GPU latency (4.029 FPS),
+321.712 ms wall latency (3.108 FPS), and 1.914 GB peak allocated memory.
+Trackwise measured 276.818 ms / 3.612 prepared-GPU FPS and 357.954 ms / 2.794
+wall FPS; Reliability-Hybrid measured 256.790 ms / 3.894 prepared-GPU FPS and
+331.057 ms / 3.021 wall FPS. The latter two are marked diagnostic because
+their active-track counts grew substantially during the engineering clip;
+their full raw values and parameter counts are in
+`REAL_EFFICIENCY_RESULTS.csv` and the JSON report.

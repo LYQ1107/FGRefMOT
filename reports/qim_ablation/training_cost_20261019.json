@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-10-19T18:43:23.764588+00:00",
+  "generated_at_utc": "2026-10-19T14:23:30.463656+00:00",
   "run_root": "/data1/liuyeqiang/fg_v2_runs/qim_ablation_sports_20261019",
   "milestones": [
     200,
@@ -20,8 +20,8 @@
       "log": {
         "status": "present",
         "path": "/data1/liuyeqiang/fg_v2_runs/qim_ablation_sports_20261019/standard_long.log",
-        "bytes": 3774672,
-        "last_modified_utc": "2026-10-19T18:43:18.125666+00:00",
+        "bytes": 2096375,
+        "last_modified_utc": "2026-10-19T14:23:19.762650+00:00",
         "source_sha": "445875fd38b767e8d011c74067e2a01820c3c663",
         "source_worktree_status": "has uncommited changes, branch: research/qim-reviewer-ablation-20261019",
         "training_time_s": null,
@@ -38,7 +38,7 @@
           "peak_allocated_gb": 11.82505750656128,
           "peak_reserved_gb": 29.955078125
         },
-        "explicit_no_grad_log_events": 4
+        "explicit_no_grad_log_events": 3
       },
       "checkpoints": {
         "200": {
@@ -58,12 +58,10 @@
           "observed_gpu_hours_from_step200": 1.712757334974077
         },
         "20000": {
-          "status": "present",
+          "status": "missing",
           "path": "/data1/liuyeqiang/fg_v2_runs/qim_ablation_sports_20261019/standard/checkpoint_step00020000.pth",
-          "bytes": 730562609,
-          "modified_utc": "2026-10-19T16:08:55.400131+00:00",
-          "checkpoint_wallclock_from_step200_s": 25094.167279958725,
-          "observed_gpu_hours_from_step200": 6.970602022210757
+          "checkpoint_wallclock_from_step200_s": null,
+          "observed_gpu_hours_from_step200": null
         },
         "60000": {
           "status": "missing",
@@ -84,25 +82,14 @@
       "log": {
         "status": "present",
         "path": "/data1/liuyeqiang/fg_v2_runs/qim_ablation_sports_20261019/lstm_long.log",
-        "bytes": 3649359,
-        "last_modified_utc": "2026-10-19T18:43:19.093660+00:00",
+        "bytes": 2023657,
+        "last_modified_utc": "2026-10-19T14:23:22.018637+00:00",
         "source_sha": "445875fd38b767e8d011c74067e2a01820c3c663",
         "source_worktree_status": "has uncommited changes, branch: research/qim-reviewer-ablation-20261019",
         "training_time_s": null,
-        "benchmark_epochs": 1,
-        "latest_benchmark": {
-          "steps": 14484,
-          "no_grad_steps": 0,
-          "step_mean_ms": 1120.066326464434,
-          "step_median_ms": 1107.1706041693687,
-          "step_p95_ms": 1325.0533390790224,
-          "data_mean_ms": 180.59584950718045,
-          "forward_mean_ms": 722.7868575955648,
-          "backward_mean_ms": 364.1676115928163,
-          "peak_allocated_gb": 11.862060546875,
-          "peak_reserved_gb": 29.734375
-        },
-        "explicit_no_grad_log_events": 2
+        "benchmark_epochs": 0,
+        "latest_benchmark": null,
+        "explicit_no_grad_log_events": 0
       },
       "checkpoints": {
         "200": {
@@ -122,12 +109,10 @@
           "observed_gpu_hours_from_step200": 1.7723092327515284
         },
         "20000": {
-          "status": "present",
+          "status": "missing",
           "path": "/data1/liuyeqiang/fg_v2_runs/qim_ablation_sports_20261019/lstm/checkpoint_step00020000.pth",
-          "bytes": 781141343,
-          "modified_utc": "2026-10-19T16:23:24.027399+00:00",
-          "checkpoint_wallclock_from_step200_s": 25963.698543071747,
-          "observed_gpu_hours_from_step200": 7.212138484186596
+          "checkpoint_wallclock_from_step200_s": null,
+          "observed_gpu_hours_from_step200": null
         },
         "60000": {
           "status": "missing",
@@ -148,25 +133,14 @@
       "log": {
         "status": "present",
         "path": "/data1/liuyeqiang/fg_v2_runs/qim_ablation_sports_20261019/temporal_attention_long.log",
-        "bytes": 3671639,
-        "last_modified_utc": "2026-10-19T18:43:22.501642+00:00",
+        "bytes": 2037572,
+        "last_modified_utc": "2026-10-19T14:23:17.842660+00:00",
         "source_sha": "445875fd38b767e8d011c74067e2a01820c3c663",
         "source_worktree_status": "has uncommited changes, branch: research/qim-reviewer-ablation-20261019",
         "training_time_s": null,
-        "benchmark_epochs": 1,
-        "latest_benchmark": {
-          "steps": 14484,
-          "no_grad_steps": 0,
-          "step_mean_ms": 1114.5609282749326,
-          "step_median_ms": 1101.4166176319122,
-          "step_p95_ms": 1322.5492645055056,
-          "data_mean_ms": 178.02171824765912,
-          "forward_mean_ms": 710.2580805152481,
-          "backward_mean_ms": 370.7581138219278,
-          "peak_allocated_gb": 11.856184482574463,
-          "peak_reserved_gb": 30.248046875
-        },
-        "explicit_no_grad_log_events": 2
+        "benchmark_epochs": 0,
+        "latest_benchmark": null,
+        "explicit_no_grad_log_events": 0
       },
       "checkpoints": {
         "200": {
@@ -186,12 +160,10 @@
           "observed_gpu_hours_from_step200": 1.760032633079423
         },
         "20000": {
-          "status": "present",
+          "status": "missing",
           "path": "/data1/liuyeqiang/fg_v2_runs/qim_ablation_sports_20261019/temporal_attention/checkpoint_step00020000.pth",
-          "bytes": 755937073,
-          "modified_utc": "2026-10-19T16:20:55.532208+00:00",
-          "checkpoint_wallclock_from_step200_s": 25825.94729399681,
-          "observed_gpu_hours_from_step200": 7.173874248332448
+          "checkpoint_wallclock_from_step200_s": null,
+          "observed_gpu_hours_from_step200": null
         },
         "60000": {
           "status": "missing",
@@ -212,25 +184,14 @@
       "log": {
         "status": "present",
         "path": "/data1/liuyeqiang/fg_v2_runs/qim_ablation_sports_20261019/mamba_long.log",
-        "bytes": 3504305,
-        "last_modified_utc": "2026-10-19T18:43:17.877667+00:00",
+        "bytes": 1920505,
+        "last_modified_utc": "2026-10-19T14:23:22.566634+00:00",
         "source_sha": "445875fd38b767e8d011c74067e2a01820c3c663",
         "source_worktree_status": "has uncommited changes, branch: research/qim-reviewer-ablation-20261019",
         "training_time_s": null,
-        "benchmark_epochs": 1,
-        "latest_benchmark": {
-          "steps": 14484,
-          "no_grad_steps": 3,
-          "step_mean_ms": 1174.6421041256715,
-          "step_median_ms": 1159.891214221716,
-          "step_p95_ms": 1378.5655561834571,
-          "data_mean_ms": 183.4971676587038,
-          "forward_mean_ms": 744.0014510731594,
-          "backward_mean_ms": 394.95349851599207,
-          "peak_allocated_gb": 11.882638454437256,
-          "peak_reserved_gb": 30.4140625
-        },
-        "explicit_no_grad_log_events": 3
+        "benchmark_epochs": 0,
+        "latest_benchmark": null,
+        "explicit_no_grad_log_events": 2
       },
       "checkpoints": {
         "200": {
@@ -250,12 +211,10 @@
           "observed_gpu_hours_from_step200": 1.8454443899790447
         },
         "20000": {
-          "status": "present",
+          "status": "missing",
           "path": "/data1/liuyeqiang/fg_v2_runs/qim_ablation_sports_20261019/mamba/checkpoint_step00020000.pth",
-          "bytes": 772745911,
-          "modified_utc": "2026-10-19T16:44:22.000545+00:00",
-          "checkpoint_wallclock_from_step200_s": 26835.26979494095,
-          "observed_gpu_hours_from_step200": 7.454241609705819
+          "checkpoint_wallclock_from_step200_s": null,
+          "observed_gpu_hours_from_step200": null
         },
         "60000": {
           "status": "missing",

@@ -12,7 +12,7 @@ import json
 from pathlib import Path
 
 
-VARIANTS = ("standard", "lstm", "temporal_attention", "mamba")
+DEFAULT_VARIANTS = ("standard", "lstm", "temporal_attention", "mamba")
 MEAN_FIELDS = (
     "hota",
     "hota_05",
@@ -59,13 +59,20 @@ def main() -> None:
     parser.add_argument("--report-dir", type=Path, default=Path("reports/qim_ablation"))
     parser.add_argument("--step", type=int, required=True)
     parser.add_argument("--output", type=Path)
+    parser.add_argument(
+        "--variants",
+        nargs="+",
+        default=list(DEFAULT_VARIANTS),
+        metavar="VARIANT",
+        help="variant names to aggregate (defaults to the original four QIM variants)",
+    )
     args = parser.parse_args()
 
     variants = {}
     protocol = None
     video_list = None
     reference = None
-    for variant in VARIANTS:
+    for variant in args.variants:
         compact, raw = load_report(args.report_dir, variant, args.step)
         if reference is None:
             reference = compact
