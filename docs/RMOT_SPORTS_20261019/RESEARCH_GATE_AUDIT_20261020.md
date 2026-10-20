@@ -146,3 +146,6 @@ Activity probe refreshed at 2026-10-20T08:17:33+08:00 (Phase 106): the formal ev
 
 
 Partial-output integrity refreshed at 2026-10-20T08:18:26+08:00 (Phase 107): 73/142 files and 486,129 rows were checked with 0 format/identifier issues and 0 non-finite-value issues; no formal metric is claimed while the terminal manifest is absent.
+
+
+Partial-output integrity refreshed at 2026-10-20T08:21:15+08:00 (Phase 108): 74/142 files and 490,946 rows were checked with 0 format/identifier issues and 0 non-finite-value issues; no formal metric is claimed while the terminal manifest is absent.
