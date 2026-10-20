@@ -21,6 +21,7 @@ internal manifest is
 The full historical evaluator is still producing predictions; no test metric
 is claimed until `YESTRACK_EVAL_MANIFEST.json` reports `SUCCEEDED`.
 
-Seed43 and seed44 are independent stability trainings. Their metrics and any
-stability claim remain pending until their fixed-threshold internal manifests
-succeed.
+Seed43 and seed44 were optional stability trainings. They were stopped before
+terminal internal-validation manifests when the user clarified that stability
+results are not currently needed. No multi-seed metric or stability claim is
+made; the requested result is the seed42 formal historical test.

@@ -1,0 +1,67 @@
+{
+  "schema_version": "rmot-sports-phase-0.1",
+  "phase": 140,
+  "title": "User-scoped stop of optional YesTrack multi-seed stability runs while formal test continues",
+  "status": "OPTIONAL_MULTI_SEED_STOPPED_USER_SCOPE_FORMAL_TEST_CONTINUES",
+  "observed_at": "2026-10-20T09:39:34+08:00",
+  "formal_run": {
+    "run_id": "yestrack_y1_common_eval_20261019_v3",
+    "manifest": "/data3/liuyeqiang/nas/A100/FGREF_RMOT_SPORTS_20261019/runs/gpu/yestrack_y1_common_eval_20261019_v3/YESTRACK_EVAL_MANIFEST.json",
+    "manifest_exists": false,
+    "prediction_files_observed": 102,
+    "prediction_files_expected": 142,
+    "nonempty_rows": 605553,
+    "unique_frames": 1825,
+    "frame_min": 1,
+    "frame_max": 1825,
+    "unique_track_ids": 35,
+    "format_issue_count": 0,
+    "finite_value_issue_count": 0
+  },
+  "issues": {
+    "format_examples": [],
+    "finite_value_examples": []
+  },
+  "seed43": {
+    "run_id": "yestrack_y1_sports_lora_seed43_v2",
+    "status": "STOPPED_USER_SCOPE",
+    "optimizer_steps_observed": 34865,
+    "optimizer_steps_expected": 90523,
+    "gpu": "2",
+    "stopped_at": "2026-10-20T09:39:03+08:00",
+    "stop_reason": "Optional stability result deferred by user scope."
+  },
+  "seed44": {
+    "run_id": "yestrack_y1_sports_lora_seed44_v2",
+    "status": "STOPPED_USER_SCOPE",
+    "optimizer_steps_observed": 33761,
+    "optimizer_steps_expected": 90528,
+    "gpu": "3",
+    "stopped_at": "2026-10-20T09:39:03+08:00",
+    "stop_reason": "Optional stability result deferred by user scope."
+  },
+  "claim_boundary": "Only the seed42 formal historical-test result is being pursued. No seed43/seed44 metric or stability claim is made; their partial training is not a result.",
+  "next_step": "Wait for the seed42 formal manifest, verify complete 142/142 coverage, and run the registered offline historical scorer; do not start stability runs unless the scope is reopened.",
+  "formal_activity_probe": {
+    "pid": 2708884,
+    "started_at": "2026-10-20T09:39:16+08:00",
+    "finished_at": "2026-10-20T09:39:20+08:00",
+    "sample_seconds": 4,
+    "rchar_before": 39230082478,
+    "rchar_after": 39233140249,
+    "rchar_delta": 3057771,
+    "syscr_before": 1055368,
+    "syscr_after": 1055448,
+    "syscr_delta": 80,
+    "prediction_files_before": 102,
+    "prediction_files_after": 102,
+    "process_state": "Rl+",
+    "cpu_percent": 345.0,
+    "elapsed": "06:20:58"
+  },
+  "scope_change": {
+    "requested_at": "2026-10-20T09:39:03+08:00",
+    "request": "User stated that stability-test results are not currently needed; only the formal test result is required.",
+    "action": "Stop seed43/seed44 stability training and retain seed42 formal test."
+  }
+}

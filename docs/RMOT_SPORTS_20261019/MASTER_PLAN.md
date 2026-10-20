@@ -28,9 +28,10 @@ YesTrack Sports-LoRA trainings have succeeded. The separate internal
 YesTrack validation evaluation has also succeeded, selecting threshold 0.8
 from internal mean-over-alpha HOTA (0.746525); its 19-video formal evaluation
 remains live.
-Seed43 and seed44 YesTrack Y1 stability trainings are now running on GPU2 and
-GPU3 under Phase 77. They will be checked on the internal validation split
-with seed42's fixed threshold before any historical-test claim.
+Seed43 and seed44 YesTrack Y1 stability trainings were optional follow-up runs.
+They were stopped before terminal validation when the user clarified that
+stability results are not currently needed; no multi-seed claim is made. The
+seed42 formal historical test remains the active requested result.
 The strict FlexHook core-only training
 run has completed on GPU3: it used 17 train videos/136 expressions, selected
 the checkpoint on the reserved 5 videos/45 expressions, and wrote its

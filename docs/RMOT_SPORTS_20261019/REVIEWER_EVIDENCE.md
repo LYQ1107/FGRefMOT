@@ -23,3 +23,5 @@ metric, a best baseline across both models, an independent proposed-method
 gain, multi-seed stability, a complete cross-method speed comparison, and a
 verified S1–S4 semantic improvement. The authoritative gate state is
 `RESEARCH_GATE_AUDIT_20261020.json`.
+
+Scope note (2026-10-20T09:39:03+08:00): the optional seed43/seed44 stability runs were stopped before terminal validation at the user's request. Stability remains unclaimed; this does not change the seed42 formal-test evidence boundary.
